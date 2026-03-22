@@ -264,6 +264,42 @@ min-height:14px;
   50%{opacity:0.3;}
 }
 
+.hitText{
+position:absolute;
+top:20%;
+left:50%;
+transform:translateX(-50%);
+font-size:20px;
+font-weight:bold;
+color:#ffcc00;
+text-shadow:0 0 8px #000;
+animation:hitPop 0.8s forwards;
+}
+
+.totalDamage{
+position:absolute;
+top:30%;
+left:50%;
+transform:translateX(-50%);
+font-size:26px;
+font-weight:bold;
+color:#ff4444;
+text-shadow:0 0 10px #000;
+animation:totalPop 1s forwards;
+}
+
+@keyframes hitPop{
+0%{opacity:0;transform:translate(-50%,0) scale(0.5);}
+30%{opacity:1;transform:translate(-50%,-10px) scale(1.2);}
+100%{opacity:0;transform:translate(-50%,-30px) scale(1);}
+}
+
+@keyframes totalPop{
+0%{opacity:0;transform:translate(-50%,0) scale(0.5);}
+30%{opacity:1;transform:translate(-50%,-10px) scale(1.3);}
+100%{opacity:0;transform:translate(-50%,-40px) scale(1);}
+}
+
 </style>
 </head>
 
@@ -1058,6 +1094,30 @@ el.appendChild(div);
 setTimeout(()=>div.remove(),900);
 }
 
+function showHitText(id, hits){
+    let el = document.getElementById(id);
+    if(!el) return;
+
+    let div = document.createElement("div");
+    div.className = "hitText";
+    div.textContent = hits + " HIT!!";
+
+    el.appendChild(div);
+    setTimeout(()=>div.remove(),1000);
+}
+
+function showTotalDamage(id, total){
+    let el = document.getElementById(id);
+    if(!el) return;
+
+    let div = document.createElement("div");
+    div.className = "totalDamage";
+    div.textContent = "TOTAL " + Math.floor(total);
+
+    el.appendChild(div);
+    setTimeout(()=>div.remove(),1200);
+}
+
 function renderBattle(){
 
   let teamArea = document.getElementById("teamArea");
@@ -1348,27 +1408,27 @@ if(s.type==="damage"){
 
 // 🔥 多段（←ここが一番重要）
 if(s.type==="multi"){
-    let totalDelay = 0;
 
     for(let i=0;i<s.hits;i++){
+
         let res = calcDamage(p.attr, enemy.attr, atk * s.power);
         enemy.hp -= res.dmg;
 
+        // 🔻ヒットごとにデバフ
+        if(!enemy.debuffUsed){
+            enemy.atk *= 0.95; // ←ここ調整ポイント
+        }
+
         setTimeout(()=>{
             showDamage("enemy", res);
+
+            if(i === s.hits - 1){
+                enemy.debuffUsed = true; // 最後に固定
+                renderBattle();
+            }
+
         }, i * 120);
-
-        totalDelay = i * 120;
-
-        // デバフ
-        let debuff = 0.95;
-        if(currentEvent !== undefined){
-            debuff = 1 - (1 - 0.95) * 0.5;
-        }
-        enemy.atk *= debuff;
     }
-
-    renderBattle();
 }
 
 // 💚 回復
@@ -1734,6 +1794,7 @@ if(exist){
         skill: c.skill ? {
             type: c.skill.type,
             power: c.skill.power,
+            hits: c.skill.hits, // 🔥これ追加
             text: c.skill.text,
             cool: c.skill.cool
         } : {type:"none"},
