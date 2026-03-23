@@ -487,7 +487,7 @@ eventProgress = data.eventProgress ?? {};
 
 }
 
-let stone=100000;
+let stone=100;
 let box=[],team=[],players=[],enemy;
 let turn="player",turnIndex=0;
 let progress={};
@@ -1178,9 +1178,16 @@ let res = calcDamage(p.attr,enemy.attr,atk);
 enemy.hp -= res.dmg;
 
 renderBattle();
+
 setTimeout(()=>{
     showDamage("enemy",res);
 },10);
+
+// 🔥 ここ変更
+if(enemy.hp <= 0){
+    setTimeout(()=>win(), 500);
+    return;
+}
 
 p.ult+=30;
 endTurn();
@@ -1200,22 +1207,25 @@ enemy.hp -= res.dmg;
 
 p.ult = 0;
 
-// 🌈 必殺演出
 let flash=document.createElement("div");
 flash.className="rainbowFlash";
 document.body.appendChild(flash);
 setTimeout(()=>flash.remove(),600);
 
-// 描画
 renderBattle();
 
-// ダメージ表示
 setTimeout(()=>{
     showDamage("enemy", {
         dmg: res.dmg,
         type: "ultimate"
     });
 },10);
+
+// 🔥 ここ変更
+if(enemy.hp <= 0){
+    setTimeout(()=>win(), 600);
+    return;
+}
 
 endTurn();
 }
@@ -1224,14 +1234,23 @@ endTurn();
 function enemyTurn(){
 
 let target = players[Math.floor(Math.random() * players.length)];
+let index = players.indexOf(target); // ←固定（超重要）
 
 let res = calcDamage(enemy.attr, target.attr, enemy.atk);
+
 if(target.shield && target.shield.turn > 0){
     res.dmg *= (1 - target.shield.power);
 }
+
 target.currentHp -= res.dmg;
 
-showDamage("p" + players.indexOf(target), res);
+// 🔥 先に描画
+renderBattle();
+
+// 🔥 ダメージ表示（1回だけ）
+setTimeout(()=>{
+    showDamage("p" + index, res);
+}, 50);
 
 // 💀 敵の毒
 if(enemy.poison && enemy.poison.turn > 0){
@@ -1244,19 +1263,17 @@ if(enemy.poison && enemy.poison.turn > 0){
     setTimeout(()=>{
         showDamage("enemy", {
             dmg: dmg,
-            type: "poison" // 色はあとで変える
+            type: "poison"
         });
     },10);
 
-    if(enemy.hp <= 0){
-        win();
-        return;
-    }
+if(enemy.hp <= 0){
+    setTimeout(()=>win(), 500);
+    return;
+}
 }
 
-
-
-// 反撃処理（全員チェック）
+// 反撃
 let delay = 0;
 
 players.forEach(t=>{
@@ -1269,45 +1286,45 @@ players.forEach(t=>{
         }, delay);
 
         delay += 150;
-
         t.counter.turn--;
 
-        if(enemy.hp <= 0){
-            win();
-            return;
-        }
-    }
-});
-
-
-players=players.filter(p=>p.currentHp>0);
-if(players.length===0){
-    alert("敗北");
-
-    if(currentEvent !== undefined){
-        currentEvent = undefined; // 念のためリセット
-        go("event"); // ←イベントに戻る
-    }else{
-        go("trial"); // ←通常時だけ試練
-    }
-
+if(enemy.hp <= 0){
+    setTimeout(()=>win(), 500);
     return;
 }
-
-// シールドのターン減少
-players.forEach(p=>{
-    if(p.shield && p.shield.turn > 0){
-        p.shield.turn--;
     }
 });
 
-turn="player";turnIndex=0;
-renderBattle();
-}
+// 🔥 💥ここが核心：死亡処理を遅らせる
+setTimeout(()=>{
 
-players.forEach(p=>{
-    if(p.cool > 0) p.cool--;
-});
+    players = players.filter(p=>p.currentHp > 0);
+
+    if(players.length === 0){
+        alert("敗北");
+
+        if(currentEvent !== undefined){
+            currentEvent = undefined;
+            go("event");
+        }else{
+            go("trial");
+        }
+        return;
+    }
+
+    // シールド減少
+    players.forEach(p=>{
+        if(p.shield && p.shield.turn > 0){
+            p.shield.turn--;
+        }
+    });
+
+    turn = "player";
+    turnIndex = 0;
+    renderBattle();
+
+}, 500); // ←表示時間に合わせる
+}
 
 function endTurn(){
 let p = players[turnIndex];
@@ -1323,7 +1340,10 @@ players.forEach(p=>{
 
 if(p.cool > 0) p.cool--;
 
-if(enemy.hp<=0)return win();
+if(enemy.hp <= 0){
+    setTimeout(()=>win(), 500);
+    return;
+}
 
 turnIndex++;
 if(turnIndex>=players.length){
