@@ -654,7 +654,7 @@ const eventStages = [
         {lv:3, hp:2000, atk:200},
         {lv:4, hp:6000, atk:600},
         {lv:5, hp:18000, atk:1800},
-        {lv:"BOSS", hp:54000, atk:3600, boss:true}
+        {lv:"BOSS", hp:70000, atk:3600, boss:true}
     ],
     enemy:{
         name:"和辺重信🍖",
@@ -679,7 +679,7 @@ rewardChar:{
         {lv:3, hp:2000, atk:200},
         {lv:4, hp:6000, atk:600},
         {lv:5, hp:18000, atk:1800},
-        {lv:"BOSS", hp:54000, atk:3600, boss:true}
+        {lv:"BOSS", hp:70000, atk:3600, boss:true}
     ],
     enemy:{
         name:"明石啓希🌊",
@@ -704,7 +704,7 @@ rewardChar:{
         {lv:3, hp:2000, atk:200},
         {lv:4, hp:6000, atk:600},
         {lv:5, hp:18000, atk:1800},
-        {lv:"BOSS", hp:54000, atk:3600, boss:true}
+        {lv:"BOSS", hp:70000, atk:3600, boss:true}
     ],
     enemy:{
         name:"弐呪刻🃏",
@@ -1477,16 +1477,14 @@ if(s.type==="buff"){
 
 // 🔻 デバフ
 if(s.type==="debuff"){
+
+    let power = s.power;
+
     if(currentEvent !== undefined){
-        s.power = 1 - (1 - s.power) * 0.5;
+        power = 1 - (1 - power) * 0.5;
     }
 
-    if(enemy.debuffUsed){
-        alert("これ以上弱体化できない！");
-    }else{
-        enemy.atk *= s.power;
-        enemy.debuffUsed = true;
-    }
+    enemy.atk *= power;
 }
 
 // ☠ 毒
