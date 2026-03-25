@@ -569,7 +569,7 @@ skill:{type:"damage", power:4.5, text:"450%ダメージ",cool:3}},
 {name:"アステレス",rarity:4,attr:"水",img:"https://imgur.com/XU6EFZa.png",
 skill:{type:"heal", power:0.7, text:"味方回復70%",cool:3}},
 {name:"バルナウス",rarity:4,attr:"火",img:"https://imgur.com/3mibLSW.png",
-skill:{type:"poison",power:1.5,text:"150%毒付与",cool:3}},
+skill:{type:"poison",power:1.5,text:"150%毒付与",cool:2}},
 
 {name:"ゲガント",rarity:1,attr:"木",img:"https://imgur.com/dXFpBIJ.png",
 skill:{text:"スキルなし"}},
@@ -600,7 +600,7 @@ skill:{type:"damage", power:4.5, text:"450%ダメージ",cool:3}},
 {name:"FqEa🍖",rarity:4,attr:"木",img:"https://imgur.com/zFwdenR.png",
 skill:{type:"drain", power:3.5, text:"350%ダメ+回復",cool:3}},
 {name:"甲斐翔也🍖",rarity:4,attr:"水",img:"https://imgur.com/58gYmEW.png",
-skill:{type:"poison", power:1.5, text:"150%毒付与",cool:3}},
+skill:{type:"poison", power:1.5, text:"150%毒付与",cool:2}},
 {name:"黒峰天音🍖",rarity:3,attr:"水",img:"https://imgur.com/VMUzNSc.png",
 skill:{type:"damage", power:2.5, text:"250%ダメージ",cool:3}},
 {name:"晴海亨🍖",rarity:3,attr:"雷",img:"https://imgur.com/J84XBdt.png",
@@ -1170,8 +1170,10 @@ function attack(){
 let p=players[turnIndex];
 
 let atk = p.atk;
-if(p.buff && p.buff.turn > 0){
-    atk *= p.buff.power;
+if(p.buffs){
+    p.buffs.forEach(b=>{
+        atk *= b.power;
+    });
 }
 
 let res = calcDamage(p.attr,enemy.attr,atk);
@@ -1198,8 +1200,11 @@ let p = players[turnIndex];
 if(p.ult < 100) return;
 
 let atk = p.atk;
-if(p.buff && p.buff.turn > 0){
-    atk *= p.buff.power;
+
+if(p.buffs){
+    p.buffs.forEach(b=>{
+        atk *= b.power;
+    });
 }
 
 let res = calcDamage(p.attr, enemy.attr, atk * 3);
@@ -1253,25 +1258,45 @@ setTimeout(()=>{
 }, 50);
 
 // 💀 敵の毒
-if(enemy.poison && enemy.poison.turn > 0){
+if(enemy.poisons){
 
-    let dmg = enemy.poison.user.atk * enemy.poison.power;
+    let delay = 0;
 
+    enemy.poisons = enemy.poisons.filter(poison=>{
+
+    let atk = poison.user.atk;
+
+    // 🔥 バフ適用
+    if(poison.user.buffs){
+        poison.user.buffs.forEach(b=>{
+            atk *= b.power;
+        });
+    }
+
+    let dmg = atk * poison.power;
     enemy.hp -= dmg;
-    enemy.poison.turn--;
 
     setTimeout(()=>{
         showDamage("enemy", {
             dmg: dmg,
             type: "poison"
         });
-    },10);
+    }, delay);
 
-if(enemy.hp <= 0){
-    setTimeout(()=>win(), 500);
-    return;
+    delay += 120;
+
+    poison.turn--;
+
+    if(enemy.hp <= 0){
+        setTimeout(()=>win(), 500);
+        return false;
+    }
+
+    return poison.turn > 0;
+});
+
 }
-}
+
 
 // 反撃
 let delay = 0;
@@ -1329,14 +1354,12 @@ setTimeout(()=>{
 function endTurn(){
 let p = players[turnIndex];
 
-players.forEach(p=>{
-    if(p.buff && p.buff.turn > 0){
-        p.buff.turn--;
-        if(p.buff.turn === 0){
-            p.atk /= p.buff.power; // 元に戻す🔥
-        }
-    }
-});
+if(p.buffs){
+    p.buffs = p.buffs.filter(b=>{
+        b.turn--;
+        return b.turn > 0;
+    });
+}
 
 if(p.cool > 0) p.cool--;
 
@@ -1413,8 +1436,11 @@ let s = p.skill;
 
 // バフ込みATK
 let atk = p.atk;
-if(p.buff && p.buff.turn > 0){
-    atk *= p.buff.power;
+
+if(p.buffs){
+    p.buffs.forEach(b=>{
+        atk *= b.power;
+    });
 }
 
 // 🔥 単発ダメージ
@@ -1489,20 +1515,25 @@ if(s.type==="debuff"){
 
 // ☠ 毒
 if(s.type==="poison"){
-    enemy.poison = {
-        turn: 3,
-        power: s.power,
-        user: p
-    };
+if(!enemy.poisons) enemy.poisons = [];
+
+enemy.poisons.push({
+    power: s.power,
+    turn: 99,
+    user: p
+});
 }
 
 // 👥 全体バフ
 if(s.type==="teamBuff"){
     players.forEach(t=>{
-        t.buff = {
+
+        if(!t.buffs) t.buffs = [];
+
+        t.buffs.push({
             turn: 3,
             power: s.power
-        };
+        });
     });
 }
 
