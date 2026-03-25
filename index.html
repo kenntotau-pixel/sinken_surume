@@ -66,6 +66,8 @@ body{margin:0;background:#0b0f1a;color:#fff;font-family:sans-serif}
 .water{border:3px solid #4488ff}
 .thunder{border:3px solid #ffd700}
 .wood{border:3px solid #44cc44}
+.light{border:3px solid #ffffff}
+.dark{border:3px solid #aa00ff}
 
 .card{
 display:inline-block;
@@ -487,7 +489,7 @@ eventProgress = data.eventProgress ?? {};
 
 }
 
-let stone=100;
+let stone=100000;
 let box=[],team=[],players=[],enemy;
 let turn="player",turnIndex=0;
 let progress={};
@@ -499,8 +501,8 @@ let eventProgress = {};
 let trialPage = 0;
 const perPage = 8;
 
-const attrClass={火:"fire",水:"water",雷:"thunder",木:"wood"};
-const advantage={火:"木",木:"雷",雷:"水",水:"火"};
+const attrClass={火:"fire",水:"water",雷:"thunder",木:"wood",光:"light".闇"dark"};
+const advantage={火:"木",木:"雷",雷:"水",水:"火",光:"闇".闇,"光"};
 
 const chars=[
 {name:"室井元武",rarity:1,attr:"火",img:"https://imgur.com/21T5sVB.png",
