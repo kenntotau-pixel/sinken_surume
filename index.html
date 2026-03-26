@@ -489,7 +489,7 @@ eventProgress = data.eventProgress ?? {};
 
 }
 
-let stone=100;
+let stone=100000;
 let box=[],team=[],players=[],enemy;
 let turn="player",turnIndex=0;
 let progress={};
@@ -500,8 +500,7 @@ let eventProgress = {};
 
 let trialPage = 0;
 const perPage = 8;
-
-const attrClass={火:"fire",水:"water",雷:"thunder",木:"wood",光:"light",闇"dark"};
+const attrClass = {火:"fire",水:"water",雷:"thunder",木:"wood",光:"light",闇:"dark"};
 const advantage={火:"木",木:"雷",雷:"水",水:"火",光:"闇",闇:"光"};
 
 const chars=[
