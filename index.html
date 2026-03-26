@@ -1604,7 +1604,7 @@ if(s.type==="counter"){
 // 💖 瀕死の一撃
 if(s.type === "rage"){
     let ratio = 1 - (p.currentHp / p.hp); // 減ってるほど強い
-    let dmg = Math.floor(atk * (1 + ratio * (s.power - 1) * 2.5));
+    let dmg = Math.floor(atk * (1 + ratio * (s.power - 1) * 3));
 
     enemy.hp -= dmg;
 
