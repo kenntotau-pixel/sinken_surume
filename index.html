@@ -502,7 +502,7 @@ eventProgress = data.eventProgress ?? {};
 
 }
 
-let stone=100;
+let stone=100000;
 let box=[],team=[],players=[],enemy;
 let turn="player",turnIndex=0;
 let progress={};
@@ -698,7 +698,7 @@ rewardChar:{
     rarity:3,
     attr:"火",
     img:"https://imgur.com/dgKm097.png",
-    skill:{type:"counter",power:1.0,turn:3,text:"反撃100%ダメ",cool:4}
+    skill:{type:"buff", power:1.2, text:"120%バフ",cool:2}
 }
 },
 {
@@ -748,7 +748,7 @@ rewardChar:{
     rarity:3,
     attr:"雷",
     img:"https://imgur.com/0GAe9qU.png",
-    skill:{type:"shield",power:0.2,turn:3,text:"被ダメ20%軽減", cool:4}
+    skill:{type:"multi", power:0.4, hits:4, text:"4連撃+デバフ",cool:3}
 }
 },
 {
@@ -2270,7 +2270,8 @@ let base =
     chars.find(ch => ch.name === c.name) ||
     eventChars.find(ch => ch.name === c.name) ||
     eventChars2.find(ch => ch.name === c.name) ||
-    eventChars3.find(ch => ch.name === c.name); // 🔥追加
+    eventChars3.find(ch => ch.name === c.name) ||
+    eventChars4.find(ch => ch.name === c.name); // ←これ追
 
     return {
         ...c,
