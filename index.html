@@ -1260,7 +1260,7 @@ ${c.name}<br>Lv.${lv}
 function startBattle(i){
 go("battle");
 
-  let lv = Math.min(progress[i] || 1, 100);
+  let lv = Math.min(progress[i] || 1);
 
   players = applyTeamBuff(team.map(c=>{
     let base =
@@ -1281,7 +1281,7 @@ go("battle");
       ...chars[i],
       hp: Math.floor(200+lv*120*lv/10),
       maxHp: Math.floor(200+lv*120*lv/10),
-      atk: Math.floor(20+lv*35),
+      atk: Math.floor(20+lv*50),
       poison:0,
       debuffUsed:false
   };
