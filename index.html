@@ -748,7 +748,7 @@ const eventStages = [
         img:"https://imgur.com/dgKm097.png"
     },
     reward:50,
-    bossReward:500,    // ←追加🔥
+    bossReward:450,    // ←追加🔥
 rewardChar:{
     name:"和辺重信🍖",
     rarity:3,
@@ -773,7 +773,7 @@ rewardChar:{
         img:"https://imgur.com/raQuv6H.png"
     },
     reward:50,
-    bossReward:500,    // ←追加🔥
+    bossReward:450,    // ←追加🔥
 rewardChar:{
     name:"明石啓希🌊",
     rarity:3,
@@ -798,7 +798,7 @@ rewardChar:{
         img:"https://imgur.com/0GAe9qU.png"
     },
     reward:50,
-    bossReward:500,    // ←追加🔥
+    bossReward:450,    // ←追加🔥
 rewardChar:{
     name:"弐呪刻🃏",
     rarity:3,
@@ -823,7 +823,7 @@ rewardChar:{
         img:"https://imgur.com/W0naH2J.png"
     },
     reward:50,
-    bossReward:500,    // ←追加🔥
+    bossReward:450,    // ←追加🔥
 rewardChar:{
     name:"死橋凪🌌",
     rarity:3,
@@ -848,7 +848,7 @@ rewardChar:{
         img:"https://imgur.com/3kJ2WU7.png"
     },
     reward:50,
-    bossReward:500,    // ←追加🔥
+    bossReward:450,    // ←追加🔥
 rewardChar:{
     name:"フセイン👻",
     rarity:3,
@@ -858,6 +858,13 @@ rewardChar:{
 }
 }
 ];
+
+const maxDupe = {
+  1: 30,   // ★1 → 30凸
+  2: 25,   // ★2 → 25凸
+  3: 20,  // ★3 → 20凸
+  4: 10   // ★4 → 10凸
+};
 
 const charDetails = {
   "室井元武": {title:"運命の出会い",
@@ -1024,20 +1031,20 @@ setTimeout(()=>div.classList.add("open"),50);
 let exist=box.find(b=>b.name===c.name);
 if(exist){
 // 上限10
-if(exist.dupe < 10){
+if(exist.dupe < maxDupe[exist.rarity]){
 
     exist.dupe++;
 
     let atkUp=0,hpUp=0;
 
     if(exist.rarity===1){
-        atkUp=2; hpUp=5;
+        atkUp=12; hpUp=42;
     }else if(exist.rarity===2){
-        atkUp=4; hpUp=10;
+        atkUp=17; hpUp=54;
     }else if(exist.rarity===3){
-        atkUp=8; hpUp=20;
+        atkUp=24; hpUp=72;
     }else if(exist.rarity===4){
-        atkUp=64; hpUp=160;
+        atkUp=72; hpUp=184;
     }
 
     exist.atk += atkUp;
@@ -1114,21 +1121,22 @@ setTimeout(()=>div.classList.add("open"),50);
 let exist=box.find(b=>b.name===c.name);
 if(exist){
 // 上限10
-if(exist.dupe < 10){
+if(exist.dupe < maxDupe[exist.rarity]){
 
     exist.dupe++;
 
     let atkUp=0,hpUp=0;
 
     if(exist.rarity===1){
-        atkUp=2; hpUp=5;
+        atkUp=20; hpUp=50;
     }else if(exist.rarity===2){
-        atkUp=4; hpUp=10;
+        atkUp=25; hpUp=62;
     }else if(exist.rarity===3){
-        atkUp=8; hpUp=20;
+        atkUp=32; hpUp=80;
     }else if(exist.rarity===4){
-        atkUp=64; hpUp=160;
+        atkUp=72; hpUp=184;
     }
+
 
     exist.atk += atkUp;
     exist.hp += hpUp;
@@ -1177,7 +1185,7 @@ if(b)b.innerHTML=box.map((c,i)=>`
 <img src="${c.img}">
 ${c.name}<br>
 HP:${c.hp} ATK:${c.atk}<br>
-凸:${c.dupe}
+凸:${c.dupe}/${maxDupe[c.rarity]}
 
 <button onclick="useDupe(${i});event.stopPropagation();">
 凸する
@@ -1615,11 +1623,11 @@ function win(){
     }
 
     // ⭐ 通常の試練
-    stone+=50;
+    stone+=10;
     let id=chars.findIndex(c=>c.name===enemy.name);
     progress[id]=(progress[id]||1)+1;
     saveData();
-    alert("勝利！石+50");
+    alert("勝利！石+10");
     go("trial");
 }
 
@@ -1891,20 +1899,20 @@ setTimeout(()=>div.classList.add("open"),50);
 let exist=box.find(b=>b.name===c.name);
 if(exist){
     // 上限10
-if(exist.dupe < 10){
+if(exist.dupe < maxDupe[exist.rarity]){
 
     exist.dupe++;
 
     let atkUp=0,hpUp=0;
 
     if(exist.rarity===1){
-        atkUp=2; hpUp=5;
+        atkUp=20; hpUp=50;
     }else if(exist.rarity===2){
-        atkUp=4; hpUp=10;
+        atkUp=25; hpUp=62;
     }else if(exist.rarity===3){
-        atkUp=8; hpUp=20;
+        atkUp=32; hpUp=80;
     }else if(exist.rarity===4){
-        atkUp=64; hpUp=160;
+        atkUp=72; hpUp=184;
     }
 
     exist.atk += atkUp;
@@ -1982,20 +1990,20 @@ results.forEach((c,i)=>{
         let exist=box.find(b=>b.name===c.name);
         if(exist){
             // 上限10
-if(exist.dupe < 10){
+if(exist.dupe < maxDupe[exist.rarity]){
 
     exist.dupe++;
 
     let atkUp=0,hpUp=0;
 
     if(exist.rarity===1){
-        atkUp=2; hpUp=5;
+        atkUp=20; hpUp=50;
     }else if(exist.rarity===2){
-        atkUp=4; hpUp=10;
+        atkUp=25; hpUp=62;
     }else if(exist.rarity===3){
-        atkUp=8; hpUp=20;
+        atkUp=32; hpUp=80;
     }else if(exist.rarity===4){
-        atkUp=64; hpUp=160;
+        atkUp=72; hpUp=184;
     }
 
     exist.atk += atkUp;
@@ -2044,20 +2052,20 @@ function addToBox(c){
 let exist = box.find(b=>b.name===c.name);
 
 if(exist){
-    if(exist.dupe < 10){
+    if(exist.dupe < maxDupe[exist.rarity]){
 
     exist.dupe++;
 
     let atkUp=0,hpUp=0;
 
     if(exist.rarity===1){
-        atkUp=2; hpUp=5;
+        atkUp=20; hpUp=50;
     }else if(exist.rarity===2){
-        atkUp=4; hpUp=10;
+        atkUp=25; hpUp=62;
     }else if(exist.rarity===3){
-        atkUp=8; hpUp=20;
+        atkUp=32; hpUp=80;
     }else if(exist.rarity===4){
-        atkUp=64; hpUp=160;
+        atkUp=72; hpUp=184;
     }
 
     exist.atk += atkUp;
@@ -2314,7 +2322,7 @@ renderTrials();
 function useDupe(i){
     let c = box[i];
 
-    if(c.dupe >= 10){
+    if(c.dupe >= maxDupe[c.rarity]){
         alert("これ以上凸できない");
         return;
     }
@@ -2337,13 +2345,13 @@ function useDupe(i){
     let atkUp=0,hpUp=0;
 
     if(c.rarity===1){
-        atkUp=2; hpUp=5;
+        atkUp=20; hpUp=50;
     }else if(c.rarity===2){
-        atkUp=4; hpUp=10;
+        atkUp=25; hpUp=62;
     }else if(c.rarity===3){
-        atkUp=8; hpUp=20;
+        atkUp=32; hpUp=80;
     }else if(c.rarity===4){
-        atkUp=64; hpUp=160;
+        atkUp=72; hpUp=184;
     }
 
     c.atk += atkUp;
