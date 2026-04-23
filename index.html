@@ -242,18 +242,6 @@ margin:4px 0;
 min-height:14px;
 }
 
-#loading{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:#0b0f1a;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:9999;
-}
 
 .loadingText{
   font-size:24px;
@@ -289,6 +277,7 @@ color:#ff4444;
 text-shadow:0 0 10px #000;
 animation:totalPop 1s forwards;
 }
+
 
 @keyframes hitPop{
 0%{opacity:0;transform:translate(-50%,0) scale(0.5);}
@@ -346,6 +335,7 @@ animation:totalPop 1s forwards;
 <button onclick="go('event')">イベントの間</button>
 <button onclick="confirmReset()" style="opacity:0.6;font-size:12px;">
 データリセット
+</button>
 </div>
 
 
@@ -360,6 +350,7 @@ animation:totalPop 1s forwards;
 <button onclick="changeBanner(3)">イベント3</button>
 <button onclick="changeBanner(4)">イベント4</button>
 <button onclick="changeBanner(5)">イベント5</button>
+<button onclick="changeBanner(6)">メモリー</button>
 </div>
 
 凸塊:<span id="dupeStone"></span><br>
@@ -441,6 +432,18 @@ style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
 
 </div>
 
+<div style="min-width:100%;">
+
+<img src="https://imgur.com/YMifcUQ.png"
+class="banner"
+style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
+
+<br>
+<button onclick="drawWeapon1()">メモリー単発</button>
+<button onclick="drawWeapon10()">メモリー10連</button>
+
+</div>
+
 </div>
 </div>
 
@@ -469,6 +472,7 @@ style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
 <div id="box"></div>
 <h3>チーム</h3>
 
+<div id="weaponSelect"></div>
 
 <div id="teamBuff" style="margin:10px;font-weight:bold;color:#ffd700;"></div>
 
@@ -511,7 +515,8 @@ return players.map(p=>{
         hp: Math.floor(p.hp * (1 + buff.hp / 100)),
         currentHp: Math.floor(p.hp * (1 + buff.hp / 100)),
         ult: 0,
-        cool: 0
+        cool: 0,
+        weaponCool: 0
     };
 });
 }
@@ -523,7 +528,8 @@ box,
 team,
 progress,
 dupeStone,
-eventProgress // ←追加
+eventProgress, // ←追加 // ←追加
+weaponBox
 };
 localStorage.setItem("gachaData", JSON.stringify(data));
 }
@@ -538,6 +544,7 @@ team = data.team ?? [];
 progress = data.progress ?? {};
 dupeStone = data.dupeStone ?? 0;
 eventProgress = data.eventProgress ?? {};
+weaponBox = data.weaponBox ?? [];
 
 }
 
@@ -547,6 +554,7 @@ let turn="player",turnIndex=0;
 let progress={};
 let dupeStone = 0; // 凸塊
 let currentEvent = undefined; // ←これ追加🔥
+let weaponBox = [];
 
 let eventProgress = {};
 
@@ -731,6 +739,54 @@ const eventChars5 = [
  skill:{type:"damage", power:1.5, text:"150%ダメージ",cool:1}},
 ];
 
+const weapons = [
+{
+name:"蒼天剣",
+img:"https://imgur.com/jsw1PNC.png",
+atk:50,
+hp:100,
+rarity:3,
+effect:"fire",
+skill:{type:"buff", power:1.3, text:"30%バフ",weaponCool:2}
+},
+{
+name:"亡者の鎌",
+img:"https://imgur.com/RXpBZhu.png",
+atk:75,
+hp:75,
+rarity:3,
+effect:"poison",
+skill:{type:"poison", power:0.75, text:"毒75%",weaponCool:3}
+},
+{
+name:"緑藻の弓",
+img:"https://imgur.com/lxD74gv.png",
+atk:20,
+hp:30,
+rarity:2,
+effect:"poison",
+skill:{type:"damage", power:1.3, text:"130%ダメ",weaponCool:2}
+},
+{
+name:"蟲毒の拳",
+img:"https://imgur.com/8E785yl.png",
+atk:35,
+hp:15,
+rarity:2,
+effect:"poison",
+skill:{type:"heal", power:0.3, text:"30%回復",weaponCool:2}
+},
+{
+name:"狙撃銃",
+img:"https://imgur.com/P1u8Lzs.png",
+atk:15,
+hp:15,
+rarity:1,
+effect:"poison",
+skill:{type:"damage", power:1.2, text:"120%ダメ",weaponCool:2}
+}
+];
+
 const eventStages = [
 {
     name:"OGの試練",
@@ -856,7 +912,7 @@ rewardChar:{
     img:"https://imgur.com/3kJ2WU7.png",
     skill:{type:"heal", power:0.4, text:"味方回復40%",cool:2}
 }
-}
+},
 ];
 
 const maxDupe = {
@@ -950,15 +1006,21 @@ const charDetails = {
   "ヒナル": {title:"ガス杀ン殳",
     story:"故郷を守る英雄。聖戦天使神響の参加者。返網転に敗北後マタイにより死亡。",},
   "マタイ": {title:"崩壊暗殺時間",
-    story:"固有能罪符「崩壊暗殺時間]を持つ。聖戦天使神響の参加者。準決勝にてコード5.2と戦い敗北。",},
+    story:"固有能罪符「崩壊暗殺時間」を持つ。聖戦天使神響の参加者。準決勝にてコード5.2と戦い敗北。",},
   "ログフ": {title:"フリーエリア",
     story:"固有能罪符「フリーエリア」による空間操作により死橋轟と戦うが、敗北。",}
 };
 
+const weaponRates = [
+{rarity:3, rate:5},
+{rarity:2, rate:25},
+{rarity:1, rate:70}
+];
+
 function star(r){return "★".repeat(r);}
 
 function getGachaChar(){
-let r=Math.random();
+let r = Math.random();
 let rarity;
 
 if(r < 0.70) rarity = 1;
@@ -1063,7 +1125,7 @@ if(exist.dupe < maxDupe[exist.rarity]){
 }
 
 }else{
-box.push({...c,dupe:0,atk:20+5*c.rarity,hp:100+20*c.rarity});
+box.push({...c,dupe:0,atk:20+5*c.rarity,hp:100+20*c.rarity,weapon:null});
 }
 
 update();
@@ -1154,7 +1216,7 @@ if(exist.dupe < maxDupe[exist.rarity]){
 }
 
 }else{
-box.push({...c,dupe:0,atk:20+5*c.rarity,hp:100+20*c.rarity});
+box.push({...c,dupe:0,atk:20+5*c.rarity,hp:100+20*c.rarity,weapon:null});
 }
 
 },i*250);
@@ -1178,6 +1240,9 @@ if(s)s.textContent=stone;
 let s2 = document.getElementById("dupeStone");
 if(s2) s2.textContent = dupeStone;
 
+let wc = document.getElementById("weaponCount");
+if(wc) wc.textContent = weaponBox.length;
+
 let b=document.getElementById("box");
 if(b)b.innerHTML=box.map((c,i)=>`
 <div class="card ${attrClass[c.attr]}" onclick="add(${i})">
@@ -1186,6 +1251,16 @@ if(b)b.innerHTML=box.map((c,i)=>`
 ${c.name}<br>
 HP:${c.hp} ATK:${c.atk}<br>
 凸:${c.dupe}/${maxDupe[c.rarity]}
+<button onclick="openWeaponSelect(${i});event.stopPropagation();">
+メモリー
+</button>
+
+${c.weapon ? `
+<img src="${c.weapon.img}" style="width:40px;">
+<button onclick="unequipWeapon(${i});event.stopPropagation();">
+外す
+</button>
+` : ""}
 
 <button onclick="useDupe(${i});event.stopPropagation();">
 凸する
@@ -1265,7 +1340,7 @@ ${c.name}<br>Lv.${lv}
 function startBattle(i){
 go("battle");
 
-  let lv = Math.min(progress[i] || 1);
+let lv = progress[i] || 1;
 
   players = applyTeamBuff(team.map(c=>{
     let base =
@@ -1276,10 +1351,20 @@ go("battle");
         eventChars4.find(ch => ch.name === c.name) ||
         eventChars5.find(ch => ch.name === c.name);
 
-    return {
-        ...c,
-        skill: base?.skill || c.skill
-    };
+    let weapon = c.weapon;
+
+let finalAtk = c.atk + (weapon?.atk || 0);
+let finalHp = c.hp + (weapon?.hp || 0);
+
+return {
+    ...c,
+    atk: finalAtk,
+    hp: finalHp,
+    currentHp: finalHp,
+    skill: base?.skill || c.skill,
+    weapon: c.weapon ? {...c.weapon} : null,
+weaponCool: 0
+};
   }));
 
 // 敵はそのまま
@@ -1294,6 +1379,7 @@ go("battle");
 
 
 turn="player";turnIndex=0;
+players.forEach(p => p.weaponCool = 0);
 renderBattle();
 }
 
@@ -1399,6 +1485,10 @@ enemyArea.innerHTML = `
      <button onclick="skill()" ${p.cool>0?"disabled":""}>
      スキル (${p.cool})
      </button>
+${p.weapon ? `
+<button onclick="weaponSkill()" ${(p.weaponCool ?? 0) > 0 ? "disabled" : ""}>
+スキル2 (${p.weaponCool})
+</button>` : ""}
      <button onclick="ultimate()">必殺</button>`
   : "敵のターン";
 }
@@ -1599,6 +1689,7 @@ if(p.buffs){
 }
 
 if(p.cool > 0) p.cool--;
+if(p.weaponCool > 0) p.weaponCool--;
 
 if(enemy.hp <= 0){
     setTimeout(()=>win(), 500);
@@ -1638,6 +1729,8 @@ location.reload();
 
 loadData();
 update();
+
+
 
 function getTeamBuff(team){
 let atkBuff = 0;
@@ -1930,7 +2023,7 @@ if(exist.dupe < maxDupe[exist.rarity]){
     dupeStone += gain;
 }
 }else{
-    box.push({...c,dupe:0,atk:20+5*c.rarity,hp:100+20*c.rarity});
+    box.push({...c,dupe:0,atk:20+5*c.rarity,hp:100+20*c.rarity,weapon:null});
 }
 
 update();
@@ -2022,7 +2115,7 @@ if(exist.dupe < maxDupe[exist.rarity]){
 }
 
         }else{
-            box.push({...c,dupe:0,atk:20+5*c.rarity,hp:100+20*c.rarity});
+            box.push({...c,dupe:0,atk:20+5*c.rarity,hp:100+20*c.rarity,weapon:null});
         }
 
     },i*200);
@@ -2796,6 +2889,251 @@ results.forEach((c,i)=>{
 
 update();
 saveData();
+}
+
+
+function equipWeapon(charIndex, weaponIndex){
+    box[charIndex].weapon = weapons[weaponIndex];
+    update();
+    saveData();
+}
+
+function weaponSkill(){
+    let p = players[turnIndex];
+    let s = p.weapon?.skill;
+    if(!s) return;
+
+    if(p.weaponCool > 0) return;
+
+    let atk = p.atk;
+
+if(s.type==="buff"){
+    p.atk *= s.power;
+}
+
+    if(s.type === "damage"){
+        let res = calcDamage(p.attr, enemy.attr, atk * s.power);
+        enemy.hp -= res.dmg;
+        setTimeout(()=>showDamage("enemy", res),10);
+    }
+
+    if(s.type === "poison"){
+        enemy.poisons ||= [];
+        enemy.poisons.push({
+            power: s.power,
+            turn:3,
+            user:p
+        });
+    }
+
+if(s.type==="heal"){
+players.forEach((t,i)=>{
+    let heal = t.hp * s.power;
+
+    t.currentHp += heal;
+    if(t.currentHp > t.hp) t.currentHp = t.hp;
+
+    setTimeout(()=>{
+        showDamage("p"+i, {
+            dmg: heal,
+            type: "heal"
+        });
+    },10);
+});}
+
+    p.weaponCool = 3
+
+    renderBattle();
+    endTurn();
+}
+
+
+
+function drawWeapon1(){
+    if(stone < 10) return;
+    stone -= 10;
+
+    gachaResult.innerHTML = "";
+
+for(let i=0;i<10;i++){
+
+    let w = getWeapon();
+
+    if(hasWeapon(w)){
+        dupeStone++;
+
+        let div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = w.name;
+        gachaResult.appendChild(div);
+
+    }else{
+        weaponBox.push(w);
+
+        let div = document.createElement("div");
+        div.className = "card";
+
+        div.innerHTML = `
+<img src="${w.img}" style="width:80px;height:80px;"><br>
+
+<div style="color:${getRarityColor(w.rarity)}">
+★${w.rarity}
+</div>
+
+${w.name}<br>
+ATK:${w.atk} HP:${w.hp}
+`;
+
+        gachaResult.appendChild(div);
+    }
+}
+    weaponBox.push(w);
+
+    update();
+    saveData();
+}
+
+function drawWeapon10(){
+    if(stone < 100) return;
+    stone -= 100;
+
+    gachaResult.innerHTML = "";
+
+    for(let i=0;i<10;i++){
+
+    let w = getWeapon();
+
+    if(hasWeapon(w)){
+        dupeStone++;
+
+        let div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = w.name; 
+        gachaResult.appendChild(div);
+
+    }else{
+        weaponBox.push(w);
+
+        let div = document.createElement("div");
+        div.className = "card";
+
+        div.innerHTML = `
+<img src="${w.img}" style="width:80px;height:80px;"><br>
+
+<div style="color:${getRarityColor(w.rarity)}">
+★${w.rarity}
+</div>
+
+${w.name}<br>
+ATK:${w.atk} HP:${w.hp}
+`;
+
+        gachaResult.appendChild(div);
+    }
+}
+
+    update();
+    saveData();
+}
+
+function getWeapon(){
+    return weapons[Math.random()*weapons.length|0];
+}
+
+function openWeaponSelect(charIndex){
+
+    let div = document.getElementById("weaponSelect");
+
+    div.innerHTML = weaponBox.map((w,i)=>`
+    <div class="card">
+
+        <img src="${w.img}" style="width:60px;"><br>
+
+        <div style="color:${getRarityColor(w.rarity)}">
+        ★${w.rarity}
+        </div>
+
+        ${w.name}<br>
+        ATK:${w.atk} HP:${w.hp}
+
+        <br><b>スキル:</b>${w.skill.text}
+
+        <br>
+        <button onclick="equipWeapon(${charIndex},${i})">
+        装備
+        </button>
+
+    </div>
+    `).join("");
+}
+
+function closeWeaponSelect(){
+    document.getElementById("gachaResult").innerHTML = "";
+}
+
+function equipWeapon(charIndex, weaponIndex){
+
+    let w = weaponBox[weaponIndex];
+
+    // 👇コピーして装備
+    box[charIndex].weapon = {
+        ...w,
+        weaponCool: 0 // クールタイムも個別に
+    };
+
+    update();
+    saveData();
+}
+
+function getRarityColor(r){
+    if(r===3) return "gold";
+    if(r===2) return "deepskyblue";
+    return "gray";
+}
+
+function getWeapon(){
+
+    let r = Math.random()*100;
+    let sum = 0;
+    let rarity = 1;
+
+    for(let w of weaponRates){
+        sum += w.rate;
+        if(r < sum){
+            rarity = w.rarity;
+            break;
+        }
+    }
+
+    let pool = weapons.filter(w=>w.rarity===rarity);
+
+    return pool[Math.random()*pool.length|0];
+}
+
+function createFlipCard(frontHTML){
+
+    let card = document.createElement("div");
+    card.className = "card flip";
+
+    card.innerHTML = `
+    <div class="inner">
+        <div class="back">?</div>
+        <div class="front">${frontHTML}</div>
+    </div>
+    `;
+
+    return card;
+}
+
+function hasWeapon(w){
+    return weaponBox.some(x => x.name === w.name);
+}
+
+function unequipWeapon(charIndex){
+    box[charIndex].weapon = null;
+
+    update();
+    saveData();
 }
 
 </script>
