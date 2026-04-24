@@ -784,6 +784,51 @@ hp:15,
 rarity:1,
 effect:"poison",
 skill:{type:"damage", power:1.2, text:"120%ダメ",weaponCool:2}
+},
+{
+name:"スペースストッカー",
+img:"https://imgur.com/5m6dTml.png",
+atk:10,
+hp:40,
+rarity:2,
+effect:"poison",
+skill:{type:"multi", power:0.5, hits:4, text:"4連撃+デバフ",weaponCool:2}
+},
+{
+name:"双式魔術・焔",
+img:"https://imgur.com/Be9Doth.png",
+atk:20,
+hp:10,
+rarity:1,
+effect:"poison",
+skill:{type:"buff", power:1.1, text:"10%バフ",weaponCool:2}
+},
+{
+name:"双式魔術・燈",
+img:"https://imgur.com/EKzr6Zo.png",
+atk:10,
+hp:20,
+rarity:1,
+effect:"poison",
+skill:{type:"heal", power:0.1, text:"10%回復",weaponCool:2}
+},
+{
+name:"草睲術【詮覆】",
+img:"https://imgur.com/iJaAm49.png",
+atk:0,
+hp:30,
+rarity:1,
+effect:"poison",
+skill:{type:"multi", power:0.3, hits:4, text:"4連撃+デバフ",weaponCool:2}
+},
+{
+name:"in my life【運命の紐】",
+img:"https://imgur.com/RNk7Te7.png",
+atk:10,
+hp:25,
+rarity:1,
+effect:"poison",
+skill:{type:"poison", power:0.4, text:"毒40%",weaponCool:3}
 }
 ];
 
@@ -2926,6 +2971,30 @@ if(s.type==="buff"){
         });
     }
 
+if(s.type==="multi"){
+
+    for(let i=0;i<s.hits;i++){
+
+        let res = calcDamage(p.attr, enemy.attr, atk * s.power);
+        enemy.hp -= res.dmg;
+
+        // 🔻ヒットごとにデバフ
+        if(!enemy.debuffUsed){
+            enemy.atk *= 0.95; // ←ここ調整ポイント
+        }
+
+        setTimeout(()=>{
+            showDamage("enemy", res);
+
+            if(i === s.hits - 1){
+                enemy.debuffUsed = true; // 最後に固定
+                renderBattle();
+            }
+
+        }, i * 120);
+    }
+}
+
 if(s.type==="heal"){
 players.forEach((t,i)=>{
     let heal = t.hp * s.power;
@@ -2955,25 +3024,15 @@ function drawWeapon1(){
 
     gachaResult.innerHTML = "";
 
-for(let i=0;i<10;i++){
-
-    let w = getWeapon();
+    let w = getWeapon(); // ←1回だけ
 
     if(hasWeapon(w)){
-        dupeStone++;
+    dupeStone++;
 
-        let div = document.createElement("div");
-        div.className = "card";
-        div.innerHTML = w.name;
-        gachaResult.appendChild(div);
+    let div = document.createElement("div");
+    div.className = "card";
 
-    }else{
-        weaponBox.push(w);
-
-        let div = document.createElement("div");
-        div.className = "card";
-
-        div.innerHTML = `
+    div.innerHTML = `
 <img src="${w.img}" style="width:80px;height:80px;"><br>
 
 <div style="color:${getRarityColor(w.rarity)}">
@@ -2981,13 +3040,28 @@ for(let i=0;i<10;i++){
 </div>
 
 ${w.name}<br>
+（被り）
+`;
+
+    gachaResult.appendChild(div);
+
+}else{
+        weaponBox.push(w);
+
+        let div = document.createElement("div");
+        div.className = "card";
+
+        div.innerHTML = `
+<img src="${w.img}" style="width:80px;height:80px;"><br>
+<div style="color:${getRarityColor(w.rarity)}">
+★${w.rarity}
+</div>
+${w.name}<br>
 ATK:${w.atk} HP:${w.hp}
 `;
 
         gachaResult.appendChild(div);
     }
-}
-    weaponBox.push(w);
 
     update();
     saveData();
@@ -3004,14 +3078,25 @@ function drawWeapon10(){
     let w = getWeapon();
 
     if(hasWeapon(w)){
-        dupeStone++;
+    dupeStone++;
 
-        let div = document.createElement("div");
-        div.className = "card";
-        div.innerHTML = w.name; 
-        gachaResult.appendChild(div);
+    let div = document.createElement("div");
+    div.className = "card";
 
-    }else{
+    div.innerHTML = `
+<img src="${w.img}" style="width:80px;height:80px;"><br>
+
+<div style="color:${getRarityColor(w.rarity)}">
+★${w.rarity}
+</div>
+
+${w.name}<br>
+（被り）
+`;
+
+    gachaResult.appendChild(div);
+
+}else{
         weaponBox.push(w);
 
         let div = document.createElement("div");
