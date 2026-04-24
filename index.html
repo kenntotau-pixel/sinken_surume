@@ -2583,17 +2583,27 @@ let stage = e.stages[prog-1];
 
 // 味方
 players = applyTeamBuff(team.map(c=>{
-let base =
-    chars.find(ch => ch.name === c.name) ||
-    eventChars.find(ch => ch.name === c.name) ||
-    eventChars2.find(ch => ch.name === c.name) ||
-    eventChars3.find(ch => ch.name === c.name) ||
-    eventChars4.find(ch => ch.name === c.name) ||
-    eventChars5.find(ch => ch.name === c.name); // ←これ追
+    let base =
+        chars.find(ch => ch.name === c.name) ||
+        eventChars.find(ch => ch.name === c.name) ||
+        eventChars2.find(ch => ch.name === c.name) ||
+        eventChars3.find(ch => ch.name === c.name) ||
+        eventChars4.find(ch => ch.name === c.name) ||
+        eventChars5.find(ch => ch.name === c.name);
+
+    let weapon = c.weapon;
+
+    let finalAtk = c.atk + (weapon?.atk || 0);
+    let finalHp = c.hp + (weapon?.hp || 0);
 
     return {
         ...c,
-        skill: base?.skill || c.skill
+        atk: finalAtk,
+        hp: finalHp,
+        currentHp: finalHp,
+        skill: base?.skill || c.skill,
+        weapon: c.weapon ? {...c.weapon} : null,
+        weaponCool: 0
     };
 }));
 
