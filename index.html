@@ -336,28 +336,6 @@ animation:totalPop 1s forwards;
 <button onclick="confirmReset()" style="opacity:0.6;font-size:12px;">
 データリセット
 </button>
-<button onclick="toggleAccount()">アカウント</button>
-
-<div id="accountPanel" style="display:none; border:1px solid #aaa; padding:10px; margin-top:10px;">
-  
-  <h3>アカウント</h3>
-  <p id="accountName">未ログイン</p>
-  <input id="email" placeholder="メール"><br>
-  <input id="pass" type="password" placeholder="パスワード"><br><br>
-
-  <button onclick="register(
-    document.getElementById('email').value,
-    document.getElementById('pass').value
-  )">登録</button>
-
-  <button onclick="login(
-    document.getElementById('email').value,
-    document.getElementById('pass').value
-  )">ログイン</button>
-
-  <button onclick="logout()">ログアウト</button>
-
-</div>
 </div>
 
 
@@ -526,23 +504,9 @@ style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
 </div>
 
 <script>
-
-let stone = 100;
-let dupeStone = 0;
-let box = [];
-let team = [];
-let weaponBox = [];
-let progress = {};
-let eventProgress = {};
-
-function toggleAccount(){
-  const panel = document.getElementById("accountPanel");
-  panel.style.display = (panel.style.display === "none") ? "block" : "none";
-}
-
 function applyTeamBuff(players){
 
-let buff = getTeamBuff(players);
+let buff = getTeamBuff(players); // ←これ追加
 
 return players.map(p=>{
     return {
@@ -564,43 +528,37 @@ box,
 team,
 progress,
 dupeStone,
-eventProgress, 
+eventProgress, // ←追加 // ←追加
 weaponBox
 };
 localStorage.setItem("gachaData", JSON.stringify(data));
 }
 
 function loadData(){
-  const data = JSON.parse(localStorage.getItem("gachaData"));
-  if(!data) return;
+const data = JSON.parse(localStorage.getItem("gachaData"));
+if(!data) return;
 
-  stone = Number(data.stone) || 100;
-  dupeStone = Number(data.dupeStone) || 0;
+stone = data.stone ?? 100;
+box = data.box ?? [];
+team = data.team ?? [];
+progress = data.progress ?? {};
+dupeStone = data.dupeStone ?? 0;
+eventProgress = data.eventProgress ?? {};
+weaponBox = data.weaponBox ?? [];
 
-  box = Array.isArray(data.box) ? data.box : [];
-  team = Array.isArray(data.team) ? data.team : [];
-  weaponBox = Array.isArray(data.weaponBox) ? data.weaponBox : [];
-
-  progress = data.progress || {};
-  eventProgress = data.eventProgress || {};
 }
 
-function getSaveData(){
-  return {
-    stone,
-    box,
-    team,
-    progress,
-    dupeStone,
-    eventProgress,
-    weaponBox
-  };
-}
-
+let stone=100;
+let box=[],team=[],players=[],enemy;
+let turn="player",turnIndex=0;
+let progress={};
+let dupeStone = 0; // 凸塊
+let currentEvent = undefined; // ←これ追加🔥
+let weaponBox = [];
 
 let eventProgress = {};
-let trialPage = 0;
 
+let trialPage = 0;
 const perPage = 8;
 const attrClass = {火:"fire",水:"water",雷:"thunder",木:"wood",光:"light",闇:"dark"};
 const advantage={火:"木",木:"雷",雷:"水",水:"火",光:"闇",闇:"光"};
@@ -3339,173 +3297,6 @@ function unequipWeapon(charIndex){
     update();
     saveData();
 }
-
-</script>
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } 
-from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc } 
-from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-// ▼ Firebase設定
-const firebaseConfig = {
-  apiKey: "AIzaSyBsHwQZ2-6DJvyrMy4STnK4HzntuG1WOGA",
-  authDomain: "sinkensurume.firebaseapp.com",
-  projectId: "sinkensurume"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-// Firebase初期化のすぐ下
-onAuthStateChanged(auth, (user) => {
-  const nameArea = document.getElementById("accountName");
-
-  if(user){
-    nameArea.textContent = "ログイン中: " + user.email;
-  }else{
-    nameArea.textContent = "未ログイン";
-  }
-});
-
-// =======================
-// ■ 登録
-// =======================
-async function register(email, password){
-    try{
-        const userCred = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCred.user;
-
-        await setDoc(doc(db, "users", user.uid), {
-    save: {
-        stone,
-        box,
-        team,
-        progress,
-        dupeStone,
-        eventProgress,
-        weaponBox
-    }
-});
-
-        alert("登録成功");
-    }catch(e){
-        alert(e.message);
-    }
-}
-
-
-// =======================
-// ■ ログイン
-// =======================
-async function login(email, pass){
-  try{
-    await signInWithEmailAndPassword(auth, email, pass);
-    alert("ログイン成功");
-  }catch(e){
-    alert(e.message);
-  }
-}
-
-
-// =======================
-// ■ 自動ログイン＆ロード（最重要）
-// =======================
-onAuthStateChanged(auth, async (user) => {
-    if(user){
-        const snap = await getDoc(doc(db, "users", user.uid));
-
-        // 🔥 データがない場合
-        if(!snap.exists() || !snap.data().save){
-            console.log("セーブデータなし");
-
-            // 初期化
-            stone = 100;
-            box = [];
-            team = [];
-            progress = {};
-            dupeStone = 0;
-            eventProgress = {};
-            weaponBox = [];
-
-            update();
-            return;
-        }
-
-        // 🔥 通常ロード
-        const data = snap.data().save;
-
-        stone = data.stone ?? 100;
-        box = data.box ?? [];
-        team = data.team ?? [];
-        progress = data.progress ?? {};
-        dupeStone = data.dupeStone ?? 0;
-        eventProgress = data.eventProgress ?? {};
-        weaponBox = data.weaponBox ?? [];
-
-        update();
-
-    }else{
-        console.log("未ログイン");
-
-        // 🔥 未ログイン時も初期化
-        stone = 100;
-        box = [];
-        team = [];
-        progress = {};
-        dupeStone = 0;
-        eventProgress = {};
-        weaponBox = [];
-
-        update();
-    }
-});
-
-
-// =======================
-// ■ セーブ（自動用）
-// =======================
-async function save(){
-    const user = auth.currentUser;
-    if(!user) return;
-
-    await setDoc(doc(db, "users", user.uid), {
-        save: {
-            stone,
-            box,
-            team,
-            progress,
-            dupeStone,
-            eventProgress,
-            weaponBox
-        }
-    }, { merge: true });
-}
-
-
-// =======================
-// ■ 自動保存（5秒ごと）
-// =======================
-setInterval(save, 5000);
-
-
-// =======================
-// ■ ログアウト
-// =======================
-async function logout(){
-    await signOut(auth);
-    alert("ログアウト");
-}
-
-
-// =======================
-// ■ 外から呼べるようにする
-// =======================
-window.register = register;
-window.login = login;
-window.logout = logout;
 
 </script>
 
