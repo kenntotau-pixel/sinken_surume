@@ -553,17 +553,22 @@ weaponBox = data.weaponBox ?? [];
 
 }
 
-let stone=100;
-let box=[],team=[],players=[],enemy;
-let turn="player",turnIndex=0;
-let progress={};
-let dupeStone = 0; // 凸塊
-let currentEvent = undefined; // ←これ追加🔥
-let weaponBox = [];
+function getSaveData(){
+  return {
+    stone,
+    box,
+    team,
+    progress,
+    dupeStone,
+    eventProgress,
+    weaponBox
+  };
+}
+window.gameData = gameData;
 
 let eventProgress = {};
-
 let trialPage = 0;
+
 const perPage = 8;
 const attrClass = {火:"fire",水:"water",雷:"thunder",木:"wood",光:"light",闇:"dark"};
 const advantage={火:"木",木:"雷",雷:"水",水:"火",光:"闇",闇:"光"};
@@ -3306,14 +3311,12 @@ function unequipWeapon(charIndex){
 </script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } 
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } 
 from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
 import { getFirestore, doc, setDoc, getDoc } 
 from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// ここに自分のfirebaseConfig貼る
+// ▼ Firebase設定
 const firebaseConfig = {
   apiKey: "AIzaSyBsHwQZ2-6DJvyrMy4STnK4HzntuG1WOGA",
   authDomain: "sinkensurume.firebaseapp.com",
@@ -3325,42 +3328,122 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 
+// =======================
+// ■ 登録
+// =======================
 async function register(email, password){
-    const userCred = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCred.user;
+    try{
+        const userCred = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCred.user;
 
-    await setDoc(doc(db, "users", user.uid), {
-        save: window.gameData
-    });
+        await setDoc(doc(db, "users", user.uid), {
+    save: {
+        stone,
+        box,
+        team,
+        progress,
+        dupeStone,
+        eventProgress,
+        weaponBox
+    }
+});
 
-    alert("登録成功");
+        alert("登録成功");
+    }catch(e){
+        alert(e.message);
+    }
 }
 
-async function login(email, password){
-    const userCred = await signInWithEmailAndPassword(auth, email, password);
-    const user = userCred.user;
 
-    const snap = await getDoc(doc(db, "users", user.uid));
+// =======================
+// ■ ログイン
+// =======================
+async function login(email, pass){
+  try{
+    await signInWithEmailAndPassword(auth, email, pass);
+    alert("ログイン成功");
+  }catch(e){
+    alert(e.message);
+  }
+}
 
-    if(snap.exists()){
-        window.gameData = snap.data().save;
+
+// =======================
+// ■ 自動ログイン＆ロード（最重要）
+// =======================
+onAuthStateChanged(auth, async (user) => {
+    if(user){
+        console.log("自動ログイン:", user.uid);
+
+        const snap = await getDoc(doc(db, "users", user.uid));
+
+        if(snap.exists()){
+    const data = snap.data().save;
+
+    // 🔥ここ追加（超重要）
+    stone = data.stone ?? 100;
+    box = data.box ?? [];
+    team = data.team ?? [];
+    progress = data.progress ?? {};
+    dupeStone = data.dupeStone ?? 0;
+    eventProgress = data.eventProgress ?? {};
+    weaponBox = data.weaponBox ?? [];
+
+    update(); // ←これも必須
+
+    if(window.renderBattle){
         window.renderBattle();
     }
-
-    alert("ログイン成功");
 }
+    }else{
+        console.log("未ログイン");
+    }
+});
 
+
+// =======================
+// ■ セーブ（自動用）
+// =======================
 async function save(){
     const user = auth.currentUser;
     if(!user) return;
 
     await setDoc(doc(db, "users", user.uid), {
-        save: gameData
+        save: {
+            stone,
+            box,
+            team,
+            progress,
+            dupeStone,
+            eventProgress,
+            weaponBox
+        }
     }, { merge: true });
 }
 
+
+// =======================
+// ■ 自動保存（5秒ごと）
+// =======================
+setInterval(save, 5000);
+
+
+// =======================
+// ■ ログアウト
+// =======================
+async function logout(){
+    await signOut(auth);
+    alert("ログアウト");
+}
+
+
+// =======================
+// ■ 外から呼べるようにする
+// =======================
 window.register = register;
 window.login = login;
+window.logout = logout;
+
 </script>
 
 </body>
