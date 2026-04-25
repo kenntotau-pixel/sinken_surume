@@ -336,6 +336,11 @@ animation:totalPop 1s forwards;
 <button onclick="confirmReset()" style="opacity:0.6;font-size:12px;">
 データリセット
 </button>
+<input id="email" placeholder="メール">
+<input id="pass" type="password" placeholder="パスワード">
+
+<button onclick="register(email.value, pass.value)">登録</button>
+<button onclick="login(email.value, pass.value)">ログイン</button>
 </div>
 
 
@@ -707,7 +712,7 @@ skill:{type:"buff", power:1.2, text:"120%バフ",cool:2}}
 ];
 const eventChars4 = [
 {name:"FqEa🌌",rarity:4,attr:"水",img:"https://imgur.com/Wpd7tl4.png",
-skill:{type:"rage", power:5, text:"狂化",cool:4}},
+skill:{type:"rage", power:7, text:"狂化",cool:4}},
 {name:"返網転🌌",rarity:4,attr:"光",img:"https://imgur.com/hufzkJy.png",
 skill:{type:"poison",power:1.0,text:"100%毒付与",cool:1}},
 {name:"黒瀬武人🌌",rarity:4,attr:"闇",img:"https://imgur.com/0PV2wHo.png",
@@ -824,11 +829,29 @@ skill:{type:"multi", power:0.3, hits:4, text:"4連撃+デバフ",weaponCool:2}
 {
 name:"in my life【運命の紐】",
 img:"https://imgur.com/RNk7Te7.png",
-atk:10,
+atk:5,
 hp:25,
 rarity:1,
 effect:"poison",
 skill:{type:"poison", power:0.4, text:"毒40%",weaponCool:3}
+},
+{
+name:"紅雷双鎌",
+img:"https://imgur.com/ttPmYss.png",
+atk:25,
+hp:25,
+rarity:2,
+effect:"poison",
+skill:{type:"rage", power:5, text:"狂化",weaponCool:3}
+},
+{
+name:"ジャック・ナイフ",
+img:"https://imgur.com/BHdHLhL.png",
+atk:125,
+hp:25,
+rarity:3,
+effect:"poison",
+skill:{type:"multi", power:0.4, hits:7, text:"7連撃+デバフ",weaponCool:3}
 }
 ];
 
@@ -1408,7 +1431,7 @@ return {
     currentHp: finalHp,
     skill: base?.skill || c.skill,
     weapon: c.weapon ? {...c.weapon} : null,
-weaponCool: 0
+    weaponCool: 0
 };
   }));
 
@@ -1419,7 +1442,9 @@ weaponCool: 0
       maxHp: Math.floor(200+lv*120*lv/10),
       atk: Math.floor(20+lv*50),
       poison:0,
-      debuffUsed:false
+      debuffUsed:false,
+      debuffPower: 1, // 通常は1倍
+      debuffTurn: 0   // 残りターン
   };
 
 
@@ -1612,15 +1637,17 @@ function enemyTurn(){
 
 let target = players[Math.floor(Math.random() * players.length)];
 let index = players.indexOf(target); // ←固定（超重要）
-
-let res = calcDamage(enemy.attr, target.attr, enemy.atk);
+let atk = enemy.atk * enemy.debuffPower;
+let res = calcDamage(enemy.attr, target.attr, atk); // ←こっち使う🔥
 
 if(target.shield && target.shield.turn > 0){
     res.dmg *= (1 - target.shield.power);
 }
 
 target.currentHp -= res.dmg;
-
+if(target.currentHp <= 0){
+    target.currentHp = 0;
+}
 // 🔥 先に描画
 renderBattle();
 
@@ -1659,12 +1686,14 @@ if(enemy.poisons){
 
     poison.turn--;
 
+
+    return poison.turn > 0;
+
+
     if(enemy.hp <= 0){
         setTimeout(()=>win(), 500);
         return false;
     }
-
-    return poison.turn > 0;
 });
 
 }
@@ -1694,9 +1723,17 @@ if(enemy.hp <= 0){
 
 // 🔥 💥ここが核心：死亡処理を遅らせる
 setTimeout(()=>{
+if(turn === "enemy"){
 
-    players = players.filter(p=>p.currentHp > 0);
+    if(enemy.debuffTurn > 0){
+        enemy.debuffTurn--;
+    }
 
+    if(enemy.debuffTurn <= 0){
+        enemy.debuffPower = 1;
+    }
+}
+  players = players.filter(p => p.currentHp > 0);
     if(players.length === 0){
         alert("敗北");
 
@@ -1715,15 +1752,27 @@ setTimeout(()=>{
             p.shield.turn--;
         }
     });
-
     turn = "player";
     turnIndex = 0;
     renderBattle();
+    players = players.filter(p => p.currentHp > 0);
+
 
 }, 500); // ←表示時間に合わせる
 }
 
 function endTurn(){
+if(turn === "enemy"){
+
+    if(enemy.debuffTurn > 0){
+        enemy.debuffTurn--;
+    }
+
+    if(enemy.debuffTurn <= 0){
+        enemy.debuffPower = 1;
+    }
+}
+
 let p = players[turnIndex];
 
 if(p.buffs){
@@ -1794,6 +1843,8 @@ team.forEach(c=>{
 // 必要なら上限
 // atkBuff = Math.min(atkBuff, 0.5);
 // hpBuff = Math.min(hpBuff, 0.5);
+
+
 
 return {
     atk: Math.floor(atkBuff * 100),
@@ -1878,14 +1929,14 @@ if(s.type==="buff"){
 
 // 🔻 デバフ
 if(s.type==="debuff"){
-
+    enemy.debuffTurn = 3;
     let power = s.power;
 
     if(currentEvent !== undefined){
         power = 1 - (1 - power) * 0.5;
     }
 
-    enemy.atk *= power;
+    enemy.debuffPower = power; 
 }
 
 // ☠ 毒
@@ -2603,18 +2654,23 @@ players = applyTeamBuff(team.map(c=>{
         currentHp: finalHp,
         skill: base?.skill || c.skill,
         weapon: c.weapon ? {...c.weapon} : null,
-        weaponCool: 0
+        weaponCool: 0,
+        debuffPower: 1, // 通常は1倍
+        debuffTurn: 0   // 残りターン
     };
 }));
 
 // 敵
 enemy = {
+    attr: e.enemy.attr ?? "neutral", // ←追加🔥
     ...e.enemy,
     hp: stage.hp,
     maxHp: stage.hp,
-    atk: stage.atk,
+    atk: stage.atk ?? e.enemy.atk ?? 10,
     poison:0,
-    debuffUsed:false // ←追加
+    debuffUsed:false,
+    debuffPower: 1,  // ←これも重要🔥
+    debuffTurn: 0
 };
 
 // ボス演出（任意）
@@ -2981,6 +3037,22 @@ if(s.type==="buff"){
         });
     }
 
+if(s.type === "rage"){
+    let ratio = 1 - (p.currentHp / p.hp); // 減ってるほど強い
+    let dmg = Math.floor(atk * (1 + ratio * (s.power - 1) * 3));
+
+    enemy.hp -= dmg;
+
+    renderBattle();
+
+    setTimeout(()=>{
+        showDamage("enemy", {
+            dmg: dmg,
+            type: "ultimate"
+        });
+    },10);
+}
+
 if(s.type==="multi"){
 
     for(let i=0;i<s.hits;i++){
@@ -3232,5 +3304,64 @@ function unequipWeapon(charIndex){
 }
 
 </script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } 
+from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+import { getFirestore, doc, setDoc, getDoc } 
+from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+// ここに自分のfirebaseConfig貼る
+const firebaseConfig = {
+  apiKey: "AIzaSyBsHwQZ2-6DJvyrMy4STnK4HzntuG1WOGA",
+  authDomain: "sinkensurume.firebaseapp.com",
+  projectId: "sinkensurume"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+
+async function register(email, password){
+    const userCred = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCred.user;
+
+    await setDoc(doc(db, "users", user.uid), {
+        save: window.gameData
+    });
+
+    alert("登録成功");
+}
+
+async function login(email, password){
+    const userCred = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCred.user;
+
+    const snap = await getDoc(doc(db, "users", user.uid));
+
+    if(snap.exists()){
+        window.gameData = snap.data().save;
+        window.renderBattle();
+    }
+
+    alert("ログイン成功");
+}
+
+async function save(){
+    const user = auth.currentUser;
+    if(!user) return;
+
+    await setDoc(doc(db, "users", user.uid), {
+        save: gameData
+    }, { merge: true });
+}
+
+window.register = register;
+window.login = login;
+</script>
+
 </body>
 </html>
