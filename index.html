@@ -336,11 +336,28 @@ animation:totalPop 1s forwards;
 <button onclick="confirmReset()" style="opacity:0.6;font-size:12px;">
 データリセット
 </button>
-<input id="email" placeholder="メール">
-<input id="pass" type="password" placeholder="パスワード">
+<button onclick="toggleAccount()">アカウント</button>
 
-<button onclick="register(email.value, pass.value)">登録</button>
-<button onclick="login(email.value, pass.value)">ログイン</button>
+<div id="accountPanel" style="display:none; border:1px solid #aaa; padding:10px; margin-top:10px;">
+  
+  <h3>アカウント</h3>
+  <p id="accountName">未ログイン</p> ←これ追加
+  <input id="email" placeholder="メール"><br>
+  <input id="pass" type="password" placeholder="パスワード"><br><br>
+
+  <button onclick="register(
+    document.getElementById('email').value,
+    document.getElementById('pass').value
+  )">登録</button>
+
+  <button onclick="login(
+    document.getElementById('email').value,
+    document.getElementById('pass').value
+  )">ログイン</button>
+
+  <button onclick="logout()">ログアウト</button>
+
+</div>
 </div>
 
 
@@ -509,6 +526,11 @@ style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
 </div>
 
 <script>
+function toggleAccount(){
+  const panel = document.getElementById("accountPanel");
+  panel.style.display = (panel.style.display === "none") ? "block" : "none";
+}
+
 function applyTeamBuff(players){
 
 let buff = getTeamBuff(players); // ←これ追加
@@ -3327,6 +3349,16 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// Firebase初期化のすぐ下
+onAuthStateChanged(auth, (user) => {
+  const nameArea = document.getElementById("accountName");
+
+  if(user){
+    nameArea.textContent = "ログイン中: " + user.email;
+  }else{
+    nameArea.textContent = "未ログイン";
+  }
+});
 
 // =======================
 // ■ 登録
@@ -3373,30 +3405,51 @@ async function login(email, pass){
 // =======================
 onAuthStateChanged(auth, async (user) => {
     if(user){
-        console.log("自動ログイン:", user.uid);
-
         const snap = await getDoc(doc(db, "users", user.uid));
 
-        if(snap.exists()){
-    const data = snap.data().save;
+        // 🔥 データがない場合
+        if(!snap.exists() || !snap.data().save){
+            console.log("セーブデータなし");
 
-    // 🔥ここ追加（超重要）
-    stone = data.stone ?? 100;
-    box = data.box ?? [];
-    team = data.team ?? [];
-    progress = data.progress ?? {};
-    dupeStone = data.dupeStone ?? 0;
-    eventProgress = data.eventProgress ?? {};
-    weaponBox = data.weaponBox ?? [];
+            // 初期化
+            stone = 100;
+            box = [];
+            team = [];
+            progress = {};
+            dupeStone = 0;
+            eventProgress = {};
+            weaponBox = [];
 
-    update(); // ←これも必須
+            update();
+            return;
+        }
 
-    if(window.renderBattle){
-        window.renderBattle();
-    }
-}
+        // 🔥 通常ロード
+        const data = snap.data().save;
+
+        stone = data.stone ?? 100;
+        box = data.box ?? [];
+        team = data.team ?? [];
+        progress = data.progress ?? {};
+        dupeStone = data.dupeStone ?? 0;
+        eventProgress = data.eventProgress ?? {};
+        weaponBox = data.weaponBox ?? [];
+
+        update();
+
     }else{
         console.log("未ログイン");
+
+        // 🔥 未ログイン時も初期化
+        stone = 100;
+        box = [];
+        team = [];
+        progress = {};
+        dupeStone = 0;
+        eventProgress = {};
+        weaponBox = [];
+
+        update();
     }
 });
 
