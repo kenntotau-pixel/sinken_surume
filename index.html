@@ -333,6 +333,9 @@ animation:totalPop 1s forwards;
 <button onclick="go('party')">編成</button>
 <button onclick="go('trial')">試練</button>
 <button onclick="go('event')">イベントの間</button>
+<button onclick="confirmReset()" style="opacity:0.6;font-size:12px;">
+データリセット
+</button>
 <button onclick="toggleAccount()">アカウント</button>
 
 <div id="accountPanel" style="display:none; border:1px solid #aaa; padding:10px; margin-top:10px;">
@@ -523,6 +526,15 @@ style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
 </div>
 
 <script>
+
+let stone = 100;
+let dupeStone = 0;
+let box = [];
+let team = [];
+let weaponBox = [];
+let progress = {};
+let eventProgress = {};
+
 function toggleAccount(){
   const panel = document.getElementById("accountPanel");
   panel.style.display = (panel.style.display === "none") ? "block" : "none";
@@ -530,7 +542,7 @@ function toggleAccount(){
 
 function applyTeamBuff(players){
 
-let buff = getTeamBuff(players); // ←これ追加
+let buff = getTeamBuff(players);
 
 return players.map(p=>{
     return {
@@ -552,24 +564,25 @@ box,
 team,
 progress,
 dupeStone,
-eventProgress, // ←追加 // ←追加
+eventProgress, 
 weaponBox
 };
 localStorage.setItem("gachaData", JSON.stringify(data));
 }
 
 function loadData(){
-const data = JSON.parse(localStorage.getItem("gachaData"));
-if(!data) return;
+  const data = JSON.parse(localStorage.getItem("gachaData"));
+  if(!data) return;
 
-stone = data.stone ?? 100;
-box = data.box ?? [];
-team = data.team ?? [];
-progress = data.progress ?? {};
-dupeStone = data.dupeStone ?? 0;
-eventProgress = data.eventProgress ?? {};
-weaponBox = data.weaponBox ?? [];
+  stone = Number(data.stone) || 100;
+  dupeStone = Number(data.dupeStone) || 0;
 
+  box = Array.isArray(data.box) ? data.box : [];
+  team = Array.isArray(data.team) ? data.team : [];
+  weaponBox = Array.isArray(data.weaponBox) ? data.weaponBox : [];
+
+  progress = data.progress || {};
+  eventProgress = data.eventProgress || {};
 }
 
 function getSaveData(){
@@ -1839,6 +1852,14 @@ function win(){
     alert("勝利！石+10");
     go("trial");
 }
+
+function resetData(){
+localStorage.removeItem("gachaData");
+location.reload();
+}
+
+loadData();
+update();
 
 
 
