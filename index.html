@@ -651,7 +651,7 @@ weaponBox = data.weaponBox ?? [];
 
 }
 
-let stone=100;
+let stone=1000000;
 let box=[],team=[],players=[],deadPlayers=[],enemy;
 let turn="player",turnIndex=0;
 let progress={};
@@ -1700,9 +1700,18 @@ function getPlayerStatusHTML(p){
       else if(s.type==="poison") h+=`<span class="sBadge sPoison">☠毒${s.turn}</span>`;
     });
   }
-  if(p.shield && p.shield.turn>0) h+=`<span class="sBadge sShield">🛡${p.shield.turn}</span>`;
+  // シールド（重複スタック対応）
+  if(p.shields && p.shields.length>0){
+    let totalTurn = Math.max(...p.shields.map(s=>s.turn));
+    let totalPower = Math.min(1, p.shields.reduce((acc,s)=>acc+s.power, 0));
+    h+=`<span class="sBadge sShield">🛡×${p.shields.length}(${Math.floor(totalPower*100)}%/${totalTurn}T)</span>`;
+  } else if(p.shield && p.shield.turn>0) h+=`<span class="sBadge sShield">🛡${p.shield.turn}</span>`;
   if(p.taunt && p.taunt.turn>0) h+=`<span class="sBadge" style="background:#ff8800;color:#fff;">🎯挑発${p.taunt.turn}</span>`;
-  if(p.counter && p.counter.turn>0) h+=`<span class="sBadge sCounter">⚔反${p.counter.turn}</span>`;
+  // 反撃（重複スタック対応）
+  if(p.counters && p.counters.length>0){
+    let totalTurn = Math.max(...p.counters.map(c=>c.turn));
+    h+=`<span class="sBadge sCounter">⚔反×${p.counters.length}(${totalTurn}T)</span>`;
+  } else if(p.counter && p.counter.turn>0) h+=`<span class="sBadge sCounter">⚔反${p.counter.turn}</span>`;
   if(p.buffs && p.buffs.length>0) h+=`<span class="sBadge sBuff">↑バフ</span>`;
   return h;
 }
@@ -1716,6 +1725,7 @@ function getEnemyStatusHTML(){
   if(enemy.shockTurn>0) h+=`<span class="sBadge sShock">⚡感${enemy.shockTurn}</span>`;
   if(enemy.debuffs && enemy.debuffs.length>0) h+=`<span class="sBadge sDebuff">↓弱体${enemy.debuffs.length}重(${enemy.debuffTurn}T)</span>`;
   else if(enemy.debuffTurn>0) h+=`<span class="sBadge sDebuff">↓弱体${enemy.debuffTurn}</span>`;
+  if(enemy.allDebuffMark && enemy.allDebuffTurn>0) h+=`<span class="sBadge" style="background:#ff00cc;color:#fff;">💢被ダメ↑(${enemy.allDebuffTurn}T)</span>`;
   if(enemy.shield>0) h+=`<span class="sBadge sShield">🛡${Math.floor(enemy.shield)}</span>`;
   return h;
 }
@@ -1802,10 +1812,10 @@ if(p.buffs){
 
 let res = calcDamage(p.attr,enemy.attr,atk);
 
-// allDebuffMark: 被ダメ1.5倍
+// allDebuffMark: 被ダメ1.5倍（ターン制・感電と重複）
 if(enemy.allDebuffMark){
     res.dmg = Math.floor(res.dmg * 1.5);
-    enemy.allDebuffMark = false;
+    // ※フラグはallDebuffTurnで管理するためここではリセットしない
 }
 
 // ギミック: 属性制限（狂化後は全属性有効）
@@ -1922,6 +1932,10 @@ function checkSynergy(p, atk){
 function applyShockBonus(p, atk){
   if(enemy.shockTurn>0){
     let bonusDmg = atk * 0.5;
+    // allDebuffMarkがある場合、感電ボーナスにも被ダメ1.5倍を重複適用
+    if(enemy.allDebuffMark){
+      bonusDmg = Math.floor(bonusDmg * 1.5);
+    }
     enemy.hp -= bonusDmg;
     enemy.shockTurn--;
     setTimeout(()=>showDamage("enemy",{dmg:bonusDmg,type:"shock"}),150);
@@ -1976,7 +1990,11 @@ if(enemy.gimmick?.counter){
 
 let res = calcDamage(enemy.attr, target.attr, atk);
 
-if(target.shield && target.shield.turn > 0){
+// シールド（重複スタック対応）: 全スタックのpowerを合算（上限100%）して軽減
+if(target.shields && target.shields.length > 0){
+    let totalPower = Math.min(1, target.shields.reduce((acc,s)=>acc+s.power, 0));
+    res.dmg *= (1 - totalPower);
+} else if(target.shield && target.shield.turn > 0){
     res.dmg *= (1 - target.shield.power);
 }
 
@@ -2022,8 +2040,18 @@ setTimeout(()=>{
     }
 
     players.forEach(p=>{
+      // シールド配列のターン減少
+      if(p.shields && p.shields.length>0){
+        p.shields = p.shields.filter(s=>{ s.turn--; return s.turn>0; });
+      }
       if(p.shield && p.shield.turn>0) p.shield.turn--;
     });
+
+    // allDebuffMarkのターン管理
+    if(enemy.allDebuffMark && enemy.allDebuffTurn !== undefined){
+      enemy.allDebuffTurn--;
+      if(enemy.allDebuffTurn <= 0){ enemy.allDebuffMark = false; enemy.allDebuffTurn = 0; }
+    }
 
     turn = "player";
     turnIndex = 0;
@@ -2072,9 +2100,19 @@ function applyEnemyStatusDamage(callback){
   }
 
   setTimeout(()=>{
-    // 反撃
+    // 反撃（重複スタック対応）
     players.forEach(t=>{
-      if(t.counter && t.counter.turn>0){
+      // 新配列スタック方式
+      if(t.counters && t.counters.length>0){
+        t.counters.forEach(ct=>{
+          let res2=calcDamage(t.attr,enemy.attr,t.atk*ct.power);
+          enemy.hp-=res2.dmg;
+          setTimeout(()=>showDamage("enemy",{...res2,type:"weak"}),50);
+        });
+        t.counters = t.counters.filter(ct=>{ ct.turn--; return ct.turn>0; });
+      }
+      // 旧方式（後方互換）
+      else if(t.counter && t.counter.turn>0){
         let res2=calcDamage(t.attr,enemy.attr,t.atk*t.counter.power);
         enemy.hp-=res2.dmg;
         setTimeout(()=>showDamage("enemy",{...res2,type:"weak"}),50);
@@ -2217,6 +2255,8 @@ if(s.type==="damage"){
     let res = calcDamage(p.attr, enemy.attr, atk * s.power);
     if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
     if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+    // allDebuffMarkによる被ダメ1.5倍（ターン持続）
+    if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
     enemy.hp -= res.dmg;
     applyShockBonus(p, atk);
     renderBattle();
@@ -2342,13 +2382,11 @@ if(s.type==="teamBuff"){
     });
 }
 
-// 🛡 カウンター
+// 🛡 カウンター（重複スタック対応）
 if(s.type==="counter"){
-    p.counter = {
-        turn: s.turn,
-        power: s.power
-    };
-  showSynergyText("カウンター付与！");
+    if(!p.counters) p.counters = [];
+    p.counters.push({ turn: s.turn, power: s.power });
+  showSynergyText("カウンター付与！(×" + p.counters.length + "重)");
 }
 
 // 💖 瀕死の一撃
@@ -2372,6 +2410,7 @@ if(s.type==="drain"){
     let idx = turnIndex; // ←これ追加（超重要）
 
     let res = calcDamage(p.attr, enemy.attr, atk * s.power);
+    if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
     enemy.hp -= res.dmg;
 
     let heal = res.dmg * 0.5;
@@ -2417,13 +2456,11 @@ if(s.type==="double"){
     setTimeout(()=>showDamage("enemy", res2),160);
 }
 
-// 🛡 シールド
+// 🛡 シールド（重複スタック対応）
 if(s.type==="shield"){
-    p.shield = {
-        turn: s.turn,
-        power: s.power
-    };
-  showSynergyText("シールド付与！");
+    if(!p.shields) p.shields = [];
+    p.shields.push({ turn: s.turn, power: s.power });
+    showSynergyText("シールド付与！(×" + p.shields.length + "重)");
 }
 
 // 💥 連鎖爆発: ダメージ + 味方全員CT即時リセット
@@ -2463,15 +2500,17 @@ if(s.type==="revive"){
 if(s.type==="allDebuff"){
     enemy.debuffTurn = 4;
     enemy.debuffPower = s.power;
-    enemy.allDebuffMark = true; // 次に受けるダメージ1.5倍フラグ
-    showSynergyText("⬇ 全弱体発動！ATK低下＆被ダメ増！");
+    enemy.allDebuffMark = true;   // 被ダメ1.5倍フラグ（ターン持続）
+    enemy.allDebuffTurn = 3;      // 3ターン間持続
+    showSynergyText("⬇ 全弱体発動！ATK低下＆被ダメ増！感電と重複！");
     renderBattle();
 }
 
 // 🛡 挑発: 自分が3T攻撃を引き受け、被ダメ半減
 if(s.type==="taunt"){
     p.taunt = { turn: s.turn };
-    p.shield = { turn: s.turn, power: 0.5 }; // 被ダメ50%軽減と兼用
+    if(!p.shields) p.shields = [];
+    p.shields.push({ turn: s.turn, power: 0.5 }); // 被ダメ50%軽減と兼用
     showSynergyText("🛡 挑発！攻撃を引き受けるぞ！");
     renderBattle();
 }
