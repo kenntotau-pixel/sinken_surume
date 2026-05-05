@@ -551,9 +551,24 @@ style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
 </div>
 
 <div id="gachaResult"></div>
-<button onclick="go('title')" style="margin-top:30px;">
+
+<div style="margin-top:20px;">
+  <button onclick="go('exchange')" style="background:#ffd700;color:#000;font-weight:bold;padding:8px 18px;border-radius:8px;border:none;cursor:pointer;">
+    ⚗️ 交換所
+  </button>
+</div>
+
+<button onclick="go('title')" style="margin-top:10px;">
 戻る
 </button>
+</div>
+
+<div id="exchange" class="screen">
+<h2>⚗️ 交換所</h2>
+<p style="color:#aaa;font-size:13px;">凸塊:<span id="exchangeDupeStone"></span>個</p>
+<p style="font-size:13px;">通常ガチャの★4キャラを凸塊<b style="color:gold;">250個</b>で交換できます。</p>
+<div id="exchangeList" style="display:flex;flex-wrap:wrap;justify-content:center;"></div>
+<button onclick="go('gacha')" style="margin-top:20px;">戻る</button>
 </div>
 
 <div id="dex" class="screen">
@@ -570,6 +585,7 @@ style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
 <option value="hp">HP順</option>
 <option value="rarity">レア順</option>
 <option value="dupe">凸順</option>
+<option value="attr">属性順</option>
 </select>
 
 <div id="box"></div>
@@ -651,7 +667,7 @@ weaponBox = data.weaponBox ?? [];
 
 }
 
-let stone=1000000;
+let stone=100;
 let box=[],team=[],players=[],deadPlayers=[],enemy;
 let turn="player",turnIndex=0;
 let progress={};
@@ -734,6 +750,19 @@ skill:{type:"damage", power:4.5, text:"450%ダメージ",cool:3}},
 skill:{type:"heal", power:0.7, text:"味方回復70%",cool:3}},
 {name:"バルナウス",rarity:4,attr:"火",img:"https://imgur.com/3mibLSW.png",role:"debuffer",
 skill:{type:"poison",power:1.5,text:"150%毒付与(重ね可)",cool:2}},
+
+{name:"室井元武(β)",rarity:4,attr:"木",img:"https://imgur.com/plm0EbO.png",role:"attacker",
+skill:{type:"chinkoPo", power:2.0, text:"珍古砲(カウント×77%強化)", cool:4},noTrial:true},
+{name:"栗島トウヤ(β)",rarity:4,attr:"雷",img:"https://imgur.com/r2hVs2i.png",role:"attacker",
+skill:{type:"poisonBurst", power:1.25, text:"毒爆発(毒×125%ダメ)",cool:3},noTrial:true},
+{name:"死橋轟(β)",rarity:4,attr:"水",img:"https://imgur.com/TAk0JKU.png",role:"attacker",
+skill:{type:"bunshin", cool:5, text:"分身: 3Tパーティを4人に(重複不可)"},noTrial:true},
+{name:"阿波牛星夜(β)",rarity:4,attr:"火",img:"https://imgur.com/yJ89rjI.png",role:"attacker",
+skill:{type:"counterStack", power:1.0, text:"カウンター3回＋発動毎に威力+190%", cool:1},noTrial:true},
+{name:"コード5.2(β)",rarity:4,attr:"光",img:"https://imgur.com/F87rtOY.png",role:"attacker",
+skill:{type:"heatUp", text:"ヒートアップ: 発動後 経過ターン×100%ATK上昇(上限700%) ※一度のみ", cool:0},noTrial:true},
+{name:"FqEa(β)",rarity:4,attr:"闇",img:"https://imgur.com/YnlfI2f.png",role:"attacker",
+skill:{type:"timeCrash", turn:2, text:"時間崩壊: 2T被ダメ30%軽減→解除時に2T間の与ダメ(通常+スキル)×50%を敵に", cool:2},noTrial:true},
 
 {name:"ゲガント",rarity:1,attr:"木",img:"https://imgur.com/dXFpBIJ.png",role:"attacker",
 skill:{text:"スキルなし"}},
@@ -876,7 +905,7 @@ atk:75,
 hp:75,
 rarity:3,
 effect:"poison",
-skill:{type:"poison", power:0.75, text:"毒75%",weaponCool:3}
+skill:{type:"poison", power:0.75, text:"毒75%",weaponCool:2}
 },
 {
 name:"緑藻の弓",
@@ -894,7 +923,7 @@ atk:35,
 hp:15,
 rarity:2,
 effect:"poison",
-skill:{type:"heal", power:0.3, text:"30%回復",weaponCool:2}
+skill:{type:"poison", power:0.5, text:"毒50%",weaponCool:2}
 },
 {
 name:"狙撃銃",
@@ -1146,7 +1175,7 @@ const maxDupe = {
 };
 
 const charDetails = {
-  "室井元武": {title:"運命の出会い",
+  "室井元武": {title:"始まりの戦士",
     story:"室井元武は、生きる気力を失っていたが、固有能罪符「刃牙刃牙」を得て戦士として目覚める。仲間との出会いと経験を経て、強敵に立ち向かう不屈の精神を持つ主人公へと成長する。",},
   "栗島トウヤ": {title:"運命の出会い",
     story:"固有能罪符「fourfive砲」を持ち、瞬間移動能力を駆使して戦う。両親を探すことを目的に旅をしている中で、シンギュラリティの神であるフセインと出会う。",},
@@ -1207,9 +1236,21 @@ const charDetails = {
   "死橋凪": {title:"武神",
     story:"デッドアイデンティティの神であり、死橋轟の父。固有能罪符は「全構築」。弐呪刻と同じように人間側に肩入れする。",},
   "アステレス": {title:"救神",
-    story:"セレスティエデンの神。固有能罪符「番いの救済」と「偽りの厄災」を持つ。凪や弐呪刻とは仲が悪い。。",},
+    story:"セレスティエデンの神。固有能罪符「番いの救済」と「偽りの厄災」を持つ。凪や弐呪刻とは仲が悪い。",},
   "バルナウス": {title:"軍神",
     story:"海星の神であり、バルナウス海賊団の船長。固有能罪符「荒くれ者たちの結束」を持つ。阿波牛星夜を死地から救った人物。",},
+  "室井元武(β)": {title:"千半譲渡",
+    story:"　",},
+  "栗島トウヤ(β)": {title:"望んだ未来へ",
+    story:"　",},
+  "死橋轟(β)": {title:"狩人",
+    story:"　",},
+  "阿波牛星夜(β)": {title:"駆ける",
+    story:"　",},
+  "コード5.2(β)": {title:"千万の命を守る英雄",
+    story:"　",},
+  "FqEa(β)": {title:"運命が微笑む勝利",
+    story:"　",},
   "ゲガント": {title:"再生",
     story:"元武達によって倒された最初の敵。固有能罪符は「再生」",},
   "ホーレン": {title:"空気殺し",
@@ -1231,7 +1272,105 @@ const charDetails = {
   "マタイ": {title:"崩壊暗殺時間",
     story:"固有能罪符「崩壊暗殺時間」を持つ。聖戦天使神響の参加者。準決勝にてコード5.2と戦い敗北。",},
   "ログフ": {title:"フリーエリア",
-    story:"固有能罪符「フリーエリア」による空間操作により死橋轟と戦うが、敗北。",}
+    story:"固有能罪符「フリーエリア」による空間操作により死橋轟と戦うが、敗北。",},
+  "コード5.2🍖": {title:"久しぶりのご馳走",
+    story:"",},
+  "FqEa🍖": {title:"紅の余韻",
+    story:"",},
+  "甲斐翔也🍖": {title:"陽光の英雄",
+    story:"",},
+  "黒峰天音🍖": {title:"夜に溶ける静謐",
+    story:"",},
+  "晴海亨🍖": {title:"すべてを見透かす食卓",
+    story:"",},
+  "赤羽悠真🍖": {title:"ワインより深い忠誠",
+    story:"",},
+  "桜木彰🍖": {title:"甘き罠の祝宴",
+    story:"",},
+  "八並解徒🍖": {title:"語らいの夜",
+    story:"",},
+  "室井求武🌊": {title:"波打ち際のリラックス",
+    story:"",},
+  "栗島トウヤ🌊": {title:"波間の戦士",
+    story:"",},
+  "死橋轟🌊": {title:"世界は流れのままに",
+    story:"",},
+  "鈴鹿🌊": {title:"笑顔のサマーメモリー",
+    story:"",},
+  "沢華🌊": {title:"ビーチサイドの休息",
+    story:"",},
+  "阿波牛壬陸🌊": {title:"夏の境界線",
+    story:"",},
+  "湯照司吉基🌊": {title:"沈む陽、解けた規律",
+    story:"",},
+  "玉垣剣城🃏": {title:"完全手役",
+    story:"",},
+  "蒼井朔也🃏": {title:"決める運命の賭博",
+    story:"",},
+  "石倉有栖🃏": {title:"魅惑の勝負師",
+    story:"",},
+  "ミニモータ🃏": {title:"回る賽",
+    story:"",},
+  "ソーメーン🃏": {title:"勝利を引き寄せる力",
+    story:"",},
+  "跳田収滋🃏": {title:"賭け続けたあの日",
+    story:"",},
+  "オリバー🃏": {title:"カードで示す未来",
+    story:"",},
+  "FqEa🌌": {title:"先遣隊のツートップ",
+    story:"",},
+  "返網転🌌": {title:"断罪の処刑遊戯",
+    story:"",},
+  "黒瀬武人🌌": {title:"滅びを継ぐ者",
+    story:"",},
+  "コード5.2🌌": {title:"鉄板前の戦士",
+    story:"",},
+  "阿波牛星夜🌌": {title:"奪う痛み",
+    story:"",},
+  "室井求武🌌": {title:"湯気の向こうで",
+    story:"",},
+  "栗島トウヤ🌌": {title:"掴んだ瞬間",
+    story:"",},
+  "霊剛👻": {title:"灯が切れぬ限り",
+    story:"",},
+  "阿波牛星夜👻": {title:"黄昏の幽世",
+    story:"",},
+  "湯照司吉基👻": {title:"双星のランタン",
+    story:"",},
+  "死橋轟👻": {title:"冥刻の狩人",
+    story:"",},
+  "玉垣剣城👻": {title:"禁忌のアルカナ",
+    story:"",},
+  "甲斐翔也👻": {title:"蒼き夜の叙事詩",
+    story:"",},
+  "オリバー👻": {title:"翡翠の心理",
+    story:"",},
+  "黒峰天音🔒": {title:"監獄の破壊兵器",
+    story:"",},
+  "沢華🔒": {title:"砕けぬ鎖の中で",
+    story:"",},
+  "ヒナル🔒": {title:"牢の狂炎",
+    story:"",},
+  "石倉有栖🔒": {title:"鎖と炎の音",
+    story:"",},
+  "ミニモータ🔒": {title:"信じる者",
+    story:"",},
+  "ソーメーン🔒": {title:"光芒",
+    story:"",},
+  "赤羽悠真🔒": {title:"泥を被る",
+    story:"",},
+  "和辺重信🍖": {title:"黒衣の晩餐",
+    story:"",},
+  "明石啓希🌊": {title:"波打ち際の二人",
+    story:"",},
+  "弐呪刻🃏": {title:"テーブルの支配者",
+    story:"",},
+  "死橋凪🌌": {title:"運命の分岐点",
+    story:"",},
+  "フセイン👻": {title:"虚構魂魄",
+    story:"",},
+  "リボルト🔒": {title:"罪の管理者",
+    story:"",},
 };
 
 const weaponRates = [
@@ -1264,6 +1403,7 @@ update();
 if(id==="trial")renderTrials();
 if(id==="event") renderEvent();
 if(id==="dex") renderDex(); // ←追加
+if(id==="exchange") renderExchange();
 }
 function draw1(){
 if(stone < 10) return;
@@ -1449,10 +1589,29 @@ update();
 }
 
 function sortBox(type){
-if(type==="atk")box.sort((a,b)=>b.atk-a.atk);
-if(type==="hp")box.sort((a,b)=>b.hp-a.hp);
-if(type==="rarity")box.sort((a,b)=>b.rarity-a.rarity);
-if(type==="dupe")box.sort((a,b)=>b.dupe-a.dupe);
+
+if(type==="atk"){
+box.sort((a,b)=>b.atk-a.atk);
+}
+else if(type==="hp"){
+box.sort((a,b)=>b.hp-a.hp);
+}
+else if(type==="rarity"){
+box.sort((a,b)=>b.rarity-a.rarity);
+}
+else if(type==="dupe"){
+box.sort((a,b)=>b.dupe-a.dupe);
+}
+else if(type==="attr"){
+
+const order = ["火","水","雷","木","光","闇"];
+
+box.sort((a,b)=>{
+return order.indexOf(a.attr) - order.indexOf(b.attr);
+});
+
+}
+
 update();
 }
 
@@ -1462,6 +1621,8 @@ if(s)s.textContent=stone;
 
 let s2 = document.getElementById("dupeStone");
 if(s2) s2.textContent = dupeStone;
+let s3 = document.getElementById("exchangeDupeStone");
+if(s3) s3.textContent = dupeStone;
 
 let wc = document.getElementById("weaponCount");
 if(wc) wc.textContent = weaponBox.length;
@@ -1588,6 +1749,8 @@ return {
     hp: finalHp,
     currentHp: finalHp,
     skill: base?.skill || c.skill,
+    skill2: base?.skill2 || c.skill2 || null,
+    cool2: 0,
     weapon: c.weapon ? {...c.weapon} : null,
     weaponCool: 0
 };
@@ -1692,6 +1855,11 @@ function getRoleClass(role){
 
 function getPlayerStatusHTML(p){
   let h="";
+  // 珍古砲カウント表示
+  if(p.skill && p.skill.type==="chinkoPo"){
+    let cnt = p.chinkoPoCount || 0;
+    h += `<span class="sBadge" style="background:#cc0066;color:#fff;">💢珍古砲×${cnt}/10</span>`;
+  }
   if(p.statuses){
     p.statuses.forEach(s=>{
       if(s.type==="burn") h+=`<span class="sBadge sBurn">🔥燃${s.turn}</span>`;
@@ -1708,11 +1876,34 @@ function getPlayerStatusHTML(p){
   } else if(p.shield && p.shield.turn>0) h+=`<span class="sBadge sShield">🛡${p.shield.turn}</span>`;
   if(p.taunt && p.taunt.turn>0) h+=`<span class="sBadge" style="background:#ff8800;color:#fff;">🎯挑発${p.taunt.turn}</span>`;
   // 反撃（重複スタック対応）
+  if(p.counterStackSlots && p.counterStackSlots.length>0){
+    let rem = p.counterStackSlots.length;
+    let pw = Math.floor(p.counterStackSlots[0].power * 100);
+    h+=`<span class="sBadge sCounter">⚔スタック×${rem}(${pw}%)</span>`;
+  }
   if(p.counters && p.counters.length>0){
     let totalTurn = Math.max(...p.counters.map(c=>c.turn));
     h+=`<span class="sBadge sCounter">⚔反×${p.counters.length}(${totalTurn}T)</span>`;
   } else if(p.counter && p.counter.turn>0) h+=`<span class="sBadge sCounter">⚔反${p.counter.turn}</span>`;
-  if(p.buffs && p.buffs.length>0) h+=`<span class="sBadge sBuff">↑バフ</span>`;
+  if(p.buffs && p.buffs.length>0 && !p.buffs.every(b=>b.isHeatUp)) h+=`<span class="sBadge sBuff">↑バフ</span>`;
+  // ヒートアップ表示（永続バフ中のみ）
+  let _heatBuff = p.buffs && p.buffs.find(b=>b.isHeatUp);
+  if(_heatBuff){
+    let bonus = Math.floor((_heatBuff.power - 1) * 100);
+    h += `<span class="sBadge" style="background:#ff6600;color:#fff;">🔥ヒートアップ+${bonus}%</span>`;
+  } else if(p.skill && p.skill.type==="heatUp"){
+    let turns = enemy.turnCount || 0;
+    let bonus = Math.min(700, turns * 100);
+    h += `<span class="sBadge" style="background:#333;color:#ff6600;">🔥ヒートアップ待機(発動で+${bonus}%)</span>`;
+  }
+  if(p.isBunshin) h+=`<span class="sBadge" style="background:#00ccff;color:#000;">👥分身(${p.bunshinTurn}T)</span>`;
+  if(p.timeCrash && p.timeCrash.turn >= 0){
+    if(p.timeCrash.turn > 0){
+      h+=`<span class="sBadge" style="background:#660099;color:#fff;">⏳時間崩壊(${p.timeCrash.turn}T 蓄:${Math.floor(p.timeCrash.stored||0)})</span>`;
+    } else {
+      h+=`<span class="sBadge" style="background:#330066;color:#aaa;">⏳崩壊待機(蓄:${Math.floor(p.timeCrash.stored||0)})</span>`;
+    }
+  }
   return h;
 }
 
@@ -1755,6 +1946,8 @@ function renderBattle(){
     let hpPct = Math.max(0,(p.currentHp/p.hp)*100);
     let coolPct = p.cool>0 ? Math.max(0,100-p.cool*(100/(p.skill?.cool||3))) : 100;
     let isReady = p.cool<=0;
+    let cool2Pct = p.skill2 ? (p.cool2>0 ? Math.max(0,100-p.cool2*(100/(p.skill2?.cool||3))) : 100) : 0;
+    let isReady2 = p.skill2 ? p.cool2<=0 : false;
     return `
   <div class="unit ally ${attrClass[p.attr]} ${i===turnIndex ? "turn" : ""}" id="p${i}">
     <img src="${p.img}">
@@ -1764,9 +1957,13 @@ function renderBattle(){
     <div>HP:${Math.floor(p.currentHp)}</div>
     <div class="bar"><div class="hp" style="width:${hpPct}%"></div></div>
     <div class="ctWrap">
-      <span class="ctLabel">CT</span>
+      <span class="ctLabel">S1</span>
       <div class="ctBar"><div class="${isReady?"ctFillReady":"ctFill"}" style="width:${isReady?100:coolPct}%"></div></div>
     </div>
+    ${p.skill2 ? `<div class="ctWrap">
+      <span class="ctLabel">S2</span>
+      <div class="ctBar"><div class="${isReady2?"ctFillReady":"ctFill"}" style="width:${isReady2?100:cool2Pct}%;background:linear-gradient(90deg,#cc44ff,#ff88ff);"></div></div>
+    </div>` : ""}
     <div class="bar"><div class="gauge" style="width:${p.ult}%"></div></div>
   </div>`;
   }).join("")
@@ -1791,11 +1988,12 @@ function renderBattle(){
   let p = players[turnIndex];
   actions.innerHTML =
     turn==="player"
-    ? `<button onclick="attack()">攻撃</button>
-       <button onclick="skill()" ${p.cool>0?"disabled":""}>
-       スキル (CT:${p.cool})
+    ? `<button onclick="attack()">通常攻撃</button>
+       <button onclick="skill()" ${(p.cool>0 || p.heatUpUsed)?"disabled":""}>
+       スキル1 ${p.heatUpUsed ? "[🔥ヒートアップ中]" : "(CT:"+p.cool+")"}${p.skill?.type==="chinkoPo" ? " [💢"+(p.chinkoPoCount||0)+"カウント]" : ""}
        </button>
-${p.weapon ? `<button onclick="weaponSkill()" ${(p.weaponCool??0)>0?"disabled":""}>スキル2 (CT:${p.weaponCool})</button>` : ""}
+${p.skill2 ? `<button onclick="skill2()" ${(p.cool2>0 || (p.skill2.type==="bunshin" && players.some(pl=>pl.isBunshin)))?"disabled":""}>スキル2 (CT:${p.cool2})${p.skill2.type==="bunshin" && players.some(pl=>pl.isBunshin)?" [分身中]":""}</button>` : ""}
+${p.weapon ? `<button onclick="weaponSkill()" ${(p.weaponCool??0)>0?"disabled":""}>武器スキル (CT:${p.weaponCool})</button>` : ""}
        <button onclick="ultimate()">必殺</button>`
     : "敵のターン";
 }
@@ -1837,6 +2035,12 @@ if(enemy.shield>0){
 enemy.hp -= res.dmg;
 applyShockBonus(p, atk);
 
+// ⏳ 時間崩壊: 与えたダメージをパーティ全体で累積
+let _tcHolder = players.find(pl => pl.timeCrash != null);
+if(_tcHolder){
+    _tcHolder.timeCrash.stored = (_tcHolder.timeCrash.stored || 0) + res.dmg;
+}
+
 renderBattle();
 
 setTimeout(()=>{
@@ -1848,6 +2052,10 @@ if(enemy.hp <= 0){
     return;
 }
 
+// 珍古砲カウント加算
+if(p.skill && p.skill.type==="chinkoPo"){
+    p.chinkoPoCount = Math.min(10, (p.chinkoPoCount||0) + 1);
+}
 p.ult+=30;
 endTurn();
 }
@@ -1890,6 +2098,11 @@ setTimeout(()=>{
 if(enemy.hp <= 0){
     setTimeout(()=>win(), 600);
     return;
+}
+
+// 珍古砲カウント加算
+if(p.skill && p.skill.type==="chinkoPo"){
+    p.chinkoPoCount = Math.min(10, (p.chinkoPoCount||0) + 1);
 }
 
 endTurn();
@@ -1952,6 +2165,14 @@ if(enemy.freezeTurn>0){
     applyEnemyStatusDamage(()=>{
       turn="player"; turnIndex=0;
       enemy.turnCount=(enemy.turnCount||0)+1;
+      // 🔥 ヒートアップ: 凍結スキップ時もバフ値更新
+      players.forEach(pl=>{
+          if(pl.heatUpUsed && pl.buffs){
+              let newBonus = Math.min(7.0, (enemy.turnCount) * 1.0);
+              let idx = pl.buffs.findIndex(b=>b.isHeatUp);
+              if(idx >= 0) pl.buffs[idx].power = 1.0 + newBonus;
+          }
+      });
       checkTurnLimit();
       renderBattle();
     });
@@ -2001,6 +2222,8 @@ if(target.shields && target.shields.length > 0){
 target.currentHp -= res.dmg;
 if(target.currentHp <= 0) target.currentHp = 0;
 
+
+
 renderBattle();
 setTimeout(()=>{ showDamage("p" + index, res); }, 50);
 
@@ -2039,12 +2262,40 @@ setTimeout(()=>{
       return;
     }
 
+    // 👥 分身ターンカウントダウン＆消滅
+    players.forEach(pl => {
+      if(pl.isBunshin){
+        pl.bunshinTurn--;
+        if(pl.bunshinTurn <= 0){
+          showSynergyText("👥 分身が消滅した！");
+        }
+      }
+    });
+    players = players.filter(pl => !pl.isBunshin || pl.bunshinTurn > 0);
+
+    // 分身消滅後、操作可能なキャラが0人になった場合の敗北チェック
+    if(players.length === 0){
+      setTimeout(()=>{
+        alert("敗北");
+        if(currentEvent !== undefined){ currentEvent=undefined; go("event"); }
+        else go("trial");
+      }, 300);
+      return;
+    }
+
     players.forEach(p=>{
       // シールド配列のターン減少
       if(p.shields && p.shields.length>0){
         p.shields = p.shields.filter(s=>{ s.turn--; return s.turn>0; });
       }
       if(p.shield && p.shield.turn>0) p.shield.turn--;
+      // ⏳ 時間崩壊ターンカウントダウン
+      if(p.timeCrash && p.timeCrash.turn > 0){
+        p.timeCrash.turn--;
+        if(p.timeCrash.turn <= 0){
+          showSynergyText("⏳ " + p.name + "の時間崩壊が切れた！スキルで解放できる！");
+        }
+      }
     });
 
     // allDebuffMarkのターン管理
@@ -2057,6 +2308,14 @@ setTimeout(()=>{
     turnIndex = 0;
     if(turnIndex >= players.length) turnIndex = 0;
     enemy.turnCount=(enemy.turnCount||0)+1;
+    // 🔥 ヒートアップ: 経過ターン更新に合わせてバフ値を自動更新
+    players.forEach(pl=>{
+        if(pl.heatUpUsed && pl.buffs){
+            let newBonus = Math.min(7.0, (enemy.turnCount) * 1.0);
+            let idx = pl.buffs.findIndex(b=>b.isHeatUp);
+            if(idx >= 0) pl.buffs[idx].power = 1.0 + newBonus;
+        }
+    });
     checkTurnLimit();
     renderBattle();
   });
@@ -2102,6 +2361,18 @@ function applyEnemyStatusDamage(callback){
   setTimeout(()=>{
     // 反撃（重複スタック対応）
     players.forEach(t=>{
+      // counterStackSlots方式（1回ずつ消費）
+      if(t.counterStackSlots && t.counterStackSlots.length > 0){
+        let slot = t.counterStackSlots.shift(); // 1スロット消費
+        let res2 = calcDamage(t.attr, enemy.attr, t.atk * slot.power);
+        enemy.hp -= res2.dmg;
+        let rem = t.counterStackSlots.length;
+        let pwPct = Math.floor(slot.power * 100);
+        setTimeout(()=>{
+          showDamage("enemy", {...res2, type:"ultimate"});
+          showSynergyText("⚔ カウンター反撃！" + pwPct + "% 残" + rem + "回");
+        }, 50);
+      }
       // 新配列スタック方式
       if(t.counters && t.counters.length>0){
         t.counters.forEach(ct=>{
@@ -2157,12 +2428,14 @@ let p = players[turnIndex];
 
 if(p.buffs){
     p.buffs = p.buffs.filter(b=>{
+        if(b.permanent) return true;
         b.turn--;
         return b.turn > 0;
     });
 }
 
 if(p.cool > 0) p.cool--;
+if(p.cool2 > 0) p.cool2--;
 if(p.weaponCool > 0) p.weaponCool--;
 if(p.taunt && p.taunt.turn > 0){ p.taunt.turn--; if(p.taunt.turn<=0) p.taunt=null; }
 
@@ -2238,8 +2511,12 @@ let p = players[turnIndex];
 
 if(!p.skill || !p.skill.type) return;
 if(p.cool > 0) return;
+if(p.skill.type === "heatUp" && p.heatUpUsed) return;
 
 let s = p.skill;
+
+// ⏳ 時間崩壊: スキル与ダメ累積用にHP記録
+let _hpBeforeSkill = enemy.hp;
 
 // バフ込みATK
 let atk = p.atk;
@@ -2334,7 +2611,7 @@ if(!enemy.poisons) enemy.poisons = [];
   showSynergyText("毒付与！");
 enemy.poisons.push({
     power: s.power,
-    turn: 10,
+    turn: 100,
     user: p
 });
 
@@ -2515,7 +2792,335 @@ if(s.type==="taunt"){
     renderBattle();
 }
 
-p.cool = p.skill.cool;
+// 💢 珍古砲: カウント×77%ダメージ、発動後リセット
+if(s.type==="chinkoPo"){
+    let count = p.chinkoPoCount || 0;
+    let multiplier = 1 + count * 0.77;
+    let res = calcDamage(p.attr, enemy.attr, atk * s.power * multiplier);
+    if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
+    if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+    enemy.hp -= res.dmg;
+    applyShockBonus(p, atk);
+    let oldCount = count;
+    p.chinkoPoCount = 0;
+    showSynergyText("💢 珍古砲！カウント" + oldCount + "×77%=" + Math.floor(oldCount*77) + "%強化！");
+    renderBattle();
+    setTimeout(()=>showDamage("enemy", res), 10);
+    if(enemy.hp <= 0){ setTimeout(()=>win(), 500); return; }
+}
+
+// ☠💥 毒爆発: 敵の毒スタック数×powerのダメージ（毒は消費しない）
+if(s.type==="poisonBurst"){
+    let poisonCount = (enemy.poisons && enemy.poisons.length > 0) ? enemy.poisons.length : 0;
+    if(poisonCount === 0){
+        // 毒がない場合は通常の100%ダメージ
+        let res = calcDamage(p.attr, enemy.attr, atk * s.power);
+        if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
+        if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+        if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
+        enemy.hp -= res.dmg;
+        applyShockBonus(p, atk);
+        showSynergyText("☠ 毒爆発！（毒なし）");
+        renderBattle();
+        setTimeout(()=>showDamage("enemy", res), 10);
+    } else {
+        // 毒スタック数×power倍のダメージ
+        let multiplier = poisonCount * s.power;
+        let res = calcDamage(p.attr, enemy.attr, atk * multiplier);
+        if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
+        if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+        if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
+        enemy.hp -= res.dmg;
+        applyShockBonus(p, atk);
+        showSynergyText("☠💥 毒爆発！毒×" + poisonCount + "=" + Math.floor(multiplier*100) + "% ダメージ！");
+        renderBattle();
+        setTimeout(()=>showDamage("enemy", {dmg: res.dmg, type:"poison"}), 10);
+    }
+    if(enemy.hp <= 0){ setTimeout(()=>win(), 500); return; }
+}
+
+// ⚔ カウンタースタック: 3回反撃、発動毎に威力+100%
+if(s.type==="counterStack"){
+    if(p.counterStackCount === undefined) p.counterStackCount = 0;
+    p.counterStackCount++;
+    let stackPower = s.power * (1 + 1.0 * (p.counterStackCount - 1));
+    p.counterStackSlots = [
+        { power: stackPower },
+        { power: stackPower },
+        { power: stackPower }
+    ];
+    showSynergyText("⚔ カウンタースタック！反撃×3（威力" + Math.floor(stackPower * 100) + "%）");
+    renderBattle();
+}
+
+// 🔥 ヒートアップ: 発動後 経過ターン×100% 永続ATK上昇（上限700%・毎ターン自動更新）
+if(s.type==="heatUp"){
+    let elapsedTurns = enemy.turnCount || 0;
+    let bonusRate = Math.min(7.0, elapsedTurns * 1.0);
+    let buffPower = 1.0 + bonusRate;
+    if(!p.buffs) p.buffs = [];
+    p.buffs = p.buffs.filter(b => !b.isHeatUp);
+    p.buffs.push({ power: buffPower, turn: 9999, permanent: true, isHeatUp: true });
+    p.heatUpUsed = true;
+    let pct = Math.floor(bonusRate * 100);
+    showSynergyText("🔥 ヒートアップ発動！現在+" + pct + "%（ターン毎に自動更新）");
+    renderBattle();
+}
+
+// ⏳ 時間崩壊: 2T間被ダメ30%軽減、解除時に累積ダメの50%を敵に
+if(s.type==="timeCrash"){
+    if(p.timeCrash != null){
+        let stored = p.timeCrash.stored || 0;
+        let burstDmg = Math.floor(stored * 0.5);
+        p.timeCrash = null;
+        if(p.shields) p.shields = p.shields.filter(sh=>!sh.isTimeCrash);
+        if(burstDmg > 0){
+            if(enemy.shield>0){ let ab=Math.min(enemy.shield,burstDmg); enemy.shield-=ab; burstDmg-=ab; }
+            enemy.hp -= burstDmg;
+            showSynergyText("⏳ 時間崩壊 解放！累積×50%＝" + burstDmg + "！");
+            renderBattle();
+            setTimeout(()=>showDamage("enemy", {dmg:burstDmg, type:"ultimate"}), 10);
+            if(enemy.hp <= 0){ setTimeout(()=>win(), 500); return; }
+        } else {
+            showSynergyText("⏳ 時間崩壊 解除（蓄積なし）");
+        }
+    } else {
+        p.timeCrash = { turn: s.turn || 2, stored: 0 };
+        if(!p.shields) p.shields = [];
+        p.shields.push({ turn: s.turn || 2, power: 0.3, isTimeCrash: true });
+        showSynergyText("⏳ 時間崩壊 発動！2T間被ダメ30%軽減！");
+        renderBattle();
+    }
+}
+
+// 👥 分身: パーティを4人にする（3ターン後消滅、重複不可）
+if(s.type==="bunshin"){
+    if(players.some(pl => pl.isBunshin)){
+        showSynergyText("⚠ 分身はすでに存在する！");
+        return;
+    }
+    let bunshin = {
+        ...p,
+        name: p.name + "（分身）",
+        isBunshin: true,
+        bunshinTurn: 3,
+        cool: 0,
+        cool2: 999,
+        weaponCool: 0,
+        ult: 0,
+        buffs: [],
+        shields: [],
+        counters: []
+    };
+    players.push(bunshin);
+    showSynergyText("👥 分身！3ターン後に消滅する！");
+    renderBattle();
+}
+
+if(s.type !== "heatUp") p.cool = p.skill.cool;
+// ⏳ 時間崩壊: スキルで与えたダメージをパーティ全体で累積
+if(s.type !== "timeCrash"){
+    let _tcHolderSkill = players.find(pl => pl.timeCrash != null);
+    if(_tcHolderSkill){
+        let skillDmg = Math.max(0, _hpBeforeSkill - enemy.hp);
+        _tcHolderSkill.timeCrash.stored = (_tcHolderSkill.timeCrash.stored || 0) + skillDmg;
+    }
+}
+endTurn();
+}
+
+
+function skill2(){
+let p = players[turnIndex];
+if(!p.skill2 || !p.skill2.type) return;
+if(p.cool2 > 0) return;
+
+let s = p.skill2;
+let _hpBeforeSkill2 = enemy.hp; // ⏳ 時間崩壊用HP記録
+
+let atk = p.atk;
+if(p.buffs){
+    p.buffs.forEach(b=>{ atk *= b.power; });
+}
+
+if(s.type==="damage"){
+    let res = calcDamage(p.attr, enemy.attr, atk * s.power);
+    if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
+    if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+    if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
+    enemy.hp -= res.dmg;
+    applyShockBonus(p, atk);
+    renderBattle();
+    setTimeout(()=>showDamage("enemy", res),10);
+    showSynergyText("超ダメージ！");
+}
+if(s.type==="multi"){
+    for(let i=0;i<s.hits;i++){
+        showSynergyText("多段攻撃！");
+        let res = calcDamage(p.attr, enemy.attr, atk * s.power);
+        enemy.hp -= res.dmg;
+        if(!enemy.debuffUsed){ enemy.atk *= 0.95; }
+        setTimeout(()=>{
+            showDamage("enemy", res);
+            if(i === s.hits - 1){ enemy.debuffUsed = true; renderBattle(); }
+        }, i * 120);
+    }
+}
+if(s.type==="heal"){
+    players.forEach((t,i)=>{
+        let heal = t.hp * s.power;
+        showSynergyText("回復！");
+        t.currentHp += heal;
+        if(t.currentHp > t.hp) t.currentHp = t.hp;
+        setTimeout(()=>showDamage("p"+i, {dmg: heal, type: "heal"}),10);
+    });
+    renderBattle();
+}
+if(s.type==="buff"){
+    p.atk *= s.power;
+    showSynergyText("バフ付与！");
+}
+if(s.type==="teamBuff"){
+    players.forEach(t=>{
+        if(!t.buffs) t.buffs = [];
+        t.buffs.push({ turn: 3, power: s.power });
+    });
+    showSynergyText("全体バフ！");
+}
+if(s.type==="debuff"){
+    if(!enemy.debuffs) enemy.debuffs = [];
+    enemy.debuffs.push({ power: s.power, turn: 3 });
+    enemy.debuffPower = enemy.debuffs.reduce((acc, d) => acc * d.power, 1);
+    enemy.debuffTurn = Math.max(...enemy.debuffs.map(d=>d.turn));
+    showSynergyText("デバフ付与！(×" + enemy.debuffs.length + "重)");
+}
+if(s.type==="poison"){
+    if(!enemy.poisons) enemy.poisons = [];
+    showSynergyText("毒付与！");
+    enemy.poisons.push({ power: s.power, turn: 10, user: p });
+    checkSynergy(p, atk);
+}
+if(s.type==="burn"){
+    if(!enemy.burns) enemy.burns = [];
+    enemy.burns.push({ power: atk * s.power, turn: s.turn || 4, user: p });
+    enemy.burnPower = enemy.burns.reduce((acc, b) => acc + b.power, 0);
+    enemy.burnTurn = Math.max(...enemy.burns.map(b => b.turn));
+    showSynergyText("燃焼付与！(×" + enemy.burns.length + "重)");
+    checkSynergy(p, atk);
+}
+if(s.type==="freeze"){
+    enemy.freezeTurn = 1;
+    showSynergyText("凍結！行動不能！");
+}
+if(s.type==="shock"){
+    enemy.shockTurn = 2;
+    enemy.shockPower = atk * s.power;
+    showSynergyText("感電付与！");
+    checkSynergy(p, atk);
+}
+if(s.type==="drain"){
+    let idx = turnIndex;
+    let res = calcDamage(p.attr, enemy.attr, atk * s.power);
+    if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
+    enemy.hp -= res.dmg;
+    let heal = res.dmg * 0.5;
+    p.currentHp += heal;
+    if(p.currentHp > p.hp) p.currentHp = p.hp;
+    showSynergyText("吸収！");
+    renderBattle();
+    setTimeout(()=>showDamage("enemy", res),10);
+    setTimeout(()=>showDamage("p"+idx, {dmg: heal, type: "heal"}),120);
+}
+if(s.type==="hpCut"){
+    let dmg = enemy.maxHp * s.power;
+    enemy.hp -= dmg;
+    showSynergyText("HPカット！");
+    renderBattle();
+    setTimeout(()=>showDamage("enemy",{dmg,type:""}),10);
+}
+if(s.type==="double"){
+    let res = calcDamage(p.attr, enemy.attr, atk * s.power);
+    let res2 = calcDamage(p.attr, enemy.attr, atk * 0.5);
+    showSynergyText("連撃！");
+    enemy.hp -= res.dmg;
+    enemy.hp -= res2.dmg;
+    renderBattle();
+    setTimeout(()=>showDamage("enemy", res),10);
+    setTimeout(()=>showDamage("enemy", res2),160);
+}
+if(s.type==="shield"){
+    if(!p.shields) p.shields = [];
+    p.shields.push({ turn: s.turn, power: s.power });
+    showSynergyText("シールド付与！(×" + p.shields.length + "重)");
+}
+if(s.type==="counter"){
+    if(!p.counters) p.counters = [];
+    p.counters.push({ turn: s.turn, power: s.power });
+    showSynergyText("カウンター付与！(×" + p.counters.length + "重)");
+}
+if(s.type==="rage"){
+    let ratio = 1 - (p.currentHp / p.hp);
+    let dmg = Math.floor(atk * (1 + ratio * (s.power - 1) * 3));
+    showSynergyText("狂化発動！");
+    enemy.hp -= dmg;
+    renderBattle();
+    setTimeout(()=>showDamage("enemy", {dmg, type:"ultimate"}),10);
+}
+
+// ☠💥 毒爆発: 敵の毒スタック数×powerのダメージ
+if(s.type==="poisonBurst"){
+    let poisonCount = (enemy.poisons && enemy.poisons.length > 0) ? enemy.poisons.length : 0;
+    if(poisonCount === 0){
+        let res = calcDamage(p.attr, enemy.attr, atk * s.power);
+        if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
+        enemy.hp -= res.dmg;
+        showSynergyText("☠ 毒爆発！（毒なし）");
+        renderBattle();
+        setTimeout(()=>showDamage("enemy", res), 10);
+    } else {
+        let multiplier = poisonCount * s.power;
+        let res = calcDamage(p.attr, enemy.attr, atk * multiplier);
+        if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
+        enemy.hp -= res.dmg;
+        showSynergyText("☠💥 毒爆発！毒×" + poisonCount + "=" + Math.floor(multiplier*100) + "% ダメージ！");
+        renderBattle();
+        setTimeout(()=>showDamage("enemy", {dmg: res.dmg, type:"poison"}), 10);
+    }
+}
+
+// 👥 分身: パーティを4人にする（3ターン後消滅、重複不可）
+if(s.type==="bunshin"){
+    if(players.some(pl => pl.isBunshin)){
+        showSynergyText("⚠ 分身はすでに存在する！");
+        return;
+    }
+    let bunshin = {
+        ...p,
+        name: p.name + "（分身）",
+        isBunshin: true,
+        bunshinTurn: 3,
+        cool: 0,
+        cool2: 999,
+        weaponCool: 0,
+        ult: 0,
+        buffs: [],
+        shields: [],
+        counters: []
+    };
+    players.push(bunshin);
+    showSynergyText("👥 分身！3ターン後に消滅する！");
+    renderBattle();
+}
+
+if(enemy.hp <= 0){ setTimeout(()=>win(), 500); }
+
+p.cool2 = p.skill2.cool;
+// ⏳ 時間崩壊: skill2で与えたダメージをパーティ全体で累積
+let _tcHolderSkill2 = players.find(pl => pl.timeCrash != null);
+if(_tcHolderSkill2){
+    let skill2Dmg = Math.max(0, _hpBeforeSkill2 - enemy.hp);
+    _tcHolderSkill2.timeCrash.stored = (_tcHolderSkill2.timeCrash.stored || 0) + skill2Dmg;
+}
 endTurn();
 }
 
@@ -2926,22 +3531,24 @@ if(confirm("本当にデータを削除しますか？")){
 
 function renderTrials(){
 
+// noTrial:true のキャラを除外し、元のインデックスを保持
+let trialChars = chars.map((c,i)=>({c,i})).filter(({c})=>!c.noTrial);
+
 let start = trialPage * perPage;
 let end = start + perPage;
 
-let list = chars.slice(start, end);
+let list = trialChars.slice(start, end);
 
-trialList.innerHTML = list.map((c,i)=>{
+trialList.innerHTML = list.map(({c, i})=>{
 
-let index = start + i;
-let lv = progress[index] || 1;
+let lv = progress[i] || 1;
 
 return `
 <div class="card ${attrClass[c.attr]}">
 <img src="${c.img}">
 ${c.name}<br>
 Lv.${lv}
-<button onclick="startBattle(${index})">挑戦</button>
+<button onclick="startBattle(${i})">挑戦</button>
 </div>
 `;
 
@@ -2958,7 +3565,8 @@ ${trialPage+1}
 }
 
 function changePage(dir){
-let maxPage = Math.ceil(chars.length / perPage);
+let trialChars = chars.filter(c=>!c.noTrial);
+let maxPage = Math.ceil(trialChars.length / perPage);
 
 trialPage += dir;
 
@@ -3128,6 +3736,8 @@ players = applyTeamBuff(team.map(c=>{
         hp: finalHp,
         currentHp: finalHp,
         skill: base?.skill || c.skill,
+        skill2: base?.skill2 || c.skill2 || null,
+        cool2: 0,
         weapon: c.weapon ? {...c.weapon} : null,
         weaponCool: 0,
         debuffPower: 1, // 通常は1倍
@@ -3870,6 +4480,72 @@ update();
 saveData();
 }
 
+
+function renderExchange(){
+  let ds = document.getElementById('exchangeDupeStone');
+  if(ds) ds.textContent = dupeStone;
+
+  // 通常ガチャの★4キャラ一覧
+  let ssr4 = chars.filter(c=>c.rarity===4);
+
+  let list = document.getElementById('exchangeList');
+  if(!list) return;
+
+  list.innerHTML = ssr4.map((c,i)=>{
+    let owned = box.find(b=>b.name===c.name);
+    let isMaxDupe = owned && owned.dupe >= maxDupe[owned.rarity];
+    let canExchange = !isMaxDupe && dupeStone >= 250;
+    let btnLabel = isMaxDupe ? '完凸済み' : (owned ? '追加交換' : '交換');
+    let btnStyle = isMaxDupe
+      ? 'background:#444;color:#888;border:none;border-radius:6px;padding:4px 8px;cursor:not-allowed;'
+      : (canExchange
+          ? 'background:#ffd700;color:#000;border:none;border-radius:6px;padding:4px 8px;cursor:pointer;'
+          : 'background:#555;color:#aaa;border:none;border-radius:6px;padding:4px 8px;cursor:not-allowed;');
+    return `
+    <div class="card ${attrClass[c.attr]}" style="min-width:105px;">
+      <div class="rarity">${star(c.rarity)}</div>
+      <span class="roleBadge ${getRoleClass(c.role)}">${getRoleLabel(c.role)}</span>
+      <img src="${c.img}">
+      ${c.name}<br>
+      ${owned ? `<span style="font-size:11px;color:#aaa;">凸:${owned.dupe}/${maxDupe[owned.rarity]}</span><br>` : ''}
+      <span style="font-size:11px;color:#aaa;">${c.skill?.text||''}</span><br>
+      <button onclick="${isMaxDupe ? '' : 'exchangeChar('+chars.indexOf(c)+')'}"
+        ${isMaxDupe ? 'disabled' : ''}
+        style="margin-top:4px;${btnStyle}">
+        ${isMaxDupe ? '🔒 ' : '🔄 '}${btnLabel}<br><small>${isMaxDupe ? '交換不可' : '凸塊250'}</small>
+      </button>
+    </div>
+    `;
+  }).join('');
+}
+
+function exchangeChar(charIndex){
+  const COST = 250;
+  if(dupeStone < COST){
+    alert('凸塊が足りません（必要: '+COST+'個）');
+    return;
+  }
+  let c = chars[charIndex];
+  if(!c) return;
+
+  // 完凸チェック
+  let owned = box.find(b=>b.name===c.name);
+  if(owned && owned.dupe >= maxDupe[owned.rarity]){
+    alert(c.name+' はすでに完凸です。交換できません。');
+    return;
+  }
+
+  if(!confirm(c.name+' を凸塊'+COST+'個で交換しますか？')){
+    return;
+  }
+
+  dupeStone -= COST;
+  addToBox(c);
+  update();
+  saveData();
+  alert('✅ '+c.name+' をGETしました！');
+  renderExchange();
+}
 </script>
 </body>
 </html>
