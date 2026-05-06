@@ -745,6 +745,7 @@ let currentEvent = undefined; // ←これ追加🔥
 let weaponBox = [];
 
 let eventProgress = {};
+let lastAllySkill = null; // コピー用: 直前に発動した味方スキル情報
 
 let trialPage = 0;
 const perPage = 8;
@@ -801,9 +802,9 @@ skill:{type:"multi", power:0.4, hits:4, text:"4連撃+デバフ",cool:3}},
 {name:"ソーメーン",rarity:3,attr:"雷",img:"https://imgur.com/dGE9dXV.png",role:"debuffer",
 skill:{type:"poison",power:0.5,text:"50%毒付与",cool:3}},
 {name:"跳田収滋",rarity:3,attr:"水",img:"https://imgur.com/Bw5qyja.png",role:"debuffer",
-skill:{type:"debuff", power:0.30, text:"敵弱体30%",cool:3}},
+skill:{type:"debuff", power:0.7, text:"敵弱体30%",cool:3}},
 {name:"オリバー",rarity:3,attr:"水",img:"https://imgur.com/57Rlf7D.png",role:"debuffer",
-skill:{type:"freeze", power:1, text:"凍結付与(1T行動不能)",cool:4}},
+skill:{type:"freeze", power:1, text:"凍結付与(50%で1T行動不能)",cool:4}},
 
 {name:"弐呪刻",rarity:4,attr:"水",img:"https://imgur.com/qAGbxYV.png",role:"attacker",
 skill:{type:"multi", power:0.4, hits:10, text:"10連撃+デバフ",cool:4}},
@@ -827,13 +828,30 @@ skill:{type:"poisonBurst", power:1.25, text:"毒爆発(毒×125%ダメ)",cool:3}
 {name:"死橋轟(β)",rarity:4,attr:"水",img:"https://imgur.com/TAk0JKU.png",role:"attacker",
 skill:{type:"bunshin", cool:5, text:"分身: 3Tパーティを4人に(重複不可)"},noTrial:true},
 {name:"阿波牛星夜(β)",rarity:4,attr:"火",img:"https://imgur.com/yJ89rjI.png",role:"attacker",
-skill:{type:"counterStack", power:1.0, text:"カウンター3回＋発動毎に威力+190%", cool:1},noTrial:true},
+skill:{type:"counterStack", power:1.0, text:"カウンター3回＋発動毎に威力+100%", cool:1},noTrial:true},
 {name:"コード5.2(β)",rarity:4,attr:"光",img:"https://imgur.com/F87rtOY.png",role:"attacker",
 skill:{type:"heatUp", text:"ヒートアップ: 発動後 経過ターン×100%ATK上昇(上限700%) ※一度のみ", cool:0},noTrial:true},
 {name:"FqEa(β)",rarity:4,attr:"闇",img:"https://imgur.com/khERAfx.png",role:"attacker",
 skill:{type:"timeCrash", turn:2, text:"時間崩壊: 2T被ダメ30%軽減→解除時に2T間の与ダメ(通常+スキル)×50%を敵に", cool:2},noTrial:true},
 {name:"黒峰天音(β)",rarity:4,attr:"雷",img:"https://imgur.com/oq9li7C.png",role:"attacker",
 skill:{type:"runawayBurn", text:"暴走燃焼: 3T間HP10%減少ATK+150%、攻撃時に全体燃焼付与。HP50%以下で効果2倍", cool:4},noTrial:true},
+{name:"甲斐翔也(β)",rarity:4,attr:"木",img:"https://imgur.com/27i3Cjc.png",role:"attacker",
+skill:{type:"copy", power:1.0, text:"直前の味方スキルをコピー", cool:6},noTrial:true},
+{name:"玉垣剣城(β)",rarity:4,attr:"火",img:"https://imgur.com/BMat100.png",role:"attacker",
+skill:{type:"kenSword", power:0.3, buffPower:0.3, buffTurn:3, text:"神速の剣術: 剣カウント+3付与。3Tの間追撃ATK+30%強化。(攻撃/被攻撃で剣カウント+1(永続)。剣カウント1つにつき攻撃後にATK30%追撃)", cool:4},noTrial:true},
+{name:"蒼井朔也(β)",rarity:4,attr:"水",img:"https://imgur.com/m8XTCRK.png",role:"attacker",
+skill:{type:"sniper", power:0.9, maxAmmo:6, text:"狙撃:残弾数分の連撃(ATK90%)。CTなし。ターン開始時に残弾1回復(最大6)", cool:0},noTrial:true},
+{name:"石倉有栖(β)",rarity:4,attr:"木",img:"https://imgur.com/dCJbplm.png",role:"support",
+skill:{type:"overrideDebuff", cool:4, text:"オーバーライド: 発動時に相手の全デバフ(毒/燃焼/感電)を永続化"},noTrial:true},
+{name:"ミニモータ(β)",rarity:4,attr:"雷",img:"https://imgur.com/XTv9yZ1.png",role:"attacker",
+skill:{type:"growthStrike", cool:0, text:"強制成長: 攻撃時に「成長」付与(最大5,永続)。1スタックにつきATK+40%&HP5%回復"},noTrial:true},
+{name:"ソーメーン(β)",rarity:4,attr:"火",img:"https://imgur.com/r4nMEHm.png",role:"attacker",
+skill:{type:"thunderArmor", cool:5, text:"雷の鎧: ATK+200%(永続)。敵ターン終わり自身HP20%回復。自分以外の味方HP20%カット。攻撃する度相手に感電付与"},noTrial:true},
+{name:"跳田収滋(β)",rarity:4,attr:"水",img:"https://imgur.com/W7tDIOm.png",role:"support",
+skill:{type:"weaponSummon", cool:5, text:"武器召喚: 3ターンの間、味方全体の攻撃時にランダム追加デバフ(毒/燃焼/感電)を付与"},noTrial:true},
+{name:"オリバー(β)",rarity:4,attr:"光",img:"https://imgur.com/InZgh9E.png",role:"attacker",
+skill:{type:"mimicry", cool:0, text:"無許可の模倣者: HPが減るほど防御&ATK上昇(最大+70%)(永続)"},noTrial:true},
+
 
 {name:"ゲガント",rarity:1,attr:"木",img:"https://imgur.com/dXFpBIJ.png",role:"attacker",
 skill:{text:"スキルなし"}},
@@ -1322,7 +1340,23 @@ const charDetails = {
     story:"　",},
   "FqEa(β)": {title:"運命が微笑む勝利",
     story:"　",},
-  "黒峰天音(β)": {title:"暴走の炎",
+  "黒峰天音(β)": {title:"無意識の烈火",
+    story:"　",},
+  "甲斐翔也(β)": {title:"空を裂く双環",
+    story:"　",},
+  "玉垣剣城(β)": {title:"最高最速の剣技",
+    story:"　",},
+  "蒼井朔也(β)": {title:"蒼閃の狙撃手",
+    story:"　",},
+  "石倉有栖(β)": {title:"極限の戦士",
+    story:"　",},
+  "ミニモータ(β)": {title:"色彩の鼓動",
+    story:"　",},
+  "ソーメーン(β)": {title:"稲妻の一撃",
+    story:"　",},
+  "跳田収滋(β)": {title:"策士の収納",
+    story:"　",},
+  "オリバー(β)": {title:"魂の奏鳴曲",
     story:"　",},
   "ゲガント": {title:"再生",
     story:"元武達によって倒された最初の敵。固有能罪符は「再生」",},
@@ -1816,16 +1850,22 @@ let lv = progress[i] || 1;
 let finalAtk = c.atk + (weapon?.atk || 0);
 let finalHp = c.hp + (weapon?.hp || 0);
 
+let initSkill = base?.skill || c.skill;
 return {
     ...c,
     atk: finalAtk,
     hp: finalHp,
     currentHp: finalHp,
-    skill: base?.skill || c.skill,
+    skill: initSkill,
     skill2: base?.skill2 || c.skill2 || null,
     cool2: 0,
     weapon: c.weapon ? {...c.weapon} : null,
-    weaponCool: 0
+    weaponCool: 0,
+    // 🔫 狙撃: 初期残弾6
+    sniperAmmo: initSkill?.type === "sniper" ? (initSkill.maxAmmo || 6) : undefined,
+    // ⚔ 神速の剣術: 初期剣カウント0
+    swordCount: initSkill?.type === "kenSword" ? 0 : undefined,
+    swordBuff: initSkill?.type === "kenSword" ? 0 : undefined, // 追加追撃強化ターン
 };
   }));
 
@@ -1853,6 +1893,7 @@ return {
 
 turn="player";turnIndex=0;
 deadPlayers=[];
+lastAllySkill = null;
 players.forEach(p => p.weaponCool = 0);
 renderBattle();
 }
@@ -1933,6 +1974,17 @@ function getPlayerStatusHTML(p){
     let cnt = p.chinkoPoCount || 0;
     h += `<span class="sBadge" style="background:#cc0066;color:#fff;">💢珍古砲×${cnt}/10</span>`;
   }
+  // ⚔ 神速の剣術カウント表示
+  if(p.skill && p.skill.type==="kenSword"){
+    let sc = p.swordCount || 0;
+    let buffTxt = (p.swordBuff && p.swordBuff > 0) ? `(強化${p.swordBuff}T)` : "";
+    h += `<span class="sBadge" style="background:#ffd700;color:#000;">⚔剣×${sc}${buffTxt}</span>`;
+  }
+  // 🔫 狙撃残弾表示
+  if(p.skill && p.skill.type==="sniper"){
+    let ammo = p.sniperAmmo ?? (p.skill.maxAmmo||6);
+    h += `<span class="sBadge" style="background:#336699;color:#fff;">🔫残弾${ammo}/${p.skill.maxAmmo||6}</span>`;
+  }
   if(p.statuses){
     p.statuses.forEach(s=>{
       if(s.type==="burn") h+=`<span class="sBadge sBurn">🔥燃${s.turn}</span>`;
@@ -1980,6 +2032,24 @@ function getPlayerStatusHTML(p){
   if(p.runawayBurn && p.runawayBurn.turn > 0){
     let mult = p.runawayBurn.doubled ? "×2" : "";
     h+=`<span class="sBadge" style="background:#ff2200;color:#fff;">🔥暴走燃焼(${p.runawayBurn.turn}T${mult})</span>`;
+  }
+  // 🌱 強制成長スタック表示
+  if(p.growthStacks && p.growthStacks > 0){
+    h+=`<span class="sBadge" style="background:#44cc44;color:#000;">🌱成長×${p.growthStacks}/5(ATK+${p.growthStacks*40}% HP+${p.growthStacks*5}%回復)</span>`;
+  }
+  // ⚡ 雷の鎧アクティブ表示
+  if(p.thunderArmor){
+    h+=`<span class="sBadge" style="background:#ffd700;color:#000;">⚡雷の鎧(永続)</span>`;
+  }
+  // 🗡 武器召喚残ターン表示
+  if(p.weaponSummonTurn && p.weaponSummonTurn > 0){
+    h+=`<span class="sBadge" style="background:#8888ff;color:#fff;">🗡武器召喚(${p.weaponSummonTurn}T)</span>`;
+  }
+  // 🎭 模倣者アクティブ表示
+  if(p.mimicryActive){
+    let _mRatio = 1 - (p.currentHp / p.hp);
+    let _mBonus = Math.min(0.7, _mRatio * 0.7);
+    h+=`<span class="sBadge" style="background:#cc88ff;color:#fff;">🎭模倣者(ATK&DEF+${Math.floor(_mBonus*100)}%)</span>`;
   }
   return h;
 }
@@ -2066,8 +2136,8 @@ function renderBattle(){
   actions.innerHTML =
     turn==="player"
     ? `<button onclick="attack()">通常攻撃</button>
-       <button onclick="skill()" ${(p.cool>0 || p.heatUpUsed)?"disabled":""}>
-       スキル1 ${p.heatUpUsed ? "[🔥ヒートアップ中]" : "(CT:"+p.cool+")"}${p.skill?.type==="chinkoPo" ? " [💢"+(p.chinkoPoCount||0)+"カウント]" : ""}
+       <button onclick="skill()" ${(p.cool>0 || p.heatUpUsed || (p.skill?.type==="sniper" && (p.sniperAmmo??6)<=0))?"disabled":""}>
+       スキル1 ${p.skill?.type==="sniper" ? "[🔫残弾"+(p.sniperAmmo??6)+"/6]" : p.heatUpUsed ? "[🔥ヒートアップ中]" : "(CT:"+p.cool+")"}${p.skill?.type==="chinkoPo" ? " [💢"+(p.chinkoPoCount||0)+"カウント]" : ""}${p.skill?.type==="kenSword" ? " [⚔剣×"+(p.swordCount||0)+"]" : ""}
        </button>
 ${p.skill2 ? `<button onclick="skill2()" ${(p.cool2>0 || (p.skill2.type==="bunshin" && players.some(pl=>pl.isBunshin)))?"disabled":""}>スキル2 (CT:${p.cool2})${p.skill2.type==="bunshin" && players.some(pl=>pl.isBunshin)?" [分身中]":""}</button>` : ""}
 ${p.weapon ? `<button onclick="weaponSkill()" ${(p.weaponCool??0)>0?"disabled":""}>武器スキル (CT:${p.weaponCool})</button>` : ""}
@@ -2134,6 +2204,23 @@ if(p.skill && p.skill.type==="chinkoPo"){
     p.chinkoPoCount = Math.min(10, (p.chinkoPoCount||0) + 1);
 }
 
+// ⚔ 神速の剣術: 攻撃時に剣カウント+1、カウント分だけ追撃
+if(p.skill && p.skill.type==="kenSword"){
+    p.swordCount = (p.swordCount||0) + 1;
+    let sc = p.swordCount;
+    let followBonus = (p.swordBuff && p.swordBuff > 0) ? (p.skill.buffPower || 0.3) : 0;
+    let totalFollowRate = (p.skill.power || 0.3) + followBonus;
+    let followAtk = p.atk; if(p.buffs) p.buffs.forEach(b=>{ followAtk*=b.power; });
+    for(let fi=0; fi<sc; fi++){
+        let fdmg = Math.floor(followAtk * totalFollowRate);
+        if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly) fdmg=Math.floor(fdmg*0.05);
+        enemy.hp -= fdmg;
+        let _fd = fdmg;
+        setTimeout(()=>{ showDamage("enemy",{dmg:_fd,type:""}); }, 200 + fi*120);
+    }
+    if(sc>0){ showSynergyText("⚔ 神速の剣術！剣×"+sc+"追撃！"+(followBonus>0?"(強化中)":"")); renderBattle(); }
+}
+
 // 🔥 暴走燃焼: 攻撃時に全体燃焼(高倍率)付与
 if(p.runawayBurn && p.runawayBurn.turn > 0){
     let burnPow = p.runawayBurn.doubled ? 1.2 : 0.6;
@@ -2147,6 +2234,72 @@ if(p.runawayBurn && p.runawayBurn.turn > 0){
 }
 
 p.ult+=30;
+
+// 🌱 強制成長: 通常攻撃時にもスタック付与&HP回復
+if(p.skill && p.skill.type==="growthStrike"){
+    let curStacks = p.growthStacks || 0;
+    if(curStacks < 5){
+        p.growthStacks = curStacks + 1;
+        let newStacks = p.growthStacks;
+        if(!p.buffs) p.buffs = [];
+        p.buffs = p.buffs.filter(b => !b.isGrowth);
+        let growthPower = 1 + newStacks * 0.4;
+        p.buffs.push({ power: growthPower, turn: 999999, permanent: true, isGrowth: true });
+        let healAmt = p.hp * (newStacks * 0.05); // 成長スタック数×5%
+        p.currentHp = Math.min(p.hp, p.currentHp + healAmt);
+        let pi2 = players.indexOf(p);
+        setTimeout(()=>showDamage("p"+(pi2>=0?pi2:turnIndex), {dmg:healAmt, type:"heal"}), 200);
+        showSynergyText("🌱 成長！スタック" + newStacks + "/5 HP+" + (newStacks*5) + "%回復");
+    } else {
+        let healAmt = p.hp * (curStacks * 0.05); // 成長スタック数×5%（MAX5スタック=25%）
+        p.currentHp = Math.min(p.hp, p.currentHp + healAmt);
+        let pi2 = players.indexOf(p);
+        setTimeout(()=>showDamage("p"+(pi2>=0?pi2:turnIndex), {dmg:healAmt, type:"heal"}), 200);
+        showSynergyText("🌱 成長MAX！HP" + (curStacks*5) + "%回復！");
+    }
+    renderBattle();
+}
+
+// ⚡ 雷の鎧: 通常攻撃時に感電付与
+if(p.thunderArmor){
+    enemy.shockTurn = Math.max(enemy.shockTurn||0, 2);
+    showSynergyText("⚡ 雷の鎧：感電付与！");
+}
+
+// 🗡 武器召喚: 攻撃時にランダム追加デバフ付与
+if(p.weaponSummonTurn && p.weaponSummonTurn > 0){
+    let debufTypes = ["poison", "burn", "shock"];
+    let chosen = debufTypes[Math.floor(Math.random()*3)];
+    if(chosen==="poison"){
+        if(!enemy.poisons) enemy.poisons = [];
+        enemy.poisons.push({ power: 0.3, turn: 3, user: p });
+        showSynergyText("🗡 武器召喚：毒付与！");
+    } else if(chosen==="burn"){
+        if(!enemy.burns) enemy.burns = [];
+        enemy.burns.push({ power: p.atk * 0.3, turn: 3, user: p });
+        enemy.burnPower = enemy.burns.reduce((acc,b)=>acc+b.power,0);
+        enemy.burnTurn = Math.max(...enemy.burns.map(b=>b.turn));
+        showSynergyText("🗡 武器召喚：燃焼付与！");
+    } else {
+        enemy.shockTurn = Math.max(enemy.shockTurn||0, 2);
+        showSynergyText("🗡 武器召喚：感電付与！");
+    }
+}
+
+// 🎭 模倣者パッシブ: 毎攻撃時にバフ再計算（永続・ATKのみ）最低+10%保証
+if(p.mimicryActive){
+    let ratio = 1 - (p.currentHp / p.hp);
+    let bonus = Math.min(0.7, 0.1 + ratio * 0.6);
+    if(!p.buffs) p.buffs = [];
+    p.buffs = p.buffs.filter(b => !b.isMimicry);
+    p.buffs.push({ power: 1 + bonus, turn: 999999, permanent: true, isMimicry: true });
+}
+
+// 🎭 模倣者パッシブ: スキル未使用でも自動有効化
+if(p.skill && p.skill.type==="mimicry" && !p.mimicryActive){
+    p.mimicryActive = true;
+}
+
 endTurn();
 }
 
@@ -2193,6 +2346,22 @@ if(enemy.hp <= 0){
 // 珍古砲カウント加算
 if(p.skill && p.skill.type==="chinkoPo"){
     p.chinkoPoCount = Math.min(10, (p.chinkoPoCount||0) + 1);
+}
+
+// ⚔ 神速の剣術: 必殺後も追撃
+if(p.skill && p.skill.type==="kenSword"){
+    p.swordCount = (p.swordCount||0) + 1;
+    let sc = p.swordCount;
+    let followBonus = (p.swordBuff && p.swordBuff > 0) ? (p.skill.buffPower || 0.3) : 0;
+    let totalFollowRate = (p.skill.power || 0.3) + followBonus;
+    let followAtk = p.atk; if(p.buffs) p.buffs.forEach(b=>{ followAtk*=b.power; });
+    for(let fi=0; fi<sc; fi++){
+        let fdmg = Math.floor(followAtk * totalFollowRate);
+        enemy.hp -= fdmg;
+        let _fd = fdmg;
+        setTimeout(()=>{ showDamage("enemy",{dmg:_fd,type:""}); }, 700 + fi*120);
+    }
+    if(sc>0){ showSynergyText("⚔ 神速の剣術！剣×"+sc+"追撃！"+(followBonus>0?"(強化中)":"")); renderBattle(); }
 }
 
 endTurn();
@@ -2262,6 +2431,8 @@ if(enemy.freezeTurn>0){
               let idx = pl.buffs.findIndex(b=>b.isHeatUp);
               if(idx >= 0) pl.buffs[idx].power = 1.0 + newBonus;
           }
+          if(pl.skill && pl.skill.type==="sniper"){ let max=pl.skill.maxAmmo||6; pl.sniperAmmo=Math.min(max,(pl.sniperAmmo??max)+1); }
+          if(pl.skill && pl.skill.type==="kenSword" && pl.swordBuff>0) pl.swordBuff--;
       });
       checkTurnLimit();
       renderBattle();
@@ -2309,10 +2480,29 @@ if(target.shields && target.shields.length > 0){
     res.dmg *= (1 - target.shield.power);
 }
 
+// 🎭 模倣者パッシブ: 被ダメ軽減（HP消費量に応じて最大70%軽減、最低10%保証）
+if(target.mimicryActive){
+    let ratio = 1 - (target.currentHp / target.hp);
+    let defBonus = Math.min(0.7, 0.1 + ratio * 0.6);
+    res.dmg = Math.floor(res.dmg * (1 - defBonus));
+    // バフも再計算（ATK側）
+    if(!target.buffs) target.buffs = [];
+    target.buffs = target.buffs.filter(b => !b.isMimicry);
+    target.buffs.push({ power: 1 + defBonus, turn: 999999, permanent: true, isMimicry: true });
+}
+// 🎭 模倣者: スキル未使用でも自動有効化（戦闘中パッシブ）
+if(target.skill && target.skill.type==="mimicry" && !target.mimicryActive){
+    target.mimicryActive = true;
+}
+
 target.currentHp -= res.dmg;
 if(target.currentHp <= 0) target.currentHp = 0;
 
-
+// ⚔ 神速の剣術: 被攻撃時に剣カウント+1
+if(target.skill && target.skill.type==="kenSword"){
+    target.swordCount = (target.swordCount||0) + 1;
+    showSynergyText("⚔ 被攻撃！剣カウント→"+(target.swordCount));
+}
 
 renderBattle();
 setTimeout(()=>{ showDamage("p" + index, res); }, 50);
@@ -2394,6 +2584,19 @@ setTimeout(()=>{
       if(enemy.allDebuffTurn <= 0){ enemy.allDebuffMark = false; enemy.allDebuffTurn = 0; }
     }
 
+    // ⚡🛡 雷の鎧: 敵ターン終わりに自身HP20%回復
+    players.forEach((pl, pli) => {
+      if(pl.thunderArmor){
+        let healAmt = Math.floor(pl.hp * 0.2);
+        pl.currentHp = Math.min(pl.hp, pl.currentHp + healAmt);
+        setTimeout(()=>showDamage("p"+pli, {dmg:healAmt, type:"heal"}), 50);
+      }
+      // 🗡 武器召喚ターンカウントダウン
+      if(pl.weaponSummonTurn && pl.weaponSummonTurn > 0){
+        pl.weaponSummonTurn--;
+      }
+    });
+
     turn = "player";
     turnIndex = 0;
     if(turnIndex >= players.length) turnIndex = 0;
@@ -2404,6 +2607,15 @@ setTimeout(()=>{
             let newBonus = Math.min(7.0, (enemy.turnCount) * 1.0);
             let idx = pl.buffs.findIndex(b=>b.isHeatUp);
             if(idx >= 0) pl.buffs[idx].power = 1.0 + newBonus;
+        }
+        // 🔫 狙撃: ターン開始時に残弾1回復
+        if(pl.skill && pl.skill.type==="sniper"){
+            let max = pl.skill.maxAmmo || 6;
+            pl.sniperAmmo = Math.min(max, (pl.sniperAmmo??max) + 1);
+        }
+        // ⚔ 神速の剣術: 追撃強化バフのターンカウントダウン
+        if(pl.skill && pl.skill.type==="kenSword"){
+            if(pl.swordBuff && pl.swordBuff > 0) pl.swordBuff--;
         }
     });
     checkTurnLimit();
@@ -2736,10 +2948,14 @@ if(s.type==="burn"){
     checkSynergy(p, atk);
 }
 
-// ❄ 凍結
+// ❄ 凍結（50%）
 if(s.type==="freeze"){
-  enemy.freezeTurn = 1;
-  showSynergyText("凍結！行動不能！");
+  if(Math.random() < 0.5){
+    enemy.freezeTurn = 1;
+    showSynergyText("❄ 凍結成功！行動不能！");
+  } else {
+    showSynergyText("❄ 凍結失敗…");
+  }
 }
 
 // ⚡ 感電
@@ -3037,7 +3253,454 @@ if(s.type==="runawayBurn"){
     renderBattle();
 }
 
-if(s.type !== "heatUp") p.cool = p.skill.cool;
+// ⚔ 神速の剣術: スキル発動時に剣カウント+3付与、3Tの間追撃ATK+30%強化
+if(s.type==="kenSword"){
+    p.swordCount = (p.swordCount||0) + 3;
+    p.swordBuff = s.buffTurn || 3;
+    showSynergyText("⚔ 神速の剣術！剣カウント+"+ 3 +"→"+p.swordCount+"！3T間追撃強化！");
+    renderBattle();
+}
+
+// 🔫 狙撃: 残弾数分の連撃(ATK75%)、CTなし
+if(s.type==="sniper"){
+    let ammo = p.sniperAmmo ?? (s.maxAmmo || 6);
+    if(ammo <= 0){
+        showSynergyText("🔫 弾切れ！残弾0");
+    } else {
+        let followAtk = atk;
+        let totalDmg = 0;
+        for(let si=0; si<ammo; si++){
+            let sres = calcDamage(p.attr, enemy.attr, followAtk * (s.power || 0.75));
+            if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) sres.dmg=Math.floor(sres.dmg*0.05);
+            if(enemy.allDebuffMark) sres.dmg=Math.floor(sres.dmg*1.5);
+            if(enemy.shield>0){ let ab=Math.min(enemy.shield,sres.dmg); enemy.shield-=ab; sres.dmg-=ab; }
+            enemy.hp -= sres.dmg;
+            totalDmg += sres.dmg;
+            let _sd = sres.dmg;
+            setTimeout(()=>{ showDamage("enemy",{dmg:_sd,type:""}); }, si*130);
+        }
+        p.sniperAmmo = 0;
+        showSynergyText("🔫 狙撃！"+ammo+"連射！合計"+Math.floor(totalDmg));
+        setTimeout(()=>{ showHitText("enemy", ammo); showTotalDamage("enemy", totalDmg); }, ammo*130+100);
+        applyShockBonus(p, atk);
+        renderBattle();
+        if(enemy.hp <= 0){ setTimeout(()=>win(), 500); return; }
+    }
+    // CTなし→クールタイムリセットしない（cool=0のまま）
+    if(s.type !== "heatUp") p.cool = 0; // CTなし
+    lastAllySkill = s;
+    endTurn();
+    return;
+}
+
+// 🔓 オーバーライド: 敵の全デバフ(毒/燃焼/感電)ターンを無限化
+if(s.type==="overrideDebuff"){
+    let activated = false;
+    if(enemy.poisons && enemy.poisons.length > 0){
+        enemy.poisons.forEach(po => { po.turn = 999999; });
+        activated = true;
+    }
+    if(enemy.burns && enemy.burns.length > 0){
+        enemy.burns.forEach(b => { b.turn = 999999; });
+        enemy.burnTurn = 999999;
+        activated = true;
+    }
+    if(enemy.burnTurn > 0 && !activated){
+        enemy.burnTurn = 999999;
+        activated = true;
+    }
+    if(enemy.shockTurn > 0){
+        enemy.shockTurn = 999999;
+        activated = true;
+    }
+    if(enemy.debuffs && enemy.debuffs.length > 0){
+        enemy.debuffs.forEach(d => { d.turn = 999999; });
+        enemy.debuffTurn = 999999;
+        activated = true;
+    }
+    if(activated){
+        showSynergyText("🔓 オーバーライド！敵の全デバフが永続化した！");
+    } else {
+        showSynergyText("🔓 オーバーライド！（対象のデバフなし）");
+    }
+    renderBattle();
+}
+
+// 🌱 強制成長: 攻撃時に成長スタック付与(最大5,永続) 1スタックにつきATK+40%&HP5%回復
+if(s.type==="growthStrike"){
+    let curStacks = p.growthStacks || 0;
+    if(curStacks < 5){
+        p.growthStacks = curStacks + 1;
+        let newStacks = p.growthStacks;
+        if(!p.buffs) p.buffs = [];
+        p.buffs = p.buffs.filter(b => !b.isGrowth);
+        let growthPower = 1 + newStacks * 0.4;
+        p.buffs.push({ power: growthPower, turn: 999999, permanent: true, isGrowth: true });
+        let healAmt = p.hp * (newStacks * 0.05); // 成長スタック数×5%
+        p.currentHp = Math.min(p.hp, p.currentHp + healAmt);
+        let pi = players.indexOf(p);
+        setTimeout(()=>showDamage("p"+(pi>=0?pi:turnIndex), {dmg:healAmt, type:"heal"}), 10);
+        showSynergyText("🌱 強制成長！スタック" + newStacks + "/5 ATK+" + (newStacks*40) + "% HP+" + (newStacks*5) + "%回復！");
+    } else {
+        let healAmt = p.hp * (curStacks * 0.05); // MAX5スタック=25%
+        p.currentHp = Math.min(p.hp, p.currentHp + healAmt);
+        let pi = players.indexOf(p);
+        setTimeout(()=>showDamage("p"+(pi>=0?pi:turnIndex), {dmg:healAmt, type:"heal"}), 10);
+        showSynergyText("🌱 強制成長MAX！HP" + (curStacks*5) + "%回復！");
+    }
+    renderBattle();
+    p.cool = 0;
+    lastAllySkill = s;
+    endTurn();
+    return;
+}
+
+// ⚡🛡 雷の鎧: ATK+200%(永続)。敵ターン終わり自身HP20%回復。自分以外の味方HP20%カット。攻撃時感電付与
+if(s.type==="thunderArmor"){
+    if(!p.thunderArmor){
+        p.thunderArmor = true;
+        if(!p.buffs) p.buffs = [];
+        p.buffs = p.buffs.filter(b => !b.isThunderArmor);
+        p.buffs.push({ power: 3.0, turn: 999999, permanent: true, isThunderArmor: true });
+        let pi = players.indexOf(p);
+        players.forEach((t, ti) => {
+            if(ti !== pi){
+                let cut = Math.floor(t.hp * 0.2);
+                t.currentHp = Math.max(1, t.currentHp - cut);
+                setTimeout(()=>showDamage("p"+ti, {dmg:cut, type:"burn"}), 50 + ti*80);
+            }
+        });
+        showSynergyText("⚡🛡 雷の鎧！ATK+200%(永続)！味方HP20%カット！");
+    } else {
+        showSynergyText("⚡🛡 雷の鎧 はすでに発動中！");
+    }
+    renderBattle();
+}
+
+// 🗡 武器召喚: 3ターンの間、味方全体攻撃時にランダム追加デバフ(毒/燃焼/感電)付与
+if(s.type==="weaponSummon"){
+    players.forEach(t => {
+        t.weaponSummonTurn = 3;
+    });
+    showSynergyText("🗡 武器召喚！3ターン間、全員の攻撃に追加デバフ！");
+    renderBattle();
+}
+
+// 🎭 無許可の模倣者: HPが減るほど防御&ATK上昇(最大+70%)(永続パッシブ) ※HP満タンでも最低+10%保証
+if(s.type==="mimicry"){
+    let ratio = 1 - (p.currentHp / p.hp);
+    let bonus = Math.min(0.7, 0.1 + ratio * 0.6); // 最低+10%、欠損に応じて最大+70%
+    if(!p.buffs) p.buffs = [];
+    p.buffs = p.buffs.filter(b => !b.isMimicry);
+    p.buffs.push({ power: 1 + bonus, turn: 999999, permanent: true, isMimicry: true });
+    p.mimicryActive = true;
+    showSynergyText("🎭 模倣者パッシブ有効！HP残" + Math.floor((1-ratio)*100) + "% → ATK&DEF+" + Math.floor(bonus*100) + "%！(永続)");
+    renderBattle();
+    p.cool = 0; // CT不要（永続パッシブ）
+    // mimicryはコピー不可スキルのためlastAllySkillに記録しない
+    endTurn();
+    return;
+}
+
+// 🔄 コピー: 直前の味方スキルを使用する
+if(s.type==="copy"){
+    if(!lastAllySkill){
+        showSynergyText("🔄 コピー失敗…直前の味方スキルがない");
+    } else {
+        let s2 = lastAllySkill;
+        showSynergyText("🔄「" + s2.text + "」をコピー！");
+        let atkC = p.atk;
+        if(p.buffs){ p.buffs.forEach(b=>{ atkC *= b.power; }); }
+        let pw = s.power || 1; // コピー威力倍率
+
+        // --- ダメージ系 ---
+        if(s2.type==="damage"){
+            let res = calcDamage(p.attr, enemy.attr, atkC*(s2.power||1)*pw);
+            if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
+            if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+            if(enemy.allDebuffMark) res.dmg=Math.floor(res.dmg*1.5);
+            enemy.hp-=res.dmg; applyShockBonus(p,atkC);
+            renderBattle(); setTimeout(()=>showDamage("enemy",res),10);
+        }
+        if(s2.type==="multi"){
+            for(let i=0;i<(s2.hits||1);i++){
+                let res=calcDamage(p.attr,enemy.attr,atkC*(s2.power||1)*pw);
+                enemy.hp-=res.dmg;
+                if(!enemy.debuffUsed){ enemy.atk*=0.95; }
+                setTimeout(()=>{ showDamage("enemy",res); if(i===(s2.hits||1)-1){ enemy.debuffUsed=true; renderBattle(); } },i*120);
+            }
+        }
+        if(s2.type==="double"){
+            let res=calcDamage(p.attr,enemy.attr,atkC*(s2.power||3.5)*pw);
+            let res2=calcDamage(p.attr,enemy.attr,atkC*0.5*pw);
+            if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+            if(enemy.allDebuffMark){ res.dmg=Math.floor(res.dmg*1.5); res2.dmg=Math.floor(res2.dmg*1.5); }
+            enemy.hp-=res.dmg; enemy.hp-=res2.dmg;
+            renderBattle(); setTimeout(()=>showDamage("enemy",res),10); setTimeout(()=>showDamage("enemy",res2),160);
+        }
+        if(s2.type==="drain"){
+            let idx=turnIndex;
+            let res=calcDamage(p.attr,enemy.attr,atkC*(s2.power||2)*pw);
+            if(enemy.allDebuffMark) res.dmg=Math.floor(res.dmg*1.5);
+            enemy.hp-=res.dmg;
+            let heal=res.dmg*0.5; p.currentHp+=heal; if(p.currentHp>p.hp) p.currentHp=p.hp;
+            renderBattle(); setTimeout(()=>showDamage("enemy",res),10); setTimeout(()=>showDamage("p"+idx,{dmg:heal,type:"heal"}),120);
+        }
+        if(s2.type==="hpCut"){
+            let dmg=enemy.maxHp*(s2.power||0.2)*pw;
+            enemy.hp-=dmg; renderBattle(); setTimeout(()=>showDamage("enemy",{dmg,type:""}),10);
+        }
+        if(s2.type==="rage"){
+            let ratio=1-(p.currentHp/p.hp);
+            let dmg=Math.floor(atkC*(1+ratio*((s2.power||7)-1)*3)*pw);
+            enemy.hp-=dmg;
+            renderBattle(); setTimeout(()=>showDamage("enemy",{dmg,type:"ultimate"}),10);
+        }
+        if(s2.type==="chain"){
+            let res=calcDamage(p.attr,enemy.attr,atkC*(s2.power||2)*pw);
+            if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
+            if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+            if(enemy.allDebuffMark) res.dmg=Math.floor(res.dmg*1.5);
+            enemy.hp-=res.dmg; players.forEach(t=>{ t.cool=0; }); applyShockBonus(p,atkC);
+            renderBattle(); setTimeout(()=>{ showDamage("enemy",res); showSynergyText("💥 連鎖爆発コピー！味方CT全回復！"); },10);
+        }
+        if(s2.type==="poisonBurst"){
+            let poisonCount=(enemy.poisons&&enemy.poisons.length>0)?enemy.poisons.length:0;
+            let multiplier=(poisonCount>0?poisonCount*(s2.power||1.25):1)*pw;
+            let res=calcDamage(p.attr,enemy.attr,atkC*multiplier);
+            if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
+            if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+            if(enemy.allDebuffMark) res.dmg=Math.floor(res.dmg*1.5);
+            enemy.hp-=res.dmg; applyShockBonus(p,atkC);
+            showSynergyText("☠💥 毒爆発コピー！毒×"+poisonCount+"！"); renderBattle(); setTimeout(()=>showDamage("enemy",{dmg:res.dmg,type:"poison"}),10);
+        }
+        if(s2.type==="chinkoPo"){
+            let count=p.chinkoPoCount||0;
+            let multiplier=(1+count*0.77)*(s2.power||2)*pw;
+            let res=calcDamage(p.attr,enemy.attr,atkC*multiplier);
+            if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
+            if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+            enemy.hp-=res.dmg; applyShockBonus(p,atkC);
+            showSynergyText("💢 珍古砲コピー！カウント"+count+"！"); renderBattle(); setTimeout(()=>showDamage("enemy",res),10);
+        }
+
+        // --- 状態異常付与系 ---
+        if(s2.type==="poison"){
+            if(!enemy.poisons) enemy.poisons=[];
+            enemy.poisons.push({ power:(s2.power||0.5)*pw, turn:100, user:p });
+            checkSynergy(p,atkC);
+        }
+        if(s2.type==="burn"){
+            if(!enemy.burns) enemy.burns=[];
+            enemy.burns.push({ power:atkC*(s2.power||0.4)*pw, turn:s2.turn||4, user:p });
+            enemy.burnPower=enemy.burns.reduce((acc,b)=>acc+b.power,0);
+            enemy.burnTurn=Math.max(...enemy.burns.map(b=>b.turn));
+            checkSynergy(p,atkC);
+        }
+        if(s2.type==="freeze"){
+            if(Math.random() < 0.5){
+                enemy.freezeTurn=1;
+                showSynergyText("❄ 凍結コピー成功！行動不能！");
+            } else {
+                showSynergyText("❄ 凍結コピー失敗…");
+            }
+        }
+        if(s2.type==="shock"){
+            enemy.shockTurn=2;
+            enemy.shockPower=atkC*(s2.power||0.5)*pw;
+            checkSynergy(p,atkC);
+            showSynergyText("⚡ 感電コピー！");
+        }
+
+        // --- デバフ系 ---
+        if(s2.type==="debuff"){
+            if(!enemy.debuffs) enemy.debuffs=[];
+            enemy.debuffs.push({ power:s2.power||0.8, turn:3 });
+            enemy.debuffPower=enemy.debuffs.reduce((acc,d)=>acc*d.power,1);
+            enemy.debuffTurn=Math.max(...enemy.debuffs.map(d=>d.turn));
+        }
+        if(s2.type==="allDebuff"){
+            enemy.debuffTurn=4; enemy.debuffPower=s2.power||0.7;
+            enemy.allDebuffMark=true; enemy.allDebuffTurn=3;
+            showSynergyText("⬇ 全弱体コピー！ATK低下＆被ダメ増！"); renderBattle();
+        }
+
+        // --- バフ・回復系 ---
+        if(s2.type==="heal"){
+            players.forEach((t,i)=>{
+                let heal=t.hp*(s2.power||0.3)*pw;
+                t.currentHp+=heal; if(t.currentHp>t.hp) t.currentHp=t.hp;
+                setTimeout(()=>showDamage("p"+i,{dmg:heal,type:"heal"}),10);
+            }); renderBattle();
+        }
+        if(s2.type==="buff"){
+            let buffPow=(s2.power||1.5)*pw;
+            if(!p.buffs) p.buffs=[];
+            p.buffs.push({ power:buffPow, turn:3 });
+            showSynergyText("🔺 バフコピー！ATK×"+buffPow.toFixed(1)+"倍！");
+        }
+        if(s2.type==="teamBuff"){
+            players.forEach(t=>{ if(!t.buffs) t.buffs=[]; t.buffs.push({ turn:3, power:(s2.power||1.25)*pw }); });
+        }
+        if(s2.type==="revive"){
+            if(deadPlayers.length>0){
+                let revived=deadPlayers.pop();
+                revived.currentHp=Math.floor(revived.hp*(s2.power||0.5));
+                revived.cool=0; players.push(revived);
+                let wi=players.length-1;
+                renderBattle(); setTimeout(()=>{ showDamage("p"+wi,{dmg:revived.currentHp,type:"heal"}); showSynergyText("⬆ 蘇生コピー！"+revived.name+"復活！"); },10);
+            } else {
+                showSynergyText("⬆ 蘇生コピー失敗…倒れた味方がいない");
+            }
+        }
+
+        // --- 防御・特殊系 ---
+        if(s2.type==="shield"){
+            if(!p.shields) p.shields=[];
+            p.shields.push({ turn:s2.turn||4, power:s2.power||0.2 });
+            showSynergyText("🛡 シールドコピー！(×"+p.shields.length+"重)");
+        }
+        if(s2.type==="counter"){
+            if(!p.counters) p.counters=[];
+            p.counters.push({ turn:s2.turn||3, power:(s2.power||2)*pw });
+            showSynergyText("🛡 カウンターコピー！(×"+p.counters.length+"重)");
+        }
+        if(s2.type==="counterStack"){
+            if(p.counterStackCount===undefined) p.counterStackCount=0;
+            p.counterStackCount++;
+            let stackPow=(s2.power||1)*(1+1.0*(p.counterStackCount-1))*pw;
+            p.counterStackSlots=[{power:stackPow},{power:stackPow},{power:stackPow}];
+            showSynergyText("⚔ カウンタースタックコピー！反撃×3（"+Math.floor(stackPow*100)+"%）"); renderBattle();
+        }
+        if(s2.type==="taunt"){
+            p.taunt={ turn:s2.turn||3 };
+            if(!p.shields) p.shields=[];
+            p.shields.push({ turn:s2.turn||3, power:0.5 });
+            showSynergyText("🛡 挑発コピー！攻撃を引き受ける！"); renderBattle();
+        }
+        if(s2.type==="bunshin"){
+            if(players.some(pl=>pl.isBunshin)){
+                showSynergyText("⚠ 分身コピー：分身はすでに存在する！");
+            } else {
+                let bunshin={...p, name:p.name+"（分身）", isBunshin:true, bunshinTurn:3, cool:0, cool2:999, weaponCool:0, ult:0, buffs:[], shields:[], counters:[]};
+                players.push(bunshin);
+                showSynergyText("👥 分身コピー！3ターン後に消滅！"); renderBattle();
+            }
+        }
+        if(s2.type==="timeCrash"){
+            if(p.timeCrash!=null){
+                let stored=p.timeCrash.stored||0;
+                let burstDmg=Math.floor(stored*0.5*pw);
+                p.timeCrash=null;
+                if(p.shields) p.shields=p.shields.filter(sh=>!sh.isTimeCrash);
+                if(burstDmg>0){
+                    if(enemy.shield>0){ let ab=Math.min(enemy.shield,burstDmg); enemy.shield-=ab; burstDmg-=ab; }
+                    enemy.hp-=burstDmg;
+                    showSynergyText("⏳ 時間崩壊コピー解放！累積×50%＝"+burstDmg+"！"); renderBattle();
+                    setTimeout(()=>showDamage("enemy",{dmg:burstDmg,type:"ultimate"}),10);
+                } else {
+                    showSynergyText("⏳ 時間崩壊コピー解除（蓄積なし）");
+                }
+            } else {
+                p.timeCrash={ turn:s2.turn||2, stored:0 };
+                if(!p.shields) p.shields=[];
+                p.shields.push({ turn:s2.turn||2, power:0.3, isTimeCrash:true });
+                showSynergyText("⏳ 時間崩壊コピー発動！2T間被ダメ軽減！"); renderBattle();
+            }
+        }
+        if(s2.type==="runawayBurn"){
+            let isLow=p.currentHp/p.hp<=0.5;
+            let atkBonus=isLow?4.0:2.5;
+            if(!p.buffs) p.buffs=[];
+            p.buffs=p.buffs.filter(b=>!b.isRunawayBurn);
+            p.buffs.push({ power:atkBonus, turn:3, isRunawayBurn:true });
+            p.runawayBurn={ turn:3, doubled:isLow };
+            showSynergyText("🔥 暴走燃焼コピー！"+(isLow?"ATK+300%(2倍効果！)":"ATK+150%")); renderBattle();
+        }
+        if(s2.type==="heatUp"){
+            let elapsedTurns=enemy.turnCount||0;
+            let bonusRate=Math.min(7.0,elapsedTurns*1.0);
+            if(!p.buffs) p.buffs=[];
+            p.buffs=p.buffs.filter(b=>!b.isHeatUp);
+            p.buffs.push({ power:1.0+bonusRate, turn:9999, permanent:true, isHeatUp:true });
+            p.heatUpUsed=true;
+            showSynergyText("🔥 ヒートアップコピー！+"+Math.floor(bonusRate*100)+"%！"); renderBattle();
+        }
+        // --- コピー追加対応スキル ---
+        if(s2.type==="growthStrike"){
+            let curStacks = p.growthStacks || 0;
+            if(curStacks < 5){
+                p.growthStacks = curStacks + 1;
+                let newStacks = p.growthStacks;
+                if(!p.buffs) p.buffs=[];
+                p.buffs=p.buffs.filter(b=>!b.isGrowth);
+                let growthPower = 1 + newStacks * 0.4;
+                p.buffs.push({ power:growthPower, turn:999999, permanent:true, isGrowth:true });
+                let healAmt = p.hp * (newStacks * 0.05);
+                p.currentHp = Math.min(p.hp, p.currentHp + healAmt);
+                let pi2=players.indexOf(p);
+                setTimeout(()=>showDamage("p"+(pi2>=0?pi2:turnIndex),{dmg:healAmt,type:"heal"}),10);
+                showSynergyText("🌱 強制成長コピー！スタック"+newStacks+"/5 ATK+"+(newStacks*40)+"% HP+"+(newStacks*5)+"%回復！"); renderBattle();
+            } else {
+                let healAmt = p.hp * (curStacks * 0.05);
+                p.currentHp = Math.min(p.hp, p.currentHp + healAmt);
+                let pi2=players.indexOf(p);
+                setTimeout(()=>showDamage("p"+(pi2>=0?pi2:turnIndex),{dmg:healAmt,type:"heal"}),10);
+                showSynergyText("🌱 強制成長コピーMAX！HP回復！"); renderBattle();
+            }
+        }
+        if(s2.type==="kenSword"){
+            p.swordCount = (p.swordCount||0) + 3;
+            p.swordBuff = s2.buffTurn || 3;
+            showSynergyText("⚔ 神速の剣術コピー！剣カウント+3→"+p.swordCount+"！3T間追撃強化！"); renderBattle();
+        }
+        if(s2.type==="overrideDebuff"){
+            let activated=false;
+            if(enemy.poisons && enemy.poisons.length>0){ enemy.poisons.forEach(po=>{po.turn=999999;}); activated=true; }
+            if(enemy.burns && enemy.burns.length>0){ enemy.burns.forEach(b=>{b.turn=999999;}); enemy.burnTurn=999999; activated=true; }
+            if(enemy.shockTurn>0){ enemy.shockTurn=999999; activated=true; }
+            if(enemy.debuffs && enemy.debuffs.length>0){ enemy.debuffs.forEach(d=>{d.turn=999999;}); enemy.debuffTurn=999999; activated=true; }
+            showSynergyText(activated?"🔓 オーバーライドコピー！全デバフ永続化！":"🔓 オーバーライドコピー（対象デバフなし）"); renderBattle();
+        }
+        if(s2.type==="sniper"){
+            let ammo = s2.maxAmmo || 6;
+            let followAtk = p.atk; if(p.buffs) p.buffs.forEach(b=>{followAtk*=b.power;});
+            let totalDmg=0;
+            for(let si=0;si<ammo;si++){
+                let sres=calcDamage(p.attr,enemy.attr,followAtk*(s2.power||0.75));
+                if(enemy.allDebuffMark) sres.dmg=Math.floor(sres.dmg*1.5);
+                if(enemy.shield>0){let ab=Math.min(enemy.shield,sres.dmg);enemy.shield-=ab;sres.dmg-=ab;}
+                enemy.hp-=sres.dmg; totalDmg+=sres.dmg;
+                let _sd=sres.dmg; setTimeout(()=>showDamage("enemy",{dmg:_sd,type:""}),si*130);
+            }
+            showSynergyText("🔫 狙撃コピー！"+ammo+"連射！合計"+Math.floor(totalDmg)); renderBattle();
+        }
+        if(s2.type==="thunderArmor"){
+            if(!p.thunderArmor){
+                p.thunderArmor=true;
+                if(!p.buffs) p.buffs=[];
+                p.buffs=p.buffs.filter(b=>!b.isThunderArmor);
+                p.buffs.push({ power:3.0, turn:999999, permanent:true, isThunderArmor:true });
+                let pi2=players.indexOf(p);
+                players.forEach((t,ti)=>{ if(ti!==pi2){ let cut=Math.floor(t.hp*0.2); t.currentHp=Math.max(1,t.currentHp-cut); setTimeout(()=>showDamage("p"+ti,{dmg:cut,type:"burn"}),50+ti*80); } });
+                showSynergyText("⚡🛡 雷の鎧コピー！ATK+200%(永続)！味方HP20%カット！"); renderBattle();
+            } else {
+                showSynergyText("⚡🛡 雷の鎧はすでに発動中！");
+            }
+        }
+        if(s2.type==="weaponSummon"){
+            players.forEach(t=>{ t.weaponSummonTurn=3; });
+            showSynergyText("🗡 武器召喚コピー！3ターン間、全員の攻撃に追加デバフ！"); renderBattle();
+        }
+
+        renderBattle();
+    }
+}
+
+// 直前の味方スキルを記録（copyは除外）
+if(s.type !== "copy") lastAllySkill = s;
+
+if(s.type !== "heatUp" && s.type !== "sniper") p.cool = p.skill.cool;
 // ⏳ 時間崩壊: スキルで与えたダメージをパーティ全体で累積
 if(s.type !== "timeCrash"){
     let _tcHolderSkill = players.find(pl => pl.timeCrash != null);
@@ -3129,8 +3792,12 @@ if(s.type==="burn"){
     checkSynergy(p, atk);
 }
 if(s.type==="freeze"){
-    enemy.freezeTurn = 1;
-    showSynergyText("凍結！行動不能！");
+    if(Math.random() < 0.5){
+        enemy.freezeTurn = 1;
+        showSynergyText("❄ 凍結成功！行動不能！");
+    } else {
+        showSynergyText("❄ 凍結失敗…");
+    }
 }
 if(s.type==="shock"){
     enemy.shockTurn = 2;
