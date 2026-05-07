@@ -335,6 +335,7 @@ animation:totalPop 1s forwards;
 .sCounter{background:#ff8800;color:#fff;}
 .sBuff{background:#44ff88;color:#000;}
 .sDebuff{background:#8866ff;color:#fff;}
+.sPassive{background:#1a3a1a;color:#88ff88;border:1px solid #44cc44;}
 
 /* ===== Phase1追加: ロールバッジ ===== */
 .roleBadge{
@@ -470,8 +471,27 @@ animation:totalPop 1s forwards;
   <div id="skillModalBox">
     <img id="skillModalImg" src="">
     <div id="skillModalName"></div>
-    <div id="skillModalText"></div>
-    <div id="skillModalCT"></div>
+    <!-- タブ -->
+    <div style="display:flex;gap:6px;margin-bottom:10px;justify-content:center;">
+      <button id="tabSkillBtn" onclick="switchModalTab('skill')"
+        style="flex:1;padding:5px 0;border-radius:6px;border:none;cursor:pointer;font-size:12px;font-weight:bold;background:#ffd700;color:#000;">
+        🗡 スキル
+      </button>
+      <button id="tabPassiveBtn" onclick="switchModalTab('passive')"
+        style="flex:1;padding:5px 0;border-radius:6px;border:1px solid #44cc44;cursor:pointer;font-size:12px;font-weight:bold;background:#1a2a1a;color:#88ff88;">
+        🌟 パッシブ
+      </button>
+    </div>
+    <!-- スキルタブ -->
+    <div id="skillTabContent">
+      <div id="skillModalText"></div>
+      <div id="skillModalCT"></div>
+    </div>
+    <!-- パッシブタブ -->
+    <div id="passiveTabContent" style="display:none;">
+      <div id="skillModalPassive" style="font-size:13px;color:#88ff88;line-height:1.6;padding:4px 0;"></div>
+      <div id="skillModalPassiveNone" style="font-size:13px;color:#888;display:none;">パッシブスキルなし</div>
+    </div>
     <button id="skillModalClose" onclick="closeSkillModal()">閉じる</button>
   </div>
 </div>
@@ -754,227 +774,328 @@ const advantage={火:"木",木:"雷",雷:"水",水:"火",光:"闇",闇:"光"};
 
 const chars=[
 {name:"室井元武",rarity:1,attr:"火",img:"https://imgur.com/21T5sVB.png",role:"attacker",
-skill:{text:"スキルなし"}},
+skill:{text:"スキルなし"},
+passive:{type:"atk_up_on_attack",value:0.05,text:"🔥闘志：攻撃時ATK+5%(3T、最大+15%)"}},
 {name:"栗島トウヤ",rarity:1,attr:"水",img:"https://imgur.com/JpAvqiZ.png",role:"attacker",
-skill:{text:"スキルなし"}},
+skill:{text:"スキルなし"},
+passive:{type:"shock_on_attack",chance:0.2,text:"⚡水流電：攻撃時20%で感電付与"}},
 {name:"鈴鹿",rarity:1,attr:"木",img:"https://imgur.com/MBOQolS.png",role:"support",
-skill:{text:"スキルなし"}},
+skill:{text:"スキルなし"},
+passive:{type:"heal_on_turn",value:0.05,text:"🌿自然回復：ターン開始時に味方全体HP5%回復"}},
 {name:"死橋轟",rarity:1,attr:"雷",img:"https://imgur.com/tvliiOf.png",role:"attacker",
-skill:{text:"スキルなし"}},
+skill:{text:"スキルなし"},
+passive:{type:"shock_on_attack",chance:0.3,text:"⚡電撃：攻撃時30%で感電付与"}},
 {name:"沢華",rarity:2,attr:"水",img:"https://imgur.com/DQT7uSa.png",role:"debuffer",
-skill:{type:"debuff", power:0.8, text:"敵弱体20%",cool:3}},
+skill:{type:"debuff", power:0.8, text:"敵弱体20%",cool:3},
+passive:{type:"debuff_power_up",value:0.15,text:"💧浸食：デバフ効果を15%増幅(弱体スキルと連動)"}},
 {name:"阿波牛壬陸",rarity:2,attr:"木",img:"https://imgur.com/FBI0zPO.png",role:"attacker",
- skill:{type:"damage", power:1.5, text:"150%ダメージ",cool:3}},
+ skill:{type:"damage", power:1.5, text:"150%ダメージ",cool:3},
+passive:{type:"poison_on_attack",chance:0.25,power:0.15,text:"🌿毒棘：攻撃時25%で毒付与(15%)"}},
 {name:"阿波牛星夜",rarity:3,attr:"水",img:"https://imgur.com/OcMPZTg.png",role:"attacker",
-skill:{type:"damage", power:2, text:"200%ダメージ",cool:2}},
+skill:{type:"damage", power:2, text:"200%ダメージ",cool:2},
+passive:{type:"dmg_boost_low_hp",threshold:0.5,value:0.3,text:"💧渦流：HP50%以下でATK+30%"}},
 {name:"コード5.2",rarity:3,attr:"火",img:"https://imgur.com/BrAAtqj.png",role:"attacker",
-skill:{type:"damage", power:3, text:"300%ダメージ",cool:4}},
+skill:{type:"damage", power:3, text:"300%ダメージ",cool:4},
+passive:{type:"burn_on_attack",chance:0.4,power:0.25,turn:2,text:"🔥炎核：攻撃時40%で燃焼付与(2T)"}},
 {name:"FqEa",rarity:3,attr:"雷",img:"https://imgur.com/sdukWOg.png",role:"attacker",
-skill:{type:"multi", power:0.4, hits:5, text:"5連撃+デバフ",cool:3}},
+skill:{type:"multi", power:0.4, hits:5, text:"5連撃+デバフ",cool:3},
+passive:{type:"shock_on_attack",chance:0.5,text:"⚡過電流：攻撃時50%で感電付与"}},
 
 {name:"湯照司吉基",rarity:2,attr:"雷",img:"https://imgur.com/iyTDOdd.png",role:"debuffer",
-skill:{type:"poison",power:0.3,text:"30%毒付与",cool:3}},
+skill:{type:"poison",power:0.3,text:"30%毒付与",cool:3},
+passive:{type:"poison_power_up",value:0.1,text:"☠毒師：毒ダメージを10%増幅"}},
 {name:"明石啓希",rarity:2,attr:"火",img:"https://imgur.com/7TubUu2.png",role:"support",
-skill:{type:"teamBuff",power:1.25,text:"全体atk上昇25%",cool:3}},
+skill:{type:"teamBuff",power:1.25,text:"全体atk上昇25%",cool:3},
+passive:{type:"heal_on_turn",value:0.03,text:"🔥炎の守護：ターン毎味方全体HP3%回復"}},
 {name:"珠濃雅紀",rarity:2,attr:"水",img:"https://imgur.com/5Ib43mV.png",role:"support",
-skill:{type:"heal", power:0.3, text:"味方回復30%",cool:3}},
+skill:{type:"heal", power:0.3, text:"味方回復30%",cool:3},
+passive:{type:"heal_bonus",value:0.2,text:"💧癒しの水：回復量+20%"}},
 {name:"黒峰天音",rarity:3,attr:"火",img:"https://imgur.com/76908qZ.png",role:"attacker",
-skill:{type:"burn", power:0.4, text:"燃焼付与(3T)",cool:3}},
+skill:{type:"burn", power:0.4, text:"燃焼付与(3T)",cool:3},
+passive:{type:"burn_on_attack",chance:0.35,power:0.2,turn:1,text:"🔥炎使い：攻撃時35%で燃焼付与(1T)"}},
 {name:"晴海亨",rarity:2,attr:"木",img:"https://imgur.com/yVckkYt.png",role:"debuffer",
-skill:{type:"debuff", power:0.8, text:"敵弱体20%",cool:3}},
+skill:{type:"debuff", power:0.8, text:"敵弱体20%",cool:3},
+passive:{type:"poison_on_attack",chance:0.2,power:0.1,text:"🌿草毒：攻撃時20%で毒付与(10%)"}},
 {name:"甲斐翔也",rarity:3,attr:"木",img:"https://imgur.com/BrNyp9Z.png",role:"attacker",
-skill:{type:"multi", power:0.7, hits:3, text:"3連撃+デバフ",cool:3}},
+skill:{type:"multi", power:0.7, hits:3, text:"3連撃+デバフ",cool:3},
+passive:{type:"multi_hit_bonus",value:0.1,text:"🌿連撃師：多段攻撃の各ヒットATK+10%"}},
 {name:"赤羽悠真",rarity:2,attr:"雷",img:"https://imgur.com/7bxMy83.png",role:"support",
-skill:{type:"heal", power:0.4, text:"味方回復40%",cool:3}},
+skill:{type:"heal", power:0.4, text:"味方回復40%",cool:3},
+passive:{type:"heal_bonus",value:0.15,text:"⚡回復増幅：回復スキルの効果量+15%"}},
 {name:"桜木彰",rarity:2,attr:"火",img:"https://imgur.com/PqQS7xN.png",role:"support",
-skill:{type:"heal", power:0.3, text:"味方回復30%",cool:3}},
+skill:{type:"heal", power:0.3, text:"味方回復30%",cool:3},
+passive:{type:"heal_bonus",value:0.2,text:"🔥炎癒：回復スキルの効果量+20%"}},
 {name:"八並解徒",rarity:2,attr:"木",img:"https://imgur.com/S58UnRP.png",role:"debuffer",
-skill:{type:"debuff", power:0.8, text:"敵弱体20%",cool:3}},
+skill:{type:"debuff", power:0.8, text:"敵弱体20%",cool:3},
+passive:{type:"debuff_on_attack",chance:0.15,text:"🌿草縛り：攻撃時15%で弱体付与(10%)"}},
 
 {name:"玉垣剣城",rarity:3,attr:"雷",img:"https://imgur.com/D0PXU4L.png",role:"attacker",
-skill:{type:"shock", power:0.5, text:"感電付与(次撃+50%)",cool:3}},
+skill:{type:"shock", power:0.5, text:"感電付与(次撃+50%)",cool:3},
+passive:{type:"shock_power_up",value:0.2,text:"⚡雷帝：感電ボーナスダメージ+20%"}},
 {name:"蒼井朔也",rarity:3,attr:"火",img:"https://imgur.com/hlaEw0j.png",role:"support",
-skill:{type:"teamBuff",power:1.40,text:"全体atk上昇40%",cool:3}},
+skill:{type:"teamBuff",power:1.40,text:"全体atk上昇40%",cool:3},
+passive:{type:"buff_ct_reduce",text:"🔥鼓舞：バフスキル発動時に味方全体のCTを1短縮"}},
 {name:"石倉有栖",rarity:3,attr:"木",img:"https://imgur.com/luNtrHV.png",role:"support",
-skill:{type:"heal", power:0.5, text:"味方回復50%",cool:3}},
+skill:{type:"heal", power:0.5, text:"味方回復50%",cool:3},
+passive:{type:"heal_bonus",value:0.3,text:"🌿大地の癒し：回復量+30%"}},
 {name:"ミニモータ",rarity:3,attr:"木",img:"https://imgur.com/BPKBRAK.png",role:"attacker",
-skill:{type:"multi", power:0.4, hits:4, text:"4連撃+デバフ",cool:3}},
+skill:{type:"multi", power:0.4, hits:4, text:"4連撃+デバフ",cool:3},
+passive:{type:"poison_on_attack",chance:0.3,power:0.12,text:"🌿毒ガス：攻撃時30%で毒付与(12%)"}},
 {name:"ソーメーン",rarity:3,attr:"雷",img:"https://imgur.com/dGE9dXV.png",role:"debuffer",
-skill:{type:"poison",power:0.5,text:"50%毒付与",cool:3}},
+skill:{type:"poison",power:0.5,text:"50%毒付与",cool:3},
+passive:{type:"shock_on_attack",chance:0.35,text:"⚡電撃毒：攻撃時35%で感電付与"}},
 {name:"跳田収滋",rarity:3,attr:"水",img:"https://imgur.com/Bw5qyja.png",role:"debuffer",
-skill:{type:"debuff", power:0.7, text:"敵弱体30%",cool:3}},
+skill:{type:"debuff", power:0.7, text:"敵弱体30%",cool:3},
+passive:{type:"reduce_enemy_atk_passive",value:0.05,text:"💧圧力：戦闘開始時から敵ATKを5%低下"}},
 {name:"オリバー",rarity:3,attr:"水",img:"https://imgur.com/57Rlf7D.png",role:"debuffer",
-skill:{type:"freeze", power:1, text:"凍結付与(50%で1T行動不能)",cool:4}},
+skill:{type:"freeze", power:1, text:"凍結付与(50%で1T行動不能)",cool:4},
+passive:{type:"freeze_on_attack",chance:0.15,text:"❄氷点下：攻撃時15%で凍結付与(1T)"}},
 
 {name:"弐呪刻",rarity:4,attr:"水",img:"https://imgur.com/qAGbxYV.png",role:"attacker",
-skill:{type:"multi", power:0.4, hits:10, text:"10連撃+デバフ",cool:4}},
+skill:{type:"multi", power:0.4, hits:10, text:"10連撃+デバフ",cool:4},
+passive:{type:"multi_hit_bonus",value:0.15,text:"💧水神：多段ヒット毎にATK+15%上昇(最大+45%)"}},
 {name:"黒瀬武人",rarity:3,attr:"火",img:"https://imgur.com/pgQHlal.png",role:"attacker",
-skill:{type:"damage", power:2.5, text:"250%ダメージ",cool:3}},
+skill:{type:"damage", power:2.5, text:"250%ダメージ",cool:3},
+passive:{type:"burn_on_attack",chance:0.5,power:0.3,turn:2,text:"🔥烈火：攻撃時50%で強燃焼付与(2T)"}},
 {name:"フセイン",rarity:4,attr:"雷",img:"https://imgur.com/Yr0obwq.png",role:"debuffer",
-skill:{type:"debuff", power:0.5, text:"敵弱体50%",cool:4}},
+skill:{type:"debuff", power:0.5, text:"敵弱体50%",cool:4},
+passive:{type:"shock_on_attack",chance:0.6,text:"⚡雷帝：攻撃時60%で感電付与"}},
 {name:"リボルト",rarity:4,attr:"木",img:"https://imgur.com/RSHrI9C.png",role:"support",
-skill:{type:"teamBuff",power:1.6,text:"全体atk上昇60%",cool:3}},
+skill:{type:"teamBuff",power:1.6,text:"全体atk上昇60%",cool:3},
+passive:{type:"heal_on_turn",value:0.08,text:"🌿森の加護：ターン毎に味方全体HP8%回復"}},
 {name:"死橋凪",rarity:4,attr:"火",img:"https://imgur.com/Wofj47Z.png",role:"attacker",
-skill:{type:"damage", power:4.5, text:"450%ダメージ",cool:3}},
+skill:{type:"damage", power:4.5, text:"450%ダメージ",cool:3},
+passive:{type:"dmg_boost_low_hp",threshold:0.5,value:0.5,text:"🔥炎帝：HP50%以下でATK+50%"}},
 {name:"アステレス",rarity:4,attr:"水",img:"https://imgur.com/XU6EFZa.png",role:"support",
-skill:{type:"heal", power:0.7, text:"味方回復70%",cool:3}},
+skill:{type:"heal", power:0.7, text:"味方回復70%",cool:3},
+passive:{type:"revive_passive",threshold:0.1,text:"💧奇跡の水：味方が瀕死(HP10%以下)時にHP15%回復"}},
 {name:"バルナウス",rarity:4,attr:"火",img:"https://imgur.com/3mibLSW.png",role:"debuffer",
-skill:{type:"poison",power:1.5,text:"150%毒付与(重ね可)",cool:2}},
+skill:{type:"poison",power:1.5,text:"150%毒付与(重ね可)",cool:2},
+passive:{type:"burn_on_attack",chance:0.7,power:0.4,turn:2,text:"🔥焦熱：攻撃時70%で燃焼付与(2T)"}},
 
 {name:"室井元武(β)",rarity:4,attr:"木",img:"https://imgur.com/plm0EbO.png",role:"attacker",
-skill:{type:"chinkoPo", power:2.0, text:"珍古砲(カウント×77%強化)", cool:4},noTrial:true},
+skill:{type:"chinkoPo", power:2.0, text:"珍古砲(カウント×77%強化)", cool:4},noTrial:true,
+passive:{type:"atk_up_on_attack",value:0.08,text:"🌿木霊：攻撃時ATK+8%(永続、最大+40%)"}},
 {name:"栗島トウヤ(β)",rarity:4,attr:"雷",img:"https://imgur.com/r2hVs2i.png",role:"attacker",
-skill:{type:"poisonBurst", power:1.25, text:"毒爆発(毒×125%ダメ)",cool:3},noTrial:true},
+skill:{type:"poisonBurst", power:1.25, text:"毒爆発(毒×125%ダメ)",cool:3},noTrial:true,
+passive:{type:"poison_power_up",value:0.25,text:"☠猛毒：毒ダメージを25%増幅"}},
 {name:"死橋轟(β)",rarity:4,attr:"水",img:"https://imgur.com/TAk0JKU.png",role:"attacker",
-skill:{type:"bunshin", cool:5, text:"分身: 3Tパーティを4人に(重複不可)"},noTrial:true},
+skill:{type:"bunshin", cool:5, text:"分身: 3Tパーティを4人に(重複不可)"},noTrial:true,
+passive:{type:"shock_on_attack",chance:0.5,text:"⚡水雷：攻撃時50%で感電付与"}},
 {name:"阿波牛星夜(β)",rarity:4,attr:"火",img:"https://imgur.com/yJ89rjI.png",role:"attacker",
-skill:{type:"counterStack", power:1.0, text:"カウンター3回＋発動毎に威力+100%", cool:1},noTrial:true},
+skill:{type:"counterStack", power:1.0, text:"カウンター3回＋発動毎に威力+100%", cool:1},noTrial:true,
+passive:{type:"dmg_boost_low_hp",threshold:0.7,value:0.4,text:"🔥逆境の炎：HP70%以下でATK+40%"}},
 {name:"コード5.2(β)",rarity:4,attr:"光",img:"https://imgur.com/F87rtOY.png",role:"attacker",
-skill:{type:"heatUp", text:"ヒートアップ: 発動後 経過ターン×100%ATK上昇(上限700%) ※一度のみ", cool:0},noTrial:true},
+skill:{type:"heatUp", text:"ヒートアップ: 発動後 経過ターン×100%ATK上昇(上限700%) ※一度のみ", cool:0},noTrial:true,
+passive:{type:"burn_on_attack",chance:0.5,power:0.35,turn:2,text:"✨光炎：攻撃時50%で燃焼付与(2T)"}},
 {name:"FqEa(β)",rarity:4,attr:"闇",img:"https://imgur.com/khERAfx.png",role:"attacker",
-skill:{type:"timeCrash", turn:2, text:"時間崩壊: 2T被ダメ30%軽減→解除時に2T間の与ダメ(通常+スキル)×50%を敵に", cool:2},noTrial:true},
+skill:{type:"timeCrash", turn:2, text:"時間崩壊: 2T被ダメ30%軽減→解除時に2T間の与ダメ(通常+スキル)×50%を敵に", cool:2},noTrial:true,
+passive:{type:"dmg_boost_low_hp",threshold:0.4,value:0.6,text:"🌑闇の狂気：HP40%以下でATK+60%"}},
 {name:"黒峰天音(β)",rarity:4,attr:"雷",img:"https://imgur.com/oq9li7C.png",role:"attacker",
-skill:{type:"runawayBurn", text:"暴走燃焼: 3T間HP10%減少ATK+150%、攻撃時に全体燃焼付与。HP50%以下で効果2倍", cool:4},noTrial:true},
+skill:{type:"runawayBurn", text:"暴走燃焼: 3T間HP10%減少ATK+150%、攻撃時に全体燃焼付与。HP50%以下で効果2倍", cool:4},noTrial:true,
+passive:{type:"burn_on_attack",chance:0.6,power:0.4,turn:3,text:"🔥爆炎鎧：攻撃時60%で強燃焼付与(3T)"}},
 {name:"甲斐翔也(β)",rarity:4,attr:"木",img:"https://imgur.com/27i3Cjc.png",role:"attacker",
-skill:{type:"copy", power:1.0, text:"直前の味方スキルをコピー", cool:6},noTrial:true},
+skill:{type:"copy", power:1.0, text:"直前の味方スキルをコピー", cool:6},noTrial:true,
+passive:{type:"poison_on_attack",chance:0.4,power:0.2,text:"🌿毒奇術：攻撃時40%で毒付与(20%)"}},
 {name:"玉垣剣城(β)",rarity:4,attr:"火",img:"https://imgur.com/BMat100.png",role:"attacker",
-skill:{type:"kenSword", power:0.3, buffPower:0.3, buffTurn:3, text:"神速の剣術: 剣カウント+3付与。3Tの間追撃ATK+30%強化。(攻撃/被攻撃で剣カウント+1(永続)。剣カウント1つにつき攻撃後にATK30%追撃)", cool:4},noTrial:true},
+skill:{type:"kenSword", power:0.3, buffPower:0.3, buffTurn:3, text:"神速の剣術: 剣カウント+3付与。3Tの間追撃ATK+30%強化。(攻撃/被攻撃で剣カウント+1(永続)。剣カウント1つにつき攻撃後にATK30%追撃)", cool:4},noTrial:true,
+passive:{type:"burn_on_attack",chance:0.45,power:0.3,turn:2,text:"🔥剣炎：攻撃時45%で燃焼付与(2T)"}},
 {name:"蒼井朔也(β)",rarity:4,attr:"水",img:"https://imgur.com/m8XTCRK.png",role:"attacker",
-skill:{type:"sniper", power:0.9, maxAmmo:6, text:"狙撃:残弾数分の連撃(ATK90%)。CTなし。ターン開始時に残弾1回復(最大6)", cool:0},noTrial:true},
+skill:{type:"sniper", power:0.9, maxAmmo:6, text:"狙撃:残弾数分の連撃(ATK90%)。CTなし。ターン開始時に残弾1回復(最大6)", cool:0},noTrial:true,
+passive:{type:"reduce_enemy_atk_passive",value:0.15,text:"💧狙撃手：常時敵ATKを15%低下"}},
 {name:"石倉有栖(β)",rarity:4,attr:"木",img:"https://imgur.com/dCJbplm.png",role:"support",
-skill:{type:"overrideDebuff", cool:4, text:"オーバーライド: 発動時に相手の全デバフ(毒/燃焼/感電)を永続化"},noTrial:true},
+skill:{type:"overrideDebuff", cool:4, text:"オーバーライド: 発動時に相手の全デバフ(毒/燃焼/感電)を永続化"},noTrial:true,
+passive:{type:"heal_on_turn",value:0.1,text:"🌿大樹の癒し：ターン毎に味方全体HP10%回復"}},
 {name:"ミニモータ(β)",rarity:4,attr:"雷",img:"https://imgur.com/XTv9yZ1.png",role:"attacker",
-skill:{type:"growthStrike", cool:0, text:"強制成長: 攻撃時に「成長」付与(最大5,永続)。1スタックにつきATK+40%&HP5%回復"},noTrial:true},
+skill:{type:"growthStrike", cool:0, text:"強制成長: 攻撃時に「成長」付与(最大5,永続)。1スタックにつきATK+40%&HP5%回復"},noTrial:true,
+passive:{type:"shock_on_attack",chance:0.55,text:"⚡強制電流：攻撃時55%で感電付与"}},
 {name:"ソーメーン(β)",rarity:4,attr:"火",img:"https://imgur.com/r4nMEHm.png",role:"attacker",
-skill:{type:"thunderArmor", cool:5, text:"雷の鎧: ATK+200%(永続)。敵ターン終わり自身HP20%回復。自分以外の味方HP20%カット。攻撃する度相手に感電付与"},noTrial:true},
+skill:{type:"thunderArmor", cool:5, text:"雷の鎧: ATK+200%(永続)。敵ターン終わり自身HP20%回復。自分以外の味方HP20%カット。攻撃する度相手に感電付与"},noTrial:true,
+passive:{type:"shock_power_up",value:0.35,text:"⚡暴嵐：感電ボーナスダメージ+35%"}},
 {name:"跳田収滋(β)",rarity:4,attr:"水",img:"https://imgur.com/W7tDIOm.png",role:"support",
-skill:{type:"weaponSummon", cool:5, text:"武器召喚: 3ターンの間、味方全体の攻撃時にランダム追加デバフ(毒/燃焼/感電)を付与"},noTrial:true},
+skill:{type:"weaponSummon", cool:5, text:"武器召喚: 3ターンの間、味方全体の攻撃時にランダム追加デバフ(毒/燃焼/感電)を付与"},noTrial:true,
+passive:{type:"heal_on_damaged",value:0.08,text:"💧水の盾：味方が被ダメ時に8%回復"}},
 {name:"オリバー(β)",rarity:4,attr:"光",img:"https://imgur.com/InZgh9E.png",role:"attacker",
-skill:{type:"mimicry", cool:0, text:"無許可の模倣者: HPが減るほど防御&ATK上昇(最大+70%)(永続)"},noTrial:true},
+skill:{type:"mimicry", cool:0, text:"無許可の模倣者: HPが減るほど防御&ATK上昇(最大+70%)(永続)"},noTrial:true,
+passive:{type:"freeze_on_attack",chance:0.3,text:"✨氷光：攻撃時30%で凍結付与(1T)"}},
 
 
 {name:"ゲガント",rarity:1,attr:"木",img:"https://imgur.com/dXFpBIJ.png",role:"attacker",
-skill:{text:"スキルなし"}},
+skill:{text:"スキルなし"},
+passive:{type:"poison_on_attack",chance:0.15,power:0.1,text:"🌿草毒：攻撃時15%で毒付与(10%)"}},
 {name:"ホーレン",rarity:1,attr:"水",img:"https://imgur.com/r15mpbr.png",role:"attacker",
-skill:{text:"スキルなし"}},
+skill:{text:"スキルなし"},
+passive:{type:"heal_on_attack",value:0.03,text:"💧水の加護：攻撃時に自身HP3%回復"}},
 {name:"ボムブ",rarity:1,attr:"火",img:"https://imgur.com/LgYOzQ0.png",role:"attacker",
-skill:{text:"スキルなし"}},
+skill:{text:"スキルなし"},
+passive:{type:"burn_on_attack",chance:0.25,power:0.15,turn:1,text:"🔥爆炎：攻撃時25%で燃焼付与(1T)"}},
 {name:"霊剛",rarity:1,attr:"雷",img:"https://imgur.com/8vB105H.png",role:"attacker",
-skill:{text:"スキルなし"}},
+skill:{text:"スキルなし"},
+passive:{type:"shock_on_attack",chance:0.25,text:"⚡霊電：攻撃時25%で感電付与"}},
 {name:"安村康夫",rarity:1,attr:"火",img:"https://imgur.com/i9NJyA0.png",role:"attacker",
-skill:{text:"スキルなし"}},
+skill:{text:"スキルなし"},
+passive:{type:"atk_up_on_attack",value:0.04,text:"🔥根性：攻撃時ATK+4%(最大+20%)"}},
 {name:"返網転",rarity:1,attr:"水",img:"https://imgur.com/n3nrGmp.png",role:"attacker",
-skill:{text:"スキルなし"}},
+skill:{text:"スキルなし"},
+passive:{type:"shock_on_attack",chance:0.2,text:"⚡水流：攻撃時20%で感電付与"}},
 {name:"和辺重治",rarity:1,attr:"雷",img:"https://imgur.com/e2bzfCJ.png",role:"attacker",
-skill:{text:"スキルなし"}},
+skill:{text:"スキルなし"},
+passive:{type:"shock_on_attack",chance:0.2,text:"⚡稲妻：攻撃時20%で感電付与"}},
 {name:"和辺重信",rarity:1,attr:"木",img:"https://imgur.com/aUgF1Uf.png",role:"attacker",
-skill:{text:"スキルなし"}},
+skill:{text:"スキルなし"},
+passive:{type:"poison_on_attack",chance:0.15,power:0.08,text:"🌿木毒：攻撃時15%で毒付与(8%)"}},
 {name:"ヒナル",rarity:1,attr:"雷",img:"https://imgur.com/bvVouas.png",role:"attacker",
-skill:{text:"スキルなし"}},
+skill:{text:"スキルなし"},
+passive:{type:"shock_on_attack",chance:0.2,text:"⚡閃光：攻撃時20%で感電付与"}},
 {name:"マタイ",rarity:1,attr:"木",img:"https://imgur.com/wnIKk8n.png",role:"tank",
-skill:{text:"スキルなし"}},
+skill:{text:"スキルなし"},
+passive:{type:"tank_passive",value:0.1,text:"🛡守護：常時被ダメを10%軽減"}},
 {name:"ログフ",rarity:1,attr:"火",img:"https://imgur.com/3sgyjeg.png",role:"attacker",
-skill:{text:"スキルなし"}},
+skill:{text:"スキルなし"},
+passive:{type:"burn_on_attack",chance:0.2,power:0.12,turn:1,text:"🔥炎将：攻撃時20%で燃焼付与(1T)"}},
 ];
 const eventChars = [
 {name:"コード5.2🍖",rarity:4,attr:"雷",img:"https://imgur.com/IZIJSZf.png",role:"attacker",
-skill:{type:"damage", power:4.5, text:"450%ダメージ",cool:3}},
+skill:{type:"damage", power:4.5, text:"450%ダメージ",cool:3},
+passive:{type:"burn_on_skill",chance:0.6,power:0.3,turn:2,text:"⚡雷轟：ダメージスキル発動時60%で燃焼付与(2T)"}},
 {name:"FqEa🍖",rarity:4,attr:"木",img:"https://imgur.com/zFwdenR.png",role:"attacker",
-skill:{type:"drain", power:3.5, text:"350%ダメ+回復",cool:3}},
+skill:{type:"drain", power:3.5, text:"350%ダメ+回復",cool:3},
+passive:{type:"poison_on_attack",chance:0.35,power:0.18,text:"🌿木霊毒：攻撃時35%で毒付与(18%)"}},
 {name:"甲斐翔也🍖",rarity:4,attr:"水",img:"https://imgur.com/58gYmEW.png",role:"debuffer",
-skill:{type:"poison", power:1.5, text:"150%毒付与",cool:2}},
+skill:{type:"poison", power:1.5, text:"150%毒付与",cool:2},
+passive:{type:"poison_power_up",value:0.2,text:"☠水毒師：毒ダメージを20%増幅"}},
 {name:"黒峰天音🍖",rarity:3,attr:"水",img:"https://imgur.com/VMUzNSc.png",role:"attacker",
-skill:{type:"damage", power:2.5, text:"250%ダメージ",cool:3}},
+skill:{type:"damage", power:2.5, text:"250%ダメージ",cool:3},
+passive:{type:"freeze_on_attack",chance:0.2,text:"❄水刃：攻撃時20%で凍結付与(1T)"}},
 {name:"晴海亨🍖",rarity:3,attr:"雷",img:"https://imgur.com/J84XBdt.png",role:"attacker",
-skill:{type:"damage", power:2.5, text:"250%ダメージ",cool:3}},
+skill:{type:"damage", power:2.5, text:"250%ダメージ",cool:3},
+passive:{type:"shock_on_attack",chance:0.4,text:"⚡雷刃：攻撃時40%で感電付与"}},
 {name:"赤羽悠真🍖",rarity:3,attr:"木",img:"https://imgur.com/kKDxDCn.png",role:"support",
-skill:{type:"teamBuff",power:1.40,text:"全体atk上昇40%",cool:3}},
+skill:{type:"teamBuff",power:1.40,text:"全体atk上昇40%",cool:3},
+passive:{type:"heal_on_turn",value:0.04,text:"🌿木の加護：ターン毎に味方全体HP4%回復"}},
 {name:"桜木彰🍖",rarity:3,attr:"木",img:"https://imgur.com/LiyJN0d.png",role:"debuffer",
-skill:{type:"debuff", power:0.7, text:"敵弱体30%",cool:3}},
+skill:{type:"debuff", power:0.7, text:"敵弱体30%",cool:3},
+passive:{type:"poison_on_attack",chance:0.2,power:0.1,text:"🌿草縛り：攻撃時20%で毒付与(10%)"}},
 {name:"八並解徒🍖",rarity:3,attr:"火",img:"https://imgur.com/M9sgpcX.png",role:"debuffer",
-skill:{type:"poison",power:0.5,text:"50%毒付与",cool:3}}
+skill:{type:"poison",power:0.5,text:"50%毒付与",cool:3},
+passive:{type:"burn_on_attack",chance:0.3,power:0.2,turn:2,text:"🔥火毒：攻撃時30%で燃焼付与(2T)"}}
 ];
 const eventChars2 = [
 {name:"室井元武🌊",rarity:4,attr:"雷",img:"https://imgur.com/VLSNWxH.png",role:"attacker",
-skill:{type:"multi", power:0.4, hits:10, text:"10連撃+デバフ",cool:4}},
+skill:{type:"multi", power:0.4, hits:10, text:"10連撃+デバフ",cool:4},
+passive:{type:"shock_on_attack",chance:0.5,text:"⚡雷流：攻撃時50%で感電付与"}},
 {name:"栗島トウヤ🌊",rarity:4,attr:"火",img:"https://imgur.com/8q3zZVK.png",role:"attacker",
-skill:{type:"double", power:3.5, text:"350%追撃",cool:3}},
+skill:{type:"double", power:3.5, text:"350%追撃",cool:3},
+passive:{type:"burn_on_attack",chance:0.45,power:0.25,turn:2,text:"🔥炎追：攻撃時45%で燃焼付与(2T)"}},
 {name:"死橋轟🌊",rarity:4,attr:"木",img:"https://imgur.com/QaZ0xFb.png",role:"attacker",
-skill:{type:"hpCut", power:0.2, text:"20%HPカット",cool:3}},
+skill:{type:"hpCut", power:0.2, text:"20%HPカット",cool:3},
+passive:{type:"poison_on_attack",chance:0.3,power:0.15,text:"🌿木斬：攻撃時30%で毒付与(15%)"}},
 {name:"鈴鹿🌊",rarity:3,attr:"雷",img:"https://imgur.com/WNqWz7J.png",role:"attacker",
-skill:{type:"drain", power:2, text:"200%ダメ+回復",cool:3}},
+skill:{type:"drain", power:2, text:"200%ダメ+回復",cool:3},
+passive:{type:"shock_on_attack",chance:0.35,text:"⚡電流吸：攻撃時35%で感電付与"}},
 {name:"沢華🌊",rarity:3,attr:"木",img:"https://imgur.com/NsV8dpn.png",role:"attacker",
-skill:{type:"damage", power:2.5, text:"250%ダメージ",cool:3}},
+skill:{type:"damage", power:2.5, text:"250%ダメージ",cool:3},
+passive:{type:"poison_on_attack",chance:0.3,power:0.14,text:"🌿草毒刃：攻撃時30%で毒付与(14%)"}},
 {name:"阿波牛壬陸🌊",rarity:3,attr:"火",img:"https://imgur.com/Dcyb66m.png",role:"support",
-skill:{type:"heal", power:0.5, text:"味方回復50%",cool:3}},
+skill:{type:"heal", power:0.5, text:"味方回復50%",cool:3},
+passive:{type:"heal_bonus",value:0.25,text:"🔥炎癒：回復量+25%"}},
 {name:"湯照司吉基🌊",rarity:3,attr:"水",img:"https://imgur.com/BnL3yUh.png",role:"attacker",
-skill:{type:"hpCut", power:0.1, text:"10%HPカット",cool:3}}
+skill:{type:"hpCut", power:0.1, text:"10%HPカット",cool:3},
+passive:{type:"freeze_on_attack",chance:0.25,text:"❄水凍：攻撃時25%で凍結付与(1T)"}}
 ];
 const eventChars3 = [
 {name:"玉垣剣城🃏",rarity:4,attr:"雷",img:"https://imgur.com/wWZMYh9.png",role:"attacker",
-skill:{type:"buff", power:1.5, text:"150%バフ",cool:2}},
+skill:{type:"buff", power:1.5, text:"150%バフ",cool:2},
+passive:{type:"shock_on_attack",chance:0.45,text:"⚡雷帝刃：攻撃時45%で感電付与"}},
 {name:"蒼井朔也🃏",rarity:4,attr:"木",img:"https://imgur.com/sNKzJGl.png",role:"tank",
-skill:{type:"counter",power:2,turn:3,text:"反撃200%ダメ",cool:4}},
+skill:{type:"counter",power:2,turn:3,text:"反撃200%ダメ",cool:4},
+passive:{type:"tank_passive",value:0.1,text:"🌿木壁：常時被ダメを10%軽減"}},
 {name:"石倉有栖🃏",rarity:3,attr:"火",img:"https://imgur.com/c5F39ns.png",role:"tank",
-skill:{type:"shield",power:0.2,turn:4,text:"被ダメ20%軽減", cool:3}},
+skill:{type:"shield",power:0.2,turn:4,text:"被ダメ20%軽減", cool:3},
+passive:{type:"tank_passive",value:0.08,text:"🔥炎盾：常時被ダメを8%軽減"}},
 {name:"ミニモータ🃏",rarity:3,attr:"水",img:"https://imgur.com/ye1eRxh.png",role:"attacker",
-skill:{type:"damage", power:3, text:"300%ダメージ",cool:4}},
+skill:{type:"damage", power:3, text:"300%ダメージ",cool:4},
+passive:{type:"freeze_on_attack",chance:0.2,text:"❄水砲：攻撃時20%で凍結付与(1T)"}},
 {name:"ソーメーン🃏",rarity:3,attr:"木",img:"https://imgur.com/9Y7vMep.png",role:"attacker",
-skill:{type:"multi", power:0.4, hits:4, text:"4連撃+デバフ",cool:3}},
+skill:{type:"multi", power:0.4, hits:4, text:"4連撃+デバフ",cool:3},
+passive:{type:"poison_on_attack",chance:0.3,power:0.12,text:"🌿毒連：攻撃時30%で毒付与(12%)"}},
 {name:"跳田収滋🃏",rarity:4,attr:"火",img:"https://imgur.com/RfgOSpA.png",role:"tank",
-skill:{type:"shield",power:0.5,turn:5,text:"被ダメ50%軽減", cool:3}},
+skill:{type:"shield",power:0.5,turn:5,text:"被ダメ50%軽減", cool:3},
+passive:{type:"tank_passive",value:0.12,text:"🔥炎甲：常時被ダメを12%軽減"}},
 {name:"オリバー🃏",rarity:3,attr:"雷",img:"https://imgur.com/RUYzfxo.png",role:"attacker",
-skill:{type:"buff", power:1.2, text:"120%バフ",cool:2}}
+skill:{type:"buff", power:1.2, text:"120%バフ",cool:2},
+passive:{type:"shock_on_attack",chance:0.35,text:"⚡雷撃：攻撃時35%で感電付与"}}
 ];
 const eventChars4 = [
 {name:"FqEa🌌",rarity:4,attr:"水",img:"https://imgur.com/Wpd7tl4.png",role:"attacker",
-skill:{type:"rage", power:7, text:"狂化",cool:4}},
+skill:{type:"rage", power:7, text:"狂化",cool:4},
+passive:{type:"freeze_on_attack",chance:0.25,text:"❄水狂：攻撃時25%で凍結付与(1T)"}},
 {name:"返網転🌌",rarity:4,attr:"光",img:"https://imgur.com/hufzkJy.png",role:"debuffer",
-skill:{type:"poison",power:1.0,text:"100%毒付与",cool:1}},
+skill:{type:"poison",power:1.0,text:"100%毒付与",cool:1},
+passive:{type:"poison_power_up",value:0.3,text:"✨光毒：毒ダメージを30%増幅"}},
 {name:"黒瀬武人🌌",rarity:4,attr:"闇",img:"https://imgur.com/0PV2wHo.png",role:"attacker",
-skill:{type:"buff", power:3, text:"300%バフ",cool:3}},
+skill:{type:"buff", power:3, text:"300%バフ",cool:3},
+passive:{type:"dmg_boost_low_hp",threshold:0.5,value:0.5,text:"🌑闇爆：HP50%以下でATK+50%"}},
 {name:"コード5.2🌌",rarity:3,attr:"木",img:"https://imgur.com/S3szYva.png",role:"tank",
-skill:{type:"counter",power:0.25,turn:4,text:"反撃25%ダメ",cool:1}},
+skill:{type:"counter",power:0.25,turn:4,text:"反撃25%ダメ",cool:1},
+passive:{type:"tank_passive",value:0.08,text:"🌿木甲：常時被ダメを8%軽減"}},
 {name:"阿波牛星夜🌌",rarity:3,attr:"闇",img:"https://imgur.com/LXp3GnB.png",role:"attacker",
-skill:{type:"hpCut", power:0.05, text:"5%HPカット",cool:1}},
+skill:{type:"hpCut", power:0.05, text:"5%HPカット",cool:1},
+passive:{type:"dmg_boost_low_hp",threshold:0.6,value:0.4,text:"🌑闇刃：HP60%以下でATK+40%"}},
 {name:"室井元武🌌",rarity:3,attr:"光",img:"https://imgur.com/lhRlf6A.png",role:"tank",
-skill:{type:"shield",power:0.1,turn:3,text:"被ダメ10%軽減", cool:1}},
+skill:{type:"shield",power:0.1,turn:3,text:"被ダメ10%軽減", cool:1},
+passive:{type:"tank_passive",value:0.08,text:"✨光盾：常時被ダメを8%軽減"}},
 {name:"栗島トウヤ🌌",rarity:3,attr:"闇",img:"https://imgur.com/YfWQChj.png",role:"attacker",
-skill:{type:"buff", power:1.2, text:"120%バフ",cool:2}}
+skill:{type:"buff", power:1.2, text:"120%バフ",cool:2},
+passive:{type:"dmg_boost_low_hp",threshold:0.5,value:0.35,text:"🌑闇爪：HP50%以下でATK+35%"}}
 ];
 
 const eventChars5 = [
 {name:"霊剛👻",rarity:4,attr:"光",img:"https://imgur.com/th4ez8d.png",role:"attacker",
- skill:{type:"damage", power:5, text:"500%ダメージ",cool:4}},
+ skill:{type:"damage", power:5, text:"500%ダメージ",cool:4},
+passive:{type:"burn_on_attack",chance:0.5,power:0.35,turn:2,text:"✨光炎：攻撃時50%で燃焼付与(2T)"}},
 {name:"阿波牛星夜👻",rarity:4,attr:"木",img:"https://imgur.com/eAF0JDg.png",role:"support",
- skill:{type:"heal", power:0.2, text:"味方回復20%",cool:1}},
+ skill:{type:"heal", power:0.2, text:"味方回復20%",cool:1},
+passive:{type:"heal_on_turn",value:0.05,text:"🌿癒しの木漏れ日：ターン毎味方全体HP5%回復"}},
 {name:"湯照司吉基👻",rarity:4,attr:"雷",img:"https://imgur.com/2tNrdOu.png",role:"support",
- skill:{type:"teamBuff",power:1.3,text:"全体atk上昇30%",cool:1}},
+ skill:{type:"teamBuff",power:1.3,text:"全体atk上昇30%",cool:1},
+passive:{type:"buff_power_up",value:0.15,text:"⚡雷将：バフスキルの効果量+15%"}},
 {name:"死橋轟👻",rarity:3,attr:"火",img:"https://imgur.com/jSXYXzO.png",role:"attacker",
- skill:{type:"multi", power:0.5, hits:5, text:"5連撃+デバフ",cool:3}},
+ skill:{type:"multi", power:0.5, hits:5, text:"5連撃+デバフ",cool:3},
+passive:{type:"burn_on_attack",chance:0.4,power:0.22,turn:2,text:"🔥炎拳：攻撃時40%で燃焼付与(2T)"}},
 {name:"玉垣剣城👻",rarity:3,attr:"水",img:"https://imgur.com/hVVleXC.png",role:"attacker",
- skill:{type:"hpCut", power:0.1, text:"10%HPカット",cool:3}},
+ skill:{type:"hpCut", power:0.1, text:"10%HPカット",cool:3},
+passive:{type:"freeze_on_attack",chance:0.3,text:"❄水断：攻撃時30%で凍結付与(1T)"}},
 {name:"甲斐翔也👻",rarity:3,attr:"雷",img:"https://imgur.com/ZCuKHDz.png",role:"attacker",
- skill:{type:"double", power:2.5, text:"250%追撃",cool:3}},
+ skill:{type:"double", power:2.5, text:"250%追撃",cool:3},
+passive:{type:"shock_on_attack",chance:0.45,text:"⚡雷追：攻撃時45%で感電付与"}},
 {name:"オリバー👻",rarity:3,attr:"木",img:"https://imgur.com/4ycF6lj.png",role:"attacker",
- skill:{type:"damage", power:1.5, text:"150%ダメージ",cool:1}},
+ skill:{type:"damage", power:1.5, text:"150%ダメージ",cool:1},
+passive:{type:"poison_on_attack",chance:0.3,power:0.14,text:"🌿木霊毒：攻撃時30%で毒付与(14%)"}},
 ];
 
 const eventChars6 = [
 {name:"黒峰天音🔒",rarity:4,attr:"闇",img:"https://imgur.com/Tv2nhm6.png",role:"attacker",
- skill:{type:"chain", power:2.5, text:"連鎖爆発: 250%ダメ+味方CT全回復",cool:5}},
+ skill:{type:"chain", power:2.5, text:"連鎖爆発: 250%ダメ+味方CT全回復",cool:5},
+passive:{type:"chain_power_up",value:0.4,text:"🌑闇炎：連鎖スキル発動時のダメージ+40%"}},
 {name:"沢華🔒",rarity:4,attr:"火",img:"https://imgur.com/PlMpbqc.png",role:"support",
- skill:{type:"revive", power:0.5, text:"蘇生: 倒れた味方1人をHP50%で復活",cool:5}},
+ skill:{type:"revive", power:0.5, text:"蘇生: 倒れた味方1人をHP50%で復活",cool:5},
+passive:{type:"revive_power_up",value:0.3,text:"🔥炎愛：蘇生スキル発動時の復活HP+30%"}},
 {name:"ヒナル🔒",rarity:4,attr:"水",img:"https://imgur.com/LQ22nPp.png",role:"debuffer",
- skill:{type:"allDebuff", power:0.6, text:"全弱体: 敵ATK40%+次の被ダメ1.5倍",cool:4}},
+ skill:{type:"allDebuff", power:0.6, text:"全弱体: 敵ATK40%+次の被ダメ1.5倍",cool:4},
+passive:{type:"reduce_enemy_atk_passive",value:0.1,text:"💧水縛：常時敵ATKを10%低下"}},
 {name:"石倉有栖🔒",rarity:3,attr:"雷",img:"https://imgur.com/GTMUtqd.png",role:"attacker",
- skill:{type:"burn", power:0.6, text:"強燃焼付与(4T)",cool:3}},
+ skill:{type:"burn", power:0.6, text:"強燃焼付与(4T)",cool:3},
+passive:{type:"burn_power_up",value:0.3,text:"⚡雷炎：燃焼スキル発動時の燃焼ダメージ+30%"}},
 {name:"ミニモータ🔒",rarity:3,attr:"闇",img:"https://imgur.com/XclWwJg.png",role:"tank",
- skill:{type:"taunt", power:1, turn:3, text:"挑発: 3T敵の攻撃を集める+被ダメ半減",cool:4}},
+ skill:{type:"taunt", power:1, turn:3, text:"挑発: 3T敵の攻撃を集める+被ダメ半減",cool:4},
+passive:{type:"tank_passive",value:0.15,text:"🌑闇壁：常時被ダメを15%軽減"}},
 {name:"ソーメーン🔒",rarity:3,attr:"光",img:"https://imgur.com/CjLNiXa.png",role:"attacker",
- skill:{type:"multi", power:0.4, hits:6, text:"6連撃+デバフ",cool:4}},
+ skill:{type:"multi", power:0.4, hits:6, text:"6連撃+デバフ",cool:4},
+passive:{type:"burn_on_attack",chance:0.45,power:0.28,turn:2,text:"✨光炎撃：攻撃時45%で燃焼付与(2T)"}},
 {name:"赤羽悠真🔒",rarity:3,attr:"火",img:"https://imgur.com/XOfBlRq.png",role:"support",
- skill:{type:"drain", power:2.0, text:"200%ダメ+吸収回復",cool:3}},
+ skill:{type:"drain", power:2.0, text:"200%ダメ+吸収回復",cool:3},
+passive:{type:"drain_power_up",value:0.3,text:"🔥炎癒二：吸収スキルの回復量+30%"}},
 ];
 
 const weapons = [
@@ -1089,12 +1210,18 @@ skill:{type:"multi", power:0.4, hits:7, text:"7連撃+デバフ",weaponCool:3}
 ];
 
 const rewardChar = [
-{name:"和辺重信🍖",rarity:3,attr:"火",img:"https://imgur.com/dgKm097.png",role:"tank",skill:{type:"buff", power:1.2, text:"120%バフ",cool:2}},
-{name:"明石啓希🌊",rarity:3,attr:"水",img:"https://imgur.com/raQuv6H.png",role:"tank",skill:{type:"double", power:2, text:"200%追撃",cool:3}},
-{name:"弐呪刻🃏",rarity:3,attr:"雷",img:"https://imgur.com/0GAe9qU.png",role:"tank",skill:{type:"multi", power:0.4, hits:4, text:"4連撃+デバフ",cool:3}},
-{name:"死橋凪🌌",rarity:3,attr:"光",img:"https://imgur.com/W0naH2J.png",role:"tank",skill:{type:"rage", power:5, text:"狂化",cool:4}},
-{name:"フセイン👻",rarity:3,attr:"闇",img:"https://imgur.com/3kJ2WU7.png",role:"support",skill:{type:"heal", power:0.4, text:"味方回復40%",cool:2}},
-{name:"リボルト🔒",rarity:3,attr:"木",img:"https://imgur.com/FiPVv7j.png",role:"attacker",skill:{type:"burn", power:0.6, text:"強燃焼付与(4T)",cool:3}}
+{name:"和辺重信🍖",rarity:3,attr:"火",img:"https://imgur.com/dgKm097.png",role:"tank",skill:{type:"buff", power:1.2, text:"120%バフ",cool:2},
+passive:{type:"buff_ct_reduce",text:"🔥炎兵：バフスキル発動時に味方全体のCTを1短縮"}},
+{name:"明石啓希🌊",rarity:3,attr:"水",img:"https://imgur.com/raQuv6H.png",role:"tank",skill:{type:"double", power:2, text:"200%追撃",cool:3},
+passive:{type:"multi_hit_bonus",value:0.12,text:"❄水護：追撃スキル発動時の各ヒットATK+12%"}},
+{name:"弐呪刻🃏",rarity:3,attr:"雷",img:"https://imgur.com/0GAe9qU.png",role:"tank",skill:{type:"multi", power:0.4, hits:4, text:"4連撃+デバフ",cool:3},
+passive:{type:"multi_hit_bonus",value:0.15,text:"⚡雷壁：多段スキルの各ヒットATK+15%"}},
+{name:"死橋凪🌌",rarity:3,attr:"光",img:"https://imgur.com/W0naH2J.png",role:"tank",skill:{type:"rage", power:5, text:"狂化",cool:4},
+passive:{type:"rage_power_up",value:0.3,text:"✨光炎斬：狂化スキル発動時のATK上昇量+30%"}},
+{name:"フセイン👻",rarity:3,attr:"闇",img:"https://imgur.com/3kJ2WU7.png",role:"support",skill:{type:"heal", power:0.4, text:"味方回復40%",cool:2},
+passive:{type:"revive_passive",threshold:0.15,text:"🌑闇癒：味方HP15%以下で自動的にHP15%回復"}},
+{name:"リボルト🔒",rarity:3,attr:"木",img:"https://imgur.com/FiPVv7j.png",role:"attacker",skill:{type:"burn", power:0.6, text:"強燃焼付与(4T)",cool:3},
+passive:{type:"burn_extend",turn:2,text:"🌿木炎：燃焼スキル発動時に燃焼継続ターン+2"}}
 ];
 
 const eventStages = [
@@ -1120,7 +1247,9 @@ rewardChar:{
     rarity:3,
     attr:"火",
     img:"https://imgur.com/dgKm097.png",
-    skill:{type:"buff", power:1.2, text:"120%バフ",cool:2}
+    role:"tank",
+    skill:{type:"buff", power:1.2, text:"120%バフ",cool:2},
+    passive:{type:"buff_ct_reduce",text:"🔥炎兵：バフスキル発動時に味方全体のCTを1短縮"}
 }
 },
 {
@@ -1145,7 +1274,9 @@ rewardChar:{
     rarity:3,
     attr:"水",
     img:"https://imgur.com/raQuv6H.png",
-    skill:{type:"double", power:2, text:"200%追撃",cool:3}
+    role:"tank",
+    skill:{type:"double", power:2, text:"200%追撃",cool:3},
+    passive:{type:"multi_hit_bonus",value:0.12,text:"❄水護：追撃スキル発動時の各ヒットATK+12%"}
 }
 },
 {
@@ -1170,7 +1301,9 @@ rewardChar:{
     rarity:3,
     attr:"雷",
     img:"https://imgur.com/0GAe9qU.png",
-    skill:{type:"multi", power:0.4, hits:4, text:"4連撃+デバフ",cool:3}
+    role:"tank",
+    skill:{type:"multi", power:0.4, hits:4, text:"4連撃+デバフ",cool:3},
+    passive:{type:"multi_hit_bonus",value:0.15,text:"⚡雷壁：多段スキルの各ヒットATK+15%"}
 }
 },
 {
@@ -1195,7 +1328,9 @@ rewardChar:{
     rarity:3,
     attr:"光",
     img:"https://imgur.com/W0naH2J.png",
-    skill:{type:"rage", power:5, text:"狂化",cool:4}
+    role:"tank",
+    skill:{type:"rage", power:5, text:"狂化",cool:4},
+    passive:{type:"rage_power_up",value:0.3,text:"✨光炎斬：狂化スキル発動時のATK上昇量+30%"}
 }
 },
 {
@@ -1220,7 +1355,9 @@ rewardChar:{
     rarity:3,
     attr:"闇",
     img:"https://imgur.com/3kJ2WU7.png",
-    skill:{type:"heal", power:0.4, text:"味方回復40%",cool:2}
+    role:"support",
+    skill:{type:"heal", power:0.4, text:"味方回復40%",cool:2},
+    passive:{type:"revive_passive",threshold:0.15,text:"🌑闇癒：味方HP15%以下で自動的にHP15%回復"}
 }
 },
 {
@@ -1251,7 +1388,8 @@ rewardChar:{
         attr:"木",
         img:"https://imgur.com/FiPVv7j.png",
         role:"attacker",
-        skill:{type:"burn", power:0.6, text:"強燃焼付与(4T)",cool:3}
+        skill:{type:"burn", power:0.6, text:"強燃焼付与(4T)",cool:3},
+        passive:{type:"burn_extend",turn:2,text:"🌿木炎：燃焼スキル発動時に燃焼継続ターン+2"}
     }
 },
 ];
@@ -1759,6 +1897,7 @@ ${c.weapon ? `
 </button>
 
 ${c.skill ? `<br><button class="skillBtn" onclick="openSkillModal(${i});event.stopPropagation();">📖 スキル確認</button>` : ""}
+${c.passive ? `<button class="skillBtn" style="background:#1a3a1a;color:#88ff88;border-color:#44cc44;" onclick="openPassiveModal(${i});event.stopPropagation();">🌟 パッシブ確認</button>` : ""}
 </div>`).join("");
 
 let t=document.getElementById("team");
@@ -1866,6 +2005,9 @@ return {
     // ⚔ 神速の剣術: 初期剣カウント0
     swordCount: initSkill?.type === "kenSword" ? 0 : undefined,
     swordBuff: initSkill?.type === "kenSword" ? 0 : undefined, // 追加追撃強化ターン
+    // 🌟 パッシブスキル初期化
+    passive: base?.passive || c.passive || null,
+    passiveAtkBonus: 0, // atk_up_on_attack スタック用
 };
   }));
 
@@ -1895,6 +2037,15 @@ turn="player";turnIndex=0;
 deadPlayers=[];
 lastAllySkill = null;
 players.forEach(p => p.weaponCool = 0);
+
+// 🌟 パッシブ: 戦闘開始時 敵ATK低下パッシブ適用
+players.forEach(p => {
+  if(p.passive && p.passive.type === "reduce_enemy_atk_passive"){
+    enemy.atk = Math.floor(enemy.atk * (1 - p.passive.value));
+    enemy.baseAtk = enemy.atk;
+  }
+});
+
 renderBattle();
 }
 
@@ -2022,6 +2173,11 @@ function getPlayerStatusHTML(p){
     h += `<span class="sBadge" style="background:#333;color:#ff6600;">🔥ヒートアップ待機(発動で+${bonus}%)</span>`;
   }
   if(p.isBunshin) h+=`<span class="sBadge" style="background:#00ccff;color:#000;">👥分身(${p.bunshinTurn}T)</span>`;
+  // 🌟 パッシブ表示
+  if(p.passive){
+    let shortText = p.passive.text ? p.passive.text.split("：")[0] : "パッシブ";
+    h+=`<span class="sBadge sPassive">✦${shortText}</span>`;
+  }
   if(p.timeCrash && p.timeCrash.turn >= 0){
     if(p.timeCrash.turn > 0){
       h+=`<span class="sBadge" style="background:#660099;color:#fff;">⏳時間崩壊(${p.timeCrash.turn}T 蓄:${Math.floor(p.timeCrash.stored||0)})</span>`;
@@ -2157,7 +2313,8 @@ if(p.buffs){
 
 let res = calcDamage(p.attr,enemy.attr,atk);
 
-// allDebuffMark: 被ダメ1.5倍（ターン制・感電と重複）
+// 🌟 パッシブ: 低HP時ATKブースト適用
+res.dmg = Math.floor(res.dmg * applyPassiveAtk(p));
 if(enemy.allDebuffMark){
     res.dmg = Math.floor(res.dmg * 1.5);
     // ※フラグはallDebuffTurnで管理するためここではリセットしない
@@ -2187,6 +2344,9 @@ let _tcHolder = players.find(pl => pl.timeCrash != null);
 if(_tcHolder){
     _tcHolder.timeCrash.stored = (_tcHolder.timeCrash.stored || 0) + res.dmg;
 }
+
+// 🌟 パッシブ発動（攻撃時）
+triggerAttackPassive(p);
 
 renderBattle();
 
@@ -2472,6 +2632,9 @@ if(enemy.gimmick?.counter){
 
 let res = calcDamage(enemy.attr, target.attr, atk);
 
+// 🌟 パッシブ: タンク被ダメ軽減
+res.dmg = Math.floor(res.dmg * applyPassiveDef(target));
+
 // シールド（重複スタック対応）: 全スタックのpowerを合算（上限100%）して軽減
 if(target.shields && target.shields.length > 0){
     let totalPower = Math.min(1, target.shields.reduce((acc,s)=>acc+s.power, 0));
@@ -2497,6 +2660,9 @@ if(target.skill && target.skill.type==="mimicry" && !target.mimicryActive){
 
 target.currentHp -= res.dmg;
 if(target.currentHp <= 0) target.currentHp = 0;
+
+// 🌟 パッシブ: 被ダメ時回復
+triggerDamagedPassive(target);
 
 // ⚔ 神速の剣術: 被攻撃時に剣カウント+1
 if(target.skill && target.skill.type==="kenSword"){
@@ -2601,6 +2767,9 @@ setTimeout(()=>{
     turnIndex = 0;
     if(turnIndex >= players.length) turnIndex = 0;
     enemy.turnCount=(enemy.turnCount||0)+1;
+
+    // 🌟 パッシブ: ターン開始時発動
+    triggerTurnStartPassive();
     // 🔥 ヒートアップ: 経過ターン更新に合わせてバフ値を自動更新
     players.forEach(pl=>{
         if(pl.heatUpUsed && pl.buffs){
@@ -2633,6 +2802,10 @@ function applyEnemyStatusDamage(callback){
       let atk2 = poison.user.atk;
       if(poison.user.buffs) poison.user.buffs.forEach(b=>{ atk2*=b.power; });
       let dmg = atk2 * poison.power;
+      // 🌟 パッシブ: 毒ダメ増幅
+      players.forEach(pl=>{
+        if(pl.passive && pl.passive.type==="poison_power_up") dmg *= (1 + pl.passive.value);
+      });
       enemy.hp -= dmg;
       setTimeout(()=>showDamage("enemy",{dmg,type:"poison"}), delay);
       delay+=100;
@@ -2706,6 +2879,147 @@ function checkTurnLimit(){
     else go("trial");
   }
 }
+
+// ===== 🌟 パッシブスキル処理 =====
+
+// 攻撃時パッシブ発動
+function triggerAttackPassive(p){
+  if(!p.passive) return;
+  let ps = p.passive;
+
+  // 🔥 burn_on_attack: 確率で燃焼付与
+  if(ps.type === "burn_on_attack" && Math.random() < ps.chance){
+    if(!enemy.burns) enemy.burns = [];
+    enemy.burns.push({power: p.atk * ps.power, turn: ps.turn||2, user: p});
+    enemy.burnPower = enemy.burns.reduce((acc,b)=>acc+b.power,0);
+    enemy.burnTurn = Math.max(...enemy.burns.map(b=>b.turn));
+    showSynergyText("🔥 "+p.name+"のパッシブ！燃焼付与！");
+  }
+  // ⚡ shock_on_attack: 確率で感電付与
+  if(ps.type === "shock_on_attack" && Math.random() < ps.chance){
+    enemy.shockTurn = Math.max(enemy.shockTurn||0, 2);
+    showSynergyText("⚡ "+p.name+"のパッシブ！感電付与！");
+  }
+  // ☠ poison_on_attack: 確率で毒付与
+  if(ps.type === "poison_on_attack" && Math.random() < ps.chance){
+    if(!enemy.poisons) enemy.poisons = [];
+    enemy.poisons.push({power: ps.power, turn: 3, user: p});
+    showSynergyText("☠ "+p.name+"のパッシブ！毒付与！");
+  }
+  // ❄ freeze_on_attack: 確率で凍結付与
+  if(ps.type === "freeze_on_attack" && Math.random() < ps.chance){
+    enemy.freezeTurn = Math.max(enemy.freezeTurn||0, 1);
+    showSynergyText("❄ "+p.name+"のパッシブ！凍結付与！");
+  }
+  // 💪 atk_up_on_attack: 攻撃時にATKバフ積み上げ
+  if(ps.type === "atk_up_on_attack"){
+    let maxStacks = 5;
+    let curBonus = p.passiveAtkBonus || 0;
+    if(curBonus < maxStacks * ps.value){
+      p.passiveAtkBonus = Math.min(maxStacks * ps.value, curBonus + ps.value);
+      if(!p.buffs) p.buffs = [];
+      p.buffs = p.buffs.filter(b=>!b.isPassiveAtk);
+      p.buffs.push({power: 1 + p.passiveAtkBonus, turn: 3, isPassiveAtk: true});
+      showSynergyText("💪 "+p.name+"のパッシブ！ATK+"+(Math.floor(p.passiveAtkBonus*100))+"%！");
+    }
+  }
+  // 💧 heal_on_attack: 攻撃時に自己回復
+  if(ps.type === "heal_on_attack"){
+    let healAmt = Math.floor(p.hp * ps.value);
+    p.currentHp = Math.min(p.hp, p.currentHp + healAmt);
+    let pi = players.indexOf(p);
+    if(pi>=0) setTimeout(()=>showDamage("p"+pi,{dmg:healAmt,type:"heal"}),200);
+  }
+  // 🌿 debuff_on_attack: 確率でデバフ付与
+  if(ps.type === "debuff_on_attack" && Math.random() < ps.chance){
+    if(!enemy.debuffs) enemy.debuffs = [];
+    enemy.debuffs.push({power: 1 - 0.10, turn: 2});
+    enemy.debuffPower = enemy.debuffs.reduce((acc,d)=>acc*d.power,1);
+    enemy.debuffTurn = Math.max(...enemy.debuffs.map(d=>d.turn));
+    showSynergyText("💜 "+p.name+"のパッシブ！弱体付与！");
+  }
+}
+
+// ターン開始時パッシブ (味方全体に適用)
+function triggerTurnStartPassive(){
+  players.forEach((p, pi)=>{
+    if(!p.passive) return;
+    let ps = p.passive;
+
+    // 🌿 heal_on_turn: ターン毎に味方全体HP回復
+    if(ps.type === "heal_on_turn"){
+      players.forEach((target, ti)=>{
+        if(target.currentHp <= 0) return;
+        let healAmt = Math.floor(target.hp * ps.value);
+        target.currentHp = Math.min(target.hp, target.currentHp + healAmt);
+        setTimeout(()=>showDamage("p"+ti,{dmg:healAmt,type:"heal"}), ti*80);
+      });
+    }
+    // 💪 atk_up_on_turn: ターン毎に味方全体ATKバフ(短期)
+    if(ps.type === "atk_up_on_turn"){
+      players.forEach((target)=>{
+        if(!target.buffs) target.buffs = [];
+        target.buffs.push({power: 1 + ps.value, turn: 1, isPassiveTurnBuff: true});
+      });
+    }
+    // 💧 revive_passive: 瀕死味方の応急回復
+    if(ps.type === "revive_passive"){
+      players.forEach((target, ti)=>{
+        if(target.currentHp > 0 && target.currentHp < target.hp && (target.currentHp / target.hp) <= ps.threshold){
+          let healAmt = Math.floor(target.hp * 0.15);
+          target.currentHp = Math.min(target.hp, target.currentHp + healAmt);
+          setTimeout(()=>{
+            showDamage("p"+ti,{dmg:healAmt,type:"heal"});
+            showSynergyText("💧 "+p.name+"のパッシブ！瀕死の味方を回復！");
+          }, 100);
+        }
+      });
+    }
+  });
+}
+
+// 被ダメ時パッシブ (攻撃を受けた味方に適用)
+function triggerDamagedPassive(target){
+  // HP0以下のキャラには回復パッシブを発動しない
+  if(target.currentHp <= 0) return;
+  // heal_on_damaged: 味方が被ダメ時に全体回復
+  players.forEach((p)=>{
+    if(!p.passive) return;
+    if(p.passive.type === "heal_on_damaged"){
+      let healAmt = Math.floor(target.hp * p.passive.value);
+      target.currentHp = Math.min(target.hp, target.currentHp + healAmt);
+      let ti = players.indexOf(target);
+      if(ti>=0) setTimeout(()=>showDamage("p"+ti,{dmg:healAmt,type:"heal"}),300);
+    }
+  });
+}
+
+// ATK計算時にパッシブ補正適用 (dmg_boost_low_hp, tank_passive, etc)
+function applyPassiveAtk(p){
+  let bonus = 1.0;
+  if(!p.passive) return bonus;
+  let ps = p.passive;
+  // 低HP時ATKブースト
+  if(ps.type === "dmg_boost_low_hp"){
+    if((p.currentHp / p.hp) <= ps.threshold){
+      bonus *= (1 + ps.value);
+    }
+  }
+  return bonus;
+}
+
+// 被ダメ計算時にパッシブ補正適用
+function applyPassiveDef(target){
+  let reduction = 1.0;
+  if(!target.passive) return reduction;
+  let ps = target.passive;
+  if(ps.type === "tank_passive"){
+    reduction *= (1 - ps.value);
+  }
+  return reduction;
+}
+
+// ===== パッシブスキル処理ここまで =====
 
 function endTurn(){
 if(turn === "enemy"){
@@ -2860,22 +3174,27 @@ if(s.type==="damage"){
 
 // 🔥 多段（←ここが一番重要）
 if(s.type==="multi"){
+    // パッシブ: multi_hit_bonus → 各ヒットATK増幅
+    let hitMult = 1.0;
+    players.forEach(ally=>{
+        if(ally.passive && ally.passive.type==="multi_hit_bonus") hitMult += ally.passive.value;
+    });
 
     for(let i=0;i<s.hits;i++){
   showSynergyText("多段攻撃！");
-        let res = calcDamage(p.attr, enemy.attr, atk * s.power);
+        let res = calcDamage(p.attr, enemy.attr, atk * s.power * hitMult);
         enemy.hp -= res.dmg;
 
         // 🔻ヒットごとにデバフ
         if(!enemy.debuffUsed){
-            enemy.atk *= 0.95; // ←ここ調整ポイント
+            enemy.atk *= 0.95;
         }
 
         setTimeout(()=>{
             showDamage("enemy", res);
 
             if(i === s.hits - 1){
-                enemy.debuffUsed = true; // 最後に固定
+                enemy.debuffUsed = true;
                 renderBattle();
             }
 
@@ -2887,6 +3206,10 @@ if(s.type==="multi"){
 if(s.type==="heal"){
 players.forEach((t,i)=>{
     let heal = t.hp * s.power;
+    // 🌟 パッシブ: 回復量ボーナス
+    players.forEach(pl=>{
+      if(pl.passive && pl.passive.type==="heal_bonus") heal *= (1 + pl.passive.value);
+    });
   showSynergyText("回復！");
     t.currentHp += heal;
     if(t.currentHp > t.hp) t.currentHp = t.hp;
@@ -2905,6 +3228,13 @@ renderBattle();
 // 🔺 バフ
 if(s.type==="buff"){
     p.atk *= s.power;
+    // パッシブ: buff_ct_reduce → 味方CT-1
+    players.forEach(ally=>{
+        if(ally.passive && ally.passive.type==="buff_ct_reduce"){
+            players.forEach(t=>{ if(t.cool>0) t.cool--; });
+            showSynergyText("🔥 "+ally.name+"のパッシブ！バフ発動→全体CT-1！");
+        }
+    });
   showSynergyText("バフ付与！");
 }
 
@@ -2915,6 +3245,13 @@ if(s.type==="debuff"){
     if(currentEvent !== undefined){
         power = 1 - (1 - power) * 0.5;
     }
+    // パッシブ: debuff_power_up → デバフ効果増幅
+    players.forEach(ally=>{
+        if(ally.passive && ally.passive.type==="debuff_power_up"){
+            power = 1 - (1 - power) * (1 - ally.passive.value);
+            showSynergyText("💧 "+ally.name+"のパッシブ！デバフ効果増幅！");
+        }
+    });
     enemy.debuffs.push({ power: power, turn: 3 });
     // 全デバフを合成してdebuffPowerを更新
     enemy.debuffPower = enemy.debuffs.reduce((acc, d) => acc * d.power, 1);
@@ -2939,7 +3276,21 @@ checkSynergy(p, atk);
 // 🔥 燃焼（重ね掛け対応）
 if(s.type==="burn"){
     if(!enemy.burns) enemy.burns = [];
-    enemy.burns.push({ power: atk * s.power, turn: s.turn || 4, user: p });
+    let burnPow = atk * s.power;
+    let burnTurn = s.turn || 4;
+    // パッシブ: burn_power_up → 燃焼ダメージ増幅
+    players.forEach(ally=>{
+        if(ally.passive && ally.passive.type==="burn_power_up"){
+            burnPow *= (1 + ally.passive.value);
+            showSynergyText("⚡ "+ally.name+"のパッシブ！燃焼ダメージ増幅！");
+        }
+        // パッシブ: burn_extend → 燃焼ターン延長
+        if(ally.passive && ally.passive.type==="burn_extend"){
+            burnTurn += ally.passive.turn;
+            showSynergyText("🌿 "+ally.name+"のパッシブ！燃焼ターン延長！");
+        }
+    });
+    enemy.burns.push({ power: burnPow, turn: burnTurn, user: p });
     // 合計値をburnPower/burnTurnに反映
     enemy.burnPower = enemy.burns.reduce((acc, b) => acc + b.power, 0);
     enemy.burnTurn = Math.max(...enemy.burns.map(b => b.turn));
@@ -2969,14 +3320,25 @@ if(s.type==="shock"){
 
 // 👥 全体バフ
 if(s.type==="teamBuff"){
+    // パッシブ: buff_power_up → バフ効果量増幅
+    let buffMult = 1.0;
+    players.forEach(ally=>{
+        if(ally.passive && ally.passive.type==="buff_power_up") buffMult += ally.passive.value;
+    });
     players.forEach(t=>{
-  showSynergyText("全体バフ！");
+      showSynergyText("全体バフ！");
         if(!t.buffs) t.buffs = [];
-
         t.buffs.push({
             turn: 3,
-            power: s.power
+            power: s.power * buffMult
         });
+    });
+    // パッシブ: buff_ct_reduce → 全体CT-1
+    players.forEach(ally=>{
+        if(ally.passive && ally.passive.type==="buff_ct_reduce"){
+            players.forEach(t=>{ if(t.cool>0) t.cool--; });
+            showSynergyText("🔥 "+ally.name+"のパッシブ！バフ発動→全体CT-1！");
+        }
     });
 }
 
@@ -2990,7 +3352,15 @@ if(s.type==="counter"){
 // 💖 瀕死の一撃
 if(s.type === "rage"){
     let ratio = 1 - (p.currentHp / p.hp); // 減ってるほど強い
-    let dmg = Math.floor(atk * (1 + ratio * (s.power - 1) * 3));
+    let rageMult = 1.0;
+    // パッシブ: rage_power_up → 狂化ダメージ増幅
+    players.forEach(ally=>{
+        if(ally.passive && ally.passive.type==="rage_power_up"){
+            rageMult += ally.passive.value;
+            showSynergyText("✨ "+ally.name+"のパッシブ！狂化ダメージ増幅！");
+        }
+    });
+    let dmg = Math.floor(atk * (1 + ratio * (s.power - 1) * 3) * rageMult);
   showSynergyText("狂化発動！");
     enemy.hp -= dmg;
 
@@ -3005,24 +3375,29 @@ if(s.type === "rage"){
 }
 // 🔥 ドレイン
 if(s.type==="drain"){
-    let idx = turnIndex; // ←これ追加（超重要）
+    let idx = turnIndex;
 
     let res = calcDamage(p.attr, enemy.attr, atk * s.power);
     if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
     enemy.hp -= res.dmg;
 
     let heal = res.dmg * 0.5;
+    // パッシブ: drain_power_up → 吸収量増幅
+    players.forEach(ally=>{
+        if(ally.passive && ally.passive.type==="drain_power_up"){
+            heal *= (1 + ally.passive.value);
+            showSynergyText("🔥 "+ally.name+"のパッシブ！吸収量増幅！");
+        }
+    });
     p.currentHp += heal;
     if(p.currentHp > p.hp) p.currentHp = p.hp;
   showSynergyText("吸収！");
     renderBattle();
 
-    // ダメージ
     setTimeout(()=>{
         showDamage("enemy", res);
     },10);
 
-    // 回復（ちゃんと自分に出る）
     setTimeout(()=>{
         showDamage("p"+idx, {
             dmg: heal,
@@ -3042,8 +3417,12 @@ if(s.type==="hpCut"){
 
 // ⚡ 2回攻撃
 if(s.type==="double"){
-    let res = calcDamage(p.attr, enemy.attr, atk * s.power);
-    let res2 = calcDamage(p.attr, enemy.attr, atk * 0.5);
+    let hitMult = 1.0;
+    players.forEach(ally=>{
+        if(ally.passive && ally.passive.type==="multi_hit_bonus") hitMult += ally.passive.value;
+    });
+    let res = calcDamage(p.attr, enemy.attr, atk * s.power * hitMult);
+    let res2 = calcDamage(p.attr, enemy.attr, atk * 0.5 * hitMult);
   showSynergyText("連撃！");
     enemy.hp -= res.dmg;
     enemy.hp -= res2.dmg;
@@ -3063,7 +3442,14 @@ if(s.type==="shield"){
 
 // 💥 連鎖爆発: ダメージ + 味方全員CT即時リセット
 if(s.type==="chain"){
-    let res = calcDamage(p.attr, enemy.attr, atk * s.power);
+    let chainMult = 1.0;
+    players.forEach(ally=>{
+        if(ally.passive && ally.passive.type==="chain_power_up"){
+            chainMult += ally.passive.value;
+            showSynergyText("🌑 "+ally.name+"のパッシブ！連鎖ダメージ増幅！");
+        }
+    });
+    let res = calcDamage(p.attr, enemy.attr, atk * s.power * chainMult);
     if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
     if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
     enemy.hp -= res.dmg;
@@ -3080,7 +3466,14 @@ if(s.type==="chain"){
 if(s.type==="revive"){
     if(deadPlayers.length > 0){
         let revived = deadPlayers.pop();
-        revived.currentHp = Math.floor(revived.hp * s.power);
+        let revivePower = s.power;
+        players.forEach(ally=>{
+            if(ally.passive && ally.passive.type==="revive_power_up"){
+                revivePower += ally.passive.value;
+                showSynergyText("🔥 "+ally.name+"のパッシブ！蘇生HP増幅！");
+            }
+        });
+        revived.currentHp = Math.floor(revived.hp * Math.min(revivePower, 1.0));
         revived.cool = 0;
         players.push(revived);
         let wi = players.length - 1;
@@ -5306,6 +5699,32 @@ function renderExchange(){
   }).join('');
 }
 
+function switchModalTab(tab){
+  let skillContent = document.getElementById("skillTabContent");
+  let passiveContent = document.getElementById("passiveTabContent");
+  let tabSkillBtn = document.getElementById("tabSkillBtn");
+  let tabPassiveBtn = document.getElementById("tabPassiveBtn");
+  if(tab === "skill"){
+    skillContent.style.display = "block";
+    passiveContent.style.display = "none";
+    tabSkillBtn.style.background = "#ffd700";
+    tabSkillBtn.style.color = "#000";
+    tabSkillBtn.style.border = "none";
+    tabPassiveBtn.style.background = "#1a2a1a";
+    tabPassiveBtn.style.color = "#88ff88";
+    tabPassiveBtn.style.border = "1px solid #44cc44";
+  } else {
+    skillContent.style.display = "none";
+    passiveContent.style.display = "block";
+    tabPassiveBtn.style.background = "#44cc44";
+    tabPassiveBtn.style.color = "#000";
+    tabPassiveBtn.style.border = "none";
+    tabSkillBtn.style.background = "#1a2a1a";
+    tabSkillBtn.style.color = "#ffd700";
+    tabSkillBtn.style.border = "1px solid #ffd700";
+  }
+}
+
 function openSkillModal(i){
   let c = box[i];
   if(!c || !c.skill) return;
@@ -5315,6 +5734,47 @@ function openSkillModal(i){
   document.getElementById("skillModalText").textContent = "🗡 " + skillText;
   let ct = c.skill.cool ? "CT: " + c.skill.cool + "ターン" : "";
   document.getElementById("skillModalCT").textContent = ct;
+  // パッシブ内容もセット
+  let passiveEl = document.getElementById("skillModalPassive");
+  let passiveNoneEl = document.getElementById("skillModalPassiveNone");
+  if(passiveEl && passiveNoneEl){
+    if(c.passive && c.passive.text){
+      passiveEl.textContent = c.passive.text;
+      passiveEl.style.display = "block";
+      passiveNoneEl.style.display = "none";
+    } else {
+      passiveEl.style.display = "none";
+      passiveNoneEl.style.display = "block";
+    }
+  }
+  switchModalTab("skill");
+  document.getElementById("skillModal").classList.add("open");
+}
+
+function openPassiveModal(i){
+  let c = box[i];
+  if(!c) return;
+  document.getElementById("skillModalImg").src = c.img;
+  document.getElementById("skillModalName").textContent = c.name;
+  // スキル内容もセット
+  let skillText = c.skill?.text || "スキルなし";
+  document.getElementById("skillModalText").textContent = "🗡 " + skillText;
+  let ct = c.skill?.cool ? "CT: " + c.skill.cool + "ターン" : "";
+  document.getElementById("skillModalCT").textContent = ct;
+  // パッシブ内容セット
+  let passiveEl = document.getElementById("skillModalPassive");
+  let passiveNoneEl = document.getElementById("skillModalPassiveNone");
+  if(passiveEl && passiveNoneEl){
+    if(c.passive && c.passive.text){
+      passiveEl.textContent = c.passive.text;
+      passiveEl.style.display = "block";
+      passiveNoneEl.style.display = "none";
+    } else {
+      passiveEl.style.display = "none";
+      passiveNoneEl.style.display = "block";
+    }
+  }
+  switchModalTab("passive");
   document.getElementById("skillModal").classList.add("open");
 }
 
