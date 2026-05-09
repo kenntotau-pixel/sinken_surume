@@ -530,7 +530,8 @@ animation:totalPop 1s forwards;
 <button onclick="changeBanner(4)">イベント4</button>
 <button onclick="changeBanner(5)">イベント5</button>
 <button onclick="changeBanner(6)">イベント6</button>
-<button onclick="changeBanner(7)">武器</button>
+<button onclick="changeBanner(7)">イベント7</button>
+<button onclick="changeBanner(8)">武器</button>
 </div>
 
 凸塊:<span id="dupeStone"></span><br>
@@ -621,6 +622,19 @@ style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
 <br>
 <button onclick="drawEvent6_1()">イベント単発</button>
 <button onclick="drawEvent6_10()">イベント10連</button>
+
+</div>
+
+<div style="min-width:100%;">
+
+<img src="https://imgur.com/JL9LqwT.png"
+class="banner"
+style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;border:3px solid gold;box-shadow:0 0 20px gold;">
+
+
+<br>
+<button onclick="drawEvent7_1()">イベント単発</button>
+<button onclick="drawEvent7_10()">イベント10連</button>
 
 </div>
 
@@ -918,6 +932,9 @@ passive:{type:"heal_on_damaged",value:0.08,text:"💧水の盾：味方が被ダ
 {name:"オリバー(β)",rarity:4,attr:"光",img:"https://imgur.com/InZgh9E.png",role:"attacker",
 skill:{type:"mimicry", cool:0, text:"無許可の模倣者: HPが減るほど防御&ATK上昇(最大+70%)(永続)"},noTrial:true,
 passive:{type:"freeze_on_attack",chance:0.3,text:"✨氷光：攻撃時30%で凍結付与(1T)"}},
+{name:"湯照司吉基(β)",rarity:4,attr:"闇",img:"https://imgur.com/8OPS0rW.png",role:"attacker",
+skill:{type:"erosion", cool:4, power:2.2, text:"侵蝕：ATK220%ダメ。毒・燃焼・感電を侵蝕に変換。侵蝕状態時被ダメ+25%/行動終了時に最大HP4%ダメ。解除不能(3T)侵蝕1種につき自身ATK+40%(3T)"},noTrial:true,
+passive:{type:"koku_shoku",text:"⬛黒蝕体質：敵に状態異常付与のたび「黒蝕」+1(最大10)。1stにつき与ダメ+12%・被ダメ-5%"}},
 
 
 {name:"ゲガント",rarity:1,attr:"木",img:"https://imgur.com/dXFpBIJ.png",role:"attacker",
@@ -1098,6 +1115,30 @@ passive:{type:"burn_on_attack",chance:0.45,power:0.28,turn:2,text:"✨光炎撃�
 passive:{type:"drain_power_up",value:0.3,text:"🔥炎癒二：吸収スキルの回復量+30%"}},
 ];
 
+const eventChars7 = [
+{name:"鈴鹿🎸",rarity:4,attr:"光",img:"https://imgur.com/QtP7qMu.png",role:"support",
+ skill:{type:"harmonyBurst", power:0.4, text:"響音爆破: 味方全体ATK40%バフ(3T)+全員の蓄積状態異常を即時爆発(各状態異常のダメージ×2.5倍)",cool:5},
+passive:{type:"heal_on_turn",value:0.08,text:"✨光の歌声：ターン毎に味方全体HP8%回復+感電・燃焼・毒が付与された敵に与ダメ+20%"}},
+{name:"赤羽悠真🎸",rarity:4,attr:"水",img:"https://imgur.com/xjFf4kL.png",role:"support",
+ skill:{type:"echoHeal", power:0.6, text:"共鳴回復: 味方全体HP60%回復+3T間ターン毎にHP10%回復(スタック可)",cool:4},
+passive:{type:"revive_passive",threshold:0.2,text:"💧響水：味方HP20%以下時にHP20%自動回復+回復スキル発動時に全体シールド10%付与(1T)"}},
+{name:"阿波牛壬陸🎸",rarity:4,attr:"雷",img:"https://imgur.com/2Fv0xUc.png",role:"debuffer",
+ skill:{type:"soundCrush", power:1.2, text:"轟音壊滅: 敵ATK50%弱体+感電付与(3T)+次の被ダメ2倍増幅",cool:4},
+passive:{type:"shock_on_attack",chance:0.55,text:"⚡雷響：攻撃時55%で感電付与+感電中の敵への与ダメ+25%"}},
+{name:"甲斐翔也🎸",rarity:3,attr:"火",img:"https://imgur.com/5MJlAPL.png",role:"attacker",
+ skill:{type:"multi", power:0.7, hits:3, text:"3連撃+デバフ",cool:3},
+passive:{type:"burn_on_attack",chance:0.35,power:0.2,turn:2,text:"🔥炎技：攻撃時35%で燃焼付与(2T)"}},
+{name:"室井元武🎸",rarity:3,attr:"水",img:"https://imgur.com/5WxxxXC.png",role:"tank",
+ skill:{type:"shield",power:0.3,turn:3,text:"被ダメ30%軽減",cool:3},
+passive:{type:"tank_passive",value:0.12,text:"💧水盾：常時被ダメを12%軽減"}},
+{name:"蒼井朔也🎸",rarity:3,attr:"雷",img:"https://imgur.com/tOOs8uB.png",role:"attacker",
+ skill:{type:"damage", power:2.5, text:"250%ダメージ",cool:3},
+passive:{type:"shock_on_attack",chance:0.4,text:"⚡雷閃：攻撃時40%で感電付与"}},
+{name:"跳田収滋🎸",rarity:3,attr:"木",img:"https://imgur.com/qHIy5yp.png",role:"support",
+ skill:{type:"heal", power:0.4, text:"味方回復40%",cool:3},
+passive:{type:"heal_bonus",value:0.2,text:"🌿木の加護：回復スキルの効果量+20%"}},
+];
+
 const weapons = [
 {
 name:"蒼天剣",
@@ -1221,7 +1262,9 @@ passive:{type:"rage_power_up",value:0.3,text:"✨光炎斬：狂化スキル発�
 {name:"フセイン👻",rarity:3,attr:"闇",img:"https://imgur.com/3kJ2WU7.png",role:"support",skill:{type:"heal", power:0.4, text:"味方回復40%",cool:2},
 passive:{type:"revive_passive",threshold:0.15,text:"🌑闇癒：味方HP15%以下で自動的にHP15%回復"}},
 {name:"リボルト🔒",rarity:3,attr:"木",img:"https://imgur.com/FiPVv7j.png",role:"attacker",skill:{type:"burn", power:0.6, text:"強燃焼付与(4T)",cool:3},
-passive:{type:"burn_extend",turn:2,text:"🌿木炎：燃焼スキル発動時に燃焼継続ターン+2"}}
+passive:{type:"burn_extend",turn:2,text:"🌿木炎：燃焼スキル発動時に燃焼継続ターン+2"}},
+{name:"アステレス🎸",rarity:3,attr:"火",img:"https://imgur.com/7R75rZr.png",role:"support",skill:{type:"heal", power:0.5, text:"味方回復50%",cool:3},
+passive:{type:"revive_passive",threshold:0.2,text:"✨光の慈悲：味方HP20%以下で自動的にHP20%回復"}}
 ];
 
 const eventStages = [
@@ -1392,6 +1435,39 @@ rewardChar:{
         passive:{type:"burn_extend",turn:2,text:"🌿木炎：燃焼スキル発動時に燃焼継続ターン+2"}
     }
 },
+{
+    name:"響音の試練",
+    stages:[
+        {lv:1, hp:1000, atk:100},
+        {lv:2, hp:3000, atk:300},
+        {lv:3, hp:7000, atk:650},
+        {lv:4, hp:16000, atk:1400},
+        {lv:5, hp:40000, atk:3200},
+        {lv:"BOSS", hp:120000, atk:3000, boss:true,
+         gimmick:{
+           shield:12000, shieldLabel:"シールド12000",
+           attrOnly:"光", attrOnlyLabel:"光属性のみ有効",
+           turnBuff:true, turnBuffLabel:"毎T ATK+12%(上限+120%)",
+           phaseRage:true, phaseRageLabel:"HP40%以下で狂化・全属性解放"
+         }}
+    ],
+    enemy:{
+        name:"アステレス🎸",
+        attr:"火",
+        img:"https://imgur.com/7R75rZr.png"
+    },
+    reward:60,
+    bossReward:500,
+    rewardChar:{
+        name:"アステレス🎸",
+        rarity:3,
+        attr:"火",
+        img:"https://imgur.com/7R75rZr.png",
+        role:"support",
+        skill:{type:"heal", power:0.5, text:"味方回復50%",cool:3},
+        passive:{type:"revive_passive",threshold:0.2,text:"✨光の慈悲：味方HP20%以下で自動的にHP20%回復"}
+    }
+},
 ];
 
 const maxDupe = {
@@ -1495,6 +1571,8 @@ const charDetails = {
   "跳田収滋(β)": {title:"策士の収納",
     story:"　",},
   "オリバー(β)": {title:"魂の奏鳴曲",
+    story:"　",},
+  "湯照司吉基(β)": {title:"look to the future",
     story:"　",},
   "ゲガント": {title:"再生",
     story:"元武達によって倒された最初の敵。固有能罪符は「再生」",},
@@ -1604,6 +1682,20 @@ const charDetails = {
     story:"",},
   "赤羽悠真🔒": {title:"泥を被る",
     story:"",},
+  "鈴鹿🎸": {title:"世界を照らす歌声",
+    story:"",},
+  "赤羽悠真🎸": {title:"きらめく音のその先へ",
+    story:"",},
+  "阿波牛壬陸🎸": {title:"夏空へ響くメロディ",
+    story:"",},
+  "甲斐翔也🎸": {title:"君へ続くアンコール",
+    story:"",},
+  "室井元武🎸": {title:"超次元リズムフェスタ",
+    story:"",},
+  "蒼井朔也🎸": {title:"響鳴ミラクルサウンド",
+    story:"",},
+  "跳田収滋🎸": {title:"輝星のメロディア",
+    story:"",},
   "和辺重信🍖": {title:"黒衣の晩餐",
     story:"",},
   "明石啓希🌊": {title:"波打ち際の二人",
@@ -1615,6 +1707,8 @@ const charDetails = {
   "フセイン👻": {title:"虚構魂魄",
     story:"",},
   "リボルト🔒": {title:"罪の管理者",
+    story:"",},
+  "アステレス🎸": {title:"音速スターライト",
     story:"",},
 };
 
@@ -1982,6 +2076,7 @@ let lv = progress[i] || 1;
         eventChars4.find(ch => ch.name === c.name) ||
         eventChars5.find(ch => ch.name === c.name) ||
         eventChars6.find(ch => ch.name === c.name) ||
+        eventChars7.find(ch => ch.name === c.name) ||
         rewardChar.find(ch => ch.name === c.name);
 
     let weapon = c.weapon;
@@ -2008,6 +2103,7 @@ return {
     // 🌟 パッシブスキル初期化
     passive: base?.passive || c.passive || null,
     passiveAtkBonus: 0, // atk_up_on_attack スタック用
+    kokuShoku: 0, // ⬛ 黒蝕スタックリセット
 };
   }));
 
@@ -2028,6 +2124,7 @@ return {
       debuffPower: 1,
       debuffTurn: 0,
       debuffs:[], // デバフ重ね掛け配列
+      erosions:[],
       gimmick: null,
       turnCount: 0
   };
@@ -2053,6 +2150,28 @@ function calcDamage(a,d,base){
 if(advantage[a]===d)return {dmg:base*1.5,type:"weak"};
 if(advantage[d]===a)return {dmg:base*0.5,type:"resist"};
 return {dmg:base,type:""};
+}
+
+// ⬛ 侵蝕被ダメ増幅を適用（侵蝕1つにつき+25%）
+function applyErosionBoost(res){
+  if(!enemy.erosions || enemy.erosions.length === 0) return res;
+  let boost = 1 + 0.25 * enemy.erosions.length;
+  return { ...res, dmg: Math.floor(res.dmg * boost) };
+}
+
+// ⬛ 黒蝕スタック付与（状態異常が敵に付与されるたびに呼ぶ）
+function triggerKokuShoku(count){
+  count = count || 1;
+  players.forEach(pl => {
+    if(pl.passive && pl.passive.type === "koku_shoku"){
+      let cur = pl.kokuShoku || 0;
+      let next = Math.min(10, cur + count);
+      if(next > cur){
+        pl.kokuShoku = next;
+        showSynergyText("⬛ " + pl.name + " 黒蝕+" + (next-cur) + "→" + next + "st！与ダメ+" + (next*12) + "% 被ダメ-" + (next*5) + "%");
+      }
+    }
+  });
 }
 
 function showDamage(id,res){
@@ -2207,6 +2326,15 @@ function getPlayerStatusHTML(p){
     let _mBonus = Math.min(0.7, _mRatio * 0.7);
     h+=`<span class="sBadge" style="background:#cc88ff;color:#fff;">🎭模倣者(ATK&DEF+${Math.floor(_mBonus*100)}%)</span>`;
   }
+  // ⬛ 黒蝕スタック表示
+  if(p.kokuShoku && p.kokuShoku > 0){
+    h+=`<span class="sBadge" style="background:#220022;color:#ff88ff;border:1px solid #880088;">⬛黒蝕×${p.kokuShoku}(与ダメ+${p.kokuShoku*12}% 被ダメ-${p.kokuShoku*5}%)</span>`;
+  }
+  // 💧 共鳴回復持続表示
+  if(p.echoHeals && p.echoHeals.length > 0){
+    let maxTurn = Math.max(...p.echoHeals.map(e=>e.turn));
+    h+=`<span class="sBadge" style="background:#0066cc;color:#fff;">💧共鳴×${p.echoHeals.length}(${maxTurn}T HP+10%/T)</span>`;
+  }
   return h;
 }
 
@@ -2219,8 +2347,9 @@ function getEnemyStatusHTML(){
   if(enemy.shockTurn>0) h+=`<span class="sBadge sShock">⚡感${enemy.shockTurn}</span>`;
   if(enemy.debuffs && enemy.debuffs.length>0) h+=`<span class="sBadge sDebuff">↓弱体${enemy.debuffs.length}重(${enemy.debuffTurn}T)</span>`;
   else if(enemy.debuffTurn>0) h+=`<span class="sBadge sDebuff">↓弱体${enemy.debuffTurn}</span>`;
-  if(enemy.allDebuffMark && enemy.allDebuffTurn>0) h+=`<span class="sBadge" style="background:#ff00cc;color:#fff;">💢被ダメ↑(${enemy.allDebuffTurn}T)</span>`;
+  if(enemy.erosions && enemy.erosions.length>0) h+=`<span class="sBadge" style="background:#440044;color:#ff88ff;border:1px solid #aa44aa;">⬛侵蝕×${enemy.erosions.length}(${enemy.erosions[0]?.turn}T)</span>`;
   if(enemy.shield>0) h+=`<span class="sBadge sShield">🛡${Math.floor(enemy.shield)}</span>`;
+  if(enemy.soundCrushAmp) h+=`<span class="sBadge" style="background:#ffcc00;color:#000;">⚡次の被ダメ×2</span>`;
   return h;
 }
 
@@ -2313,12 +2442,31 @@ if(p.buffs){
 
 let res = calcDamage(p.attr,enemy.attr,atk);
 
-// 🌟 パッシブ: 低HP時ATKブースト適用
+// 🌟 パッシブ: 低HP時ATKブースト適用（自身 + パーティ全体の与ダメボーナス）
 res.dmg = Math.floor(res.dmg * applyPassiveAtk(p));
+// 🌟 パーティ全体パッシブ与ダメボーナス（状態異常系）
+players.forEach(ally=>{
+    if(ally === p) return;
+    if(!ally.passive) return;
+    let aps = ally.passive;
+    // ✨ 光の歌声: 状態異常中の敵に与ダメ+20%
+    if(aps.type==="heal_on_turn" && aps.text && aps.text.includes("与ダメ")){
+        let hasAilment=(enemy.shockTurn>0)||(enemy.burns&&enemy.burns.length>0)||(enemy.poisons&&enemy.poisons.length>0);
+        if(hasAilment) res.dmg=Math.floor(res.dmg*1.20);
+    }
+    // ⚡ 雷響: 感電中の敵への与ダメ+25%
+    if(aps.type==="shock_on_attack" && aps.text && aps.text.includes("与ダメ")){
+        if(enemy.shockTurn>0) res.dmg=Math.floor(res.dmg*1.25);
+    }
+});
 if(enemy.allDebuffMark){
     res.dmg = Math.floor(res.dmg * 1.5);
-    // ※フラグはallDebuffTurnで管理するためここではリセットしない
 }
+// ⬛ 黒蝕: 与ダメブースト
+let _kokuAtk = p.kokuShoku || 0;
+if(_kokuAtk > 0) res.dmg = Math.floor(res.dmg * (1 + 0.12 * _kokuAtk));
+// ⬛ 侵蝕: 被ダメ増幅
+res = applyErosionBoost(res);
 
 // ギミック: 属性制限（狂化後は全属性有効）
 if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly){
@@ -2478,6 +2626,9 @@ if(p.buffs){
 let res = calcDamage(p.attr, enemy.attr, atk * 3);
 if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
 if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+// ⬛ 黒蝕与ダメ・侵蝕被ダメブースト
+let _ksU = p.kokuShoku||0; if(_ksU>0) res.dmg=Math.floor(res.dmg*(1+0.12*_ksU));
+res = applyErosionBoost(res);
 enemy.hp -= res.dmg;
 applyShockBonus(p, atk);
 
@@ -2658,6 +2809,18 @@ if(target.skill && target.skill.type==="mimicry" && !target.mimicryActive){
     target.mimicryActive = true;
 }
 
+// ⬛ 黒蝕: 被ダメ軽減（1stにつき-5%）
+if(target.kokuShoku && target.kokuShoku > 0){
+    res.dmg = Math.floor(res.dmg * (1 - 0.05 * target.kokuShoku));
+}
+
+// ⚡ 轟音壊滅: 次の被ダメ2倍増幅(1回)
+if(enemy.soundCrushAmp){
+    res.dmg = Math.floor(res.dmg * 2);
+    enemy.soundCrushAmp = false;
+    showSynergyText("⚡ 轟音増幅！被ダメ×2！");
+}
+
 target.currentHp -= res.dmg;
 if(target.currentHp <= 0) target.currentHp = 0;
 
@@ -2786,6 +2949,17 @@ setTimeout(()=>{
         if(pl.skill && pl.skill.type==="kenSword"){
             if(pl.swordBuff && pl.swordBuff > 0) pl.swordBuff--;
         }
+        // 💧 共鳴回復(echoHeal): ターン毎持続回復スタック処理
+        if(pl.echoHeals && pl.echoHeals.length > 0){
+            pl.echoHeals = pl.echoHeals.filter(eh=>{
+                let healAmt = Math.floor(pl.hp * eh.power);
+                pl.currentHp = Math.min(pl.hp, pl.currentHp + healAmt);
+                let pli2 = players.indexOf(pl);
+                setTimeout(()=>showDamage("p"+pli2, {dmg:healAmt, type:"heal"}), 100 + pli2*60);
+                eh.turn--;
+                return eh.turn > 0;
+            });
+        }
     });
     checkTurnLimit();
     renderBattle();
@@ -2831,6 +3005,21 @@ function applyEnemyStatusDamage(callback){
     setTimeout(()=>showDamage("enemy",{dmg:bDmg,type:"burn"}), delay);
     delay+=100;
     enemy.burnTurn--;
+  }
+
+  // ⬛ 侵蝕: ターン毎に最大HP4%ダメージ & ターン減少
+  if(enemy.erosions && enemy.erosions.length > 0){
+    enemy.erosions = enemy.erosions.filter(er => {
+      let dotDmg = Math.floor((er.maxHp || enemy.hp) * er.maxHpDot);
+      enemy.hp -= dotDmg;
+      setTimeout(()=>showDamage("enemy",{dmg:dotDmg,type:"poison"}), delay);
+      delay += 80;
+      er.turn--;
+      return er.turn > 0;
+    });
+    if(enemy.erosions.length > 0){
+      showSynergyText("⬛ 侵蝕ダメージ！×" + enemy.erosions.length + "重");
+    }
   }
 
   setTimeout(()=>{
@@ -2894,22 +3083,26 @@ function triggerAttackPassive(p){
     enemy.burnPower = enemy.burns.reduce((acc,b)=>acc+b.power,0);
     enemy.burnTurn = Math.max(...enemy.burns.map(b=>b.turn));
     showSynergyText("🔥 "+p.name+"のパッシブ！燃焼付与！");
+    triggerKokuShoku(1);
   }
   // ⚡ shock_on_attack: 確率で感電付与
   if(ps.type === "shock_on_attack" && Math.random() < ps.chance){
     enemy.shockTurn = Math.max(enemy.shockTurn||0, 2);
     showSynergyText("⚡ "+p.name+"のパッシブ！感電付与！");
+    triggerKokuShoku(1);
   }
   // ☠ poison_on_attack: 確率で毒付与
   if(ps.type === "poison_on_attack" && Math.random() < ps.chance){
     if(!enemy.poisons) enemy.poisons = [];
     enemy.poisons.push({power: ps.power, turn: 3, user: p});
     showSynergyText("☠ "+p.name+"のパッシブ！毒付与！");
+    triggerKokuShoku(1);
   }
   // ❄ freeze_on_attack: 確率で凍結付与
   if(ps.type === "freeze_on_attack" && Math.random() < ps.chance){
     enemy.freezeTurn = Math.max(enemy.freezeTurn||0, 1);
     showSynergyText("❄ "+p.name+"のパッシブ！凍結付与！");
+    triggerKokuShoku(1);
   }
   // 💪 atk_up_on_attack: 攻撃時にATKバフ積み上げ
   if(ps.type === "atk_up_on_attack"){
@@ -3005,6 +3198,15 @@ function applyPassiveAtk(p){
       bonus *= (1 + ps.value);
     }
   }
+  // ✨ 光の歌声(heal_on_turn): 状態異常中の敵に与ダメ+20%
+  if(ps.type === "heal_on_turn" && ps.text && ps.text.includes("与ダメ")){
+    let hasAilment = (enemy.shockTurn>0) || (enemy.burns && enemy.burns.length>0) || (enemy.poisons && enemy.poisons.length>0);
+    if(hasAilment) bonus *= 1.20;
+  }
+  // ⚡ 雷響(shock_on_attack): 感電中の敵への与ダメ+25%
+  if(ps.type === "shock_on_attack" && ps.text && ps.text.includes("与ダメ")){
+    if(enemy.shockTurn > 0) bonus *= 1.25;
+  }
   return bonus;
 }
 
@@ -3020,6 +3222,30 @@ function applyPassiveDef(target){
 }
 
 // ===== パッシブスキル処理ここまで =====
+
+// ===== スキルダメージへのパッシブ補正適用 =====
+// スキルで敵にダメージを与えるとき、パーティ全体の与ダメパッシブを一括適用する
+function applySkillDmgPassives(dmg, attacker){
+  let mult = 1.0;
+  players.forEach(ally=>{
+    if(!ally.passive) return;
+    let ps = ally.passive;
+    // 低HP時ATKブースト（自身のみ）
+    if(ally === attacker && ps.type === "dmg_boost_low_hp"){
+      if((ally.currentHp / ally.hp) <= ps.threshold) mult *= (1 + ps.value);
+    }
+    // ✨ 光の歌声: 状態異常中の敵に与ダメ+20%（パーティ全体）
+    if(ps.type === "heal_on_turn" && ps.text && ps.text.includes("与ダメ")){
+      let hasAilment = (enemy.shockTurn>0)||(enemy.burns&&enemy.burns.length>0)||(enemy.poisons&&enemy.poisons.length>0);
+      if(hasAilment) mult *= 1.20;
+    }
+    // ⚡ 雷響: 感電中の敵への与ダメ+25%（パーティ全体）
+    if(ps.type === "shock_on_attack" && ps.text && ps.text.includes("与ダメ")){
+      if(enemy.shockTurn > 0) mult *= 1.25;
+    }
+  });
+  return Math.floor(dmg * mult);
+}
 
 function endTurn(){
 if(turn === "enemy"){
@@ -3163,10 +3389,13 @@ if(s.type==="damage"){
     let res = calcDamage(p.attr, enemy.attr, atk * s.power);
     if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
     if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
-    // allDebuffMarkによる被ダメ1.5倍（ターン持続）
     if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
+    let _ks = p.kokuShoku||0; if(_ks>0) res.dmg=Math.floor(res.dmg*(1+0.12*_ks));
+    res.dmg = applySkillDmgPassives(res.dmg, p);
+    res = applyErosionBoost(res);
     enemy.hp -= res.dmg;
     applyShockBonus(p, atk);
+    triggerAttackPassive(p);
     renderBattle();
     setTimeout(()=>showDamage("enemy", res),10);
   showSynergyText("超ダメージ！");
@@ -3183,6 +3412,7 @@ if(s.type==="multi"){
     for(let i=0;i<s.hits;i++){
   showSynergyText("多段攻撃！");
         let res = calcDamage(p.attr, enemy.attr, atk * s.power * hitMult);
+        res.dmg = applySkillDmgPassives(res.dmg, p);
         enemy.hp -= res.dmg;
 
         // 🔻ヒットごとにデバフ
@@ -3200,6 +3430,7 @@ if(s.type==="multi"){
 
         }, i * 120);
     }
+    triggerAttackPassive(p);
 }
 
 // 💚 回復
@@ -3220,6 +3451,16 @@ players.forEach((t,i)=>{
             type: "heal"
         });
     },10);
+});
+// 💧 赤羽パッシブ: 回復スキル発動時に全体シールド10%付与(1T)
+players.forEach(ally=>{
+    if(ally.passive && ally.passive.type==="revive_passive" && ally.passive.text && ally.passive.text.includes("シールド")){
+        players.forEach(t=>{
+            if(!t.shields) t.shields=[];
+            t.shields.push({ power: 0.10, turn: 1, isEchoShield: true });
+        });
+        showSynergyText("💧 "+ally.name+"のパッシブ！全体シールド+10%(1T)！");
+    }
 });
 
 renderBattle();
@@ -3268,7 +3509,7 @@ enemy.poisons.push({
     turn: 100,
     user: p
 });
-
+triggerKokuShoku(1);
 // シナジー判定: 毒+炎 → 爆発
 checkSynergy(p, atk);
 }
@@ -3295,6 +3536,7 @@ if(s.type==="burn"){
     enemy.burnPower = enemy.burns.reduce((acc, b) => acc + b.power, 0);
     enemy.burnTurn = Math.max(...enemy.burns.map(b => b.turn));
     showSynergyText("燃焼付与！(×" + enemy.burns.length + "重)");
+    triggerKokuShoku(1);
     // シナジー判定
     checkSynergy(p, atk);
 }
@@ -3304,6 +3546,7 @@ if(s.type==="freeze"){
   if(Math.random() < 0.5){
     enemy.freezeTurn = 1;
     showSynergyText("❄ 凍結成功！行動不能！");
+    triggerKokuShoku(1);
   } else {
     showSynergyText("❄ 凍結失敗…");
   }
@@ -3314,6 +3557,7 @@ if(s.type==="shock"){
   enemy.shockTurn = 2;
   enemy.shockPower = atk * s.power;
   showSynergyText("感電付与！");
+  triggerKokuShoku(1);
   // シナジー判定
   checkSynergy(p, atk);
 }
@@ -3361,6 +3605,7 @@ if(s.type === "rage"){
         }
     });
     let dmg = Math.floor(atk * (1 + ratio * (s.power - 1) * 3) * rageMult);
+    dmg = applySkillDmgPassives(dmg, p);
   showSynergyText("狂化発動！");
     enemy.hp -= dmg;
 
@@ -3379,6 +3624,7 @@ if(s.type==="drain"){
 
     let res = calcDamage(p.attr, enemy.attr, atk * s.power);
     if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
+    res.dmg = applySkillDmgPassives(res.dmg, p);
     enemy.hp -= res.dmg;
 
     let heal = res.dmg * 0.5;
@@ -3392,6 +3638,7 @@ if(s.type==="drain"){
     p.currentHp += heal;
     if(p.currentHp > p.hp) p.currentHp = p.hp;
   showSynergyText("吸収！");
+    triggerAttackPassive(p);
     renderBattle();
 
     setTimeout(()=>{
@@ -3423,9 +3670,12 @@ if(s.type==="double"){
     });
     let res = calcDamage(p.attr, enemy.attr, atk * s.power * hitMult);
     let res2 = calcDamage(p.attr, enemy.attr, atk * 0.5 * hitMult);
+    res.dmg = applySkillDmgPassives(res.dmg, p);
+    res2.dmg = applySkillDmgPassives(res2.dmg, p);
   showSynergyText("連撃！");
     enemy.hp -= res.dmg;
     enemy.hp -= res2.dmg;
+    triggerAttackPassive(p);
 
     renderBattle();
 
@@ -3452,9 +3702,11 @@ if(s.type==="chain"){
     let res = calcDamage(p.attr, enemy.attr, atk * s.power * chainMult);
     if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
     if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+    res.dmg = applySkillDmgPassives(res.dmg, p);
     enemy.hp -= res.dmg;
     players.forEach(t=>{ t.cool = 0; });
     applyShockBonus(p, atk);
+    triggerAttackPassive(p);
     renderBattle();
     setTimeout(()=>{
         showDamage("enemy", res);
@@ -3513,8 +3765,10 @@ if(s.type==="chinkoPo"){
     let res = calcDamage(p.attr, enemy.attr, atk * s.power * multiplier);
     if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
     if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+    res.dmg = applySkillDmgPassives(res.dmg, p);
     enemy.hp -= res.dmg;
     applyShockBonus(p, atk);
+    triggerAttackPassive(p);
     let oldCount = count;
     p.chinkoPoCount = 0;
     showSynergyText("💢 珍古砲！カウント" + oldCount + "×77%=" + Math.floor(oldCount*77) + "%強化！");
@@ -3532,8 +3786,10 @@ if(s.type==="poisonBurst"){
         if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
         if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
         if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
+        res.dmg = applySkillDmgPassives(res.dmg, p);
         enemy.hp -= res.dmg;
         applyShockBonus(p, atk);
+        triggerAttackPassive(p);
         showSynergyText("☠ 毒爆発！（毒なし）");
         renderBattle();
         setTimeout(()=>showDamage("enemy", res), 10);
@@ -3544,8 +3800,10 @@ if(s.type==="poisonBurst"){
         if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
         if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
         if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
+        res.dmg = applySkillDmgPassives(res.dmg, p);
         enemy.hp -= res.dmg;
         applyShockBonus(p, atk);
+        triggerAttackPassive(p);
         showSynergyText("☠💥 毒爆発！毒×" + poisonCount + "=" + Math.floor(multiplier*100) + "% ダメージ！");
         renderBattle();
         setTimeout(()=>showDamage("enemy", {dmg: res.dmg, type:"poison"}), 10);
@@ -3667,6 +3925,7 @@ if(s.type==="sniper"){
             if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) sres.dmg=Math.floor(sres.dmg*0.05);
             if(enemy.allDebuffMark) sres.dmg=Math.floor(sres.dmg*1.5);
             if(enemy.shield>0){ let ab=Math.min(enemy.shield,sres.dmg); enemy.shield-=ab; sres.dmg-=ab; }
+            sres.dmg = applySkillDmgPassives(sres.dmg, p);
             enemy.hp -= sres.dmg;
             totalDmg += sres.dmg;
             let _sd = sres.dmg;
@@ -3676,6 +3935,7 @@ if(s.type==="sniper"){
         showSynergyText("🔫 狙撃！"+ammo+"連射！合計"+Math.floor(totalDmg));
         setTimeout(()=>{ showHitText("enemy", ammo); showTotalDamage("enemy", totalDmg); }, ammo*130+100);
         applyShockBonus(p, atk);
+        triggerAttackPassive(p);
         renderBattle();
         if(enemy.hp <= 0){ setTimeout(()=>win(), 500); return; }
     }
@@ -3777,6 +4037,147 @@ if(s.type==="weaponSummon"){
     });
     showSynergyText("🗡 武器召喚！3ターン間、全員の攻撃に追加デバフ！");
     renderBattle();
+}
+
+// 🎸 響音爆破(harmonyBurst): 味方全体ATK180%バフ(3T) + 全員の蓄積状態異常を即時爆発(各ダメ×5倍)
+if(s.type==="harmonyBurst"){
+    // 味方全体にATK+180%バフ(3T)
+    players.forEach(t=>{
+        if(!t.buffs) t.buffs=[];
+        t.buffs.push({ power: 1 + s.power, turn: 3, isHarmonyBurst: true });
+    });
+    showSynergyText("🎸 響音爆破！全体ATK+180%(3T)！");
+    // 状態異常を即時爆発(×5倍)
+    let burstTotal = 0;
+    let burstDelay = 200;
+    if(enemy.poisons && enemy.poisons.length > 0){
+        enemy.poisons.forEach(po=>{
+            let poAtk = po.user ? po.user.atk : atk;
+            if(po.user && po.user.buffs) po.user.buffs.forEach(b=>{ poAtk*=b.power; });
+            let dmg = Math.floor(poAtk * po.power * 2.5);
+            enemy.hp -= dmg; burstTotal += dmg;
+            setTimeout(()=>showDamage("enemy",{dmg,type:"poison"}), burstDelay); burstDelay+=100;
+        });
+        enemy.poisons = [];
+    }
+    if(enemy.burns && enemy.burns.length > 0){
+        enemy.burns.forEach(b=>{
+            let dmg = Math.floor(b.power * 2.5);
+            enemy.hp -= dmg; burstTotal += dmg;
+            setTimeout(()=>showDamage("enemy",{dmg,type:"burn"}), burstDelay); burstDelay+=100;
+        });
+        enemy.burns = []; enemy.burnPower = 0; enemy.burnTurn = 0;
+    }
+    if(enemy.shockTurn > 0){
+        let dmg = Math.floor(enemy.shockPower * 2.5);
+        enemy.hp -= dmg; burstTotal += dmg;
+        setTimeout(()=>showDamage("enemy",{dmg,type:"shock"}), burstDelay); burstDelay+=100;
+        enemy.shockTurn = 0; enemy.shockPower = 0;
+    }
+    if(burstTotal > 0){
+        setTimeout(()=>showSynergyText("💥 響音爆破！状態異常全爆発！合計"+Math.floor(burstTotal)+"！"), burstDelay);
+    }
+    renderBattle();
+    p.cool = p.skill.cool;
+    lastAllySkill = s;
+    endTurn();
+    return;
+}
+
+// 💧 共鳴回復(echoHeal): 味方全体HP60%回復 + 3T間ターン毎HP10%回復(スタック可)
+if(s.type==="echoHeal"){
+    // 即時回復
+    players.forEach((t,i)=>{
+        let heal = t.hp * s.power;
+        players.forEach(pl=>{
+            if(pl.passive && pl.passive.type==="heal_bonus") heal *= (1 + pl.passive.value);
+        });
+        t.currentHp = Math.min(t.hp, t.currentHp + heal);
+        setTimeout(()=>showDamage("p"+i, {dmg:heal, type:"heal"}), i*80);
+        // 持続回復スタックを追加
+        if(!t.echoHeals) t.echoHeals = [];
+        t.echoHeals.push({ power: 0.10, turn: 3 });
+    });
+    showSynergyText("💧 共鳴回復！HP60%回復＋3T間持続回復スタック追加！");
+    // 赤羽パッシブ: 回復スキル発動時に全体シールド10%付与(1T)
+    players.forEach(ally=>{
+        if(ally.passive && ally.passive.type==="revive_passive" && ally.passive.text && ally.passive.text.includes("シールド")){
+            players.forEach(t=>{
+                if(!t.shields) t.shields=[];
+                t.shields.push({ power: 0.10, turn: 1, isEchoShield: true });
+            });
+            showSynergyText("💧 "+ally.name+"のパッシブ！全体シールド+10%(1T)！");
+        }
+    });
+    renderBattle();
+    p.cool = p.skill.cool;
+    lastAllySkill = s;
+    endTurn();
+    return;
+}
+
+// ⚡ 轟音壊滅(soundCrush): 敵ATK50%弱体 + 感電付与(3T) + 次の被ダメ2倍増幅
+if(s.type==="soundCrush"){
+    // 敵ATK50%弱体(デバフ)
+    if(!enemy.debuffs) enemy.debuffs=[];
+    enemy.debuffs.push({ power: 0.5, turn: 3, isSoundCrush: true });
+    enemy.debuffPower = enemy.debuffs.reduce((acc,d)=>acc*d.power,1);
+    enemy.debuffTurn = Math.max(...enemy.debuffs.map(d=>d.turn));
+    // 感電付与(3T)
+    enemy.shockTurn = 3;
+    enemy.shockPower = atk * s.power;
+    triggerKokuShoku(1);
+    // 被ダメ2倍増幅(1回)
+    enemy.soundCrushAmp = true;
+    showSynergyText("⚡ 轟音壊滅！ATK-50%＆感電3T＆次の被ダメ×2！");
+    renderBattle();
+    p.cool = p.skill.cool;
+    lastAllySkill = s;
+    endTurn();
+    return;
+}
+
+// ⬛ 侵蝕: ATK220%ダメージ + 状態異常を侵蝕に変換 + ATKバフ
+if(s.type==="erosion"){
+    let res = calcDamage(p.attr, enemy.attr, atk * s.power);
+    if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
+    if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+    if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
+    res.dmg = applySkillDmgPassives(res.dmg, p);
+    enemy.hp -= res.dmg;
+    triggerAttackPassive(p);
+    renderBattle();
+    setTimeout(()=>showDamage("enemy", res), 10);
+
+    // 毒・燃焼・感電を数えて侵蝕に変換
+    let erosionCount = 0;
+    if(enemy.poisons && enemy.poisons.length > 0){ erosionCount += enemy.poisons.length; enemy.poisons = []; }
+    if(enemy.burns && enemy.burns.length > 0){ erosionCount += enemy.burns.length; enemy.burns = []; enemy.burnPower = 0; enemy.burnTurn = 0; }
+    else if(enemy.burnTurn > 0){ erosionCount += 1; enemy.burnTurn = 0; enemy.burnPower = 0; }
+    if(enemy.shockTurn > 0){ erosionCount += 1; enemy.shockTurn = 0; }
+
+    if(erosionCount > 0){
+        if(!enemy.erosions) enemy.erosions = [];
+        for(let ei=0; ei<erosionCount; ei++){
+            enemy.erosions.push({ turn: 3, dmgBoost: 0.25, maxHpDot: 0.04, locked: true, maxHp: enemy.maxHp || enemy.hp });
+        }
+        triggerKokuShoku(erosionCount);
+        showSynergyText("⬛ 侵蝕変換！×" + erosionCount + "重！状態異常解除不能！");
+    }
+
+    // 侵蝕1種につき自身ATK+40%(3T)
+    let totalErosion = enemy.erosions ? enemy.erosions.length : 0;
+    if(totalErosion > 0){
+        if(!p.buffs) p.buffs = [];
+        p.buffs = p.buffs.filter(b => !b.isErosionBuff);
+        p.buffs.push({ power: 1 + 0.40 * totalErosion, turn: 3, isErosionBuff: true });
+        showSynergyText("⬛ 侵蝕×" + totalErosion + " → ATK+" + (40 * totalErosion) + "%(3T)！");
+    }
+
+    renderBattle();
+    p.cool = p.skill.cool;
+    endTurn();
+    return;
 }
 
 // 🎭 無許可の模倣者: HPが減るほど防御&ATK上昇(最大+70%)(永続パッシブ) ※HP満タンでも最低+10%保証
@@ -4085,6 +4486,85 @@ if(s.type==="copy"){
             players.forEach(t=>{ t.weaponSummonTurn=3; });
             showSynergyText("🗡 武器召喚コピー！3ターン間、全員の攻撃に追加デバフ！"); renderBattle();
         }
+        // 🎸 響音爆破コピー
+        if(s2.type==="harmonyBurst"){
+            players.forEach(t=>{
+                if(!t.buffs) t.buffs=[];
+                t.buffs.push({ power: 1 + (s2.power||1.8)*pw, turn: 3, isHarmonyBurst: true });
+            });
+            showSynergyText("🎸 響音爆破コピー！全体ATKバフ！");
+            let burstTotal=0; let burstDelay=200;
+            if(enemy.poisons && enemy.poisons.length>0){
+                enemy.poisons.forEach(po=>{ let poAtk=po.user?po.user.atk:atkC; if(po.user&&po.user.buffs)po.user.buffs.forEach(b=>{poAtk*=b.power;}); let dmg=Math.floor(poAtk*po.power*2.5); enemy.hp-=dmg; burstTotal+=dmg; setTimeout(()=>showDamage("enemy",{dmg,type:"poison"}),burstDelay); burstDelay+=100; });
+                enemy.poisons=[];
+            }
+            if(enemy.burns && enemy.burns.length>0){
+                enemy.burns.forEach(b=>{ let dmg=Math.floor(b.power*2.5); enemy.hp-=dmg; burstTotal+=dmg; setTimeout(()=>showDamage("enemy",{dmg,type:"burn"}),burstDelay); burstDelay+=100; });
+                enemy.burns=[]; enemy.burnPower=0; enemy.burnTurn=0;
+            }
+            if(enemy.shockTurn>0){ let dmg=Math.floor(enemy.shockPower*2.5); enemy.hp-=dmg; burstTotal+=dmg; setTimeout(()=>showDamage("enemy",{dmg,type:"shock"}),burstDelay); burstDelay+=100; enemy.shockTurn=0; enemy.shockPower=0; }
+            if(burstTotal>0) setTimeout(()=>showSynergyText("💥 響音爆破コピー！状態異常全爆発！合計"+Math.floor(burstTotal)+"！"),burstDelay);
+            renderBattle();
+        }
+        // 💧 共鳴回復コピー
+        if(s2.type==="echoHeal"){
+            players.forEach((t,i)=>{
+                let heal=t.hp*(s2.power||0.6)*pw;
+                players.forEach(pl=>{ if(pl.passive&&pl.passive.type==="heal_bonus") heal*=(1+pl.passive.value); });
+                t.currentHp=Math.min(t.hp,t.currentHp+heal);
+                setTimeout(()=>showDamage("p"+i,{dmg:heal,type:"heal"}),i*80);
+                if(!t.echoHeals) t.echoHeals=[];
+                t.echoHeals.push({ power:0.10, turn:3 });
+            });
+            showSynergyText("💧 共鳴回復コピー！HP回復＋持続回復スタック！");
+            players.forEach(ally=>{ if(ally.passive&&ally.passive.type==="revive_passive"&&ally.passive.text&&ally.passive.text.includes("シールド")){ players.forEach(t=>{ if(!t.shields)t.shields=[]; t.shields.push({power:0.10,turn:1,isEchoShield:true}); }); showSynergyText("💧 全体シールド+10%(1T)コピー！"); } });
+            renderBattle();
+        }
+        // ⚡ 轟音壊滅コピー
+        if(s2.type==="soundCrush"){
+            if(!enemy.debuffs) enemy.debuffs=[];
+            enemy.debuffs.push({ power:0.5, turn:3, isSoundCrush:true });
+            enemy.debuffPower=enemy.debuffs.reduce((acc,d)=>acc*d.power,1);
+            enemy.debuffTurn=Math.max(...enemy.debuffs.map(d=>d.turn));
+            enemy.shockTurn=3; enemy.shockPower=atkC*(s2.power||1.2);
+            enemy.soundCrushAmp=true;
+            triggerKokuShoku(1);
+            showSynergyText("⚡ 轟音壊滅コピー！ATK-50%＆感電＆次の被ダメ×2！"); renderBattle();
+        }
+        // ⬛ 侵蝕コピー
+        if(s2.type==="erosion"){
+            let res=calcDamage(p.attr,enemy.attr,atkC*(s2.power||2.2));
+            if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
+            if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+            if(enemy.allDebuffMark) res.dmg=Math.floor(res.dmg*1.5);
+            res.dmg=applySkillDmgPassives(res.dmg,p);
+            enemy.hp-=res.dmg;
+            renderBattle();
+            setTimeout(()=>showDamage("enemy",res),10);
+            // 状態異常→侵蝕変換
+            let erosionCount=0;
+            if(enemy.poisons&&enemy.poisons.length>0){ erosionCount+=enemy.poisons.length; enemy.poisons=[]; }
+            if(enemy.burns&&enemy.burns.length>0){ erosionCount+=enemy.burns.length; enemy.burns=[]; enemy.burnPower=0; enemy.burnTurn=0; }
+            else if(enemy.burnTurn>0){ erosionCount+=1; enemy.burnTurn=0; enemy.burnPower=0; }
+            if(enemy.shockTurn>0){ erosionCount+=1; enemy.shockTurn=0; }
+            if(erosionCount>0){
+                if(!enemy.erosions) enemy.erosions=[];
+                for(let ei=0;ei<erosionCount;ei++){
+                    enemy.erosions.push({ turn:3, dmgBoost:0.25, maxHpDot:0.04, locked:true, maxHp:enemy.maxHp||enemy.hp });
+                }
+                triggerKokuShoku(erosionCount);
+                showSynergyText("⬛ 侵蝕コピー！×"+erosionCount+"重変換！状態異常解除不能！");
+            }
+            // 侵蝕数に応じた自身ATKバフ
+            let totalErosion=enemy.erosions?enemy.erosions.length:0;
+            if(totalErosion>0){
+                if(!p.buffs) p.buffs=[];
+                p.buffs=p.buffs.filter(b=>!b.isErosionBuff);
+                p.buffs.push({ power:1+0.40*totalErosion, turn:3, isErosionBuff:true });
+                showSynergyText("⬛ 侵蝕コピー×"+totalErosion+" → ATK+"+(40*totalErosion)+"%(3T)！");
+            }
+            renderBattle();
+        }
 
         renderBattle();
     }
@@ -4124,6 +4604,8 @@ if(s.type==="damage"){
     if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
     if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
     if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
+    let _ks2 = p.kokuShoku||0; if(_ks2>0) res.dmg=Math.floor(res.dmg*(1+0.12*_ks2));
+    res = applyErosionBoost(res);
     enemy.hp -= res.dmg;
     applyShockBonus(p, atk);
     renderBattle();
@@ -4903,6 +5385,7 @@ players = applyTeamBuff(team.map(c=>{
         eventChars4.find(ch => ch.name === c.name) ||
         eventChars5.find(ch => ch.name === c.name) ||
         eventChars6.find(ch => ch.name === c.name) ||
+        eventChars7.find(ch => ch.name === c.name) ||
         rewardChar.find(ch => ch.name === c.name);
 
     let weapon = c.weapon;
@@ -4942,6 +5425,7 @@ enemy = {
     debuffUsed:false,
     debuffPower: 1,
     debuffTurn: 0,
+    erosions: [],
     gimmick: stage.gimmick || null,
     turnCount: 0,
     turnBuffStacks: 0
@@ -5169,6 +5653,7 @@ function renderDex(){
     ...eventChars4,
     ...eventChars5,
     ...eventChars6,
+    ...eventChars7,
     ...rewardChar
   ];
 
@@ -5605,6 +6090,86 @@ let pool = [
 if(pool.length === 0) return getGachaChar();
 
 return pool[Math.random()*pool.length|0];
+}
+
+function getEventChar7(){
+let r = Math.random();
+let rarity;
+
+if(r < 0.70) rarity = 1;
+else if(r < 0.90) rarity = 2;
+else if(r < 0.99) rarity = 3;
+else rarity = 4;
+
+// ☆4はイベント7限定
+if(rarity === 4){
+    let pool = eventChars7.filter(c=>c.rarity === 4);
+    if(pool.length === 0) return getGachaChar();
+    return pool[Math.random()*pool.length|0];
+}
+
+// ☆3以下
+let pool = [
+...chars.filter(c=>c.rarity === rarity),
+...eventChars7.filter(c=>c.rarity === rarity)
+];
+
+if(pool.length === 0) return getGachaChar();
+
+return pool[Math.random()*pool.length|0];
+}
+
+function drawEvent7_1(){
+if(stone < 10) return;
+stone -= 10;
+
+gachaResult.innerHTML="";
+
+let c = getEventChar7();
+
+if(c.rarity === 4){
+    playSSRLight();
+    playEventEffect();
+}
+
+showGachaResult(c);
+addToBox(c);
+
+update();
+saveData();
+}
+
+function drawEvent7_10(){
+if(stone < 100) return;
+stone -= 100;
+
+gachaResult.innerHTML="";
+
+let results = [];
+
+for(let i=0;i<9;i++){
+    results.push(getEventChar7());
+}
+
+// ☆3確定
+let pool = eventChars7.filter(c=>c.rarity===3);
+if(pool.length===0) pool = chars.filter(c=>c.rarity===3);
+
+results.push(pool[Math.random()*pool.length|0]);
+
+results.forEach((c,i)=>{
+    if(c.rarity === 4){
+        playSSRLight();
+    }
+
+    setTimeout(()=>{
+        showGachaResult(c);
+        addToBox(c);
+    },i*200);
+});
+
+update();
+saveData();
 }
 
 function drawEvent6_1(){
