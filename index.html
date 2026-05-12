@@ -461,6 +461,101 @@ animation:totalPop 1s forwards;
   cursor:pointer;
 }
 
+/* ===== スキルツリーモーダル ===== */
+#skillTreeModal{
+  display:none;
+  position:fixed;
+  top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.85);
+  z-index:10001;
+  justify-content:center;
+  align-items:center;
+}
+#skillTreeModal.open{display:flex;}
+#skillTreeBox{
+  background:#0d1120;
+  border:2px solid #44cc88;
+  border-radius:16px;
+  padding:18px 14px;
+  max-width:340px;
+  width:92%;
+  text-align:center;
+  position:relative;
+  max-height:88vh;
+  overflow-y:auto;
+}
+.stNode{
+  display:inline-flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  width:88px;
+  min-height:72px;
+  border-radius:10px;
+  padding:5px 4px;
+  font-size:10px;
+  border:2px solid #444;
+  background:#111;
+  color:#666;
+  margin:3px;
+  transition:0.2s;
+  cursor:not-allowed;
+}
+.stNode.unlocked{
+  background:#1a3a20;
+  border-color:#ffd700;
+  color:#ffd700;
+  box-shadow:0 0 8px #ffd70066;
+  cursor:default;
+}
+.stNode.available{
+  border-color:#44cc88;
+  background:#0d2010;
+  color:#88ffaa;
+  cursor:pointer;
+  animation:stPulse 1.6s infinite alternate;
+}
+.stNode.skipped{
+  background:#0d0d0d;
+  border-color:#333;
+  color:#333;
+  cursor:default;
+  opacity:0.4;
+}
+@keyframes stPulse{
+  from{box-shadow:0 0 3px #44cc88;}
+  to{box-shadow:0 0 12px #44cc88,0 0 20px #44cc8844;}
+}
+.stNodeLabel{font-weight:bold;font-size:11px;margin-bottom:2px;}
+.stNodeBonus{font-size:9px;color:#aaffcc;line-height:1.3;}
+.stNodeCost{font-size:9px;color:#ffd700;margin-top:3px;}
+.stRow{display:flex;justify-content:center;gap:4px;margin:3px 0;flex-wrap:wrap;}
+.stArrow{text-align:center;color:#44cc88;font-size:13px;line-height:1.2;margin:1px 0;}
+.stNode.locked_sp{border-color:#aa6600;background:#1a1000;color:#aa7700;cursor:pointer;}
+.stStageHeader{
+  font-size:11px;font-weight:bold;
+  color:#ffd700;
+  background:linear-gradient(90deg,#1a1200,#2a2000,#1a1200);
+  border:1px solid #443300;
+  border-radius:6px;
+  padding:3px 10px;
+  margin:4px 0 2px;
+  letter-spacing:1px;
+}
+.stStageHeader.done{color:#44cc88;border-color:#224422;background:linear-gradient(90deg,#0a1a0a,#112011,#0a1a0a);}
+.stStageHeader.locked{color:#555;border-color:#333;background:#111;}
+.spBadge{
+  display:inline-block;
+  background:linear-gradient(135deg,#1a3a1a,#0d2010);
+  border:1px solid #44cc88;
+  color:#88ffaa;
+  border-radius:8px;
+  padding:3px 10px;
+  font-size:12px;
+  font-weight:bold;
+  margin:4px 0;
+}
+
 </style>
 </head>
 
@@ -537,6 +632,26 @@ animation:totalPop 1s forwards;
       <div id="skillModalPassiveNone" style="font-size:13px;color:#888;display:none;">パッシブスキルなし</div>
     </div>
     <button id="skillModalClose" onclick="closeSkillModal()">閉じる</button>
+  </div>
+</div>
+
+<!-- スキルツリーモーダル -->
+<div id="skillTreeModal">
+  <div id="skillTreeBox">
+    <div style="font-size:15px;font-weight:bold;color:#44cc88;margin-bottom:10px;letter-spacing:1px;">🌳 スキルツリー</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;justify-content:center;">
+      <img id="stCharImg" style="width:52px;height:52px;object-fit:cover;border-radius:8px;border:2px solid #44cc88;">
+      <div style="text-align:left;">
+        <div id="stCharName" style="font-size:14px;font-weight:bold;"></div>
+        <div id="stSpDisplay" class="spBadge"></div>
+      </div>
+    </div>
+    <div id="stTreeArea"></div>
+    <div id="stMessage" style="font-size:12px;min-height:18px;margin-top:6px;"></div>
+    <div style="display:flex;gap:8px;justify-content:center;margin-top:12px;">
+      <button onclick="resetSkillTree()" style="background:#3a1010;color:#ff6666;border:1px solid #883333;border-radius:8px;padding:6px 18px;cursor:pointer;font-size:12px;" id="stResetBtn">🔄 リセット</button>
+      <button onclick="closeSkillTree()" style="background:#1a1f2e;color:#aaa;border:1px solid #444;border-radius:8px;padding:6px 22px;cursor:pointer;font-size:13px;">閉じる</button>
+    </div>
   </div>
 </div>
 
@@ -755,6 +870,10 @@ style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
 
 <div id="party" class="screen">
 <h2>編成</h2>
+<div style="margin-bottom:6px;">
+  <span class="spBadge">🌳 SP: <span id="spDisplay">0</span></span>
+  <span style="font-size:11px;color:#666;margin-left:6px;">（バトル勝利で獲得）</span>
+</div>
 <select onchange="sortBox(this.value)">
 <option value="">並べ替え</option>
 <option value="atk">ATK順</option>
@@ -823,6 +942,7 @@ box,
 team,
 progress,
 dupeStone,
+sp,
 eventProgress, // ←追加 // ←追加
 weaponBox
 };
@@ -838,6 +958,7 @@ box = data.box ?? [];
 team = data.team ?? [];
 progress = data.progress ?? {};
 dupeStone = data.dupeStone ?? 0;
+sp = data.sp ?? 0;
 eventProgress = data.eventProgress ?? {};
 weaponBox = data.weaponBox ?? [];
 
@@ -848,6 +969,7 @@ let box=[],team=[],players=[],deadPlayers=[],enemy;
 let turn="player",turnIndex=0;
 let progress={};
 let dupeStone = 0; // 凸塊
+let sp = 0; // スキルポイント
 let currentEvent = undefined; // ←これ追加🔥
 let weaponBox = [];
 
@@ -1388,7 +1510,7 @@ const eventStages = [
         {lv:3, hp:2000, atk:200},
         {lv:4, hp:6000, atk:600},
         {lv:5, hp:18000, atk:1800},
-        {lv:"BOSS", hp:70000, atk:3600, boss:true, gimmick:{shield:3000, shieldLabel:"シールド3000", turnBuff:true, turnBuffLabel:"毎T ATK+8%(上限+80%)"}}
+        {lv:"BOSS", hp:90000, atk:3600, boss:true, gimmick:{shield:3000, shieldLabel:"シールド3000", turnBuff:true, turnBuffLabel:"毎T ATK+8%(上限+80%)"}}
     ],
     enemy:{
         name:"和辺重信🍖",
@@ -1415,7 +1537,7 @@ rewardChar:{
         {lv:3, hp:2000, atk:200},
         {lv:4, hp:6000, atk:600},
         {lv:5, hp:18000, atk:1800},
-        {lv:"BOSS", hp:70000, atk:3600, boss:true, gimmick:{attrOnly:"水", attrOnlyLabel:"水属性のみ有効", counter:true, counterLabel:"カウンター持ち"}}
+        {lv:"BOSS", hp:110000, atk:4000, boss:true, gimmick:{attrOnly:"水", attrOnlyLabel:"水属性のみ有効", counter:true, counterLabel:"カウンター持ち"}}
     ],
     enemy:{
         name:"明石啓希🌊",
@@ -1442,7 +1564,7 @@ rewardChar:{
         {lv:3, hp:2000, atk:200},
         {lv:4, hp:6000, atk:600},
         {lv:5, hp:18000, atk:1800},
-        {lv:"BOSS", hp:70000, atk:3600, boss:true, gimmick:{turnLimit:8, turnLimitLabel:"8T以内に撃破"}}
+        {lv:"BOSS", hp:130000, atk:4500, boss:true, gimmick:{turnLimit:8, turnLimitLabel:"8T以内に撃破"}}
     ],
     enemy:{
         name:"弐呪刻🃏",
@@ -1469,7 +1591,7 @@ rewardChar:{
         {lv:3, hp:3000, atk:300},
         {lv:4, hp:8000, atk:800},
         {lv:5, hp:24000, atk:2400},
-        {lv:"BOSS", hp:90000, atk:4200, boss:true, gimmick:{shield:8000, shieldLabel:"シールド7200",  attrOnly:"雷", attrOnlyLabel:"雷属性のみ有効",}}
+        {lv:"BOSS", hp:150000, atk:4500, boss:true, gimmick:{shield:8000, shieldLabel:"シールド7200",  attrOnly:"雷", attrOnlyLabel:"雷属性のみ有効",}}
     ],
     enemy:{
         name:"死橋凪🌌",
@@ -1496,7 +1618,7 @@ rewardChar:{
         {lv:3, hp:3000, atk:300},
         {lv:4, hp:8000, atk:800},
         {lv:5, hp:24000, atk:2400},
-        {lv:"BOSS", hp:110000, atk:4800, boss:true, gimmick:{attrOnly:"闇", attrOnlyLabel:"闇属性のみ有効", turnLimit:10, turnLimitLabel:"10T以内に撃破"}}
+        {lv:"BOSS", hp:160000, atk:4800, boss:true, gimmick:{attrOnly:"闇", attrOnlyLabel:"闇属性のみ有効", turnLimit:10, turnLimitLabel:"10T以内に撃破"}}
     ],
     enemy:{
         name:"フセイン👻",
@@ -1523,7 +1645,7 @@ rewardChar:{
         {lv:3, hp:5000, atk:500},
         {lv:4, hp:12000, atk:1000},
         {lv:5, hp:30000, atk:2800},
-        {lv:"BOSS", hp:125000, atk:3900, boss:true,
+        {lv:"BOSS", hp:180000, atk:3900, boss:true,
          gimmick:{
            shield:10000, shieldLabel:"シールド10000",
            turnBuff:true, turnBuffLabel:"毎T ATK+10%(上限+100%)",
@@ -1555,7 +1677,7 @@ rewardChar:{
         {lv:3, hp:7000, atk:650},
         {lv:4, hp:16000, atk:1400},
         {lv:5, hp:40000, atk:3200},
-        {lv:"BOSS", hp:120000, atk:3000, boss:true,
+        {lv:"BOSS", hp:160000, atk:3500, boss:true,
          gimmick:{
            shield:12000, shieldLabel:"シールド12000",
            attrOnly:"光", attrOnlyLabel:"光属性のみ有効",
@@ -1592,7 +1714,7 @@ rewardChar:{
            shield:5000, shieldLabel:"シールド5000",
            attrOnly:"木", attrOnlyLabel:"木属性特効(木以外0.5倍)",
          }},
-        {lv:"BOSS", hp:120000, atk:2600, boss:true,
+        {lv:"BOSS", hp:190000, atk:3000, boss:true,
          gimmick:{
            shield:8000, shieldLabel:"❄シールド8000(凍結スキルで解除加速)",
            attrOnly:"木", attrOnlyLabel:"木/火属性特効",
@@ -2129,6 +2251,9 @@ if(s2) s2.textContent = dupeStone;
 let s3 = document.getElementById("exchangeDupeStone");
 if(s3) s3.textContent = dupeStone;
 
+let spEl = document.getElementById("spDisplay");
+if(spEl) spEl.textContent = sp;
+
 let wc = document.getElementById("weaponCount");
 if(wc) wc.textContent = weaponBox.length;
 
@@ -2158,6 +2283,7 @@ ${c.weapon ? `
 
 ${c.skill ? `<br><button class="skillBtn" onclick="openSkillModal(${i});event.stopPropagation();">📖 スキル確認</button>` : ""}
 ${c.passive ? `<button class="skillBtn" style="background:#1a3a1a;color:#88ff88;border-color:#44cc44;" onclick="openPassiveModal(${i});event.stopPropagation();">🌟 パッシブ確認</button>` : ""}
+<br><button class="skillBtn" style="background:#0d2010;color:#88ffaa;border-color:#44cc88;margin-top:3px;" onclick="openSkillTree(${i});event.stopPropagation();">🌳 スキルツリー${(c.skillTreeData?.chosen?.length||0)>0?" ✦":""}(${c.skillTreeData?.chosen?.length||0}/5)</button>
 </div>`).join("");
 
 let t=document.getElementById("team");
@@ -3142,6 +3268,8 @@ setTimeout(()=>{
 
     // 🌟 パッシブ: ターン開始時発動
     triggerTurnStartPassive();
+    // ツリーパッシブ: 生命力など
+    triggerTreePassiveOnTurnStart();
     // 🔥 ヒートアップ: 経過ターン更新に合わせてバフ値を自動更新
     players.forEach(pl=>{
         if(pl.heatUpUsed && pl.buffs){
@@ -3189,6 +3317,7 @@ function applyEnemyStatusDamage(callback){
       players.forEach(pl=>{
         if(pl.passive && pl.passive.type==="poison_power_up") dmg *= (1 + pl.passive.value);
       });
+      dmg *= getAilmentTreeBonus();
       enemy.hp -= dmg;
       setTimeout(()=>showDamage("enemy",{dmg,type:"poison"}), delay);
       delay+=100;
@@ -3349,6 +3478,8 @@ function triggerAttackPassive(p){
     showSynergyText("💜 "+label+"のパッシブ！弱体付与！");
   }
   }); // end passives.forEach
+  // ツリー追加パッシブ（攻撃時）
+  triggerTreePassiveOnAttack(p);
 }
 
 // ターン開始時パッシブ (味方全体に適用)
@@ -3403,6 +3534,8 @@ function triggerDamagedPassive(target){
       if(ti>=0) setTimeout(()=>showDamage("p"+ti,{dmg:healAmt,type:"heal"}),300);
     }
   });
+  // ツリーパッシブ: 反撃の炎
+  triggerTreePassiveOnDamaged(target);
 }
 
 // ATK計算時にパッシブ補正適用 (dmg_boost_low_hp, tank_passive, etc)
@@ -3428,10 +3561,10 @@ function applyPassiveAtk(p){
       if(enemy.shockTurn > 0) bonus *= 1.25;
     }
   });
+  // ツリー追加パッシブのATK補正
+  bonus *= applyTreePassiveAtk(p);
   return bonus;
 }
-
-// 被ダメ計算時にパッシブ補正適用
 function applyPassiveDef(target){
   let reduction = 1.0;
   let passives = [];
@@ -3442,6 +3575,8 @@ function applyPassiveDef(target){
       reduction *= (1 - ps.value);
     }
   });
+  // ツリー追加パッシブの被ダメ軽減
+  reduction *= applyTreePassiveDef(target);
   return reduction;
 }
 
@@ -3471,6 +3606,11 @@ function applySkillDmgPassives(dmg, attacker){
       }
     });
   });
+  // ツリー: スキル威力強化 (攻撃者本人のtreeSkillPowerを適用)
+  let ac = box.find(b=>b.name===attacker.name);
+  if(ac && ac.treeSkillPower) mult *= (1 + ac.treeSkillPower);
+  // ツリー: ツリーパッシブATK補正（属性共鳴・不屈・滅亡の刻など）も反映
+  mult *= applyTreePassiveAtk(attacker);
   return Math.floor(dmg * mult);
 }
 
@@ -3547,10 +3687,11 @@ function win(){
 
     // ⭐ 通常の試練
     stone+=10;
+    sp += 5; // スキルポイント+5
     let id=chars.findIndex(c=>c.name===enemy.name);
     progress[id]=(progress[id]||1)+1;
     saveData();
-    alert("勝利！石+10");
+    alert("勝利！石+10 / SP+5");
     go("trial");
 }
 
@@ -3731,8 +3872,11 @@ if(s.type==="debuff"){
 if(s.type==="poison"){
 if(!enemy.poisons) enemy.poisons = [];
   showSynergyText("毒付与！");
+  let _poisonPow = s.power;
+  let _pac = box.find(b=>b.name===p.name);
+  if(_pac && _pac.treeSkillPower) _poisonPow *= (1 + _pac.treeSkillPower);
 enemy.poisons.push({
-    power: s.power,
+    power: _poisonPow,
     turn: 100,
     user: p
 });
@@ -3758,6 +3902,9 @@ if(s.type==="burn"){
             showSynergyText("🌿 "+ally.name+"のパッシブ！燃焼ターン延長！");
         }
     });
+    // ツリー: スキル威力強化
+    let _bac = box.find(b=>b.name===p.name);
+    if(_bac && _bac.treeSkillPower) burnPow *= (1 + _bac.treeSkillPower);
     enemy.burns.push({ power: burnPow, turn: burnTurn, user: p });
     // 合計値をburnPower/burnTurnに反映
     enemy.burnPower = enemy.burns.reduce((acc, b) => acc + b.power, 0);
@@ -3786,6 +3933,9 @@ if(s.type==="freeze"){
 if(s.type==="shock"){
   enemy.shockTurn = 2;
   enemy.shockPower = atk * s.power;
+  // ツリー: スキル威力強化
+  let _sac = box.find(b=>b.name===p.name);
+  if(_sac && _sac.treeSkillPower) enemy.shockPower *= (1 + _sac.treeSkillPower);
   showSynergyText("感電付与！");
   triggerKokuShoku(1);
   // シナジー判定
@@ -3961,6 +4111,7 @@ if(s.type==="snowRevive"){
     players.forEach(ally=>{
         if(ally.passive && ally.passive.type==="burn_power_up") burnPow *= (1+ally.passive.value);
     });
+    { let _sr = box.find(b=>b.name===p.name); if(_sr && _sr.treeSkillPower) burnPow *= (1 + _sr.treeSkillPower); }
     enemy.burns.push({ power: burnPow, turn: 3, user: p });
     enemy.burnPower = enemy.burns.reduce((acc,b)=>acc+b.power,0);
     enemy.burnTurn = Math.max(...enemy.burns.map(b=>b.turn));
@@ -4527,6 +4678,7 @@ if(s.type==="soundCrush"){
     // 感電付与(3T)
     enemy.shockTurn = 3;
     enemy.shockPower = atk * s.power;
+    { let _sc = box.find(b=>b.name===p.name); if(_sc && _sc.treeSkillPower) enemy.shockPower *= (1 + _sc.treeSkillPower); }
     triggerKokuShoku(1);
     // 被ダメ2倍増幅(1回)
     enemy.soundCrushAmp = true;
@@ -4614,12 +4766,14 @@ if(s.type==="copy"){
             if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
             if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
             if(enemy.allDebuffMark) res.dmg=Math.floor(res.dmg*1.5);
+            res.dmg=applySkillDmgPassives(res.dmg,p);
             enemy.hp-=res.dmg; applyShockBonus(p,atkC);
             renderBattle(); setTimeout(()=>showDamage("enemy",res),10);
         }
         if(s2.type==="multi"){
             for(let i=0;i<(s2.hits||1);i++){
                 let res=calcDamage(p.attr,enemy.attr,atkC*(s2.power||1)*pw);
+                res.dmg=applySkillDmgPassives(res.dmg,p);
                 enemy.hp-=res.dmg;
                 if(!enemy.debuffUsed){ enemy.atk*=0.95; }
                 setTimeout(()=>{ showDamage("enemy",res); if(i===(s2.hits||1)-1){ enemy.debuffUsed=true; renderBattle(); } },i*120);
@@ -4630,6 +4784,7 @@ if(s.type==="copy"){
             let res2=calcDamage(p.attr,enemy.attr,atkC*0.5*pw);
             if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
             if(enemy.allDebuffMark){ res.dmg=Math.floor(res.dmg*1.5); res2.dmg=Math.floor(res2.dmg*1.5); }
+            res.dmg=applySkillDmgPassives(res.dmg,p); res2.dmg=applySkillDmgPassives(res2.dmg,p);
             enemy.hp-=res.dmg; enemy.hp-=res2.dmg;
             renderBattle(); setTimeout(()=>showDamage("enemy",res),10); setTimeout(()=>showDamage("enemy",res2),160);
         }
@@ -4637,6 +4792,7 @@ if(s.type==="copy"){
             let idx=turnIndex;
             let res=calcDamage(p.attr,enemy.attr,atkC*(s2.power||2)*pw);
             if(enemy.allDebuffMark) res.dmg=Math.floor(res.dmg*1.5);
+            res.dmg=applySkillDmgPassives(res.dmg,p);
             enemy.hp-=res.dmg;
             let heal=res.dmg*0.5; p.currentHp+=heal; if(p.currentHp>p.hp) p.currentHp=p.hp;
             renderBattle(); setTimeout(()=>showDamage("enemy",res),10); setTimeout(()=>showDamage("p"+idx,{dmg:heal,type:"heal"}),120);
@@ -4648,6 +4804,7 @@ if(s.type==="copy"){
         if(s2.type==="rage"){
             let ratio=1-(p.currentHp/p.hp);
             let dmg=Math.floor(atkC*(1+ratio*((s2.power||7)-1)*3)*pw);
+            dmg=applySkillDmgPassives(dmg,p);
             enemy.hp-=dmg;
             renderBattle(); setTimeout(()=>showDamage("enemy",{dmg,type:"ultimate"}),10);
         }
@@ -4656,6 +4813,7 @@ if(s.type==="copy"){
             if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
             if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
             if(enemy.allDebuffMark) res.dmg=Math.floor(res.dmg*1.5);
+            res.dmg=applySkillDmgPassives(res.dmg,p);
             enemy.hp-=res.dmg; players.forEach(t=>{ t.cool=0; }); applyShockBonus(p,atkC);
             renderBattle(); setTimeout(()=>{ showDamage("enemy",res); showSynergyText("💥 連鎖爆発コピー！味方CT全回復！"); },10);
         }
@@ -4666,6 +4824,7 @@ if(s.type==="copy"){
             if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
             if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
             if(enemy.allDebuffMark) res.dmg=Math.floor(res.dmg*1.5);
+            res.dmg=applySkillDmgPassives(res.dmg,p);
             enemy.hp-=res.dmg; applyShockBonus(p,atkC);
             showSynergyText("☠💥 毒爆発コピー！毒×"+poisonCount+"！"); renderBattle(); setTimeout(()=>showDamage("enemy",{dmg:res.dmg,type:"poison"}),10);
         }
@@ -4675,6 +4834,7 @@ if(s.type==="copy"){
             let res=calcDamage(p.attr,enemy.attr,atkC*multiplier);
             if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
             if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+            res.dmg=applySkillDmgPassives(res.dmg,p);
             enemy.hp-=res.dmg; applyShockBonus(p,atkC);
             showSynergyText("💢 珍古砲コピー！カウント"+count+"！"); renderBattle(); setTimeout(()=>showDamage("enemy",res),10);
         }
@@ -4682,12 +4842,16 @@ if(s.type==="copy"){
         // --- 状態異常付与系 ---
         if(s2.type==="poison"){
             if(!enemy.poisons) enemy.poisons=[];
-            enemy.poisons.push({ power:(s2.power||0.5)*pw, turn:100, user:p });
+            let _cpow=(s2.power||0.5)*pw;
+            let _cpc=box.find(b=>b.name===p.name); if(_cpc&&_cpc.treeSkillPower) _cpow*=(1+_cpc.treeSkillPower);
+            enemy.poisons.push({ power:_cpow, turn:100, user:p });
             checkSynergy(p,atkC);
         }
         if(s2.type==="burn"){
             if(!enemy.burns) enemy.burns=[];
-            enemy.burns.push({ power:atkC*(s2.power||0.4)*pw, turn:s2.turn||4, user:p });
+            let _cbpow=atkC*(s2.power||0.4)*pw;
+            let _cbc=box.find(b=>b.name===p.name); if(_cbc&&_cbc.treeSkillPower) _cbpow*=(1+_cbc.treeSkillPower);
+            enemy.burns.push({ power:_cbpow, turn:s2.turn||4, user:p });
             enemy.burnPower=enemy.burns.reduce((acc,b)=>acc+b.power,0);
             enemy.burnTurn=Math.max(...enemy.burns.map(b=>b.turn));
             checkSynergy(p,atkC);
@@ -4703,6 +4867,7 @@ if(s.type==="copy"){
         if(s2.type==="shock"){
             enemy.shockTurn=2;
             enemy.shockPower=atkC*(s2.power||0.5)*pw;
+            let _csc=box.find(b=>b.name===p.name); if(_csc&&_csc.treeSkillPower) enemy.shockPower*=(1+_csc.treeSkillPower);
             checkSynergy(p,atkC);
             showSynergyText("⚡ 感電コピー！");
         }
@@ -5077,6 +5242,7 @@ if(s.type==="damage"){
     if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
     let _ks2 = p.kokuShoku||0; if(_ks2>0) res.dmg=Math.floor(res.dmg*(1+0.12*_ks2));
     res = applyErosionBoost(res);
+    res.dmg = applySkillDmgPassives(res.dmg, p);
     enemy.hp -= res.dmg;
     applyShockBonus(p, atk);
     renderBattle();
@@ -5087,6 +5253,7 @@ if(s.type==="multi"){
     for(let i=0;i<s.hits;i++){
         showSynergyText("多段攻撃！");
         let res = calcDamage(p.attr, enemy.attr, atk * s.power);
+        res.dmg = applySkillDmgPassives(res.dmg, p);
         enemy.hp -= res.dmg;
         if(!enemy.debuffUsed){ enemy.atk *= 0.95; }
         setTimeout(()=>{
@@ -5126,12 +5293,16 @@ if(s.type==="debuff"){
 if(s.type==="poison"){
     if(!enemy.poisons) enemy.poisons = [];
     showSynergyText("毒付与！");
-    enemy.poisons.push({ power: s.power, turn: 10, user: p });
+    let _s2ppow = s.power;
+    let _s2pc = box.find(b=>b.name===p.name); if(_s2pc&&_s2pc.treeSkillPower) _s2ppow*=(1+_s2pc.treeSkillPower);
+    enemy.poisons.push({ power: _s2ppow, turn: 10, user: p });
     checkSynergy(p, atk);
 }
 if(s.type==="burn"){
     if(!enemy.burns) enemy.burns = [];
-    enemy.burns.push({ power: atk * s.power, turn: s.turn || 4, user: p });
+    let _s2bpow = atk * s.power;
+    let _s2bc = box.find(b=>b.name===p.name); if(_s2bc&&_s2bc.treeSkillPower) _s2bpow*=(1+_s2bc.treeSkillPower);
+    enemy.burns.push({ power: _s2bpow, turn: s.turn || 4, user: p });
     enemy.burnPower = enemy.burns.reduce((acc, b) => acc + b.power, 0);
     enemy.burnTurn = Math.max(...enemy.burns.map(b => b.turn));
     showSynergyText("燃焼付与！(×" + enemy.burns.length + "重)");
@@ -5148,6 +5319,7 @@ if(s.type==="freeze"){
 if(s.type==="shock"){
     enemy.shockTurn = 2;
     enemy.shockPower = atk * s.power;
+    let _s2sc = box.find(b=>b.name===p.name); if(_s2sc&&_s2sc.treeSkillPower) enemy.shockPower*=(1+_s2sc.treeSkillPower);
     showSynergyText("感電付与！");
     checkSynergy(p, atk);
 }
@@ -5155,6 +5327,7 @@ if(s.type==="drain"){
     let idx = turnIndex;
     let res = calcDamage(p.attr, enemy.attr, atk * s.power);
     if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
+    res.dmg = applySkillDmgPassives(res.dmg, p);
     enemy.hp -= res.dmg;
     let heal = res.dmg * 0.5;
     p.currentHp += heal;
@@ -5174,6 +5347,8 @@ if(s.type==="hpCut"){
 if(s.type==="double"){
     let res = calcDamage(p.attr, enemy.attr, atk * s.power);
     let res2 = calcDamage(p.attr, enemy.attr, atk * 0.5);
+    res.dmg = applySkillDmgPassives(res.dmg, p);
+    res2.dmg = applySkillDmgPassives(res2.dmg, p);
     showSynergyText("連撃！");
     enemy.hp -= res.dmg;
     enemy.hp -= res2.dmg;
@@ -5194,6 +5369,7 @@ if(s.type==="counter"){
 if(s.type==="rage"){
     let ratio = 1 - (p.currentHp / p.hp);
     let dmg = Math.floor(atk * (1 + ratio * (s.power - 1) * 3));
+    dmg = applySkillDmgPassives(dmg, p);
     showSynergyText("狂化発動！");
     enemy.hp -= dmg;
     renderBattle();
@@ -5206,6 +5382,7 @@ if(s.type==="poisonBurst"){
     if(poisonCount === 0){
         let res = calcDamage(p.attr, enemy.attr, atk * s.power);
         if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
+        res.dmg = applySkillDmgPassives(res.dmg, p);
         enemy.hp -= res.dmg;
         showSynergyText("☠ 毒爆発！（毒なし）");
         renderBattle();
@@ -5214,6 +5391,7 @@ if(s.type==="poisonBurst"){
         let multiplier = poisonCount * s.power;
         let res = calcDamage(p.attr, enemy.attr, atk * multiplier);
         if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
+        res.dmg = applySkillDmgPassives(res.dmg, p);
         enemy.hp -= res.dmg;
         showSynergyText("☠💥 毒爆発！毒×" + poisonCount + "=" + Math.floor(multiplier*100) + "% ダメージ！");
         renderBattle();
@@ -5488,7 +5666,8 @@ if(exist){
         dupe:0,
         atk:20+5*c.rarity,
         hp:100+20*c.rarity,
-        weapon: null
+        weapon: null,
+        skillTreeData: {chosen:[], skipped:[]}
     });
 }
 }
@@ -5934,6 +6113,7 @@ if(currentEvent !== undefined){
 
         // ★毎回報酬 → 初回だけに変更
         stone += e.reward;
+        sp += 3; // イベントステージSP+3
 
     }
 
@@ -5948,6 +6128,7 @@ if(currentEvent !== undefined){
 
             // ボス報酬
             stone += e.bossReward || 0;
+            sp += 10; // イベント完全制覇SP+10
 
             // キャラ報酬
             let rewardChar = e.rewardChar;
@@ -7105,6 +7286,449 @@ function exchangeChar(charIndex){
   alert('✅ '+c.name+' をGETしました！');
   renderExchange();
 }
+
+// ===== スキルツリーシステム (選択型・拡張版) =====
+//
+// 仕様:
+//   各「ステージ」に複数の選択肢が並ぶ。
+//   プレイヤーはそのステージで1つだけ選んで解放できる。
+//   選んだら同ステージの他ノードは「skipped」(選択不可)になる。
+//   前ステージが解放済みなら次ステージが開放される。
+//
+// ノード種別:
+//   bonus       → ステータス強化 {atk, hp, def, healUp}
+//   passive_add → パッシブをキャラに追加付与 (passiveData)
+//   skill_up    → スキルCT短縮 or 威力アップ (skillBonus)
+
+// ステージ定義: 各ステージは choices[] を持つ
+const skillTreeStages = [
+  {
+    id: 0,
+    label: "ステージ1「入門」",
+    choices: [
+      {id:0, label:"ATK強化Ⅰ",   bonus:{atk:0.08},        cost:10,  icon:"⚔",  type:"bonus",   desc:"ATK+8%"},
+      {id:1, label:"HP強化Ⅰ",    bonus:{hp:0.10},         cost:10,  icon:"💚",  type:"bonus",   desc:"HP+10%"},
+      {id:2, label:"スキル威力強化Ⅰ",skillBonus:{powerUp:0.10},cost:12, icon:"✨",  type:"skill_up",desc:"スキル威力+10%"},
+    ]
+  },
+  {
+    id: 1,
+    label: "ステージ2「成長」",
+    choices: [
+      {id:3, label:"ATK強化Ⅱ",   bonus:{atk:0.14},        cost:20,  icon:"⚔",  type:"bonus",   desc:"ATK+14%"},
+      {id:4, label:"HP強化Ⅱ",    bonus:{hp:0.18},         cost:20,  icon:"💚",  type:"bonus",   desc:"HP+18%"},
+      {id:5, label:"被ダメ軽減",  bonus:{def:0.12},        cost:20,  icon:"🛡",  type:"bonus",   desc:"被ダメ-12%"},
+      {id:6, label:"スキル威力強化Ⅱ",skillBonus:{powerUp:0.10},cost:22, icon:"✨",  type:"skill_up",desc:"スキル威力+10%"},
+    ]
+  },
+  {
+    id: 2,
+    label: "ステージ3「覚醒」",
+    choices: [
+      {id:7,  label:"属性共鳴",   passiveData:{type:"attr_resonance",value:0.20,text:"🔮属性共鳴：同属性の敵への与ダメ+20%"},
+               cost:35, icon:"🔮", type:"passive_add", desc:"同属性の敵への与ダメ+20%"},
+      {id:8,  label:"闘魂",       passiveData:{type:"battle_spirit",value:0.10,text:"💢闘魂：攻撃ヒット毎にATK+10%(最大+50%,永続)"},
+               cost:35, icon:"💢", type:"passive_add", desc:"攻撃毎ATK+10%(最大+50%)"},
+      {id:9,  label:"不屈の意志", passiveData:{type:"undying_will",threshold:0.30,value:0.60,text:"💀不屈：HP30%以下でATK+60%&被ダメ-20%"},
+               cost:35, icon:"💀", type:"passive_add", desc:"HP30%以下でATK+60%&被ダメ-20%"},
+      {id:10, label:"状態付与強化",passiveData:{type:"ailment_power_up",value:0.30,text:"☠状態強化：毒/燃焼/感電の効果量+30%"},
+               cost:35, icon:"☠",  type:"passive_add", desc:"毒/燃焼/感電の付与ダメ+30%"},
+    ]
+  },
+  {
+    id: 3,
+    label: "ステージ4「極致」",
+    choices: [
+      {id:11, label:"ATK&HP覚醒", bonus:{atk:0.20, hp:0.20}, cost:55, icon:"🌙", type:"bonus",   desc:"ATK+20% / HP+20%"},
+      {id:12, label:"反撃の炎",   passiveData:{type:"counter_passive",value:0.40,chance:0.30,text:"🔥反撃の炎：被ダメ時30%でATK40%の反撃発動"},
+               cost:55, icon:"🔥", type:"passive_add", desc:"被ダメ時30%でATK40%反撃"},
+      {id:13, label:"生命力",     passiveData:{type:"regen_passive",value:0.05,text:"🌿生命力：ターン開始時に自身HP5%回復"},
+               cost:55, icon:"🌿", type:"passive_add", desc:"ターン開始時HP5%自己回復"},
+      {id:14, label:"鉄壁の心得", bonus:{def:0.07},           cost:55, icon:"🛡",  type:"bonus",   desc:"被ダメージ7%軽減"},
+    ]
+  },
+  {
+    id: 4,
+    label: "ステージ5「完全覚醒」",
+    choices: [
+      {id:15, label:"絶対覚醒",   bonus:{atk:0.30, hp:0.30}, cost:80, icon:"🌟", type:"bonus",   desc:"ATK+30% / HP+30%"},
+      {id:16, label:"魂の共鳴",   passiveData:{type:"soul_resonance",value:0.10,text:"✨魂の共鳴：味方全体の攻撃後ATK+10%(3T)を付与(最大3重)"},
+               cost:80, icon:"✨", type:"passive_add", desc:"味方全体に攻撃後ATKバフ付与"},
+      {id:17, label:"滅亡の刻",   passiveData:{type:"doom_passive",value:0.50,threshold:0.50,text:"💀滅亡の刻：敵HP50%以下で与ダメ+50%"},
+               cost:80, icon:"☄",  type:"passive_add", desc:"敵HP50%以下で与ダメ+50%"},
+    ]
+  },
+];
+
+// 全ノードIDをフラットに引けるマップ
+const stNodeMap = {};
+skillTreeStages.forEach(st => st.choices.forEach(ch => { stNodeMap[ch.id] = {...ch, stageId: st.id}; }));
+const SKILL_TREE_TOTAL_CHOICES = Object.keys(stNodeMap).length; // 18
+
+let stCharIdx = -1;
+
+function openSkillTree(i){
+  stCharIdx = i;
+  let c = box[i];
+  // skillTree: {chosenIds: Set → save as array, skippedIds: Set → save as array}
+  if(!c.skillTreeData) c.skillTreeData = {chosen:[], skipped:[]};
+  renderSkillTree();
+  document.getElementById("skillTreeModal").classList.add("open");
+}
+
+function closeSkillTree(){
+  document.getElementById("skillTreeModal").classList.remove("open");
+}
+
+// ステージが解放済みか(= 前のステージが選択済み or ステージ0)
+function isStageUnlocked(c, stageId){
+  if(stageId === 0) return true;
+  let prevStage = skillTreeStages[stageId - 1];
+  return prevStage.choices.some(ch => c.skillTreeData.chosen.includes(ch.id));
+}
+
+// ステージが完了済みか(= いずれか1つをchosen)
+function isStageDone(c, stageId){
+  let stage = skillTreeStages[stageId];
+  return stage.choices.some(ch => c.skillTreeData.chosen.includes(ch.id));
+}
+
+function getNodeState(c, stageId, choiceId){
+  let chosen = c.skillTreeData.chosen;
+  let skipped = c.skillTreeData.skipped;
+  if(chosen.includes(choiceId)) return "unlocked";
+  if(skipped.includes(choiceId)) return "skipped";
+  if(!isStageUnlocked(c, stageId)) return "locked";
+  if(isStageDone(c, stageId)) return "skipped"; // 同ステージで別を選択済
+  let ch = stNodeMap[choiceId];
+  if(sp < ch.cost) return "locked_sp";
+  return "available";
+}
+
+function getNodeDesc(ch){
+  if(ch.type === "bonus"){
+    return Object.entries(ch.bonus).map(([k,v])=>{
+      if(k==="def") return "被ダメ-"+(v*100).toFixed(0)+"%";
+      if(k==="healUp") return "回復量+"+(v*100).toFixed(0)+"%";
+      return k.toUpperCase()+" +"+(v*100).toFixed(0)+"%";
+    }).join(" / ");
+  }
+  if(ch.type === "skill_up") return ch.desc || "";
+  if(ch.type === "passive_add") return (ch.desc||"");
+  return "";
+}
+
+function renderStNodeHTML(c, stageId, ch){
+  let state = getNodeState(c, stageId, ch.id);
+  let descHtml = "";
+  if(ch.type === "passive_add")
+    descHtml = `<span style='color:#ffcc44;font-size:8px;font-weight:bold;'>📖パッシブ追加</span><br>` + getNodeDesc(ch);
+  else if(ch.type === "skill_up")
+    descHtml = `<span style='color:#88ccff;font-size:8px;'>🔧スキル強化</span><br>` + getNodeDesc(ch);
+  else
+    descHtml = getNodeDesc(ch);
+
+  let costHtml = state==="unlocked" ? "✅ 選択済"
+    : state==="skipped" ? "❌ 非選択"
+    : state==="locked"  ? "🔒 ロック"
+    : ("💎 SP "+ch.cost);
+
+  let onclick = (state==="available"||state==="locked_sp") ? `onclick="unlockSkillNode(${stCharIdx},${stageId},${ch.id})"` : "";
+  return `<div class="stNode ${state}" ${onclick}>
+    <div class="stNodeLabel">${ch.icon} ${ch.label}</div>
+    <div class="stNodeBonus">${descHtml}</div>
+    <div class="stNodeCost">${costHtml}</div>
+  </div>`;
+}
+
+function renderSkillTree(){
+  let c = box[stCharIdx];
+  if(!c) return;
+  if(!c.skillTreeData) c.skillTreeData = {chosen:[], skipped:[]};
+
+  document.getElementById("stCharImg").src = c.img;
+  document.getElementById("stCharName").textContent = c.name;
+  document.getElementById("stSpDisplay").textContent = "🌳 SP: " + sp;
+  document.getElementById("stMessage").textContent = "";
+
+  let totalChosen = c.skillTreeData.chosen.length;
+
+  // アクティブパッシブ表示
+  let addedPassives = getAddedPassives(c);
+  let passiveSummary = addedPassives.length > 0
+    ? `<div style="font-size:10px;color:#aaffcc;background:#0a1a10;border:1px solid #336633;border-radius:6px;padding:4px 8px;margin:4px 0 6px;text-align:left;">
+        🌿 習得パッシブ:<br>${addedPassives.map(p=>p.text).join("<br>")}
+       </div>` : "";
+
+  let html = passiveSummary;
+
+  skillTreeStages.forEach((stage, si) => {
+    let done = isStageDone(c, stage.id);
+    let unlocked = isStageUnlocked(c, stage.id);
+    let headerClass = done ? "done" : (unlocked ? "" : "locked");
+    let stageLabel = done ? "✅ "+stage.label : (unlocked ? "▶ "+stage.label : "🔒 "+stage.label);
+    html += `<div class="stStageHeader ${headerClass}">${stageLabel} ${done?"":"─ 1つ選択"}</div>`;
+    html += `<div class="stRow">`;
+    stage.choices.forEach(ch => {
+      html += renderStNodeHTML(c, stage.id, ch);
+    });
+    html += `</div>`;
+    if(si < skillTreeStages.length-1){
+      html += `<div class="stArrow">↓</div>`;
+    }
+  });
+
+  html += `<div style="font-size:11px;color:#666;margin-top:8px;">習得済: ${totalChosen}/${skillTreeStages.length}ステージ</div>`;
+
+  // リセットボタンにSP表示
+  let resetCost = 0;
+  c.skillTreeData.chosen.forEach(id => { let ch = stNodeMap[id]; if(ch) resetCost += ch.cost; });
+  let resetBtn = document.getElementById("stResetBtn");
+  if(resetBtn){
+    if(resetCost > 0){
+      resetBtn.textContent = "🔄 リセット (SP "+resetCost+"消費)";
+      resetBtn.disabled = false;
+      resetBtn.style.opacity = "1";
+    } else {
+      resetBtn.textContent = "🔄 リセット";
+      resetBtn.disabled = true;
+      resetBtn.style.opacity = "0.4";
+    }
+  }
+  document.getElementById("stTreeArea").innerHTML = html;
+}
+
+// ツリー解放済みのpassive_addノードを返す
+function getAddedPassives(c){
+  let result = [];
+  if(!c.skillTreeData) return result;
+  c.skillTreeData.chosen.forEach(id => {
+    let ch = stNodeMap[id];
+    if(ch && ch.type === "passive_add" && ch.passiveData) result.push(ch.passiveData);
+  });
+  return result;
+}
+
+function getAllPassives(p){
+  let passives = [];
+  if(p.passive) passives.push({ps: p.passive, label: p.name});
+  if(p.weaponPassive) passives.push({ps: p.weaponPassive, label: p.weapon?.name || "武器"});
+  let c = box.find(b=>b.name===p.name);
+  if(c) getAddedPassives(c).forEach(tp => passives.push({ps: tp, label: p.name+"(ツリー)"}));
+  return passives;
+}
+
+function unlockSkillNode(charIdx, stageId, choiceId){
+  let c = box[charIdx];
+  if(!c) return;
+  if(!c.skillTreeData) c.skillTreeData = {chosen:[], skipped:[]};
+
+  let ch = stNodeMap[choiceId];
+  let msg = document.getElementById("stMessage");
+
+  if(c.skillTreeData.chosen.includes(choiceId)){
+    msg.style.color="#aaa"; msg.textContent="すでに選択済みです"; return;
+  }
+  if(c.skillTreeData.skipped.includes(choiceId)){
+    msg.style.color="#ff4444"; msg.textContent="⚠ このノードは非選択になっています"; return;
+  }
+  if(!isStageUnlocked(c, stageId)){
+    msg.style.color="#ff4444"; msg.textContent="⚠ 前のステージを先に解放してください"; return;
+  }
+  if(isStageDone(c, stageId)){
+    msg.style.color="#ff4444"; msg.textContent="⚠ このステージはすでに選択済みです"; return;
+  }
+  if(sp < ch.cost){
+    msg.style.color="#ff4444"; msg.textContent="⚠ SPが足りません（必要: "+ch.cost+" / 現在: "+sp+"）"; return;
+  }
+
+  sp -= ch.cost;
+  c.skillTreeData.chosen.push(choiceId);
+
+  // 同ステージの他を skipped に
+  let stage = skillTreeStages[stageId];
+  stage.choices.forEach(other => {
+    if(other.id !== choiceId && !c.skillTreeData.skipped.includes(other.id)){
+      c.skillTreeData.skipped.push(other.id);
+    }
+  });
+
+  // ボーナス適用
+  let detail = [];
+  if(ch.type === "bonus"){
+    let atkGain=0, hpGain=0;
+    if(ch.bonus.atk){ atkGain=Math.floor(c.atk*ch.bonus.atk); c.atk+=atkGain; }
+    if(ch.bonus.hp) { hpGain =Math.floor(c.hp *ch.bonus.hp ); c.hp +=hpGain;  }
+    if(ch.bonus.def){ if(!c.treeDef)c.treeDef=0; c.treeDef+=ch.bonus.def; detail.push("被ダメ-"+(ch.bonus.def*100).toFixed(0)+"%"); }
+    if(ch.bonus.healUp){ if(!c.treeHealUp)c.treeHealUp=0; c.treeHealUp+=ch.bonus.healUp; detail.push("回復+"+(ch.bonus.healUp*100).toFixed(0)+"%"); }
+    if(atkGain>0) detail.push("ATK +"+atkGain);
+    if(hpGain>0)  detail.push("HP +"+hpGain);
+  } else if(ch.type === "skill_up"){
+    if(ch.skillBonus?.ctReduce){
+      if(!c.treeCtReduce)c.treeCtReduce=0; c.treeCtReduce+=ch.skillBonus.ctReduce;
+      if(c.skill&&c.skill.cool) c.skill.cool=Math.max(1,c.skill.cool-ch.skillBonus.ctReduce);
+      detail.push("CT-"+ch.skillBonus.ctReduce);
+    }
+    if(ch.skillBonus?.powerUp){
+      if(!c.treeSkillPower)c.treeSkillPower=0; c.treeSkillPower+=ch.skillBonus.powerUp;
+      detail.push("スキル威力+"+(ch.skillBonus.powerUp*100).toFixed(0)+"%");
+    }
+  } else if(ch.type === "passive_add"){
+    detail.push("パッシブ追加: "+ch.passiveData.text);
+  }
+
+  msg.style.color="#88ffaa";
+  msg.textContent="✅ "+ch.label+" 選択！ "+detail.join(" / ");
+
+  saveData(); update(); renderSkillTree();
+}
+
+function resetSkillTree(){
+  let c = box[stCharIdx];
+  if(!c || !c.skillTreeData) return;
+  let chosen = c.skillTreeData.chosen;
+  if(chosen.length === 0){
+    let msg = document.getElementById("stMessage");
+    msg.style.color="#aaa"; msg.textContent="リセットするノードがありません"; return;
+  }
+
+  // 消費SP合計を計算
+  let totalCost = 0;
+  chosen.forEach(id => { let ch = stNodeMap[id]; if(ch) totalCost += ch.cost; });
+
+  if(sp < totalCost){
+    let msg = document.getElementById("stMessage");
+    msg.style.color="#ff4444"; msg.textContent="⚠ SPが足りません（必要: "+totalCost+" / 現在: "+sp+"）"; return;
+  }
+
+  if(!confirm("スキルツリーをリセットします。\n消費SP: "+totalCost+"\n（解放に使ったSP分が必要です）\n\nよろしいですか？")) return;
+
+  // ボーナス逆適用
+  chosen.forEach(id => {
+    let ch = stNodeMap[id];
+    if(!ch) return;
+    if(ch.type === "bonus"){
+      if(ch.bonus.atk){ c.atk = Math.round(c.atk / (1 + ch.bonus.atk)); }
+      if(ch.bonus.hp) { c.hp  = Math.round(c.hp  / (1 + ch.bonus.hp));  }
+      if(ch.bonus.def && c.treeDef){ c.treeDef -= ch.bonus.def; if(c.treeDef<=0) delete c.treeDef; }
+      if(ch.bonus.healUp && c.treeHealUp){ c.treeHealUp -= ch.bonus.healUp; if(c.treeHealUp<=0) delete c.treeHealUp; }
+    } else if(ch.type === "skill_up"){
+      if(ch.skillBonus?.powerUp && c.treeSkillPower){ c.treeSkillPower -= ch.skillBonus.powerUp; if(c.treeSkillPower<=0) delete c.treeSkillPower; }
+    }
+    // passive_add は skillTreeData をクリアすれば自動的に外れる
+  });
+
+  sp -= totalCost;
+  c.skillTreeData = {chosen:[], skipped:[]};
+
+  let msg = document.getElementById("stMessage");
+  msg.style.color="#88ffaa"; msg.textContent="🔄 リセット完了！ SP -"+totalCost;
+
+  saveData(); update(); renderSkillTree();
+}
+
+function triggerTreePassiveOnAttack(p){
+  let c = box.find(b=>b.name===p.name);
+  if(!c) return;
+  getAddedPassives(c).forEach(ps => {
+    // 💢 闘魂
+    if(ps.type==="battle_spirit"){
+      if(!p.battleSpiritStacks) p.battleSpiritStacks=0;
+      let maxStacks=Math.round(0.50/ps.value);
+      if(p.battleSpiritStacks<maxStacks){
+        p.battleSpiritStacks++;
+        if(!p.buffs) p.buffs=[];
+        p.buffs=p.buffs.filter(b=>!b.isBattleSpirit);
+        p.buffs.push({power:1+p.battleSpiritStacks*ps.value,turn:999999,permanent:true,isBattleSpirit:true});
+        showSynergyText("💢 闘魂！ATK+"+(p.battleSpiritStacks*Math.round(ps.value*100))+"% ("+p.battleSpiritStacks+"/"+maxStacks+")");
+      }
+    }
+    // ✨ 魂の共鳴: 攻撃後に味方全体バフ付与
+    if(ps.type==="soul_resonance"){
+      players.forEach(t=>{
+        if(!t.buffs) t.buffs=[];
+        let existing=t.buffs.filter(b=>b.isSoulResonance);
+        if(existing.length<3){
+          t.buffs.push({power:1+ps.value,turn:3,isSoulResonance:true});
+          let pi2=players.indexOf(t);
+          setTimeout(()=>showDamage("p"+pi2,{dmg:0,type:"heal"}),50+pi2*40);
+        }
+      });
+      showSynergyText("✨ 魂の共鳴！全体ATK+"+Math.round(ps.value*100)+"%バフ付与！");
+    }
+  });
+}
+
+function applyTreePassiveAtk(p){
+  let bonus=1.0;
+  let c=box.find(b=>b.name===p.name);
+  if(!c) return bonus;
+  getAddedPassives(c).forEach(ps=>{
+    if(ps.type==="attr_resonance" && enemy && p.attr===enemy.attr) bonus*=(1+ps.value);
+    if(ps.type==="undying_will" && (p.currentHp/p.hp)<=ps.threshold) bonus*=(1+ps.value);
+    if(ps.type==="doom_passive" && enemy && (enemy.hp/(enemy.maxHp||enemy.hp))<=ps.threshold) bonus*=(1+ps.value);
+  });
+  // treeSkillPower はスキルダメージのみ対象のためここでは適用しない
+  return bonus;
+}
+
+function applyTreePassiveDef(p){
+  let reduction=1.0;
+  let c=box.find(b=>b.name===p.name);
+  if(!c) return reduction;
+  if(c.treeDef) reduction*=(1-c.treeDef);
+  getAddedPassives(c).forEach(ps=>{
+    if(ps.type==="undying_will" && (p.currentHp/p.hp)<=ps.threshold) reduction*=0.80;
+  });
+  return reduction;
+}
+
+// 被ダメ時: 反撃の炎パッシブ
+function triggerTreePassiveOnDamaged(p){
+  let c=box.find(b=>b.name===p.name);
+  if(!c) return;
+  getAddedPassives(c).forEach(ps=>{
+    if(ps.type==="counter_passive" && Math.random()<ps.chance){
+      let counterDmg=Math.floor(p.atk*ps.value);
+      if(p.buffs) p.buffs.forEach(b=>{counterDmg=Math.floor(counterDmg*b.power);});
+      let res=calcDamage(p.attr,enemy.attr,counterDmg);
+      enemy.hp-=res.dmg;
+      let pIdx=players.indexOf(p);
+      setTimeout(()=>{
+        showDamage("enemy",{...res,type:"weak"});
+        showSynergyText("🔥 反撃の炎！"+res.dmg+"ダメージ！");
+      },200);
+    }
+  });
+}
+
+// ターン開始時: 生命力パッシブ
+function triggerTreePassiveOnTurnStart(){
+  players.forEach((p,pi)=>{
+    let c=box.find(b=>b.name===p.name);
+    if(!c) return;
+    getAddedPassives(c).forEach(ps=>{
+      if(ps.type==="regen_passive"){
+        let healAmt=Math.floor(p.hp*ps.value);
+        p.currentHp=Math.min(p.hp,p.currentHp+healAmt);
+        setTimeout(()=>showDamage("p"+pi,{dmg:healAmt,type:"heal"}),pi*60);
+      }
+    });
+  });
+}
+
+function getAilmentTreeBonus(){
+  let mult=1.0;
+  players.forEach(pl=>{
+    let c2=box.find(b=>b.name===pl.name);
+    if(!c2) return;
+    getAddedPassives(c2).forEach(ps=>{
+      if(ps.type==="ailment_power_up") mult*=(1+ps.value);
+    });
+  });
+  return mult;
+}
+// ===== スキルツリーここまで =====
 </script>
 </body>
 </html>
