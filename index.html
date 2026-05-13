@@ -1521,13 +1521,13 @@ passive:{type:"multi_hit_bonus",value:0.12,text:"🔪切れ味：多段攻撃の
 ];
 
 const rewardChar = [
-{name:"和辺重信🍖",rarity:3,attr:"火",img:"https://imgur.com/dgKm097.png",role:"tank",skill:{type:"buff", power:1.2, text:"120%バフ",cool:2},
+{name:"和辺重信🍖",rarity:3,attr:"火",img:"https://imgur.com/dgKm097.png",role:"attacker",skill:{type:"buff", power:1.2, text:"120%バフ",cool:2},
 passive:{type:"buff_ct_reduce",text:"🔥炎兵：バフスキル発動時に味方全体のCTを1短縮"}},
-{name:"明石啓希🌊",rarity:3,attr:"水",img:"https://imgur.com/raQuv6H.png",role:"tank",skill:{type:"double", power:2, text:"200%追撃",cool:3},
+{name:"明石啓希🌊",rarity:3,attr:"水",img:"https://imgur.com/raQuv6H.png",role:"attacker",skill:{type:"double", power:2, text:"200%追撃",cool:3},
 passive:{type:"multi_hit_bonus",value:0.12,text:"❄水護：追撃スキル発動時の各ヒットATK+12%"}},
-{name:"弐呪刻🃏",rarity:3,attr:"雷",img:"https://imgur.com/0GAe9qU.png",role:"tank",skill:{type:"multi", power:0.4, hits:4, text:"4連撃+デバフ",cool:3},
+{name:"弐呪刻🃏",rarity:3,attr:"雷",img:"https://imgur.com/0GAe9qU.png",role:"attacker",skill:{type:"multi", power:0.4, hits:4, text:"4連撃+デバフ",cool:3},
 passive:{type:"multi_hit_bonus",value:0.15,text:"⚡雷壁：多段スキルの各ヒットATK+15%"}},
-{name:"死橋凪🌌",rarity:3,attr:"光",img:"https://imgur.com/W0naH2J.png",role:"tank",skill:{type:"rage", power:5, text:"狂化",cool:4},
+{name:"死橋凪🌌",rarity:3,attr:"光",img:"https://imgur.com/W0naH2J.png",role:"attacker",skill:{type:"rage", power:5, text:"狂化",cool:4},
 passive:{type:"rage_power_up",value:0.3,text:"✨光炎斬：狂化スキル発動時のATK上昇量+30%"}},
 {name:"フセイン👻",rarity:3,attr:"闇",img:"https://imgur.com/3kJ2WU7.png",role:"support",skill:{type:"heal", power:0.4, text:"味方回復40%",cool:2},
 passive:{type:"revive_passive",threshold:0.15,text:"🌑闇癒：味方HP15%以下で自動的にHP15%回復"}},
@@ -1552,7 +1552,7 @@ const eventStages = [
         {lv:3, hp:2000, atk:200},
         {lv:4, hp:6000, atk:600},
         {lv:5, hp:18000, atk:1800},
-        {lv:"BOSS", hp:90000, atk:3600, boss:true, gimmick:{shield:3000, shieldLabel:"シールド3000", turnBuff:true, turnBuffLabel:"毎T ATK+8%(上限+80%)"}}
+        {lv:"BOSS", hp:150000, atk:4100, boss:true, gimmick:{shield:3000, shieldLabel:"シールド3000", turnBuff:true, turnBuffLabel:"毎T ATK+8%(上限+80%)"}}
     ],
     enemy:{
         name:"和辺重信🍖",
@@ -1566,7 +1566,7 @@ rewardChar:{
     rarity:3,
     attr:"火",
     img:"https://imgur.com/dgKm097.png",
-    role:"tank",
+    role:"attacker",
     skill:{type:"buff", power:1.2, text:"120%バフ",cool:2},
     passive:{type:"buff_ct_reduce",text:"🔥炎兵：バフスキル発動時に味方全体のCTを1短縮"}
 }
@@ -1579,7 +1579,7 @@ rewardChar:{
         {lv:3, hp:2000, atk:200},
         {lv:4, hp:6000, atk:600},
         {lv:5, hp:18000, atk:1800},
-        {lv:"BOSS", hp:110000, atk:4000, boss:true, gimmick:{attrOnly:"水", attrOnlyLabel:"水属性のみ有効", counter:true, counterLabel:"カウンター持ち"}}
+        {lv:"BOSS", hp:160000, atk:4200, boss:true, gimmick:{attrOnly:"水", attrOnlyLabel:"水属性のみ有効", counter:true, counterLabel:"カウンター持ち"}}
     ],
     enemy:{
         name:"明石啓希🌊",
@@ -1593,7 +1593,7 @@ rewardChar:{
     rarity:3,
     attr:"水",
     img:"https://imgur.com/raQuv6H.png",
-    role:"tank",
+    role:"attacker",
     skill:{type:"double", power:2, text:"200%追撃",cool:3},
     passive:{type:"multi_hit_bonus",value:0.12,text:"❄水護：追撃スキル発動時の各ヒットATK+12%"}
 }
@@ -1606,7 +1606,7 @@ rewardChar:{
         {lv:3, hp:2000, atk:200},
         {lv:4, hp:6000, atk:600},
         {lv:5, hp:18000, atk:1800},
-        {lv:"BOSS", hp:130000, atk:4500, boss:true, gimmick:{turnLimit:8, turnLimitLabel:"8T以内に撃破"}}
+        {lv:"BOSS", hp:170000, atk:4500, boss:true, gimmick:{turnLimit:8, turnLimitLabel:"8T以内に撃破"}}
     ],
     enemy:{
         name:"弐呪刻🃏",
@@ -1620,7 +1620,7 @@ rewardChar:{
     rarity:3,
     attr:"雷",
     img:"https://imgur.com/0GAe9qU.png",
-    role:"tank",
+    role:"attacker",
     skill:{type:"multi", power:0.4, hits:4, text:"4連撃+デバフ",cool:3},
     passive:{type:"multi_hit_bonus",value:0.15,text:"⚡雷壁：多段スキルの各ヒットATK+15%"}
 }
@@ -1633,7 +1633,7 @@ rewardChar:{
         {lv:3, hp:3000, atk:300},
         {lv:4, hp:8000, atk:800},
         {lv:5, hp:24000, atk:2400},
-        {lv:"BOSS", hp:150000, atk:4500, boss:true, gimmick:{shield:8000, shieldLabel:"シールド7200",  attrOnly:"雷", attrOnlyLabel:"雷属性のみ有効",}}
+        {lv:"BOSS", hp:170000, atk:4500, boss:true, gimmick:{shield:8000, shieldLabel:"シールド7200",  attrOnly:"雷", attrOnlyLabel:"雷属性のみ有効",}}
     ],
     enemy:{
         name:"死橋凪🌌",
@@ -1647,7 +1647,7 @@ rewardChar:{
     rarity:3,
     attr:"光",
     img:"https://imgur.com/W0naH2J.png",
-    role:"tank",
+    role:"attacker",
     skill:{type:"rage", power:5, text:"狂化",cool:4},
     passive:{type:"rage_power_up",value:0.3,text:"✨光炎斬：狂化スキル発動時のATK上昇量+30%"}
 }
@@ -1660,7 +1660,7 @@ rewardChar:{
         {lv:3, hp:3000, atk:300},
         {lv:4, hp:8000, atk:800},
         {lv:5, hp:24000, atk:2400},
-        {lv:"BOSS", hp:160000, atk:4800, boss:true, gimmick:{attrOnly:"闇", attrOnlyLabel:"闇属性のみ有効", turnLimit:10, turnLimitLabel:"10T以内に撃破"}}
+        {lv:"BOSS", hp:180000, atk:4800, boss:true, gimmick:{attrOnly:"闇", attrOnlyLabel:"闇属性のみ有効", turnLimit:10, turnLimitLabel:"10T以内に撃破"}}
     ],
     enemy:{
         name:"フセイン👻",
@@ -1687,7 +1687,7 @@ rewardChar:{
         {lv:3, hp:5000, atk:500},
         {lv:4, hp:12000, atk:1000},
         {lv:5, hp:30000, atk:2800},
-        {lv:"BOSS", hp:180000, atk:3900, boss:true,
+        {lv:"BOSS", hp:180000, atk:5200, boss:true,
          gimmick:{
            shield:10000, shieldLabel:"シールド10000",
            turnBuff:true, turnBuffLabel:"毎T ATK+10%(上限+100%)",
@@ -1719,7 +1719,7 @@ rewardChar:{
         {lv:3, hp:7000, atk:650},
         {lv:4, hp:16000, atk:1400},
         {lv:5, hp:40000, atk:3200},
-        {lv:"BOSS", hp:160000, atk:3500, boss:true,
+        {lv:"BOSS", hp:180000, atk:5500, boss:true,
          gimmick:{
            shield:12000, shieldLabel:"シールド12000",
            attrOnly:"光", attrOnlyLabel:"光属性のみ有効",
@@ -1756,7 +1756,7 @@ rewardChar:{
            shield:5000, shieldLabel:"シールド5000",
            attrOnly:"木", attrOnlyLabel:"木属性特効(木以外0.5倍)",
          }},
-        {lv:"BOSS", hp:190000, atk:3000, boss:true,
+        {lv:"BOSS", hp:210000, atk:5000, boss:true,
          gimmick:{
            shield:8000, shieldLabel:"❄シールド8000(凍結スキルで解除加速)",
            attrOnly:"木", attrOnlyLabel:"木属性特効",
@@ -1798,7 +1798,7 @@ rewardChar:{
            turnBuff:true, turnBuffLabel:"毎T ATK+10%(上限+100%)",
            attrOnly:"雷", attrOnlyLabel:"雷属性特効(雷以外0.3倍ダメ)",
          }},
-        {lv:"BOSS", hp:140000, atk:4500, boss:true,
+        {lv:"BOSS", hp:230000, atk:6500, boss:true,
          gimmick:{
            shield:8000, shieldLabel:"💻バリア8000(多段攻撃で効率破壊)",
            attrOnly:"雷", attrOnlyLabel:"⚡第1相: 雷属性のみ有効",
@@ -2366,7 +2366,7 @@ ${c.weapon ? `
 
 ${c.skill ? `<br><button class="skillBtn" onclick="openSkillModal(${i});event.stopPropagation();">📖 スキル確認</button>` : ""}
 ${c.passive ? `<button class="skillBtn" style="background:#1a3a1a;color:#88ff88;border-color:#44cc44;" onclick="openPassiveModal(${i});event.stopPropagation();">🌟 パッシブ確認</button>` : ""}
-<br><button class="skillBtn" style="background:#0d2010;color:#88ffaa;border-color:#44cc88;margin-top:3px;" onclick="openSkillTree(${i});event.stopPropagation();">🌳 スキルツリー${(c.skillTreeData?.chosen?.length||0)>0?" ✦":""}(${c.skillTreeData?.chosen?.length||0}/5)</button>
+<br><button class="skillBtn" style="background:#0d2010;color:#88ffaa;border-color:#44cc88;margin-top:3px;" onclick="openSkillTree(${i});event.stopPropagation();">🌳 スキルツリー${(c.skillTreeData?.chosen?.length||0)>0?" ✦":""}(${c.skillTreeData?.chosen?.length||0}/6)</button>
 </div>`).join("");
 
 let t=document.getElementById("team");
@@ -3202,7 +3202,7 @@ if(enemy.gimmick?.phaseRage && enemy.hp <= enemy.maxHp * 0.5 && !enemy.phaseRage
     enemy.phaseRaged = true;
     enemy.atk = Math.floor(enemy.atk * 2.0);
     atk = enemy.atk * enemy.debuffPower;
-    showSynergyText("💻 デジタル暴走！ATK2倍！全属性解放！");
+    showSynergyText("暴走！ATK2倍！全属性解放！");
 }
 
 // ギミック: ターン毎ATKバフ（上限+80%・基礎ATKから加算で計算）
@@ -7650,6 +7650,19 @@ const skillTreeStages = [
                cost:80, icon:"☄",  type:"passive_add", desc:"敵HP50%以下で与ダメ+50%"},
     ]
   },
+  {
+    id: 5,
+    label: "ステージ6「神域」",
+    choices: [
+      {id:18, label:"天命の力",    bonus:{atk:0.40, hp:0.40}, cost:120, icon:"👑", type:"bonus",     desc:"ATK+40% / HP+40%"},
+      {id:19, label:"神速の刃",    passiveData:{type:"godspeed",value:0.25,text:"⚡神速の刃：通常攻撃後25%で追撃を発動(ATK25%の追加ダメージ)"},
+               cost:120, icon:"⚡", type:"passive_add", desc:"通常攻撃後25%で追撃発動"},
+      {id:20, label:"不死の加護",  passiveData:{type:"undying_guard",value:0.15,threshold:1,text:"🌙不死の加護：ターン開始時にHP15%回復＆全被ダメ-10%"},
+               cost:120, icon:"🌙", type:"passive_add", desc:"毎ターンHP15%回復&被ダメ-10%"},
+      {id:21, label:"覇者の証",    passiveData:{type:"conqueror",value:0.80,threshold:0.30,text:"🏆覇者の証：HP30%以下の敵へ与ダメ+80%"},
+               cost:120, icon:"🏆", type:"passive_add", desc:"敵HP30%以下で与ダメ+80%"},
+    ]
+  },
 ];
 
 // 全ノードIDをフラットに引けるマップ
@@ -7935,6 +7948,17 @@ function triggerTreePassiveOnAttack(p){
         showSynergyText("💢 闘魂！ATK+"+(p.battleSpiritStacks*Math.round(ps.value*100))+"% ("+p.battleSpiritStacks+"/"+maxStacks+")");
       }
     }
+    // ⚡ 神速の刃: 25%で追撃
+    if(ps.type==="godspeed" && Math.random()<ps.value){
+      let extraDmg=Math.floor(p.atk*ps.value);
+      if(p.buffs) p.buffs.forEach(b=>{extraDmg=Math.floor(extraDmg*b.power);});
+      let res=calcDamage(p.attr,enemy.attr,extraDmg);
+      enemy.hp-=res.dmg;
+      setTimeout(()=>{
+        showDamage("enemy",{...res});
+        showSynergyText("⚡ 神速の刃！追撃 "+res.dmg+"ダメージ！");
+      },300);
+    }
     // ✨ 魂の共鳴: 攻撃後に味方全体バフ付与
     if(ps.type==="soul_resonance"){
       players.forEach(t=>{
@@ -7959,6 +7983,7 @@ function applyTreePassiveAtk(p){
     if(ps.type==="attr_resonance" && enemy && p.attr===enemy.attr) bonus*=(1+ps.value);
     if(ps.type==="undying_will" && (p.currentHp/p.hp)<=ps.threshold) bonus*=(1+ps.value);
     if(ps.type==="doom_passive" && enemy && (enemy.hp/(enemy.maxHp||enemy.hp))<=ps.threshold) bonus*=(1+ps.value);
+    if(ps.type==="conqueror" && enemy && (enemy.hp/(enemy.maxHp||enemy.hp))<=ps.threshold) bonus*=(1+ps.value);
   });
   // treeSkillPower はスキルダメージのみ対象のためここでは適用しない
   return bonus;
@@ -7971,6 +7996,7 @@ function applyTreePassiveDef(p){
   if(c.treeDef) reduction*=(1-c.treeDef);
   getAddedPassives(c).forEach(ps=>{
     if(ps.type==="undying_will" && (p.currentHp/p.hp)<=ps.threshold) reduction*=0.80;
+    if(ps.type==="undying_guard") reduction*=0.90;
   });
   return reduction;
 }
@@ -8004,6 +8030,11 @@ function triggerTreePassiveOnTurnStart(){
         let healAmt=Math.floor(p.hp*ps.value);
         p.currentHp=Math.min(p.hp,p.currentHp+healAmt);
         setTimeout(()=>showDamage("p"+pi,{dmg:healAmt,type:"heal"}),pi*60);
+      }
+      if(ps.type==="undying_guard"){
+        let healAmt=Math.floor(p.hp*ps.value);
+        p.currentHp=Math.min(p.hp,p.currentHp+healAmt);
+        setTimeout(()=>{showDamage("p"+pi,{dmg:healAmt,type:"heal"}); showSynergyText("🌙 不死の加護！HP+"+healAmt+"回復！");},pi*60+30);
       }
     });
   });
