@@ -1967,7 +1967,7 @@ const charDetails = {
     story:"",},
   "八並解徒🍖": {title:"語らいの夜",
     story:"",},
-  "室井求武🌊": {title:"波打ち際のリラックス",
+  "室井元武🌊": {title:"波打ち際のリラックス",
     story:"",},
   "栗島トウヤ🌊": {title:"波間の戦士",
     story:"",},
@@ -2005,7 +2005,7 @@ const charDetails = {
     story:"",},
   "阿波牛星夜🌌": {title:"奪う痛み",
     story:"",},
-  "室井求武🌌": {title:"湯気の向こうで",
+  "室井元武🌌": {title:"湯気の向こうで",
     story:"",},
   "栗島トウヤ🌌": {title:"掴んだ瞬間",
     story:"",},
@@ -2065,6 +2065,20 @@ const charDetails = {
     story:"",},
   "沢華⛄": {title:"星灯りのスノウタウン",
     story:"",},
+  "桜木彰🎮": {title:"未完成世界エラーコード",
+    story:"",},
+  "八並解徒🎮": {title:"SYSTEM OVER",
+    story:"",},
+  "晴海亨🎮": {title:"破損世界の観測者",
+    story:"",},
+  "FqEa🎮": {title:"グリッチの残響",
+    story:"",},
+  "黒峰天音🎮": {title:"破壊命令",
+    story:"",},
+  "阿波牛星夜🎮": {title:"世界再接続",
+    story:"",},
+  "阿波牛壬陸🎮": {title:"断片化した影",
+    story:"",},
   "和辺重信🍖": {title:"黒衣の晩餐",
     story:"",},
   "明石啓希🌊": {title:"波打ち際の二人",
@@ -2080,6 +2094,8 @@ const charDetails = {
   "アステレス🎸": {title:"音速スターライト",
     story:"",},
   "バルナウス⛄": {title:"あたたかな雪景色",
+    story:"",},
+  "黒瀬武人🎮": {title:"修復不能",
     story:"",},
 };
 
@@ -6133,6 +6149,22 @@ function useDupe(i){
         atkUp=72; hpUp=184;
     }
 
+    // スキルツリーで既に % ボーナスが適用されている場合、
+    // 凸上昇値にも同じ倍率をかけて「ツリー前後の順序」による差をなくす
+    let treeAtkMult = 1.0;
+    let treeHpMult  = 1.0;
+    if(c.skillTreeData){
+        c.skillTreeData.chosen.forEach(id => {
+            let ch = stNodeMap[id];
+            if(ch && ch.type === "bonus"){
+                if(ch.bonus.atk) treeAtkMult *= (1 + ch.bonus.atk);
+                if(ch.bonus.hp)  treeHpMult  *= (1 + ch.bonus.hp);
+            }
+        });
+    }
+    atkUp = Math.round(atkUp * treeAtkMult);
+    hpUp  = Math.round(hpUp  * treeHpMult);
+
     c.atk += atkUp;
     c.hp += hpUp;
 
@@ -6739,44 +6771,42 @@ function drawWeapon1(){
 
     gachaResult.innerHTML = "";
 
-    let w = getWeapon(); // ←1回だけ
+    // 演出（イベント1と同じ）
+    let flash = document.createElement("div");
+    flash.className = "flash";
+    document.body.appendChild(flash);
+    setTimeout(()=>flash.remove(), 600);
 
-    if(hasWeapon(w)){
-    dupeStone++;
+    let w = getWeapon();
+
+    // 高レアリティ演出
+    if(w.rarity >= 3){
+        playSSRLight();
+        playEventEffect();
+    }
+
+    // カードフリップ表示
+    let isDupe = hasWeapon(w);
+    if(isDupe){
+        dupeStone++;
+    } else {
+        weaponBox.push(w);
+    }
 
     let div = document.createElement("div");
     div.className = "card";
-
     div.innerHTML = `
-<img src="${w.img}" style="width:80px;height:80px;"><br>
-
-<div style="color:${getRarityColor(w.rarity)}">
-★${w.rarity}
+<div class="flip">
+<div class="front"></div>
+<div class="back ${w.rarity>=3?"ssr":""}">
+<div class="rarity" style="color:${getRarityColor(w.rarity)}">${"★".repeat(w.rarity)}</div>
+<img src="${w.img}" style="width:80px;height:80px;border-radius:8px;">
+<div>${w.name}</div>
+<div style="font-size:10px;color:#aaa;">${isDupe ? "（被り）" : `ATK:${w.atk} HP:${w.hp}`}</div>
 </div>
-
-${w.name}<br>
-（被り）
-`;
-
+</div>`;
     gachaResult.appendChild(div);
-
-}else{
-        weaponBox.push(w);
-
-        let div = document.createElement("div");
-        div.className = "card";
-
-        div.innerHTML = `
-<img src="${w.img}" style="width:80px;height:80px;"><br>
-<div style="color:${getRarityColor(w.rarity)}">
-★${w.rarity}
-</div>
-${w.name}<br>
-ATK:${w.atk} HP:${w.hp}
-`;
-
-        gachaResult.appendChild(div);
-    }
+    setTimeout(()=>div.classList.add("open"), 50);
 
     update();
     saveData();
@@ -6788,49 +6818,44 @@ function drawWeapon10(){
 
     gachaResult.innerHTML = "";
 
+    let results = [];
     for(let i=0;i<10;i++){
-
-    let w = getWeapon();
-
-    if(hasWeapon(w)){
-    dupeStone++;
-
-    let div = document.createElement("div");
-    div.className = "card";
-
-    div.innerHTML = `
-<img src="${w.img}" style="width:80px;height:80px;"><br>
-
-<div style="color:${getRarityColor(w.rarity)}">
-★${w.rarity}
-</div>
-
-${w.name}<br>
-（被り）
-`;
-
-    gachaResult.appendChild(div);
-
-}else{
-        weaponBox.push(w);
-
-        let div = document.createElement("div");
-        div.className = "card";
-
-        div.innerHTML = `
-<img src="${w.img}" style="width:80px;height:80px;"><br>
-
-<div style="color:${getRarityColor(w.rarity)}">
-★${w.rarity}
-</div>
-
-${w.name}<br>
-ATK:${w.atk} HP:${w.hp}
-`;
-
-        gachaResult.appendChild(div);
+        results.push(getWeapon());
     }
-}
+
+    // ③ 表示＆BOX処理（イベント1と同じ演出）
+    results.forEach((w, i)=>{
+
+        if(w.rarity >= 3){
+            playSSRLight();
+            playEventEffect();
+        }
+
+        setTimeout(()=>{
+            let isDupe = hasWeapon(w);
+            if(isDupe){
+                dupeStone++;
+            } else {
+                weaponBox.push(w);
+            }
+
+            let div = document.createElement("div");
+            div.className = "card";
+            div.innerHTML = `
+<div class="flip">
+<div class="front"></div>
+<div class="back ${w.rarity>=3?"ssr":""}">
+<div class="rarity" style="color:${getRarityColor(w.rarity)}">${"★".repeat(w.rarity)}</div>
+<img src="${w.img}" style="width:80px;height:80px;border-radius:8px;">
+<div>${w.name}</div>
+<div style="font-size:10px;color:#aaa;">${isDupe ? "（被り）" : `ATK:${w.atk} HP:${w.hp}`}</div>
+</div>
+</div>`;
+            gachaResult.appendChild(div);
+            setTimeout(()=>div.classList.add("open"), 50);
+
+        }, i*200);
+    });
 
     update();
     saveData();
@@ -7508,8 +7533,19 @@ function redeemSerial(){
         } else if(exist.dupe < maxD){
           let remaining = maxD - exist.dupe;
           exist.dupe = maxD;
-          exist.atk += atkPerDupe * remaining;
-          exist.hp  += hpPerDupe  * remaining;
+          // スキルツリーボーナス倍率を考慮して凸上昇値をスケール
+          let bAtkM = 1.0, bHpM = 1.0;
+          if(exist.skillTreeData){
+            exist.skillTreeData.chosen.forEach(id2 => {
+              let ch2 = stNodeMap[id2];
+              if(ch2 && ch2.type === "bonus"){
+                if(ch2.bonus.atk) bAtkM *= (1 + ch2.bonus.atk);
+                if(ch2.bonus.hp)  bHpM  *= (1 + ch2.bonus.hp);
+              }
+            });
+          }
+          exist.atk += Math.round(atkPerDupe * remaining * bAtkM);
+          exist.hp  += Math.round(hpPerDupe  * remaining * bHpM);
           charMaxed++;
         }
       });
