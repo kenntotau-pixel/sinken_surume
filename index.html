@@ -1745,47 +1745,6 @@ rewardChar:{
         passive:{type:"spirit_passive",value:0.15,text:"👻霊気：攻撃後25%でATK+15%バフ(2T)自動発動"}
     }
 },
-{
-    name:"遊戯の間",
-    stages:[
-        {lv:1, hp:1800, atk:150},
-        {lv:2, hp:5000, atk:450},
-        {lv:3, hp:12000, atk:900},
-        {lv:4, hp:28000, atk:2200,
-         gimmick:{
-           turnBuff:true, turnBuffLabel:"毎T ATK+8%(上限+80%)",
-         }},
-        {lv:5, hp:60000, atk:4500,
-         gimmick:{
-           shield:8000, shieldLabel:"🕹コントローラーバリア8000(コンボ攻撃で効率破壊)",
-           attrOnly:"木", attrOnlyLabel:"🌿木属性特効(木以外0.5倍)",
-           turnBuff:true, turnBuffLabel:"毎T ATK+10%(上限+100%)",
-         }},
-        {lv:"BOSS", hp:260000, atk:7000, boss:true,
-         gimmick:{
-           shield:12000, shieldLabel:"🕹霊のシールド12000(連撃・コンボで効率破壊)",
-           attrOnly:"木", attrOnlyLabel:"🌿第1相: 木属性のみ有効",
-           turnBuff:true, turnBuffLabel:"毎T ATK+14%(上限+140%)",
-           phaseRage:true, phaseRageLabel:"HP50%以下で【ゲームオーバー回避】全属性解放＋ATK2.5倍",
-         }}
-    ],
-    enemy:{
-        name:"霊剛🕹",
-        attr:"木",
-        img:"https://imgur.com/zhHkASU.png"
-    },
-    reward:60,
-    bossReward:500,
-    rewardChar:{
-        name:"霊剛🕹",
-        rarity:3,
-        attr:"木",
-        img:"https://imgur.com/zhHkASU.png",
-        role:"attacker",
-        skill:{type:"spiritStrike", text:"霊剛撃: ATK280%ダメ＋木属性ボーナス+30%",cool:3},
-        passive:{type:"spirit_passive",value:0.15,text:"👻霊気：攻撃後25%でATK+15%バフ(2T)自動発動"}
-    }
-},
 ];
 
 const maxDupe = {
