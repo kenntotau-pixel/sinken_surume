@@ -681,161 +681,15 @@ animation:totalPop 1s forwards;
 石:<span id="stone"></span><br>
 
 <!-- 🔥タブ -->
-<div style="display:flex;justify-content:center;margin:10px;">
-<button onclick="changeBanner(0)">通常</button>
-<button onclick="changeBanner(1)">イベント</button>
-<button onclick="changeBanner(2)">イベント2</button>
-<button onclick="changeBanner(3)">イベント3</button>
-<button onclick="changeBanner(4)">イベント4</button>
-<button onclick="changeBanner(5)">イベント5</button>
-<button onclick="changeBanner(6)">イベント6</button>
-<button onclick="changeBanner(7)">イベント7</button>
-<button onclick="changeBanner(8)">イベント8</button>
-<button onclick="changeBanner(9)">イベント9</button>
-<button onclick="changeBanner(10)">武器</button>
+<div id="bannerTabArea" style="display:flex;flex-wrap:wrap;justify-content:center;margin:10px;gap:4px;">
+<!-- 曜日ごとに動的生成 -->
 </div>
 
 凸塊:<span id="dupeStone"></span><br>
 
-<!-- 🔥スライド -->
+<!-- 🔥スライド（曜日ごとに動的生成） -->
 <div style="overflow:hidden;width:100%;">
-<div id="bannerSlide" style="display:flex;transition:0.4s;">
-
-<!-- 通常ガチャ -->
-<div style="min-width:100%;">
-
-<img src="https://imgur.com/QTGUO26.png"
-class="banner"
-style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
-
-<br>
-<button onclick="draw1()">単発</button>
-<button onclick="draw10()">10連</button>
-</div>
-
-<!-- イベントガチャ -->
-<div style="min-width:100%;">
-
-<img src="https://imgur.com/S4GoGo7.png"
-class="banner"
-style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
-
-<br>
-<button onclick="drawEvent1()">イベント単発</button>
-<button onclick="drawEvent10()">イベント10連</button>
-</div>
-
-<!-- イベントガチャ2 -->
-<div style="min-width:100%;">
-
-<img src="https://imgur.com/qANeyJ5.png"
-class="banner"
-style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
-
-<br>
-<button onclick="drawEvent2_1()">イベント単発</button>
-<button onclick="drawEvent2_10()">イベント10連</button>
-
-</div>
-
-<div style="min-width:100%;">
-
-<img src="https://imgur.com/yBeTnrB.png"
-class="banner"
-style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
-
-<br>
-<button onclick="drawEvent3_1()">イベント単発</button>
-<button onclick="drawEvent3_10()">イベント10連</button>
-
-</div>
-
-<div style="min-width:100%;">
-
-<img src="https://imgur.com/paHDrzx.png"
-class="banner"
-style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
-
-<br>
-<button onclick="drawEvent4_1()">イベント単発</button>
-<button onclick="drawEvent4_10()">イベント10連</button>
-
-</div>
-
-<div style="min-width:100%;">
-
-<img src="https://imgur.com/YMifcUQ.png"
-class="banner"
-style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
-
-<br>
-<button onclick="drawEvent5_1()">イベント単発</button>
-<button onclick="drawEvent5_10()">イベント10連</button>
-
-</div>
-
-<div style="min-width:100%;">
-
-<img src="https://imgur.com/bpY0gk0.png"
-class="banner"
-style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
-
-<br>
-<button onclick="drawEvent6_1()">イベント単発</button>
-<button onclick="drawEvent6_10()">イベント10連</button>
-
-</div>
-
-<div style="min-width:100%;">
-
-<img src="https://imgur.com/JL9LqwT.png"
-class="banner"
-style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;border:3px solid gold;box-shadow:0 0 20px gold;">
-
-
-<br>
-<button onclick="drawEvent7_1()">イベント単発</button>
-<button onclick="drawEvent7_10()">イベント10連</button>
-
-</div>
-
-<div style="min-width:100%;">
-
-<img src="https://imgur.com/FYpjdyf.png"
-class="banner"
-style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;border:3px solid #88ccff;box-shadow:0 0 20px #44aaff;">
-
-<br>
-<button onclick="drawEvent8_1()">イベント単発</button>
-<button onclick="drawEvent8_10()">イベント10連</button>
-
-</div>
-
-<div style="min-width:100%;">
-
-<img src="https://imgur.com/QFbe0h0.png"
-class="banner"
-style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;border:3px solid #ffd700;box-shadow:0 0 20px #ffd700;">
-
-<br>
-<button onclick="drawEvent9_1()">イベント単発</button>
-<button onclick="drawEvent9_10()">イベント10連</button>
-
-</div>
-
-<div style="min-width:100%;">
-
-<img src="https://imgur.com/49WMZSP.png"
-class="banner"
-style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
-
-<br>
-<button onclick="drawWeapon1()">武器単発</button>
-<button onclick="drawWeapon10()">武器10連</button>
-
-</div>
-
-</div>
+<div id="bannerSlide" style="display:flex;transition:0.4s;"></div>
 </div>
 
 <div id="gachaResult"></div>
@@ -1313,7 +1167,7 @@ passive:{type:"reduce_enemy_atk_passive",value:0.1,text:"💧水縛：常時敵A
  skill:{type:"burn", power:0.6, text:"強燃焼付与(4T)",cool:3},
 passive:{type:"burn_power_up",value:0.3,text:"⚡雷炎：燃焼スキル発動時の燃焼ダメージ+30%"}},
 {name:"ミニモータ🔒",rarity:3,attr:"闇",img:"https://imgur.com/XclWwJg.png",role:"tank",
- skill:{type:"taunt", power:1, turn:3, text:"挑発: 3T敵の攻撃を集める+被ダメ半減",cool:4},
+ skill:{type:"taunt", power:1, turn:3, text:"挑発: 3T敵の攻撃を集める+被ダメ25%減",cool:4},
 passive:{type:"tank_passive",value:0.15,text:"🌑闇壁：常時被ダメを15%軽減"}},
 {name:"ソーメーン🔒",rarity:3,attr:"光",img:"https://imgur.com/CjLNiXa.png",role:"attacker",
  skill:{type:"multi", power:0.4, hits:6, text:"6連撃+デバフ",cool:4},
@@ -1389,12 +1243,36 @@ passive:{type:"heal_on_turn",value:0.04,text:"💧水の加護：ターン毎に
 {name:"黒峰天音🎮",rarity:3,attr:"木",img:"https://imgur.com/JJSRcP7.png",role:"attacker",
  skill:{type:"damage", power:2.5, text:"250%ダメージ",cool:3},
 passive:{type:"tank_passive",value:0.1,text:"🛡守護：常時被ダメを10%軽減"}},
-{name:"阿波牛星夜🎮",rarity:3,attr:"光",img:"https://imgur.com/PWCsge5.png",role:"debuffre",
+{name:"阿波牛星夜🎮",rarity:3,attr:"光",img:"https://imgur.com/PWCsge5.png",role:"debuffer",
  skill:{type:"poison",power:0.5,text:"50%毒付与",cool:3},
 passive:{type:"shock_on_attack",chance:0.4,text:"⚡雷閃：攻撃時40%で感電付与"}},
 {name:"阿波牛壬陸🎮",rarity:3,attr:"闇",img:"https://imgur.com/sllwuzE.png",role:"support",
  skill:{type:"hpCut", power:0.1, text:"10%HPカット",cool:3},
 passive:{type:"tank_passive",value:0.15,text:"🌑闇壁：常時被ダメを15%軽減"}},
+];
+
+const eventChars10 = [
+{name:"ソーメーン🕹",rarity:4,attr:"木",img:"https://imgur.com/sUOu8gq.png",role:"support",
+ skill:{type:"repairRevolution", text:"修復革命: 自チームの最大HP+15%(3T後元に戻る)",cool:4},
+passive:{type:"soumen_tank",value:0.12,text:"🌿鉄壁修復：常時被ダメ12%軽減"}},
+{name:"ミニモータ🕹",rarity:4,attr:"光",img:"https://imgur.com/DZZYBEx.png",role:"attacker",
+ skill:{type:"comboAccurate", text:"正確無比: コンボカウント1につき味方全体HP3%回復＋ATK200%ダメ",cool:3},
+passive:{type:"combo_passive",text:"🎯コンボ：自チームの攻撃時コンボ+1。コンボ1につきATK+20%。被ダメ時コンボ全解除"}},
+{name:"石倉有栖🕹",rarity:4,attr:"闇",img:"https://imgur.com/ZDu3bMq.png",role:"attacker",
+ skill:{type:"maxOutput", text:"最大出力: 連撃カウント+3＋ATK250%ダメ",cool:3},
+passive:{type:"rengeki_passive",text:"⚡唯我独尊：連撃カウント1につきATK+8%(最大15個)。攻撃時・被ダメ時に連撃カウント+1"}},
+{name:"オリバー🕹",rarity:3,attr:"火",img:"https://imgur.com/6eHkw0u.png",role:"tank",
+ skill:{type:"taunt", power:1, turn:3, text:"挑発: 3T敵の攻撃を集める+被ダメ25%減",cool:4},
+passive:{type:"burn_on_attack",chance:0.4,power:0.22,turn:2,text:"🔥炎拳：攻撃時40%で燃焼付与(2T)"}},
+{name:"跳田収滋🕹",rarity:3,attr:"雷",img:"https://imgur.com/IpUmtoE.png",role:"attacker",
+ skill:{type:"hpCut", power:0.1, text:"10%HPカット",cool:3},
+passive:{type:"shock_on_attack",chance:0.45,text:"⚡雷追：攻撃時45%で感電付与"}},
+{name:"蒼井朔也🕹",rarity:3,attr:"光",img:"https://imgur.com/8VTDNkF.png",role:"attacker",
+ skill:{type:"buff", power:1.2, text:"120%バフ",cool:2},
+passive:{type:"burn_on_attack",chance:0.45,power:0.28,turn:2,text:"✨光炎撃：攻撃時45%で燃焼付与(2T)"}},
+{name:"玉垣剣城🕹",rarity:3,attr:"闇",img:"https://imgur.com/DG8nKKb.png",role:"tank",
+ skill:{type:"shield",power:0.2,turn:4,text:"被ダメ20%軽減", cool:3},
+passive:{type:"dmg_boost_low_hp",threshold:0.5,value:0.35,text:"🌑闇爪：HP50%以下でATK+35%"}},
 ];
 
 const weapons = [
@@ -1540,7 +1418,10 @@ skill:{type:"poison",power:0.5,text:"50%毒付与",cool:3},
 passive:{type:"freeze_on_attack",chance:0.4,text:"❄海氷：攻撃時40%で凍結付与(1T)＋凍結中の敵への与ダメ+20%"}},
 {name:"黒瀬武人🎮",rarity:3,attr:"雷",img:"https://imgur.com/SlSahyC.png",role:"attacker",
 skill:{type:"damage", power:3, text:"300%ダメージ",cool:4},
-passive:{type:"shock_on_attack",chance:0.35,text:"⚡雷撃：攻撃時35%で感電付与"}}
+passive:{type:"shock_on_attack",chance:0.35,text:"⚡雷撃：攻撃時35%で感電付与"}},
+{name:"霊剛🕹",rarity:3,attr:"木",img:"https://imgur.com/zhHkASU.png",role:"tank",
+skill:{type:"shield",power:0.3,turn:3,text:"被ダメ30%軽減",cool:3},
+passive:{type:"spirit_passive",value:0.15,text:"👻霊気：攻撃後25%でATK+15%バフ(2T)自動発動"}}
 ];
 
 const eventStages = [
@@ -1823,6 +1704,88 @@ rewardChar:{
         passive:{type:"shock_on_attack",chance:0.35,text:"⚡雷撃：攻撃時35%で感電付与"}
     }
 },
+{
+    name:"遊戯の試練",
+    stages:[
+        {lv:1, hp:1500, atk:130},
+        {lv:2, hp:4500, atk:400},
+        {lv:3, hp:10000, atk:850},
+        {lv:4, hp:24000, atk:2000,
+         gimmick:{
+           attrOnly:"木", attrOnlyLabel:"🌿木属性特効(木以外0.5倍ダメ)",
+         }},
+        {lv:5, hp:55000, atk:4000,
+         gimmick:{
+           shield:7000, shieldLabel:"🌿シールド7000(毒・木属性で効率破壊)",
+           attrOnly:"木", attrOnlyLabel:"🌿木属性特効",
+           turnBuff:true, turnBuffLabel:"毎T ATK+10%(上限+100%)",
+         }},
+        {lv:"BOSS", hp:240000, atk:6000, boss:true,
+         gimmick:{
+           shield:10000, shieldLabel:"🌿霊樹の加護10000(毒付与で解除加速)",
+           attrOnly:"木", attrOnlyLabel:"🌿第1相: 木属性のみ有効",
+           turnBuff:true, turnBuffLabel:"毎T ATK+12%(上限+120%)",
+           phaseRage:true, phaseRageLabel:"HP50%以下で【霊気暴走】全属性解放＋ATK2倍",
+         }}
+    ],
+    enemy:{
+        name:"霊剛🕹",
+        attr:"木",
+        img:"https://imgur.com/zhHkASU.png"
+    },
+    reward:50,
+    bossReward:450,
+    rewardChar:{
+        name:"霊剛🕹",
+        rarity:3,
+        attr:"木",
+        img:"https://imgur.com/zhHkASU.png",
+        role:"tank",
+        skill:{type:"shield",power:0.3,turn:3,text:"被ダメ30%軽減",cool:3},
+        passive:{type:"spirit_passive",value:0.15,text:"👻霊気：攻撃後25%でATK+15%バフ(2T)自動発動"}
+    }
+},
+{
+    name:"遊戯の間",
+    stages:[
+        {lv:1, hp:1800, atk:150},
+        {lv:2, hp:5000, atk:450},
+        {lv:3, hp:12000, atk:900},
+        {lv:4, hp:28000, atk:2200,
+         gimmick:{
+           turnBuff:true, turnBuffLabel:"毎T ATK+8%(上限+80%)",
+         }},
+        {lv:5, hp:60000, atk:4500,
+         gimmick:{
+           shield:8000, shieldLabel:"🕹コントローラーバリア8000(コンボ攻撃で効率破壊)",
+           attrOnly:"木", attrOnlyLabel:"🌿木属性特効(木以外0.5倍)",
+           turnBuff:true, turnBuffLabel:"毎T ATK+10%(上限+100%)",
+         }},
+        {lv:"BOSS", hp:260000, atk:7000, boss:true,
+         gimmick:{
+           shield:12000, shieldLabel:"🕹霊のシールド12000(連撃・コンボで効率破壊)",
+           attrOnly:"木", attrOnlyLabel:"🌿第1相: 木属性のみ有効",
+           turnBuff:true, turnBuffLabel:"毎T ATK+14%(上限+140%)",
+           phaseRage:true, phaseRageLabel:"HP50%以下で【ゲームオーバー回避】全属性解放＋ATK2.5倍",
+         }}
+    ],
+    enemy:{
+        name:"霊剛🕹",
+        attr:"木",
+        img:"https://imgur.com/zhHkASU.png"
+    },
+    reward:60,
+    bossReward:500,
+    rewardChar:{
+        name:"霊剛🕹",
+        rarity:3,
+        attr:"木",
+        img:"https://imgur.com/zhHkASU.png",
+        role:"attacker",
+        skill:{type:"spiritStrike", text:"霊剛撃: ATK280%ダメ＋木属性ボーナス+30%",cool:3},
+        passive:{type:"spirit_passive",value:0.15,text:"👻霊気：攻撃後25%でATK+15%バフ(2T)自動発動"}
+    }
+},
 ];
 
 const maxDupe = {
@@ -2079,6 +2042,20 @@ const charDetails = {
     story:"",},
   "阿波牛壬陸🎮": {title:"断片化した影",
     story:"",},
+  "ソーメーン🕹": {title:"筐体の向こう側",
+    story:"",},
+  "ミニモータ🕹": {title:"あの頃みたいに",
+    story:"",},
+  "石倉有栖🕹": {title:"星降る街のハイスコア",
+    story:"",},
+  "オリバー🕹": {title:"乱入歓迎！",
+    story:"",},
+  "跳田収滋🕹": {title:"放課後ゲーマーズ",
+    story:"",},
+  "蒼井朔也🕹": {title:"雨上がりのアーケード",
+    story:"",},
+  "玉垣剣城🕹": {title:"もう一戦。",
+    story:"",},
   "和辺重信🍖": {title:"黒衣の晩餐",
     story:"",},
   "明石啓希🌊": {title:"波打ち際の二人",
@@ -2096,6 +2073,8 @@ const charDetails = {
   "バルナウス⛄": {title:"あたたかな雪景色",
     story:"",},
   "黒瀬武人🎮": {title:"修復不能",
+    story:"",},
+  "霊剛🕹": {title:"100円戦争",
     story:"",},
 };
 
@@ -2130,6 +2109,7 @@ if(id==="trial")renderTrials();
 if(id==="event") renderEvent();
 if(id==="dex") renderDex(); // ←追加
 if(id==="exchange") renderExchange();
+if(id==="gacha") initBannerTabs();
 }
 function draw1(){
 if(stone < 10) return;
@@ -2470,6 +2450,7 @@ let lv = progress[i] || 1;
         eventChars7.find(ch => ch.name === c.name) ||
         eventChars8.find(ch => ch.name === c.name) ||
         eventChars9.find(ch => ch.name === c.name) ||
+        eventChars10.find(ch => ch.name === c.name) ||
         rewardChar.find(ch => ch.name === c.name);
 
     let weapon = c.weapon;
@@ -2659,6 +2640,15 @@ function getPlayerStatusHTML(p){
   if(p.himoCount > 0){
     let himoReduction = Math.min(45, p.himoCount * 3);
     h += `<span class="sBadge" style="background:#0055aa;color:#fff;">🔗紐×${p.himoCount}(被ダメ-${himoReduction}%)</span>`;
+  }
+  // 🎯 コンボカウント表示（ミニモータ🕹）
+  if(p.comboCount > 0){
+    h += `<span class="sBadge" style="background:#aa0077;color:#fff;">🎯コンボ×${p.comboCount}(ATK+${p.comboCount*20}%)</span>`;
+  }
+  // ⚡ 連撃カウント表示（石倉有栖🕹）
+  if(p.rengekiCount > 0){
+    let rb = Math.min(15, p.rengekiCount) * 8;
+    h += `<span class="sBadge" style="background:#440099;color:#fff;">⚡連撃×${p.rengekiCount}(ATK+${rb}%)</span>`;
   }
   // ⚡ 桜木彰🎮 与ダメ回収ターン表示
   if(p.sakuraDrainTurn > 0){
@@ -3614,6 +3604,35 @@ function triggerAttackPassive(p){
     p.himoCount = Math.min(15, (p.himoCount||0) + 1);
     showSynergyText("🔗 "+label+"のパッシブ！攻撃→紐カウント→"+p.himoCount+"！被ダメ-"+(Math.min(45,p.himoCount*3))+"%！");
   }
+  // 🎯 combo_passive: 攻撃時にコンボカウント+1（ATK上昇は本人のみ）
+  if(ps.type === "combo_passive"){
+    // カウントはチーム共有で管理（スキルの回復量参照用）
+    players.forEach(t => {
+      if(!t.comboCount) t.comboCount = 0;
+      t.comboCount++;
+    });
+    // ATKバフは本人（ミニモータ🕹）のみ
+    if(!p.buffs) p.buffs = [];
+    p.buffs = p.buffs.filter(b=>!b.isCombo);
+    p.buffs.push({ power: 1 + p.comboCount * 0.20, turn: 999999, permanent: true, isCombo: true });
+    showSynergyText("🎯 "+label+"のパッシブ！コンボ+1→"+p.comboCount+"！自身ATK+"+(p.comboCount*20)+"%！");
+  }
+  // ⚡ rengeki_passive: 攻撃時に連撃カウント+1
+  if(ps.type === "rengeki_passive"){
+    if(!p.rengekiCount) p.rengekiCount = 0;
+    p.rengekiCount = Math.min(15, p.rengekiCount + 1);
+    let rb = Math.min(15, p.rengekiCount) * 0.08;
+    if(!p.buffs) p.buffs = [];
+    p.buffs = p.buffs.filter(b=>!b.isRengeki);
+    p.buffs.push({ power: 1 + rb, turn: 999999, permanent: true, isRengeki: true });
+    showSynergyText("⚡ "+label+"のパッシブ！攻撃→連撃カウント→"+p.rengekiCount+"！ATK+"+(Math.floor(rb*100))+"%！");
+  }
+  // 👻 spirit_passive: 攻撃後25%でATK+15%バフ(2T)
+  if(ps.type === "spirit_passive" && Math.random() < 0.25){
+    if(!p.buffs) p.buffs = [];
+    p.buffs.push({ power: 1 + ps.value, turn: 2, isSpiritBuff: true });
+    showSynergyText("👻 "+label+"のパッシブ！霊気発動！ATK+15%(2T)！");
+  }
   }); // end passives.forEach
   // ツリー追加パッシブ（攻撃時）
   triggerTreePassiveOnAttack(p);
@@ -3706,6 +3725,26 @@ function triggerDamagedPassive(target){
       p.himoCount = Math.min(15, (p.himoCount||0) + 1);
       showSynergyText("🔗 "+p.name+"のパッシブ！被ダメ→紐カウント→"+p.himoCount+"！");
     }
+    // 🎯 combo_passive: 被ダメ時にコンボカウント全解除
+    if(p === target && p.passive.type === "combo_passive"){
+      if(p.comboCount && p.comboCount > 0){
+        players.forEach(t => {
+          t.comboCount = 0;
+          if(t.buffs) t.buffs = t.buffs.filter(b=>!b.isCombo);
+        });
+        showSynergyText("🎯 "+p.name+"のパッシブ！被ダメ→コンボ全解除！");
+      }
+    }
+    // ⚡ rengeki_passive: 被ダメ時に連撃カウント+1
+    if(p === target && p.passive.type === "rengeki_passive"){
+      if(!p.rengekiCount) p.rengekiCount = 0;
+      p.rengekiCount = Math.min(15, p.rengekiCount + 1);
+      let rb = Math.min(15, p.rengekiCount) * 0.08;
+      if(!p.buffs) p.buffs = [];
+      p.buffs = p.buffs.filter(b=>!b.isRengeki);
+      p.buffs.push({ power: 1 + rb, turn: 999999, permanent: true, isRengeki: true });
+      showSynergyText("⚡ "+p.name+"のパッシブ！被ダメ→連撃カウント→"+p.rengekiCount+"！ATK+"+(Math.floor(rb*100))+"%！");
+    }
   });
   // ツリーパッシブ: 反撃の炎
   triggerTreePassiveOnDamaged(target);
@@ -3745,6 +3784,10 @@ function applyPassiveDef(target){
   if(target.weaponPassive) passives.push(target.weaponPassive);
   passives.forEach(ps=>{
     if(ps.type === "tank_passive"){
+      reduction *= (1 - ps.value);
+    }
+    // 🌿 soumen_tank: ソーメーン🕹 常時被ダメ12%軽減
+    if(ps.type === "soumen_tank"){
       reduction *= (1 - ps.value);
     }
     // 🔗 八並解徒🎮パッシブ: 紐カウント1につき被ダメ3%軽減
@@ -3827,6 +3870,18 @@ if(p.weaponCool > 0) p.weaponCool--;
 if(p.taunt && p.taunt.turn > 0){ p.taunt.turn--; if(p.taunt.turn<=0) p.taunt=null; }
 // ⚡ 桜木彰🎮: sakuraDrainTurnのターン経過
 if(p.sakuraDrainTurn && p.sakuraDrainTurn > 0){ p.sakuraDrainTurn--; }
+
+// 🌿 修復革命: ターン経過でHP元に戻す
+if(p.repairRevTurn && p.repairRevTurn > 0){
+    p.repairRevTurn--;
+    if(p.repairRevTurn <= 0 && p.repairRevBonusHp){
+        let removed = p.repairRevBonusHp;
+        p.hp = Math.max(p.currentHp, p.hp - removed);
+        p.currentHp = Math.min(p.currentHp, p.hp);
+        p.repairRevBonusHp = 0;
+        showSynergyText("🌿 修復革命 終了！最大HP元に戻る");
+    }
+}
 
 // 🔥 暴走燃焼: 毎ターンHP10%減少、ターン経過でバフ解除
 if(p.runawayBurn && p.runawayBurn.turn > 0){
@@ -4485,7 +4540,7 @@ if(s.type==="allDebuff"){
 if(s.type==="taunt"){
     p.taunt = { turn: s.turn };
     if(!p.shields) p.shields = [];
-    p.shields.push({ turn: s.turn, power: 0.5 }); // 被ダメ50%軽減と兼用
+    p.shields.push({ turn: s.turn, power: 0.25 }); // 被ダメ50%軽減と兼用
     showSynergyText("🛡 挑発！攻撃を引き受けるぞ！");
     renderBattle();
 }
@@ -5161,7 +5216,7 @@ if(s.type==="copy"){
         if(s2.type==="taunt"){
             p.taunt={ turn:s2.turn||3 };
             if(!p.shields) p.shields=[];
-            p.shields.push({ turn:s2.turn||3, power:0.5 });
+            p.shields.push({ turn:s2.turn||3, power:0.25 });
             showSynergyText("🛡 挑発コピー！攻撃を引き受ける！"); renderBattle();
         }
         if(s2.type==="bunshin"){
@@ -5435,7 +5490,102 @@ if(s.type==="copy"){
 // 直前の味方スキルを記録（copyは除外）
 if(s.type !== "copy") lastAllySkill = s;
 
+// 🌿 修復革命: 自チームの最大HP+15%(3T後元に戻る)
+if(s.type==="repairRevolution"){
+    players.forEach((t,i)=>{
+        let hpBonus = Math.floor(t.hp * 0.15);
+        if(!t.repairRevBonusHp) t.repairRevBonusHp = 0;
+        t.repairRevBonusHp += hpBonus;
+        t.hp += hpBonus;
+        t.currentHp = Math.min(t.hp, t.currentHp + hpBonus);
+        if(!t.repairRevTurn) t.repairRevTurn = 0;
+        t.repairRevTurn = 3;
+        setTimeout(()=>showDamage("p"+i,{dmg:hpBonus,type:"heal"}),i*80);
+    });
+    showSynergyText("🌿 修復革命！全体最大HP+15%(3T)！");
+    renderBattle();
+    p.cool = p.skill.cool;
+    lastAllySkill = s;
+    endTurn();
+    return;
+}
+
+// 🎯 正確無比: コンボカウント1につき味方全体HP3%回復 + ATK200%ダメ
+if(s.type==="comboAccurate"){
+    // コンボカウンターを取得（ミニモータ🕹のパッシブで管理）
+    let comboCount = p.comboCount || 0;
+    // 味方全体HP回復(コンボ1につき3%)
+    if(comboCount > 0){
+        players.forEach((t,i)=>{
+            let healAmt = Math.floor(t.hp * 0.03 * comboCount);
+            t.currentHp = Math.min(t.hp, t.currentHp + healAmt);
+            setTimeout(()=>showDamage("p"+i,{dmg:healAmt,type:"heal"}),i*80);
+        });
+        showSynergyText("🎯 正確無比！コンボ×"+comboCount+"→全体HP+"+(comboCount*3)+"%回復！");
+    }
+    // ATK200%ダメ
+    let comboAtkBonus = 1 + (comboCount * 0.20); // コンボ分ATKボーナス適用
+    let res = calcDamage(p.attr, enemy.attr, atk * 2.0 * comboAtkBonus);
+    if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
+    if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+    res.dmg = applySkillDmgPassives(res.dmg, p);
+    enemy.hp -= res.dmg;
+    applyShockBonus(p, atk);
+    triggerAttackPassive(p);
+    renderBattle();
+    setTimeout(()=>{ showDamage("enemy",res); showSynergyText("🎯 正確無比！ATK200%ダメ！(コンボボーナス+"+Math.floor(comboCount*20)+"%)"); },10);
+    if(enemy.hp <= 0){ setTimeout(()=>win(), 500); return; }
+    p.cool = p.skill.cool;
+    lastAllySkill = s;
+    endTurn();
+    return;
+}
+
+// ⚡ 最大出力: 連撃カウント+3 + ATK250%ダメ
+if(s.type==="maxOutput"){
+    // 連撃カウント+3
+    if(!p.rengekiCount) p.rengekiCount = 0;
+    p.rengekiCount = Math.min(15, p.rengekiCount + 3);
+    let rengekiBonus = Math.min(15, p.rengekiCount) * 0.08;
+    // バフ更新
+    if(!p.buffs) p.buffs = [];
+    p.buffs = p.buffs.filter(b=>!b.isRengeki);
+    p.buffs.push({ power: 1 + rengekiBonus, turn: 999999, permanent: true, isRengeki: true });
+    showSynergyText("⚡ 最大出力！連撃カウント→"+p.rengekiCount+"！ATK+"+(Math.floor(rengekiBonus*100))+"%！");
+    // ATK250%ダメ
+    let res = calcDamage(p.attr, enemy.attr, atk * 2.5);
+    if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
+    if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+    res.dmg = applySkillDmgPassives(res.dmg, p);
+    enemy.hp -= res.dmg;
+    applyShockBonus(p, atk);
+    triggerAttackPassive(p);
+    renderBattle();
+    setTimeout(()=>showDamage("enemy",res),10);
+    if(enemy.hp <= 0){ setTimeout(()=>win(), 500); return; }
+    p.cool = p.skill.cool;
+    lastAllySkill = s;
+    endTurn();
+    return;
+}
+
+// 👻 霊剛撃: ATK280%ダメ + 木属性ボーナス
+if(s.type==="spiritStrike"){
+    let spiritMult = (p.attr === "木") ? 1.30 : 1.0;
+    let res = calcDamage(p.attr, enemy.attr, atk * 2.8 * spiritMult);
+    if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
+    if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+    res.dmg = applySkillDmgPassives(res.dmg, p);
+    enemy.hp -= res.dmg;
+    applyShockBonus(p, atk);
+    triggerAttackPassive(p);
+    renderBattle();
+    setTimeout(()=>{ showDamage("enemy",res); showSynergyText("👻 霊剛撃！ATK280%"+(spiritMult>1?"＋木属性ボーナス+30%！":"")); },10);
+    if(enemy.hp <= 0){ setTimeout(()=>win(), 500); return; }
+}
+
 if(s.type !== "heatUp" && s.type !== "sniper") p.cool = p.skill.cool;
+
 // ⏳ 時間崩壊: スキルで与えたダメージをパーティ全体で累積
 if(s.type !== "timeCrash"){
     let _tcHolderSkill = players.find(pl => pl.timeCrash != null);
@@ -5898,12 +6048,117 @@ if(exist){
 }
 }
 
-function changeBanner(i){
-let slide = document.getElementById("bannerSlide");
-if(!slide) return; // ←これ追加
+// ===== 曜日別イベントガチャ =====
+// 曜日(0=日, 1=月, ..., 6=土)ごとに表示するイベント番号
+const dayEventMap = {
+  1: [1, 6],           // 月曜
+  2: [2, 7],           // 火曜
+  3: [3, 8],           // 水曜
+  4: [4, 9],           // 木曜
+  5: [5, 10],          // 金曜
+  6: [1,2,3,4,5],      // 土曜
+  0: [6,7,8,9,10],     // 日曜
+};
 
-slide.style.transform = `translateX(-${i * 100}%)`;
+const dayNames = ["日","月","火","水","木","金","土"];
+const eventLabels = {
+  1:"イベント",2:"イベント2",3:"イベント3",4:"イベント4",5:"イベント5",
+  6:"イベント6",7:"イベント7",8:"イベント8",9:"イベント9",10:"イベント10"
+};
+
+// 各バナーのHTML定義（スライド枠1つ分）
+const bannerHTML = {
+  normal: `<div style="min-width:100%;text-align:center;">
+<img src="https://imgur.com/QTGUO26.png" class="banner" style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
+<br><button onclick="draw1()">単発</button><button onclick="draw10()">10連</button>
+</div>`,
+  1: `<div style="min-width:100%;text-align:center;">
+<img src="https://imgur.com/S4GoGo7.png" class="banner" style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
+<br><button onclick="drawEvent1()">イベント単発</button><button onclick="drawEvent10()">イベント10連</button>
+</div>`,
+  2: `<div style="min-width:100%;text-align:center;">
+<img src="https://imgur.com/qANeyJ5.png" class="banner" style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
+<br><button onclick="drawEvent2_1()">イベント単発</button><button onclick="drawEvent2_10()">イベント10連</button>
+</div>`,
+  3: `<div style="min-width:100%;text-align:center;">
+<img src="https://imgur.com/yBeTnrB.png" class="banner" style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
+<br><button onclick="drawEvent3_1()">イベント単発</button><button onclick="drawEvent3_10()">イベント10連</button>
+</div>`,
+  4: `<div style="min-width:100%;text-align:center;">
+<img src="https://imgur.com/paHDrzx.png" class="banner" style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
+<br><button onclick="drawEvent4_1()">イベント単発</button><button onclick="drawEvent4_10()">イベント10連</button>
+</div>`,
+  5: `<div style="min-width:100%;text-align:center;">
+<img src="https://imgur.com/YMifcUQ.png" class="banner" style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
+<br><button onclick="drawEvent5_1()">イベント単発</button><button onclick="drawEvent5_10()">イベント10連</button>
+</div>`,
+  6: `<div style="min-width:100%;text-align:center;">
+<img src="https://imgur.com/bpY0gk0.png" class="banner" style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
+<br><button onclick="drawEvent6_1()">イベント単発</button><button onclick="drawEvent6_10()">イベント10連</button>
+</div>`,
+  7: `<div style="min-width:100%;text-align:center;">
+<img src="https://imgur.com/JL9LqwT.png" class="banner" style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;border:3px solid gold;box-shadow:0 0 20px gold;">
+<br><button onclick="drawEvent7_1()">イベント単発</button><button onclick="drawEvent7_10()">イベント10連</button>
+</div>`,
+  8: `<div style="min-width:100%;text-align:center;">
+<img src="https://imgur.com/FYpjdyf.png" class="banner" style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;border:3px solid #88ccff;box-shadow:0 0 20px #44aaff;">
+<br><button onclick="drawEvent8_1()">イベント単発</button><button onclick="drawEvent8_10()">イベント10連</button>
+</div>`,
+  9: `<div style="min-width:100%;text-align:center;">
+<img src="https://imgur.com/QFbe0h0.png" class="banner" style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;border:3px solid #ffd700;box-shadow:0 0 20px #ffd700;">
+<br><button onclick="drawEvent9_1()">イベント単発</button><button onclick="drawEvent9_10()">イベント10連</button>
+</div>`,
+  10: `<div style="min-width:100%;text-align:center;">
+<img src="https://imgur.com/cUYDYLx.png" class="banner" style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;border:3px solid #e5a3ff;box-shadow:0 0 20px #e5a3ff;">
+<br><button onclick="drawEvent10_1()">イベント単発</button><button onclick="drawEvent10_10()">イベント10連</button>
+</div>`,
+  weapon: `<div style="min-width:100%;text-align:center;">
+<img src="https://imgur.com/49WMZSP.png" class="banner" style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
+<br><button onclick="drawWeapon1()">武器単発</button><button onclick="drawWeapon10()">武器10連</button>
+</div>`
+};
+
+// 現在のスライドインデックス管理
+let currentSlideIndex = 0;
+let currentSlideOrder = []; // ["normal", 1, 6, "weapon"] のような順番
+
+function initBannerTabs(){
+  let area = document.getElementById("bannerTabArea");
+  let slide = document.getElementById("bannerSlide");
+  if(!area || !slide) return;
+
+  let day = new Date().getDay();
+  let todayEvents = dayEventMap[day] || [];
+  let dayLabel = dayNames[day] + "曜日";
+
+  // 今日のスライド順を組み立て
+  currentSlideOrder = ["normal", ...todayEvents, "weapon"];
+  currentSlideIndex = 0;
+
+  // スライドDOM再構築（今日分のみ）
+  slide.style.transition = "none";
+  slide.style.transform = "translateX(0%)";
+  slide.innerHTML = currentSlideOrder.map(key => bannerHTML[key]).join("");
+  // 次フレームでtransitionを戻す
+  requestAnimationFrame(() => { slide.style.transition = "0.4s"; });
+
+  // タブボタン再構築
+  let tabHtml = `<button onclick="changeBanner(0)">通常</button>`;
+  todayEvents.forEach((n, i) => {
+    tabHtml += `<button onclick="changeBanner(${i+1})">${eventLabels[n]}</button>`;
+  });
+  tabHtml += `<button onclick="changeBanner(${currentSlideOrder.length - 1})">武器</button>`;
+  tabHtml += `<div style="width:100%;font-size:11px;color:#aaa;margin-top:4px;">📅 本日(${dayLabel})のイベントガチャ</div>`;
+  area.innerHTML = tabHtml;
 }
+
+function changeBanner(i){
+  let slide = document.getElementById("bannerSlide");
+  if(!slide) return;
+  currentSlideIndex = i;
+  slide.style.transform = `translateX(-${i * 100}%)`;
+}
+// ===== 曜日別イベントガチャここまで =====
 
 function getEventChar(){
 let r = Math.random();
@@ -6282,6 +6537,7 @@ players = applyTeamBuff(team.map(c=>{
         eventChars7.find(ch => ch.name === c.name) ||
         eventChars8.find(ch => ch.name === c.name) ||
         eventChars9.find(ch => ch.name === c.name) ||
+        eventChars10.find(ch => ch.name === c.name) ||
         rewardChar.find(ch => ch.name === c.name);
 
     let weapon = c.weapon;
@@ -6557,6 +6813,7 @@ function renderDex(){
     ...eventChars7,
     ...eventChars8,
     ...eventChars9,
+    ...eventChars10,
     ...rewardChar
   ];
 
@@ -7341,6 +7598,87 @@ update();
 saveData();
 }
 
+function getEventChar10(){
+let r = Math.random();
+let rarity;
+
+if(r < 0.70) rarity = 1;
+else if(r < 0.90) rarity = 2;
+else if(r < 0.99) rarity = 3;
+else rarity = 4;
+
+// ☆4はイベント9限定
+if(rarity === 4){
+    let pool = eventChars10.filter(c=>c.rarity === 4);
+    if(pool.length === 0) return getGachaChar();
+    return pool[Math.random()*pool.length|0];
+}
+
+// ☆3以下
+let pool = [
+...chars.filter(c=>c.rarity === rarity),
+...eventChars10.filter(c=>c.rarity === rarity)
+];
+
+if(pool.length === 0) return getGachaChar();
+
+return pool[Math.random()*pool.length|0];
+}
+
+
+function drawEvent10_1(){
+if(stone < 10) return;
+stone -= 10;
+
+gachaResult.innerHTML="";
+
+let c = getEventChar10();
+
+if(c.rarity === 4){
+    playSSRLight();
+    playEventEffect();
+}
+
+showGachaResult(c);
+addToBox(c);
+
+update();
+saveData();
+}
+
+function drawEvent10_10(){
+if(stone < 100) return;
+stone -= 100;
+
+gachaResult.innerHTML="";
+
+let results = [];
+
+for(let i=0;i<9;i++){
+    results.push(getEventChar10());
+}
+
+// ☆3確定
+let pool = eventChars10.filter(c=>c.rarity===3);
+if(pool.length===0) pool = chars.filter(c=>c.rarity===3);
+
+results.push(pool[Math.random()*pool.length|0]);
+
+results.forEach((c,i)=>{
+    if(c.rarity === 4){
+        playSSRLight();
+    }
+
+    setTimeout(()=>{
+        showGachaResult(c);
+        addToBox(c);
+    },i*200);
+});
+
+update();
+saveData();
+}
+
 function renderExchange(){
   let ds = document.getElementById('exchangeDupeStone');
   if(ds) ds.textContent = dupeStone;
@@ -7505,7 +7843,7 @@ function redeemSerial(){
     const allCharPools = [
       chars,
       eventChars, eventChars2, eventChars3, eventChars4,
-      eventChars5, eventChars6, eventChars7, eventChars8,eventChars9,
+      eventChars5, eventChars6, eventChars7, eventChars8,eventChars9,eventChars10,
       rewardChar   // ← イベント報酬キャラも追加
     ];
 
