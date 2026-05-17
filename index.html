@@ -4951,7 +4951,7 @@ if(s.type==="himoCounter"){
     renderBattle();
     setTimeout(()=>showDamage("enemy",{dmg,type:"weak"}),10);
     showSynergyText("🔗 一触即没！紐カウント→"+p.himoCount+"！ダメ: "+Math.floor(dmg));
-    if(enemy.hp<=0){ setTimeout(()=>win(),500); p.cool=s.cool; lastAllySkill=s; endTurn(); return; }
+    if(enemy.hp<=0){ p.cool=s.cool; lastAllySkill=s; setTimeout(()=>win(),500); return; }
 }
 
 // 🔥 視覚共有(harumiBuff): 全体ATK40%上昇(3T) + 自分以外に60%ダメカットシールド(1T)
@@ -5758,9 +5758,8 @@ if(s.type==="bunshin"){
     renderBattle();
 }
 
-if(enemy.hp <= 0){ setTimeout(()=>win(), 500); }
-
 p.cool2 = p.skill2.cool;
+if(enemy.hp <= 0){ setTimeout(()=>win(), 500); return; }
 // ⏳ 時間崩壊: skill2で与えたダメージをパーティ全体で累積
 let _tcHolderSkill2 = players.find(pl => pl.timeCrash != null);
 if(_tcHolderSkill2){
