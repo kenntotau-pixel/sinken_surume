@@ -556,10 +556,393 @@ animation:totalPop 1s forwards;
   margin:4px 0;
 }
 
+/* ===== プロフィール ===== */
+#profileModal{
+  display:none;
+  position:fixed;
+  top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.92);
+  z-index:15000;
+  justify-content:center;
+  align-items:flex-start;
+  padding-top:10px;
+}
+#profileModal.open{display:flex;}
+#profileBox{
+  background:linear-gradient(160deg,#0a0d1a,#0d1028);
+  border:2px solid #ffd700;
+  border-radius:18px;
+  padding:16px 14px 16px;
+  max-width:380px;
+  width:96%;
+  text-align:center;
+  position:relative;
+  max-height:94vh;
+  overflow-y:auto;
+  box-shadow:0 0 40px #ffd70033,0 0 80px #ffd70011;
+}
+/* ── プロフィールカードヘッダー ── */
+.profileHeader{
+  font-size:17px;font-weight:bold;color:#ffd700;
+  letter-spacing:2px;margin-bottom:12px;
+}
+/* ── プレイヤー名バナー ── */
+#profileBanner{
+  background:linear-gradient(135deg,#1a1500,#2a2200,#1a1500);
+  border:1px solid #ffd700;
+  border-radius:12px;
+  padding:10px 12px;
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+#profileBannerOshiIcon{
+  width:56px;height:56px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid #ffd700;
+  flex-shrink:0;
+  background:#222;
+}
+#profileBannerOshiIconEmpty{
+  width:56px;height:56px;
+  border-radius:50%;
+  border:2px dashed #555;
+  background:#111;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;
+  flex-shrink:0;
+}
+#profileBannerRight{text-align:left;flex:1;min-width:0;}
+#profileBannerName{
+  font-size:16px;font-weight:bold;color:#fff;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+#profileBannerTitleImg{
+  margin-top:4px;
+  max-width:100%;
+  height:28px;
+  object-fit:contain;
+  display:block;
+}
+/* ── セクションカード ── */
+.profileCard{
+  background:#0f1525;
+  border:1px solid #1e2840;
+  border-radius:12px;
+  padding:10px 12px;
+  margin-bottom:8px;
+  text-align:left;
+}
+.profileLabel{
+  font-size:9px;color:#556;
+  letter-spacing:1.5px;margin-bottom:6px;
+  text-transform:uppercase;
+  font-weight:bold;
+}
+.profileValue{font-size:14px;font-weight:bold;color:#fff;}
+.profileValueGold{color:#ffd700;}
+.profileValueGreen{color:#44ff88;}
+.profileValueBlue{color:#44aaff;}
+.profileInputRow{display:flex;align-items:center;gap:6px;}
+.profileInput{
+  flex:1;background:#1a1f2e;color:#fff;
+  border:1px solid #333;border-radius:6px;
+  padding:7px 10px;font-size:14px;outline:none;
+}
+.profileInput:focus{border-color:#ffd700;}
+.profileSaveBtn{
+  background:linear-gradient(135deg,#ffd700,#ff9800);
+  color:#000;border:none;border-radius:6px;
+  padding:7px 14px;font-size:12px;font-weight:bold;cursor:pointer;
+  white-space:nowrap;
+}
+/* ── 称号選択グリッド ── */
+#titleSelectGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px;
+  margin-top:8px;
+  max-height:200px;
+  overflow-y:auto;
+}
+.titleSelectItem{
+  background:#0d1a30;
+  border:2px solid #1e3050;
+  border-radius:8px;
+  padding:6px 4px;
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:3px;
+  transition:0.15s;
+}
+.titleSelectItem:hover{border-color:#ffd70088;}
+.titleSelectItem.selected{
+  border-color:#ffd700;
+  background:#1a2a00;
+  box-shadow:0 0 8px #ffd70066;
+}
+.titleSelectItem.locked{
+  opacity:0.35;cursor:default;
+  border-color:#222;
+}
+.titleBadge{
+  width:100%;height:26px;
+  border-radius:5px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:bold;
+  overflow:hidden;
+}
+.titleBadgeText{
+  font-size:9px;color:#aaa;
+  text-align:center;line-height:1.2;
+}
+.titleLockLabel{font-size:9px;color:#555;}
+/* ── 推しキャラアイコングリッド ── */
+#oshiGrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  max-height:340px;
+  overflow-y:auto;
+  margin-top:8px;
+  padding:2px 2px 4px;
+}
+.oshiItem{
+  cursor:pointer;
+  border-radius:10px;
+  border:2px solid #1e2840;
+  background:#0d1120;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  overflow:hidden;
+  transition:border-color 0.15s, box-shadow 0.15s;
+}
+.oshiItem:active{transform:scale(0.95);}
+.oshiItem.selected{
+  border-color:#ffd700;
+  box-shadow:0 0 12px #ffd700aa;
+  background:#1a1800;
+}
+.oshiImgWrap{
+  width:100%;
+  aspect-ratio:1;
+  position:relative;
+  overflow:hidden;
+  background:#111;
+}
+.oshiImgWrap img{
+  width:100%;height:100%;
+  object-fit:cover;display:block;
+}
+.oshiRarityDot{
+  position:absolute;top:3px;right:4px;
+  font-size:7px;color:#ffd700;
+  text-shadow:0 0 4px #000,0 0 2px #000;
+  font-weight:bold;
+  letter-spacing:-1px;
+  line-height:1;
+}
+.oshiSelectedBadge{
+  position:absolute;top:3px;left:4px;
+  font-size:10px;
+  line-height:1;
+}
+.oshiItemName{
+  width:100%;
+  color:#ccc;
+  font-size:9px;
+  padding:4px 4px 5px;
+  text-align:center;
+  line-height:1.3;
+  word-break:break-all;
+  background:#0d1120;
+}
+/* ── TOP3 ── */
+.profileTop3Row{display:flex;gap:6px;}
+.profileTop3Card{
+  flex:1;
+  background:#0d1a28;border:1px solid #1a3050;
+  border-radius:8px;padding:6px;text-align:center;
+}
+.profileTop3Card img{
+  width:44px;height:44px;object-fit:cover;
+  border-radius:6px;margin-bottom:2px;display:block;margin:0 auto 3px;
+}
+.profileTop3Medal{font-size:18px;margin-bottom:2px;}
+.profileDivider{border:none;border-top:1px solid #1a1f2e;margin:6px 0;}
+
+/* ===== ミッションシステム ===== */
+#missionModal{
+  display:none;
+  position:fixed;
+  top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.92);
+  z-index:16000;
+  justify-content:center;
+  align-items:flex-start;
+  padding-top:10px;
+}
+#missionModal.open{display:flex;}
+#missionBox{
+  background:linear-gradient(160deg,#0a0d1a,#0d1028);
+  border:2px solid #44cc88;
+  border-radius:18px;
+  padding:16px 14px 16px;
+  max-width:400px;
+  width:96%;
+  text-align:center;
+  position:relative;
+  max-height:94vh;
+  overflow-y:auto;
+  box-shadow:0 0 40px #44cc8833,0 0 80px #44cc8811;
+}
+.missionHeader{
+  font-size:17px;font-weight:bold;color:#44cc88;
+  letter-spacing:2px;margin-bottom:12px;
+}
+.missionTabs{
+  display:flex;gap:4px;margin-bottom:12px;justify-content:center;flex-wrap:wrap;
+}
+.missionTab{
+  padding:5px 12px;border-radius:8px;font-size:12px;font-weight:bold;
+  border:1px solid #333;background:#111;color:#666;cursor:pointer;
+  transition:0.15s;
+}
+.missionTab.active{
+  background:#1a3a20;border-color:#44cc88;color:#88ffaa;
+}
+.missionCard{
+  background:#0f1525;
+  border:1px solid #1e2840;
+  border-radius:12px;
+  padding:10px 12px;
+  margin-bottom:7px;
+  text-align:left;
+  position:relative;
+}
+.missionCard.completed{
+  border-color:#44cc8855;
+  opacity:0.6;
+}
+.missionCard.claimable{
+  border-color:#ffd700;
+  box-shadow:0 0 8px #ffd70044;
+  animation:missionPulse 1.5s infinite alternate;
+}
+@keyframes missionPulse{
+  from{box-shadow:0 0 5px #ffd70044;}
+  to{box-shadow:0 0 14px #ffd700aa;}
+}
+.missionTitle{font-size:13px;font-weight:bold;color:#fff;margin-bottom:4px;}
+.missionDesc{font-size:11px;color:#8899aa;margin-bottom:6px;line-height:1.4;}
+.missionProgress{
+  display:flex;align-items:center;gap:6px;margin-bottom:6px;
+}
+.missionProgBar{
+  flex:1;height:6px;background:#222;border-radius:3px;overflow:hidden;
+}
+.missionProgFill{
+  height:100%;background:linear-gradient(90deg,#44cc88,#88ffaa);border-radius:3px;transition:width 0.4s;
+}
+.missionProgText{font-size:10px;color:#aaa;white-space:nowrap;}
+.missionReward{
+  display:flex;gap:6px;flex-wrap:wrap;align-items:center;
+}
+.missionRewardBadge{
+  font-size:11px;padding:2px 8px;border-radius:6px;font-weight:bold;
+}
+.missionRewardStone{background:#1a1800;color:#ffd700;border:1px solid #ffd700;}
+.missionRewardSP{background:#0d2010;color:#88ffaa;border:1px solid #44cc88;}
+.missionRewardTitle{background:#10001a;color:#bb88ff;border:1px solid #aa44ff;}
+.missionClaimBtn{
+  margin-left:auto;
+  background:linear-gradient(135deg,#ffd700,#ff9800);
+  color:#000;border:none;border-radius:6px;
+  padding:4px 12px;font-size:12px;font-weight:bold;cursor:pointer;
+}
+.missionDoneLabel{
+  margin-left:auto;
+  font-size:11px;color:#44cc88;font-weight:bold;
+}
+.missionStatLine{
+  font-size:11px;color:#556;margin:2px 0;
+}
+#missionStatsBox{
+  background:#0a0d1a;border:1px solid #1a2a1a;
+  border-radius:10px;padding:8px 10px;margin-bottom:10px;text-align:left;
+}
+
+
 </style>
 </head>
 
 <body>
+<!-- プロフィールモーダル -->
+<div id="profileModal">
+  <div id="profileBox">
+    <div class="profileHeader">👤 プロフィール</div>
+
+    <!-- バナー：推しアイコン＋名前＋称号画像 -->
+    <div id="profileBanner">
+      <div id="profileBannerOshiIconEmpty">？</div>
+      <div id="profileBannerRight">
+        <div id="profileBannerName">名無し</div>
+        <canvas id="profileTitleCanvas" width="220" height="28" style="margin-top:4px;display:block;border-radius:5px;"></canvas>
+      </div>
+    </div>
+
+    <!-- プレイヤー名 -->
+    <div class="profileCard">
+      <div class="profileLabel">PLAYER NAME</div>
+      <div class="profileInputRow">
+        <input id="profileNameInput" class="profileInput" type="text" maxlength="20" placeholder="名前を入力...">
+        <button class="profileSaveBtn" id="profileNameSaveBtn" onclick="saveProfileName()">保存</button>
+      </div>
+    </div>
+
+    <!-- 称号選択 -->
+    <div class="profileCard">
+      <div class="profileLabel">TITLE — 称号を選択</div>
+      <div id="titleSelectGrid"></div>
+    </div>
+
+    <!-- 推しキャラ（アイコングリッド） -->
+    <div class="profileCard">
+      <div class="profileLabel">推しキャラ — タップして選択</div>
+      <div id="oshiGrid"></div>
+    </div>
+
+    <hr class="profileDivider">
+
+    <!-- 統計行 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;">
+      <div class="profileCard" style="margin-bottom:0;">
+        <div class="profileLabel">総戦力</div>
+        <div class="profileValue profileValueGold" id="profilePower">─</div>
+      </div>
+      <div class="profileCard" style="margin-bottom:0;">
+        <div class="profileLabel">最高試練Lv</div>
+        <div class="profileValue profileValueBlue" id="profileTrialLv">─</div>
+      </div>
+    </div>
+
+    <!-- 使用回数TOP3 -->
+    <div class="profileCard">
+      <div class="profileLabel">使用回数 TOP3</div>
+      <div class="profileTop3Row" id="profileTop3">
+        <div style="color:#556;font-size:12px;">まだ戦闘なし</div>
+      </div>
+    </div>
+
+    <button onclick="closeProfileModal()" style="margin-top:10px;background:#111;color:#888;border:1px solid #333;border-radius:8px;padding:8px 34px;cursor:pointer;font-size:14px;">閉じる</button>
+  </div>
+</div>
+
 <!-- シリアルコードモーダル -->
 <div id="serialModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.82);z-index:20000;justify-content:center;align-items:center;">
   <div style="background:#1a1f2e;border:2px solid #555;border-radius:16px;padding:28px 24px;max-width:320px;width:90%;text-align:center;position:relative;">
@@ -655,6 +1038,26 @@ animation:totalPop 1s forwards;
   </div>
 </div>
 
+<!-- ミッションモーダル -->
+<div id="missionModal">
+  <div id="missionBox">
+    <div class="missionHeader">📋 ミッション</div>
+    <div id="missionStatsBox">
+      <div style="font-size:10px;color:#44cc88;font-weight:bold;margin-bottom:5px;letter-spacing:1px;">📊 プレイ統計</div>
+      <div class="missionStatLine" id="statTrialWins">試練クリア: 0回</div>
+      <div class="missionStatLine" id="statEventWins">イベントクリア: 0回</div>
+      <div class="missionStatLine" id="statAilmentCount">状態異常付与: 0回</div>
+      <div class="missionStatLine" id="statThunderWins">雷属性限定勝利: 0回</div>
+    </div>
+    <div class="missionTabs" id="missionTabs">
+      <div class="missionTab active" onclick="switchMissionTab('active')">受注中</div>
+      <div class="missionTab" onclick="switchMissionTab('done')">達成済み</div>
+    </div>
+    <div id="missionList"></div>
+    <button onclick="closeMissionModal()" style="margin-top:10px;background:#111;color:#888;border:1px solid #333;border-radius:8px;padding:8px 34px;cursor:pointer;font-size:14px;">閉じる</button>
+  </div>
+</div>
+
 <div id="loading">
   <div class="loadingBox">
     <img src="https://imgur.com/5Olw81v.png" class="loadingLogo">
@@ -671,10 +1074,30 @@ animation:totalPop 1s forwards;
 <button onclick="go('party')">編成</button>
 <button onclick="go('trial')">試練</button>
 <button onclick="go('event')">イベントの間</button>
+
 <button onclick="confirmReset()" style="opacity:0.6;font-size:12px;">
 データリセット
 </button>
 </div>
+
+<!-- 固定ミッションボタン（全画面共通） -->
+<button onclick="openMissionModal()" id="missionBtn" style="
+  position:fixed;
+  bottom:20px;
+  left:14px;
+  background:linear-gradient(135deg,#1a2a1a,#0d3a1a);
+  border:2px solid #44cc88;
+  color:#88ffaa;
+  font-weight:bold;
+  border-radius:12px;
+  padding:10px 14px;
+  font-size:14px;
+  cursor:pointer;
+  z-index:8000;
+  box-shadow:0 0 12px #44cc8866;
+">
+  📋 ミッション<span id="missionNewBadge" style="display:none;position:absolute;top:-6px;right:-6px;background:#ff4444;color:#fff;border-radius:50%;font-size:10px;width:16px;height:16px;align-items:center;justify-content:center;font-weight:bold;">!</span>
+</button>
 
 
 <div id="gacha" class="screen">
@@ -736,7 +1159,10 @@ animation:totalPop 1s forwards;
 </div>
 
 <div id="party" class="screen">
-<h2>編成</h2>
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+  <h2 style="margin:0;">編成</h2>
+  <button onclick="openProfileModal()" style="background:linear-gradient(135deg,#1a1f3a,#2a2f55);border:1px solid #ffd700;color:#ffd700;border-radius:8px;padding:6px 14px;cursor:pointer;font-size:13px;font-weight:bold;">👤 プロフィール</button>
+</div>
 <div style="margin-bottom:6px;">
   <span class="spBadge">🌳 SP: <span id="spDisplay">0</span></span>
   <span style="font-size:11px;color:#666;margin-left:6px;">（バトル勝利で獲得）</span>
@@ -811,7 +1237,11 @@ progress,
 dupeStone,
 sp,
 eventProgress, // ←追加 // ←追加
-weaponBox
+weaponBox,
+profileData,
+charUseCount,
+missionStats,
+missionData
 };
 localStorage.setItem("gachaData", JSON.stringify(data));
 }
@@ -828,6 +1258,10 @@ dupeStone = data.dupeStone ?? 0;
 sp = data.sp ?? 0;
 eventProgress = data.eventProgress ?? {};
 weaponBox = data.weaponBox ?? [];
+if(data.profileData) Object.assign(profileData, data.profileData);
+if(data.charUseCount) Object.assign(charUseCount, data.charUseCount);
+if(data.missionStats) Object.assign(missionStats, data.missionStats);
+if(data.missionData) Object.assign(missionData, data.missionData);
 
 }
 
@@ -842,6 +1276,18 @@ let weaponBox = [];
 
 let eventProgress = {};
 let lastAllySkill = null; // コピー用: 直前に発動した味方スキル情報
+
+// プロフィールデータ
+let profileData = { playerName: "", oshi: "", selectedTitleId: "beginner" };
+// キャラ使用回数（キャラ名→回数）
+let charUseCount = {};
+
+// ミッションデータ
+let missionStats = {
+  trialWins:0, eventWins:0, ailmentCount:0, thunderWins:0,
+  trialHighLvWin:{}, _currentBattleAilments:0, _currentBattleAttrs:[]
+};
+let missionData = { claimed:{} };
 
 let trialPage = 0;
 const perPage = 8;
@@ -2395,6 +2841,8 @@ ${c.name}<br>Lv.${lv}
 function startBattle(i){
 go("battle");
 
+onBattleStart(); // ミッションフック
+
 let lv = progress[i] || 1;
 
   players = applyTeamBuff(team.map(c=>{
@@ -2469,6 +2917,9 @@ turn="player";turnIndex=0;
 deadPlayers=[];
 lastAllySkill = null;
 players.forEach(p => p.weaponCool = 0);
+
+// 使用回数カウント
+players.forEach(p => { charUseCount[p.name] = (charUseCount[p.name]||0) + 1; });
 
 // 🌟 パッシブ: 戦闘開始時 敵ATK低下パッシブ適用
 players.forEach(p => {
@@ -3502,6 +3953,10 @@ function triggerAttackPassive(p){
   if(p.passive) passives.push({ps: p.passive, label: p.name});
   if(p.weaponPassive) passives.push({ps: p.weaponPassive, label: p.weapon?.name || "武器"});
 
+  // ミッション: 付与前の状態異常スナップショット
+  let _mBP = (enemy.poisons||[]).length, _mBB = (enemy.burns||[]).length;
+  let _mBS = enemy.shockTurn||0, _mBF = enemy.freezeTurn||0;
+
   passives.forEach(({ps, label})=>{
   // 🔥 burn_on_attack: 確率で燃焼付与
   if(ps.type === "burn_on_attack" && Math.random() < ps.chance){
@@ -3600,6 +4055,8 @@ function triggerAttackPassive(p){
     // 実際の回収はatk計算後に呼ばれるのでここでは基礎ATKから推定
     // ※ showDamage後に回収するためendTurn側でも処理
   }
+  // ミッション: 付与後の差分チェック
+  if(typeof _mBP !== "undefined") _missionTrackAilmentDiff(_mBP, _mBB, _mBS, _mBF);
 }
 
 // ターン開始時パッシブ (味方全体に適用)
@@ -3875,11 +4332,13 @@ function win(){
 
     // ⭐ イベント中ならイベント処理
     if(currentEvent !== undefined){
+        onEventWin(); // ミッションフック
         Eventwin();
         return;
     }
 
     // ⭐ 通常の試練
+    onTrialWin(); // ミッションフック
     stone+=10;
     sp += 5; // スキルポイント+5
     let id=chars.findIndex(c=>c.name===enemy.name);
@@ -4075,6 +4534,7 @@ enemy.poisons.push({
     user: p
 });
 triggerKokuShoku(1);
+trackAilment(1); // ミッション
 // シナジー判定: 毒+炎 → 爆発
 checkSynergy(p, atk);
 }
@@ -4105,6 +4565,7 @@ if(s.type==="burn"){
     enemy.burnTurn = Math.max(...enemy.burns.map(b => b.turn));
     showSynergyText("燃焼付与！(×" + enemy.burns.length + "重)");
     triggerKokuShoku(1);
+    trackAilment(1); // ミッション
     // シナジー判定
     checkSynergy(p, atk);
 }
@@ -4118,6 +4579,7 @@ if(s.type==="freeze"){
     enemy.freezeTurn = 1;
     showSynergyText("❄ 凍結成功！行動不能！");
     triggerKokuShoku(1);
+    trackAilment(1); // ミッション
   } else {
     showSynergyText("❄ 凍結失敗…");
   }
@@ -4132,6 +4594,7 @@ if(s.type==="shock"){
   if(_sac && _sac.treeSkillPower) enemy.shockPower *= (1 + _sac.treeSkillPower);
   showSynergyText("感電付与！");
   triggerKokuShoku(1);
+  trackAilment(1); // ミッション
   // シナジー判定
   checkSynergy(p, atk);
 }
@@ -6553,6 +7016,9 @@ turn="player";
 turnIndex=0;
 deadPlayers=[];
 
+// 使用回数カウント
+players.forEach(p => { charUseCount[p.name] = (charUseCount[p.name]||0) + 1; });
+
 currentEvent = i;
 
 renderBattle();
@@ -8383,6 +8849,835 @@ function getAilmentTreeBonus(){
   });
   return mult;
 }
+// ===== プロフィール機能 =====
+
+// ── 称号マスターデータ ──
+// 各称号：id, label(表示テキスト), colors(グラデ), unlockCond(解放条件関数), condLabel(条件説明)
+const profileTitles = [
+  {
+    id:"beginner", label:"始まりの旅人",
+    colors:["#334","#556","#334"],
+    textColor:"#aaa",
+    unlockCond:()=>true,
+    condLabel:"最初から解放"
+  },
+  {
+    id:"collector10", label:"コレクター見習い",
+    colors:["#1a2800","#2a4400","#1a2800"],
+    textColor:"#88ff44",
+    unlockCond:()=>box.length>=10,
+    condLabel:"10体以上所持"
+  },
+  {
+    id:"fighter10", label:"歴戦の勇士",
+    colors:["#1a1000","#3a2000","#1a1000"],
+    textColor:"#ff9800",
+    unlockCond:()=>getHighestTrialLv().lv>=10,
+    condLabel:"試練Lv10以上"
+  },
+  {
+    id:"ssr5", label:"強者の証",
+    colors:["#1a0a00","#3a1a00","#1a0a00"],
+    textColor:"#ffd700",
+    unlockCond:()=>box.filter(c=>c.rarity===4).length>=5,
+    condLabel:"★4キャラ5体以上"
+  },
+  {
+    id:"event3", label:"イベントマスター",
+    colors:["#0a001a","#1a0040","#0a001a"],
+    textColor:"#cc88ff",
+    unlockCond:()=>[0,1,2,3,4,5,6,7,8,9].filter(i=>!!(eventProgress&&eventProgress["clear_"+i])).length>=3,
+    condLabel:"イベント3つ制覇"
+  },
+  {
+    id:"chara30", label:"キャラ博士",
+    colors:["#001a1a","#003030","#001a1a"],
+    textColor:"#44ffff",
+    unlockCond:()=>box.length>=30,
+    condLabel:"30体以上所持"
+  },
+  {
+    id:"fighter30", label:"百戦錬磨",
+    colors:["#1a0000","#3a0808","#1a0000"],
+    textColor:"#ff4444",
+    unlockCond:()=>getHighestTrialLv().lv>=30,
+    condLabel:"試練Lv30以上"
+  },
+  {
+    id:"event5", label:"イベント攻略家",
+    colors:["#001a10","#003028","#001a10"],
+    textColor:"#44ffaa",
+    unlockCond:()=>[0,1,2,3,4,5,6,7,8,9].filter(i=>!!(eventProgress&&eventProgress["clear_"+i])).length>=5,
+    condLabel:"イベント5つ制覇"
+  },
+  {
+    id:"ssr10", label:"伝説のコレクター",
+    colors:["#1a1000","#3a2800","#1a1000"],
+    textColor:"#ffd700",
+    unlockCond:()=>box.filter(c=>c.rarity===4).length>=10,
+    condLabel:"★4キャラ10体以上"
+  },
+  {
+    id:"fighter50", label:"試練の覇者",
+    colors:["#0a0010","#200030","#0a0010"],
+    textColor:"#ff88ff",
+    unlockCond:()=>getHighestTrialLv().lv>=50,
+    condLabel:"試練Lv50以上"
+  },
+  // ── イベント称号（各イベントクリアで解放） ──
+  {
+    id:"ev_clear_0", label:"OGの覇者",
+    colors:["#1a0010","#3a0030","#1a0010"],
+    textColor:"#ff66cc",
+    unlockCond:()=>!!(eventProgress&&eventProgress["clear_0"]),
+    condLabel:"OGの試練 制覇"
+  },
+  {
+    id:"ev_clear_1", label:"海辺の征服者",
+    colors:["#001428","#002a50","#001428"],
+    textColor:"#44aaff",
+    unlockCond:()=>!!(eventProgress&&eventProgress["clear_1"]),
+    condLabel:"海辺の試練 制覇"
+  },
+  {
+    id:"ev_clear_2", label:"賭場の支配者",
+    colors:["#1a1000","#3a2800","#1a1000"],
+    textColor:"#ffcc44",
+    unlockCond:()=>!!(eventProgress&&eventProgress["clear_2"]),
+    condLabel:"賭場の試練 制覇"
+  },
+  {
+    id:"ev_clear_3", label:"IF世界の探求者",
+    colors:["#10001a","#200040","#10001a"],
+    textColor:"#bb88ff",
+    unlockCond:()=>!!(eventProgress&&eventProgress["clear_3"]),
+    condLabel:"IFの試練 制覇"
+  },
+  {
+    id:"ev_clear_4", label:"怪城の踏破者",
+    colors:["#1a0a00","#301500","#1a0a00"],
+    textColor:"#ff8833",
+    unlockCond:()=>!!(eventProgress&&eventProgress["clear_4"]),
+    condLabel:"怪城の試練 制覇"
+  },
+  {
+    id:"ev_clear_5", label:"監獄の脱獄者",
+    colors:["#001010","#002020","#001010"],
+    textColor:"#33cccc",
+    unlockCond:()=>!!(eventProgress&&eventProgress["clear_5"]),
+    condLabel:"監獄の試練 制覇"
+  },
+  {
+    id:"ev_clear_6", label:"響音の奏者",
+    colors:["#1a1000","#3a2800","#1a1000"],
+    textColor:"#ffdd44",
+    unlockCond:()=>!!(eventProgress&&eventProgress["clear_6"]),
+    condLabel:"響音の試練 制覇"
+  },
+  {
+    id:"ev_clear_7", label:"静雪の踏破者",
+    colors:["#001428","#001e3c","#001428"],
+    textColor:"#aaddff",
+    unlockCond:()=>!!(eventProgress&&eventProgress["clear_7"]),
+    condLabel:"静雪の試練 制覇"
+  },
+  {
+    id:"ev_clear_8", label:"bitの覇者",
+    colors:["#001a08","#00301a","#001a08"],
+    textColor:"#44ff99",
+    unlockCond:()=>!!(eventProgress&&eventProgress["clear_8"]),
+    condLabel:"bitの試練 制覇"
+  },
+  {
+    id:"ev_clear_9", label:"遊戯の頂点",
+    colors:["#0a1a00","#183000","#0a1a00"],
+    textColor:"#aaff44",
+    unlockCond:()=>!!(eventProgress&&eventProgress["clear_9"]),
+    condLabel:"遊戯の試練 制覇"
+  },
+  {
+    id:"ev_all", label:"全イベント完全制覇",
+    colors:["#1a1400","#3a2e00","#1a1400"],
+    textColor:"#ffd700",
+    unlockCond:()=>[0,1,2,3,4,5,6,7,8,9].every(i=>!!(eventProgress&&eventProgress["clear_"+i])),
+    condLabel:"全10イベント制覇"
+  },
+];
+
+// ── Canvas で称号バッジ描画 ──
+function drawTitleBadge(canvas, titleObj, w, h){
+  if(!canvas) return;
+  canvas.width = w || 220;
+  canvas.height = h || 28;
+  let ctx = canvas.getContext("2d");
+  // 背景グラデ
+  let grd = ctx.createLinearGradient(0,0,canvas.width,0);
+  grd.addColorStop(0, titleObj.colors[0]);
+  grd.addColorStop(0.5, titleObj.colors[1]);
+  grd.addColorStop(1, titleObj.colors[2]);
+  ctx.fillStyle = grd;
+  // 角丸
+  let r = 5;
+  ctx.beginPath();
+  ctx.moveTo(r,0); ctx.lineTo(canvas.width-r,0);
+  ctx.arcTo(canvas.width,0,canvas.width,r,r);
+  ctx.lineTo(canvas.width,canvas.height-r);
+  ctx.arcTo(canvas.width,canvas.height,canvas.width-r,canvas.height,r);
+  ctx.lineTo(r,canvas.height);
+  ctx.arcTo(0,canvas.height,0,canvas.height-r,r);
+  ctx.lineTo(0,r);
+  ctx.arcTo(0,0,r,0,r);
+  ctx.closePath();
+  ctx.fill();
+  // 枠
+  ctx.strokeStyle = titleObj.textColor+"88";
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  // テキスト
+  ctx.fillStyle = titleObj.textColor;
+  ctx.font = `bold ${Math.floor(canvas.height*0.55)}px sans-serif`;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.shadowColor = titleObj.textColor;
+  ctx.shadowBlur = 6;
+  ctx.fillText("≪ "+titleObj.label+" ≫", canvas.width/2, canvas.height/2);
+  ctx.shadowBlur = 0;
+}
+
+// ── 称号選択グリッドを描画 ──
+function renderTitleSelectGrid(){
+  let grid = document.getElementById("titleSelectGrid");
+  if(!grid) return;
+  grid.innerHTML = "";
+  profileTitles.forEach(t => {
+    let unlocked = t.unlockCond();
+    let isSelected = profileData.selectedTitleId === t.id;
+    let div = document.createElement("div");
+    div.className = "titleSelectItem" + (isSelected?" selected":"") + (unlocked?"":" locked");
+    // Canvas バッジ
+    let canvas = document.createElement("canvas");
+    canvas.width = 140; canvas.height = 22;
+    canvas.style.width = "100%";
+    canvas.style.height = "22px";
+    canvas.style.borderRadius = "4px";
+    drawTitleBadge(canvas, t, 140, 22);
+    div.appendChild(canvas);
+    // 解放条件
+    let condEl = document.createElement("div");
+    condEl.className = "titleBadgeText";
+    condEl.textContent = unlocked ? (isSelected ? "✓ 設定中" : "タップで選択") : "🔒 "+t.condLabel;
+    condEl.style.color = unlocked ? (isSelected?"#ffd700":"#aaa") : "#555";
+    div.appendChild(condEl);
+    if(unlocked){
+      div.onclick = ()=>{
+        profileData.selectedTitleId = t.id;
+        saveData();
+        renderTitleSelectGrid();
+        updateProfileBanner();
+      };
+    }
+    grid.appendChild(div);
+  });
+}
+
+// ── 推しキャラアイコングリッドを描画 ──
+function renderOshiGrid(){
+  let grid = document.getElementById("oshiGrid");
+  if(!grid) return;
+  // ボックスにいるキャラのみ表示（重複除去）
+  let owned = box.filter((c,i,arr)=>arr.findIndex(x=>x.name===c.name)===i)
+    .sort((a,b)=>b.rarity-a.rarity);
+  if(owned.length === 0){
+    grid.innerHTML = '<div style="color:#556;font-size:12px;grid-column:span 5;padding:8px;">まだキャラがいません</div>';
+    return;
+  }
+  grid.innerHTML = owned.map(c=>{
+    let sel = profileData.oshi === c.name;
+    let stars = "★".repeat(c.rarity);
+    return `<div class="oshiItem${sel?" selected":""}" onclick="selectOshi('${c.name.replace(/'/g,"\'")}')">
+      <div class="oshiImgWrap">
+        <img src="${c.img}" loading="lazy">
+        <div class="oshiRarityDot">${stars}</div>
+        ${sel?`<div class="oshiSelectedBadge">✓</div>`:""}
+      </div>
+      <div class="oshiItemName">${c.name}</div>
+    </div>`;
+  }).join("");
+}
+
+function selectOshi(name){
+  profileData.oshi = (profileData.oshi === name) ? "" : name;
+  saveData();
+  renderOshiGrid();
+  updateProfileBanner();
+}
+
+// ── バナー（上部カード）を更新 ──
+function updateProfileBanner(){
+  // 名前
+  let nm = profileData.playerName || "名無し";
+  let nameEl = document.getElementById("profileBannerName");
+  if(nameEl) nameEl.textContent = nm;
+
+  // 称号Canvasバッジ
+  let canvas = document.getElementById("profileTitleCanvas");
+  let titleObj = profileTitles.find(t=>t.id===profileData.selectedTitleId) || profileTitles[0];
+  drawTitleBadge(canvas, titleObj, 220, 28);
+
+  // 推しアイコン
+  let oshiEmpty = document.getElementById("profileBannerOshiIconEmpty");
+  let oshiIcon  = document.getElementById("profileBannerOshiIcon");
+  if(profileData.oshi){
+    let c = getAllChars().find(ch=>ch.name===profileData.oshi);
+    if(c){
+      // imgを差し替えるか作成
+      if(!oshiIcon){
+        oshiIcon = document.createElement("img");
+        oshiIcon.id = "profileBannerOshiIcon";
+        oshiIcon.style.cssText="width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #ffd700;flex-shrink:0;";
+        let banner = document.getElementById("profileBanner");
+        if(oshiEmpty && banner) banner.replaceChild(oshiIcon, oshiEmpty);
+      } else {
+        oshiIcon.style.display="";
+        if(oshiEmpty) oshiEmpty.style.display="none";
+      }
+      oshiIcon.src = c.img;
+      return;
+    }
+  }
+  // 推しなし
+  if(oshiIcon) oshiIcon.style.display="none";
+  if(oshiEmpty) oshiEmpty.style.display="flex";
+}
+
+function calcTotalPower(){
+  return box.reduce((sum, c) => sum + c.atk + c.hp, 0);
+}
+
+function getHighestTrialLv(){
+  let max = 1, bestName = "";
+  Object.entries(progress).forEach(([id, lv]) => {
+    if(lv > max){ max=lv; let c=chars[Number(id)]; bestName=c?c.name:""; }
+  });
+  return { lv: max, name: bestName };
+}
+
+function getEventTitles(){
+  let titles = [];
+  eventStages.forEach((e, i) => {
+    if(eventProgress["clear_"+i]) titles.push(e.name+"制覇");
+  });
+  return titles;
+}
+
+function getTop3Chars(){
+  let sorted = Object.entries(charUseCount).sort((a,b)=>b[1]-a[1]).slice(0,3);
+  return sorted.map(([name,count])=>{
+    let c=getAllChars().find(ch=>ch.name===name);
+    return {name,count,img:c?.img||""};
+  });
+}
+
+function getAllChars(){
+  return [...chars,...eventChars,...eventChars2,...eventChars3,...eventChars4,
+          ...eventChars5,...eventChars6,...eventChars7,...eventChars8,...eventChars9,
+          ...eventChars10,...rewardChar];
+}
+
+function openProfileModal(){
+  // テキスト入力
+  let nameInput = document.getElementById("profileNameInput");
+  if(nameInput) nameInput.value = profileData.playerName || "";
+
+  // バナー
+  updateProfileBanner();
+
+  // 称号グリッド
+  renderTitleSelectGrid();
+
+  // 推しグリッド
+  renderOshiGrid();
+
+  // 総戦力
+  let pwEl = document.getElementById("profilePower");
+  if(pwEl) pwEl.textContent = calcTotalPower().toLocaleString();
+
+  // 最高試練Lv
+  let highTrial = getHighestTrialLv();
+  let lvEl = document.getElementById("profileTrialLv");
+  if(lvEl) lvEl.textContent = highTrial.lv>1 ? `Lv.${highTrial.lv}` : "未挑戦";
+
+  // TOP3
+  let top3 = getTop3Chars();
+  let medals = ["🥇","🥈","🥉"];
+  let top3El = document.getElementById("profileTop3");
+  if(top3El){
+    if(top3.length===0){
+      top3El.innerHTML='<div style="color:#556;font-size:12px;">まだ戦闘なし</div>';
+    } else {
+      top3El.innerHTML = top3.map((c,i)=>`
+        <div class="profileTop3Card">
+          <div class="profileTop3Medal">${medals[i]}</div>
+          ${c.img?`<img src="${c.img}">`:""}
+          <div style="font-size:9px;color:#aaa;margin-top:2px;">${c.name}</div>
+          <div style="font-size:12px;font-weight:bold;color:#ffd700;">${c.count}回</div>
+        </div>`).join("");
+    }
+  }
+
+  document.getElementById("profileModal").classList.add("open");
+}
+
+function closeProfileModal(){
+  document.getElementById("profileModal").classList.remove("open");
+}
+
+function saveProfileName(){
+  let val = (document.getElementById("profileNameInput").value||"").trim();
+  profileData.playerName = val;
+  saveData();
+  updateProfileBanner();
+  let btn = document.getElementById("profileNameSaveBtn");
+  if(btn){ btn.textContent="✓"; setTimeout(()=>btn.textContent="保存",1000); }
+}
+
+// ===== ミッションシステム =====
+
+// ミッション統計（バトル中にトラッキング）
+// (変数はグローバルで宣言済み)
+
+// ミッション定義
+const missionDefs = [
+  // ===== 試練系 =====
+  {
+    id:"trial_5",
+    category:"trial",
+    title:"試練の幕開け",
+    desc:"試練を5回クリアする",
+    target: ()=> missionStats.trialWins,
+    goal: 5,
+    reward: { stone: 30, sp: 0, title: null },
+  },
+  {
+    id:"trial_20",
+    category:"trial",
+    title:"試練の歴戦者",
+    desc:"試練を20回クリアする",
+    target: ()=> missionStats.trialWins,
+    goal: 20,
+    reward: { stone: 80, sp: 20, title: null },
+  },
+  {
+    id:"trial_50",
+    category:"trial",
+    title:"試練の覇者",
+    desc:"試練を50回クリアする",
+    target: ()=> missionStats.trialWins,
+    goal: 50,
+    reward: { stone: 200, sp: 50, title: { id:"m_trial_50", label:"試練の覇者", colors:["#0d1a00","#1a3000","#0d1a00"], textColor:"#88ffaa" } },
+  },
+  {
+    id:"trial_100",
+    category:"trial",
+    title:"不屈の闘士",
+    desc:"試練を100回クリアする",
+    target: ()=> missionStats.trialWins,
+    goal: 100,
+    reward: { stone: 500, sp: 100, title: { id:"m_trial_100", label:"不屈の闘士", colors:["#1a0800","#3a1800","#1a0800"], textColor:"#ffaa44" } },
+  },
+
+  // ===== 属性限定 =====
+  {
+    id:"thunder_3",
+    category:"attr",
+    title:"雷の洗礼",
+    desc:"雷属性キャラのみで試練に勝利する（3回）",
+    target: ()=> missionStats.thunderWins,
+    goal: 3,
+    reward: { stone: 50, sp: 10, title: null },
+  },
+  {
+    id:"thunder_10",
+    category:"attr",
+    title:"雷霆の剣士",
+    desc:"雷属性キャラのみで試練に勝利する（10回）",
+    target: ()=> missionStats.thunderWins,
+    goal: 10,
+    reward: { stone: 150, sp: 30, title: { id:"m_thunder_10", label:"雷霆の剣士", colors:["#0a0a00","#252500","#0a0a00"], textColor:"#ffd700" } },
+  },
+
+  // ===== 状態異常 =====
+  {
+    id:"ailment_10",
+    category:"ailment",
+    title:"状態異常の使い手",
+    desc:"状態異常（毒・燃焼・感電・凍結）を合計10回付与する",
+    target: ()=> missionStats.ailmentCount,
+    goal: 10,
+    reward: { stone: 20, sp: 0, title: null },
+  },
+  {
+    id:"ailment_50",
+    category:"ailment",
+    title:"状態異常の達人",
+    desc:"状態異常を合計50回付与する",
+    target: ()=> missionStats.ailmentCount,
+    goal: 50,
+    reward: { stone: 80, sp: 15, title: null },
+  },
+  {
+    id:"ailment_200",
+    category:"ailment",
+    title:"異常の体現者",
+    desc:"状態異常を合計200回付与する",
+    target: ()=> missionStats.ailmentCount,
+    goal: 200,
+    reward: { stone: 300, sp: 60, title: { id:"m_ailment_200", label:"異常の体現者", colors:["#100018","#1e0030","#100018"], textColor:"#bb88ff" } },
+  },
+
+  // ===== イベント系 =====
+  {
+    id:"event_5",
+    category:"event",
+    title:"イベントの常連",
+    desc:"イベントステージを5回クリアする",
+    target: ()=> missionStats.eventWins,
+    goal: 5,
+    reward: { stone: 30, sp: 0, title: null },
+  },
+  {
+    id:"event_30",
+    category:"event",
+    title:"イベント攻略者",
+    desc:"イベントステージを30回クリアする",
+    target: ()=> missionStats.eventWins,
+    goal: 30,
+    reward: { stone: 100, sp: 20, title: null },
+  },
+
+  // ===== 特殊条件 =====
+  {
+    id:"special_shiba_100",
+    category:"special",
+    title:"連合の狩人",
+    desc:"「死橋轟」を名前に含むキャラを編成して試練「黒峰天音」Lv.100以上をクリア",
+    target: ()=> missionStats.trialHighLvWin["黒峰天音"] || 0,
+    goal: 100,
+    isSpecial: true,
+    reward: { stone: 300, sp: 50, title: { id:"m_rengou_kari", label:"連合の狩人", colors:["#0a0020","#140040","#0a0020"], textColor:"#cc88ff" } },
+  },
+  {
+    id:"special_all_event",
+    category:"special",
+    title:"全ての挑戦者",
+    desc:"試練とイベントを合計100回クリアする",
+    target: ()=> missionStats.trialWins + missionStats.eventWins,
+    goal: 100,
+    reward: { stone: 500, sp: 100, title: { id:"m_all_challenger", label:"全ての挑戦者", colors:["#0a1400","#1a2800","#0a1400"], textColor:"#aaffaa" } },
+  },
+  {
+    id:"special_muroi_code52",
+    category:"special",
+    title:"天下無敵の鉄拳",
+    desc:"「室井元武」を名前に含むキャラを編成して試練「コード5.2」Lv.100以上をクリア",
+    target: ()=> missionStats.trialHighLvWin["コード5.2"] || 0,
+    goal: 100,
+    isSpecial: true,
+    reward: { stone: 300, sp: 50, title: { id:"m_tenka_muko_tekken", label:"天下無敵の鉄拳", colors:["#1a0a00","#3a1800","#1a0a00"], textColor:"#ff8844" } },
+  },
+  {
+    id:"special_kurishima_hussein",
+    category:"special",
+    title:"新たな管理者",
+    desc:"「栗島トウヤ」を名前に含むキャラを編成して試練「フセイン」Lv.100以上をクリア",
+    target: ()=> missionStats.trialHighLvWin["フセイン"] || 0,
+    goal: 100,
+    isSpecial: true,
+    reward: { stone: 300, sp: 50, title: { id:"m_arata_kanrisha", label:"新たな管理者", colors:["#000a1a","#001428","#000a1a"], textColor:"#44aaff" } },
+  },
+];
+
+// ミッション達成・受取済み管理
+// (missionData変数はグローバルで宣言済み)
+
+let missionCurrentTab = "active";
+
+function saveMissionData(){
+  // saveData()に統合されているのでここでsaveData呼ぶ
+  saveData();
+}
+
+// ===== バトル統計トラッキング =====
+
+// startBattleのラップは関数宣言なので、内部のonStartBattle関数を呼ぶ方式に変更
+function onBattleStart(){
+  missionStats._currentBattleAilments = 0;
+  missionStats._currentBattleAttrs = [];
+}
+
+// 試練勝利時に呼ぶ
+function onTrialWin(){
+  missionStats.trialWins = (missionStats.trialWins || 0) + 1;
+
+  // 雷属性のみかチェック
+  let allThunder = players.length > 0 && players.every(p => p.attr === "雷");
+  if(allThunder){
+    missionStats.thunderWins = (missionStats.thunderWins || 0) + 1;
+  }
+
+  // 特殊ミッション: 死橋轟（名前に含む）編成 + 黒峰天音 Lv判定
+  let hasSpecial = players.some(p => p.name.includes("死橋轟"));
+  if(hasSpecial && enemy && enemy.name === "黒峰天音"){
+    let id = chars.findIndex(c=>c.name==="黒峰天音");
+    let lv = progress[id] || 1;
+    let cur = missionStats.trialHighLvWin["黒峰天音"] || 0;
+    if(lv > cur) missionStats.trialHighLvWin["黒峰天音"] = lv;
+  }
+
+  // 特殊ミッション: 室井元武（名前に含む）編成 + コード5.2 Lv判定
+  let hasMuroi = players.some(p => p.name.includes("室井元武"));
+  if(hasMuroi && enemy && enemy.name === "コード5.2"){
+    let id2 = chars.findIndex(c=>c.name==="コード5.2");
+    let lv2 = progress[id2] || 1;
+    let cur2 = missionStats.trialHighLvWin["コード5.2"] || 0;
+    if(lv2 > cur2) missionStats.trialHighLvWin["コード5.2"] = lv2;
+  }
+
+  // 特殊ミッション: 栗島トウヤ（名前に含む）編成 + フセイン Lv判定
+  let hasKurishima = players.some(p => p.name.includes("栗島トウヤ"));
+  if(hasKurishima && enemy && enemy.name === "フセイン"){
+    let id3 = chars.findIndex(c=>c.name==="フセイン");
+    let lv3 = progress[id3] || 1;
+    let cur3 = missionStats.trialHighLvWin["フセイン"] || 0;
+    if(lv3 > cur3) missionStats.trialHighLvWin["フセイン"] = lv3;
+  }
+
+  checkMissionComplete();
+}
+
+// イベント勝利時に呼ぶ
+function onEventWin(){
+  missionStats.eventWins = (missionStats.eventWins || 0) + 1;
+  checkMissionComplete();
+}
+
+// 状態異常付与カウント（毒・燃焼・感電・凍結の付与時に呼ぶ）
+function trackAilment(count){
+  count = count || 1;
+  missionStats.ailmentCount = (missionStats.ailmentCount || 0) + count;
+  missionStats._currentBattleAilments = (missionStats._currentBattleAilments || 0) + count;
+}
+
+// ===== 状態異常付与フックのため triggerAttackPassive に注入 =====
+// poison/burn/shock/freeze の付与箇所に trackAilment() を呼ぶ
+// → 既存のtriggerAttackPassive関数をラップ
+
+function trackAilmentsFromPassive(p){
+  // poison_on_attack
+  if(p.passive && p.passive.type === "poison_on_attack" && Math.random() < p.passive.chance){
+    trackAilment(1);
+  }
+  // burn_on_attack
+  if(p.passive && p.passive.type === "burn_on_attack" && Math.random() < p.passive.chance){
+    trackAilment(1);
+  }
+  // shock_on_attack
+  if(p.passive && p.passive.type === "shock_on_attack" && Math.random() < p.passive.chance){
+    trackAilment(1);
+  }
+}
+
+// ===== ミッション達成チェック & 通知 =====
+function checkMissionComplete(){
+  let newlyClaimable = false;
+  missionDefs.forEach(m => {
+    if(missionData.claimed[m.id]) return;
+    let cur = m.target();
+    if(cur >= m.goal){
+      newlyClaimable = true;
+    }
+  });
+  // 通知バッジ
+  updateMissionBadge();
+  saveData();
+}
+
+function updateMissionBadge(){
+  let badge = document.getElementById("missionNewBadge");
+  if(!badge) return;
+  let hasClaimable = missionDefs.some(m => !missionData.claimed[m.id] && m.target() >= m.goal);
+  if(hasClaimable){
+    badge.style.display = "inline-flex";
+  } else {
+    badge.style.display = "none";
+  }
+}
+
+// ===== ミッションUI =====
+function openMissionModal(){
+  renderMissionStats();
+  renderMissionList();
+  document.getElementById("missionModal").classList.add("open");
+}
+
+function closeMissionModal(){
+  document.getElementById("missionModal").classList.remove("open");
+}
+
+function switchMissionTab(tab){
+  missionCurrentTab = tab;
+  document.querySelectorAll(".missionTab").forEach(el => el.classList.remove("active"));
+  let tabs = document.querySelectorAll(".missionTab");
+  if(tab === "active") tabs[0].classList.add("active");
+  else tabs[1].classList.add("active");
+  renderMissionList();
+}
+
+function renderMissionStats(){
+  let el = (id) => document.getElementById(id);
+  if(el("statTrialWins")) el("statTrialWins").textContent = "試練クリア: " + (missionStats.trialWins||0) + "回";
+  if(el("statEventWins")) el("statEventWins").textContent = "イベントクリア: " + (missionStats.eventWins||0) + "回";
+  if(el("statAilmentCount")) el("statAilmentCount").textContent = "状態異常付与: " + (missionStats.ailmentCount||0) + "回";
+  if(el("statThunderWins")) el("statThunderWins").textContent = "雷属性限定勝利: " + (missionStats.thunderWins||0) + "回";
+}
+
+function renderMissionList(){
+  let list = document.getElementById("missionList");
+  if(!list) return;
+
+  let missions = missionDefs.filter(m => {
+    let claimed = !!missionData.claimed[m.id];
+    if(missionCurrentTab === "done") return claimed;
+    return !claimed;
+  });
+
+  if(missions.length === 0){
+    list.innerHTML = '<div style="color:#556;font-size:13px;padding:20px;">ミッションなし</div>';
+    return;
+  }
+
+  list.innerHTML = missions.map(m => {
+    let cur = m.target();
+    let pct = Math.min(100, Math.floor(cur / m.goal * 100));
+    let claimable = cur >= m.goal && !missionData.claimed[m.id];
+    let claimed = !!missionData.claimed[m.id];
+
+    let rewardHtml = `<div class="missionReward">`;
+    if(m.reward.stone) rewardHtml += `<span class="missionRewardBadge missionRewardStone">💎 石×${m.reward.stone}</span>`;
+    if(m.reward.sp) rewardHtml += `<span class="missionRewardBadge missionRewardSP">🌳 SP×${m.reward.sp}</span>`;
+    if(m.reward.title) rewardHtml += `<span class="missionRewardBadge missionRewardTitle">🏆 称号「${m.reward.title.label}」</span>`;
+    if(claimable) rewardHtml += `<button class="missionClaimBtn" onclick="claimMission('${m.id}')">受取</button>`;
+    if(claimed) rewardHtml += `<span class="missionDoneLabel">✓ 受取済</span>`;
+    rewardHtml += `</div>`;
+
+    let cardClass = "missionCard" + (claimed?" completed":"") + (claimable?" claimable":"");
+
+    return `<div class="${cardClass}">
+      <div class="missionTitle">${m.title}</div>
+      <div class="missionDesc">${m.desc}</div>
+      <div class="missionProgress">
+        <div class="missionProgBar"><div class="missionProgFill" style="width:${pct}%"></div></div>
+        <div class="missionProgText">${Math.min(cur,m.goal)}/${m.goal}</div>
+      </div>
+      ${rewardHtml}
+    </div>`;
+  }).join("");
+}
+
+function claimMission(id){
+  let m = missionDefs.find(x => x.id === id);
+  if(!m) return;
+  if(missionData.claimed[m.id]) return;
+  if(m.target() < m.goal) return;
+
+  missionData.claimed[m.id] = true;
+
+  // 報酬付与
+  if(m.reward.stone){ stone += m.reward.stone; }
+  if(m.reward.sp){ sp += m.reward.sp; }
+  if(m.reward.title){
+    // profileTitlesに追加
+    let t = m.reward.title;
+    if(!profileTitles.some(x=>x.id===t.id)){
+      profileTitles.push({
+        id: t.id,
+        label: t.label,
+        colors: t.colors,
+        textColor: t.textColor,
+        unlockCond: ()=>!!(missionData.claimed[id]),
+        condLabel: "ミッション「"+m.title+"」達成"
+      });
+    }
+  }
+
+  saveData();
+  update();
+  renderMissionStats();
+  renderMissionList();
+  updateMissionBadge();
+
+  // 受取演出
+  showMissionClearEffect(m);
+}
+
+function showMissionClearEffect(m){
+  let div = document.createElement("div");
+  div.style.cssText = `
+    position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+    background:linear-gradient(135deg,#0d2010,#1a3a1a);
+    border:2px solid #44cc88;border-radius:16px;
+    padding:20px 28px;text-align:center;z-index:99999;
+    box-shadow:0 0 40px #44cc88aa;
+    animation:missionClearPop 2s forwards;
+  `;
+  div.innerHTML = `
+    <div style="font-size:22px;font-weight:bold;color:#88ffaa;margin-bottom:6px;">🎉 ミッション達成！</div>
+    <div style="font-size:15px;color:#fff;margin-bottom:8px;">${m.title}</div>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+      ${m.reward.stone?`<span style="background:#1a1800;color:#ffd700;border:1px solid #ffd700;padding:3px 10px;border-radius:6px;font-size:13px;font-weight:bold;">💎 石×${m.reward.stone}</span>`:""}
+      ${m.reward.sp?`<span style="background:#0d2010;color:#88ffaa;border:1px solid #44cc88;padding:3px 10px;border-radius:6px;font-size:13px;font-weight:bold;">🌳 SP×${m.reward.sp}</span>`:""}
+      ${m.reward.title?`<span style="background:#10001a;color:#bb88ff;border:1px solid #aa44ff;padding:3px 10px;border-radius:6px;font-size:12px;font-weight:bold;">🏆 ${m.reward.title.label}</span>`:""}
+    </div>
+  `;
+  document.body.appendChild(div);
+  setTimeout(()=>div.remove(), 2500);
+}
+
+// CSS追加（ポップアニメ）
+(function(){
+  let s = document.createElement("style");
+  s.textContent = `
+    @keyframes missionClearPop{
+      0%{opacity:0;transform:translate(-50%,-50%) scale(0.7);}
+      15%{opacity:1;transform:translate(-50%,-50%) scale(1.05);}
+      80%{opacity:1;transform:translate(-50%,-50%) scale(1.0);}
+      100%{opacity:0;transform:translate(-50%,-50%) scale(0.95);}
+    }
+  `;
+  document.head.appendChild(s);
+})();
+
+// ===== 状態異常付与への自動トラッキング統合 =====
+// triggerAttackPassiveをラップして付与検出
+function _missionTrackAilmentDiff(beforePoison, beforeBurn, beforeShock, beforeFreeze){
+  if(!enemy) return;
+  let afterPoison = (enemy.poisons||[]).length;
+  let afterBurn = (enemy.burns||[]).length;
+  let afterShock = enemy.shockTurn||0;
+  let afterFreeze = enemy.freezeTurn||0;
+  let gained = 0;
+  if(afterPoison > beforePoison) gained += (afterPoison - beforePoison);
+  if(afterBurn > beforeBurn) gained += (afterBurn - beforeBurn);
+  if(afterShock > 0 && beforeShock === 0) gained += 1;
+  if(afterFreeze > 0 && beforeFreeze === 0) gained += 1;
+  if(gained > 0) trackAilment(gained);
+}
+
+// 初期化時バッジ更新
+setTimeout(()=>{ updateMissionBadge(); }, 500);
+
+// ===== ミッションシステムここまで =====
+// ===== プロフィール機能ここまで =====
 // ===== スキルツリーここまで =====
 </script>
 </body>
