@@ -957,6 +957,22 @@ animation:totalPop 1s forwards;
   </div>
 </div>
 
+<!-- 武器選択モーダル -->
+<div id="weaponSelectModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.88);z-index:13000;justify-content:center;align-items:flex-end;">
+  <div style="background:linear-gradient(160deg,#0a0d1a,#0d1028);border:2px solid #aaddff;border-top-left-radius:20px;border-top-right-radius:20px;padding:16px 12px 24px;width:100%;max-width:480px;max-height:82vh;display:flex;flex-direction:column;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;flex-shrink:0;">
+      <div>
+        <div style="font-size:15px;font-weight:bold;color:#aaddff;">⚔ 武器を選択</div>
+        <div id="weaponSelectCharName" style="font-size:11px;color:#888;margin-top:1px;"></div>
+      </div>
+      <button onclick="closeWeaponSelectModal()" style="background:#222;color:#aaa;border:1px solid #444;border-radius:8px;padding:5px 14px;cursor:pointer;font-size:13px;">✕ 閉じる</button>
+    </div>
+    <div id="weaponSelectCurrentEquip" style="background:#0d1120;border:1px solid #2a3a5a;border-radius:8px;padding:7px 10px;margin-bottom:8px;font-size:11px;color:#aaa;flex-shrink:0;"></div>
+    <div id="weaponSelectGrid" style="overflow-y:auto;flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding-bottom:4px;">
+    </div>
+  </div>
+</div>
+
 <!-- 武器スキル/パッシブ確認モーダル -->
 <div id="weaponModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:10000;justify-content:center;align-items:center;">
   <div id="weaponModalBox" style="background:#1a1f2e;border:2px solid #aaddff;border-radius:14px;padding:20px 24px;max-width:320px;width:90%;text-align:center;position:relative;">
@@ -985,6 +1001,85 @@ animation:totalPop 1s forwards;
       <div id="weaponModalPassiveNone" style="font-size:13px;color:#888;display:none;">パッシブスキルなし</div>
     </div>
     <button onclick="closeWeaponModal()" style="background:#333;color:#fff;border:none;border-radius:8px;padding:6px 20px;cursor:pointer;font-size:14px;">閉じる</button>
+  </div>
+</div>
+
+<!-- キャラ情報モーダル（編成画面用） -->
+<div id="charInfoModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:12000;justify-content:center;align-items:center;">
+  <div id="charInfoBox" style="background:linear-gradient(160deg,#0a0d1a,#0d1028);border:2px solid #ffd700;border-radius:16px;padding:18px 16px;max-width:340px;width:94%;position:relative;max-height:92vh;overflow-y:auto;">
+    <!-- ヘッダー -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+      <img id="ciImg" src="" style="width:72px;height:72px;object-fit:cover;border-radius:10px;border:2px solid #ffd700;">
+      <div style="text-align:left;flex:1;">
+        <div id="ciRarity" style="color:gold;font-size:13px;font-weight:bold;"></div>
+        <div id="ciName" style="font-size:16px;font-weight:bold;color:#fff;margin:2px 0;"></div>
+        <div id="ciAttrRole" style="font-size:11px;color:#aaa;"></div>
+      </div>
+    </div>
+    <!-- タブ -->
+    <div style="display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap;">
+      <button class="ciTab" id="ciTabStatus" onclick="switchCiTab('status')" style="flex:1;min-width:60px;padding:5px 4px;border-radius:6px;border:none;cursor:pointer;font-size:11px;font-weight:bold;background:#ffd700;color:#000;">📊 ステータス</button>
+      <button class="ciTab" id="ciTabSkill" onclick="switchCiTab('skill')" style="flex:1;min-width:60px;padding:5px 4px;border-radius:6px;border:1px solid #4488cc;cursor:pointer;font-size:11px;font-weight:bold;background:#1a2a4a;color:#aaddff;">🗡 スキル</button>
+      <button class="ciTab" id="ciTabPassive" onclick="switchCiTab('passive')" style="flex:1;min-width:60px;padding:5px 4px;border-radius:6px;border:1px solid #44cc44;cursor:pointer;font-size:11px;font-weight:bold;background:#1a3a1a;color:#88ff88;">🌟 パッシブ</button>
+      <button class="ciTab" id="ciTabTree" onclick="switchCiTab('tree')" style="flex:1;min-width:60px;padding:5px 4px;border-radius:6px;border:1px solid #44cc88;cursor:pointer;font-size:11px;font-weight:bold;background:#0d2010;color:#88ffaa;">🌳 スキルツリー</button>
+    </div>
+    <!-- ステータスタブ -->
+    <div id="ciContentStatus">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;">
+        <div style="background:#0f1525;border:1px solid #1e2840;border-radius:8px;padding:8px;text-align:center;">
+          <div style="font-size:9px;color:#556;letter-spacing:1px;margin-bottom:3px;">HP</div>
+          <div id="ciHp" style="font-size:18px;font-weight:bold;color:#4caf50;"></div>
+        </div>
+        <div style="background:#0f1525;border:1px solid #1e2840;border-radius:8px;padding:8px;text-align:center;">
+          <div style="font-size:9px;color:#556;letter-spacing:1px;margin-bottom:3px;">ATK</div>
+          <div id="ciAtk" style="font-size:18px;font-weight:bold;color:#ff6644;"></div>
+        </div>
+      </div>
+      <div style="background:#0f1525;border:1px solid #1e2840;border-radius:8px;padding:8px;margin-bottom:8px;">
+        <div style="font-size:9px;color:#556;letter-spacing:1px;margin-bottom:4px;">凸</div>
+        <div id="ciDupe" style="font-size:13px;color:#ffd700;font-weight:bold;"></div>
+      </div>
+      <!-- 武器情報 -->
+      <div id="ciWeaponArea" style="background:#0f1525;border:1px solid #1e2840;border-radius:8px;padding:8px;margin-bottom:8px;">
+        <div style="font-size:9px;color:#556;letter-spacing:1px;margin-bottom:4px;">装備中の武器</div>
+        <div id="ciWeapon" style="font-size:12px;color:#aaa;"></div>
+      </div>
+      <!-- アクションボタン -->
+      <div style="display:flex;flex-direction:column;gap:5px;">
+        <button id="ciWeaponBtn" onclick="ciOpenWeapon()" style="background:#1a2a3a;color:#aaddff;border:1px solid #4488cc;border-radius:8px;padding:7px;font-size:12px;cursor:pointer;">⚔ 武器を変更</button>
+        <button id="ciDupeBtn" onclick="ciUseDupe()" style="background:#1a1a2a;color:#ffcc88;border:1px solid #aa8844;border-radius:8px;padding:7px;font-size:12px;cursor:pointer;">🔼 凸する</button>
+      </div>
+    </div>
+    <!-- スキルタブ -->
+    <div id="ciContentSkill" style="display:none;">
+      <div style="background:#0d1a30;border:1px solid #2a4a6a;border-radius:10px;padding:12px;margin-bottom:8px;">
+        <div style="font-size:10px;color:#4488cc;letter-spacing:1px;margin-bottom:6px;font-weight:bold;">🗡 スキル</div>
+        <div id="ciSkillText" style="font-size:14px;color:#aaddff;line-height:1.6;"></div>
+        <div id="ciSkillCT" style="font-size:11px;color:#888;margin-top:5px;"></div>
+      </div>
+      <div id="ciSkill2Area" style="display:none;background:#0d1a30;border:1px solid #2a4a6a;border-radius:10px;padding:12px;margin-bottom:8px;">
+        <div style="font-size:10px;color:#4488cc;letter-spacing:1px;margin-bottom:6px;font-weight:bold;">🗡 スキル2</div>
+        <div id="ciSkill2Text" style="font-size:14px;color:#aaddff;line-height:1.6;"></div>
+      </div>
+    </div>
+    <!-- パッシブタブ -->
+    <div id="ciContentPassive" style="display:none;">
+      <div style="background:#0d2010;border:1px solid #224422;border-radius:10px;padding:12px;">
+        <div style="font-size:10px;color:#44cc44;letter-spacing:1px;margin-bottom:6px;font-weight:bold;">🌟 パッシブスキル</div>
+        <div id="ciPassiveText" style="font-size:14px;color:#88ff88;line-height:1.6;"></div>
+        <div id="ciPassiveNone" style="font-size:13px;color:#888;">パッシブスキルなし</div>
+      </div>
+    </div>
+    <!-- スキルツリータブ -->
+    <div id="ciContentTree" style="display:none;">
+      <div id="ciTreeInfo" style="font-size:12px;color:#88ffaa;background:#0d2010;border:1px solid #224422;border-radius:10px;padding:10px;margin-bottom:8px;"></div>
+      <button onclick="ciOpenSkillTree()" style="width:100%;background:linear-gradient(135deg,#0d2010,#1a3a20);color:#88ffaa;border:1px solid #44cc88;border-radius:8px;padding:8px;font-size:13px;cursor:pointer;font-weight:bold;">🌳 スキルツリーを開く</button>
+    </div>
+    <!-- フッターボタン -->
+    <div style="display:flex;gap:6px;margin-top:12px;">
+      <button id="ciAddTeamBtn" onclick="ciAddToTeam()" style="flex:1;background:linear-gradient(135deg,#1a3a1a,#2a5a2a);color:#88ff88;border:1px solid #44cc44;border-radius:8px;padding:8px;font-size:13px;cursor:pointer;font-weight:bold;">✅ 編成に追加</button>
+      <button onclick="closeCharInfoModal()" style="flex:1;background:#111;color:#888;border:1px solid #333;border-radius:8px;padding:8px;font-size:13px;cursor:pointer;">閉じる</button>
+    </div>
   </div>
 </div>
 
@@ -2509,6 +2604,9 @@ return pool[Math.random()*pool.length|0];
 function go(id){
 document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
 document.getElementById(id).classList.add('active');
+// バトル中はミッションボタンを非表示
+let missionBtn = document.getElementById("missionBtn");
+if(missionBtn) missionBtn.style.display = (id === "battle") ? "none" : "";
 update();
 if(id==="trial")renderTrials();
 if(id==="event") renderEvent();
@@ -2702,10 +2800,10 @@ update();
 function sortBox(type){
 
 if(type==="atk"){
-box.sort((a,b)=>b.atk-a.atk);
+box.sort((a,b)=>getEffectiveAtk(b)-getEffectiveAtk(a));
 }
 else if(type==="hp"){
-box.sort((a,b)=>b.hp-a.hp);
+box.sort((a,b)=>getEffectiveHp(b)-getEffectiveHp(a));
 }
 else if(type==="rarity"){
 box.sort((a,b)=>b.rarity-a.rarity);
@@ -2743,31 +2841,14 @@ if(wc) wc.textContent = weaponBox.length;
 
 let b=document.getElementById("box");
 if(b)b.innerHTML=box.map((c,i)=>`
-<div class="card ${attrClass[c.attr]}" onclick="add(${i})">
-<div class="rarity">${star(c.rarity)}</div>
-<span class="roleBadge ${getRoleClass(c.role)}">${getRoleLabel(c.role)}</span>
-<img src="${c.img}">
-${c.name}<br>
-HP:${c.hp} ATK:${c.atk}<br>
-凸:${c.dupe}/${maxDupe[c.rarity]}
-<button onclick="openWeaponSelect(${i});event.stopPropagation();">
-武器
-</button>
-
-${c.weapon ? `
-<img src="${c.weapon.img}" style="width:40px;">
-<button onclick="unequipWeapon(${i});event.stopPropagation();">
-外す
-</button>
-` : ""}
-
-<button onclick="useDupe(${i});event.stopPropagation();">
-凸する
-</button>
-
-${c.skill ? `<br><button class="skillBtn" onclick="openSkillModal(${i});event.stopPropagation();">📖 スキル確認</button>` : ""}
-${c.passive ? `<button class="skillBtn" style="background:#1a3a1a;color:#88ff88;border-color:#44cc44;" onclick="openPassiveModal(${i});event.stopPropagation();">🌟 パッシブ確認</button>` : ""}
-<br><button class="skillBtn" style="background:#0d2010;color:#88ffaa;border-color:#44cc88;margin-top:3px;" onclick="openSkillTree(${i});event.stopPropagation();">🌳 スキルツリー${(c.skillTreeData?.chosen?.length||0)>0?" ✦":""}(${c.skillTreeData?.chosen?.length||0}/6)</button>
+<div class="card ${attrClass[c.attr]} boxCardImg" style="position:relative;padding:5px;width:90px;" onclick="add(${i})">
+  <div class="rarity" style="margin-bottom:2px;">${star(c.rarity)}</div>
+  <div style="position:relative;">
+    <img src="${c.img}" style="width:100%;border-radius:8px;display:block;">
+    ${c.weapon ? `<img src="${c.weapon.img}" style="position:absolute;bottom:2px;right:2px;width:22px;height:22px;border-radius:4px;border:1px solid #aaa;background:#111;">` : ""}
+    ${(c.skillTreeData?.chosen?.length||0)>0 ? `<span style="position:absolute;top:2px;right:3px;color:#ffd700;font-size:10px;text-shadow:0 0 4px #000;">✦</span>` : ""}
+  </div>
+  <button onclick="openCharInfoModal(${i});event.stopPropagation();" style="width:100%;margin-top:3px;background:linear-gradient(135deg,#1a2a4a,#2a3a6a);color:#aaddff;border:1px solid #4488cc;border-radius:6px;padding:3px 0;font-size:10px;cursor:pointer;">📋 情報</button>
 </div>`).join("");
 
 let t=document.getElementById("team");
@@ -2798,8 +2879,8 @@ let totalHP = 0;
 let totalATK = 0;
 
 team.forEach(c=>{
-    totalHP += c.hp;
-    totalATK += c.atk;
+    totalHP += getEffectiveHp(c);
+    totalATK += getEffectiveAtk(c);
 });
 
 let finalHP = Math.floor(totalHP * (1 + buff.hp/100));
@@ -2862,8 +2943,8 @@ let lv = progress[i] || 1;
 
     let weapon = c.weapon;
 
-let finalAtk = c.atk + (weapon?.atk || 0);
-let finalHp = c.hp + (weapon?.hp || 0);
+let finalAtk = getEffectiveAtk(c) + (weapon?.atk || 0);
+let finalHp = getEffectiveHp(c) + (weapon?.hp || 0);
 
 let initSkill = base?.skill || c.skill;
 return {
@@ -6825,24 +6906,10 @@ function useDupe(i){
         atkUp=72; hpUp=184;
     }
 
-    // スキルツリーで既に % ボーナスが適用されている場合、
-    // 凸上昇値にも同じ倍率をかけて「ツリー前後の順序」による差をなくす
-    let treeAtkMult = 1.0;
-    let treeHpMult  = 1.0;
-    if(c.skillTreeData){
-        c.skillTreeData.chosen.forEach(id => {
-            let ch = stNodeMap[id];
-            if(ch && ch.type === "bonus"){
-                if(ch.bonus.atk) treeAtkMult *= (1 + ch.bonus.atk);
-                if(ch.bonus.hp)  treeHpMult  *= (1 + ch.bonus.hp);
-            }
-        });
-    }
-    atkUp = Math.round(atkUp * treeAtkMult);
-    hpUp  = Math.round(hpUp  * treeHpMult);
-
+    // ベースステータス（凸分）を加算するだけ。
+    // スキルツリーのボーナス倍率はgetEffectiveAtk/getEffectiveHpで計算するため不要。
     c.atk += atkUp;
-    c.hp += hpUp;
+    c.hp  += hpUp;
 
     update();
     saveData();
@@ -6963,8 +7030,8 @@ players = applyTeamBuff(team.map(c=>{
 
     let weapon = c.weapon;
 
-    let finalAtk = c.atk + (weapon?.atk || 0);
-    let finalHp = c.hp + (weapon?.hp || 0);
+    let finalAtk = getEffectiveAtk(c) + (weapon?.atk || 0);
+    let finalHp = getEffectiveHp(c) + (weapon?.hp || 0);
 
     return {
         ...c,
@@ -7349,11 +7416,7 @@ saveData();
 }
 
 
-function equipWeapon(charIndex, weaponIndex){
-    box[charIndex].weapon = weapons[weaponIndex];
-    update();
-    saveData();
-}
+// equipWeapon は下部で定義
 
 function weaponSkill(){
     let p = players[turnIndex];
@@ -7546,34 +7609,66 @@ function getWeapon(){
     return weapons[Math.random()*weapons.length|0];
 }
 
-function openWeaponSelect(charIndex){
+function openWeaponSelect(charIndex, returnToCharInfo){
+    // モーダルで表示
+    let grid = document.getElementById("weaponSelectGrid");
+    if(!grid) return;
 
-    let div = document.getElementById("weaponSelect");
-
-    div.innerHTML = `<div style="font-size:13px;color:#aaa;margin:4px 0 8px;">── 武器を選択 ──</div>` +
-    weaponBox.map((w,i)=>`
-    <div class="card" style="vertical-align:top;">
-
-        <img src="${w.img}" style="width:60px;"><br>
-
-        <div style="color:${getRarityColor(w.rarity)}">
-        ★${w.rarity}
+    if(weaponBox.length === 0){
+        grid.innerHTML = '<div style="color:#556;font-size:13px;padding:20px;text-align:center;grid-column:1/-1;">武器を所持していません</div>';
+    } else {
+        grid.innerHTML = weaponBox.map((w,i)=>`
+        <div style="background:#1a1f2e;border:1px solid ${getRarityBorderColor(w.rarity)};border-radius:12px;padding:8px;text-align:center;display:flex;flex-direction:column;gap:4px;">
+          <div style="color:${getRarityColor(w.rarity)};font-size:11px;font-weight:bold;">★${w.rarity}</div>
+          <img src="${w.img}" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;">
+          <div style="font-size:10px;color:#ccc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${w.name}</div>
+          <div style="font-size:9px;color:#aaa;">ATK+${w.atk} / HP+${w.hp}</div>
+          <div style="display:flex;gap:3px;">
+            <button onclick="openWeaponModal(${i},'skill');event.stopPropagation();" style="flex:1;background:#1a2a4a;color:#aaddff;border:1px solid #4488cc;border-radius:5px;padding:3px 2px;font-size:9px;cursor:pointer;">🗡</button>
+            <button onclick="openWeaponModal(${i},'passive');event.stopPropagation();" style="flex:1;background:#1a3a1a;color:#88ff88;border:1px solid #44cc44;border-radius:5px;padding:3px 2px;font-size:9px;cursor:pointer;">🌟</button>
+          </div>
+          <button onclick="equipWeaponAndReturn(${charIndex},${i},${returnToCharInfo?1:0});" style="background:linear-gradient(135deg,#1a3a5a,#2a5a8a);color:#aaddff;border:1px solid #4488cc;border-radius:7px;padding:5px 0;font-size:11px;cursor:pointer;font-weight:bold;">⚔ 装備</button>
         </div>
+        `).join("");
+    }
 
-        ${w.name}<br>
-        ATK:${w.atk} HP:${w.hp}
+    // キャラ名・現在の装備を表示
+    let c = box[charIndex];
+    let nameEl = document.getElementById("weaponSelectCharName");
+    if(nameEl) nameEl.textContent = c ? c.name + " の装備変更" : "";
+    let equipEl = document.getElementById("weaponSelectCurrentEquip");
+    if(equipEl){
+        if(c && c.weapon){
+            equipEl.innerHTML = "現在の装備: <b style='color:#fff;'>" + c.weapon.name + "</b>  ATK+" + c.weapon.atk + " / HP+" + c.weapon.hp +
+              " <button onclick='unequipWeapon(" + charIndex + ");closeWeaponSelectModal();' style='margin-left:8px;background:#2a1010;color:#ff8888;border:1px solid #883333;border-radius:5px;padding:2px 8px;font-size:10px;cursor:pointer;'>外す</button>";
+        } else {
+            equipEl.textContent = "現在の装備: なし";
+        }
+    }
+    document.getElementById("weaponSelectModal").style.display = "flex";
+    // 古いインライン表示はクリア
+    let inlineDiv = document.getElementById("weaponSelect");
+    if(inlineDiv) inlineDiv.innerHTML = "";
+}
 
-        <br>
-        <div style="display:flex;gap:3px;justify-content:center;margin-top:4px;">
-          <button class="skillBtn" onclick="openWeaponModal(${i},'skill');event.stopPropagation();" style="font-size:10px;padding:2px 5px;">🗡 スキル</button>
-          <button class="skillBtn" onclick="openWeaponModal(${i},'passive');event.stopPropagation();" style="font-size:10px;padding:2px 5px;background:#1a3a1a;color:#88ff88;border-color:#44cc44;">🌟 パッシブ</button>
-        </div>
-        <button onclick="equipWeapon(${charIndex},${i})" style="margin-top:4px;background:#2a4a6a;color:#aaddff;border:1px solid #aaddff;border-radius:6px;padding:3px 10px;cursor:pointer;font-size:11px;">
-        ⚔ 装備
-        </button>
+function closeWeaponSelectModal(){
+    document.getElementById("weaponSelectModal").style.display = "none";
+}
 
-    </div>
-    `).join("");
+function equipWeaponAndReturn(charIndex, weaponIndex, returnToCharInfo){
+    equipWeapon(charIndex, weaponIndex);
+    closeWeaponSelectModal();
+    if(returnToCharInfo){
+        // キャラ情報モーダルのステータスタブを更新して再表示
+        ciCurrentBoxIndex = charIndex;
+        switchCiTab('status');
+    }
+}
+
+function getRarityBorderColor(r){
+    if(r===3) return "#ffd700";
+    if(r===2) return "#aaddff";
+    return "#555";
 }
 
 function openWeaponModal(weaponIndex, tab){
@@ -8295,19 +8390,9 @@ function redeemSerial(){
         } else if(exist.dupe < maxD){
           let remaining = maxD - exist.dupe;
           exist.dupe = maxD;
-          // スキルツリーボーナス倍率を考慮して凸上昇値をスケール
-          let bAtkM = 1.0, bHpM = 1.0;
-          if(exist.skillTreeData){
-            exist.skillTreeData.chosen.forEach(id2 => {
-              let ch2 = stNodeMap[id2];
-              if(ch2 && ch2.type === "bonus"){
-                if(ch2.bonus.atk) bAtkM *= (1 + ch2.bonus.atk);
-                if(ch2.bonus.hp)  bHpM  *= (1 + ch2.bonus.hp);
-              }
-            });
-          }
-          exist.atk += Math.round(atkPerDupe * remaining * bAtkM);
-          exist.hp  += Math.round(hpPerDupe  * remaining * bHpM);
+          // ベースの凸分だけ加算（ツリーボーナスはgetEffectiveAtk/getEffectiveHpで反映）
+          exist.atk += Math.round(atkPerDupe * remaining);
+          exist.hp  += Math.round(hpPerDupe  * remaining);
           charMaxed++;
         }
       });
@@ -8467,6 +8552,40 @@ const skillTreeStages = [
 const stNodeMap = {};
 skillTreeStages.forEach(st => st.choices.forEach(ch => { stNodeMap[ch.id] = {...ch, stageId: st.id}; }));
 const SKILL_TREE_TOTAL_CHOICES = Object.keys(stNodeMap).length; // 18
+
+// ===== 旧データ互換マイグレーション =====
+// 以前はスキルツリーの%ボーナスをc.atk/c.hpに直接加算していた。
+// 新方式では treeAtkRate/treeHpRate に累積し、getEffectiveAtk/getEffectiveHpで計算する。
+// 既存セーブデータにtreeAtkRate/treeHpRateがない場合、旧方式で加算された分を引き戻す。
+(function migrateSkillTreeData(){
+  box.forEach(c => {
+    if(!c.skillTreeData || !c.skillTreeData.chosen.length) return;
+    if(c.treeAtkRate !== undefined || c.treeHpRate !== undefined) return; // 新方式済み
+    let atkMult = 1.0, hpMult = 1.0, atkRate = 0, hpRate = 0;
+    c.skillTreeData.chosen.forEach(id => {
+      let ch = stNodeMap[id];
+      if(ch && ch.type === "bonus"){
+        if(ch.bonus.atk){ atkMult *= (1 + ch.bonus.atk); atkRate += ch.bonus.atk; }
+        if(ch.bonus.hp) { hpMult  *= (1 + ch.bonus.hp);  hpRate  += ch.bonus.hp;  }
+      }
+    });
+    if(atkMult !== 1.0) c.atk = Math.round(c.atk / atkMult);
+    if(hpMult  !== 1.0) c.hp  = Math.round(c.hp  / hpMult);
+    if(atkRate > 0) c.treeAtkRate = atkRate;
+    if(hpRate  > 0) c.treeHpRate  = hpRate;
+  });
+})();
+// ===== マイグレーションここまで =====
+
+// ===== スキルツリーボーナス込みの実効ATK/HPを返すヘルパー =====
+// c.atk/c.hp はベース値（凸込み）として保持し、
+// treeAtkRate/treeHpRate の倍率を乗算した値が実際の戦闘・表示値になる。
+function getEffectiveAtk(c){
+  return Math.round(c.atk * (1 + (c.treeAtkRate || 0)));
+}
+function getEffectiveHp(c){
+  return Math.round(c.hp * (1 + (c.treeHpRate || 0)));
+}
 
 let stCharIdx = -1;
 
@@ -8659,13 +8778,12 @@ function unlockSkillNode(charIdx, stageId, choiceId){
   // ボーナス適用
   let detail = [];
   if(ch.type === "bonus"){
-    let atkGain=0, hpGain=0;
-    if(ch.bonus.atk){ atkGain=Math.floor(c.atk*ch.bonus.atk); c.atk+=atkGain; }
-    if(ch.bonus.hp) { hpGain =Math.floor(c.hp *ch.bonus.hp ); c.hp +=hpGain;  }
+    // ATK/HPの%ボーナスはtreeAtkRate/treeHpRateに累積し、
+    // c.atk/c.hpには直接加算しない（凸順序による差をなくすため）
+    if(ch.bonus.atk){ if(!c.treeAtkRate)c.treeAtkRate=0; c.treeAtkRate+=ch.bonus.atk; detail.push("ATK +"+(ch.bonus.atk*100).toFixed(0)+"%"); }
+    if(ch.bonus.hp) { if(!c.treeHpRate) c.treeHpRate=0;  c.treeHpRate +=ch.bonus.hp;  detail.push("HP +"+(ch.bonus.hp*100).toFixed(0)+"%");  }
     if(ch.bonus.def){ if(!c.treeDef)c.treeDef=0; c.treeDef+=ch.bonus.def; detail.push("被ダメ-"+(ch.bonus.def*100).toFixed(0)+"%"); }
     if(ch.bonus.healUp){ if(!c.treeHealUp)c.treeHealUp=0; c.treeHealUp+=ch.bonus.healUp; detail.push("回復+"+(ch.bonus.healUp*100).toFixed(0)+"%"); }
-    if(atkGain>0) detail.push("ATK +"+atkGain);
-    if(hpGain>0)  detail.push("HP +"+hpGain);
   } else if(ch.type === "skill_up"){
     if(ch.skillBonus?.ctReduce){
       if(!c.treeCtReduce)c.treeCtReduce=0; c.treeCtReduce+=ch.skillBonus.ctReduce;
@@ -8711,8 +8829,9 @@ function resetSkillTree(){
     let ch = stNodeMap[id];
     if(!ch) return;
     if(ch.type === "bonus"){
-      if(ch.bonus.atk){ c.atk = Math.round(c.atk / (1 + ch.bonus.atk)); }
-      if(ch.bonus.hp) { c.hp  = Math.round(c.hp  / (1 + ch.bonus.hp));  }
+      // treeAtkRate/treeHpRateから引くだけ（c.atk/c.hpは変更しない）
+      if(ch.bonus.atk && c.treeAtkRate){ c.treeAtkRate -= ch.bonus.atk; if(c.treeAtkRate<=0) delete c.treeAtkRate; }
+      if(ch.bonus.hp  && c.treeHpRate) { c.treeHpRate  -= ch.bonus.hp;  if(c.treeHpRate <=0) delete c.treeHpRate;  }
       if(ch.bonus.def && c.treeDef){ c.treeDef -= ch.bonus.def; if(c.treeDef<=0) delete c.treeDef; }
       if(ch.bonus.healUp && c.treeHealUp){ c.treeHealUp -= ch.bonus.healUp; if(c.treeHealUp<=0) delete c.treeHealUp; }
     } else if(ch.type === "skill_up"){
@@ -9151,7 +9270,7 @@ function updateProfileBanner(){
 }
 
 function calcTotalPower(){
-  return box.reduce((sum, c) => sum + c.atk + c.hp, 0);
+  return box.reduce((sum, c) => sum + getEffectiveAtk(c) + getEffectiveHp(c), 0);
 }
 
 function getHighestTrialLv(){
@@ -9406,6 +9525,148 @@ function saveMissionData(){
   // saveData()に統合されているのでここでsaveData呼ぶ
   saveData();
 }
+
+// ===== キャラ情報モーダル（編成画面用）=====
+let ciCurrentBoxIndex = -1;
+let ciCurrentTab = 'status';
+
+function openCharInfoModal(i){
+  ciCurrentBoxIndex = i;
+  ciCurrentTab = 'status';
+  const c = box[i];
+  // ヘッダー
+  document.getElementById('ciImg').src = c.img;
+  document.getElementById('ciRarity').textContent = star(c.rarity);
+  document.getElementById('ciName').textContent = c.name;
+  const attrLabel = c.attr || '';
+  const roleLabel = getRoleLabel(c.role);
+  document.getElementById('ciAttrRole').textContent = attrLabel + '  /' + '  ' + roleLabel;
+  // タブ切替
+  switchCiTab('status');
+  document.getElementById('charInfoModal').style.display = 'flex';
+}
+
+function closeCharInfoModal(){
+  document.getElementById('charInfoModal').style.display = 'none';
+  ciCurrentBoxIndex = -1;
+}
+
+function switchCiTab(tab){
+  ciCurrentTab = tab;
+  ['status','skill','passive','tree'].forEach(t => {
+    let btn = document.getElementById('ciTab' + t.charAt(0).toUpperCase() + t.slice(1));
+    let content = document.getElementById('ciContent' + t.charAt(0).toUpperCase() + t.slice(1));
+    if(content) content.style.display = (t === tab) ? '' : 'none';
+  });
+  // タブボタンのスタイル
+  const tabStyles = {
+    status: {bg:'#ffd700', color:'#000', border:'none'},
+    skill:  {bg:'#1a2a4a', color:'#aaddff', border:'1px solid #4488cc'},
+    passive:{bg:'#1a3a1a', color:'#88ff88', border:'1px solid #44cc44'},
+    tree:   {bg:'#0d2010', color:'#88ffaa', border:'1px solid #44cc88'},
+  };
+  Object.keys(tabStyles).forEach(t => {
+    let btn = document.getElementById('ciTab' + t.charAt(0).toUpperCase() + t.slice(1));
+    if(!btn) return;
+    const s = tabStyles[t];
+    if(t === tab){
+      btn.style.background = s.bg;
+      btn.style.color = s.color;
+      btn.style.border = s.border || 'none';
+      btn.style.fontWeight = 'bold';
+    } else {
+      btn.style.background = tabStyles[t].bg;
+      btn.style.color = tabStyles[t].color;
+      btn.style.border = tabStyles[t].border;
+    }
+  });
+
+  if(ciCurrentBoxIndex < 0) return;
+  const c = box[ciCurrentBoxIndex];
+
+  if(tab === 'status'){
+    document.getElementById('ciHp').textContent = getEffectiveHp(c);
+    document.getElementById('ciAtk').textContent = getEffectiveAtk(c);
+    document.getElementById('ciDupe').textContent = c.dupe + ' / ' + maxDupe[c.rarity] + ' 凸';
+    const wArea = document.getElementById('ciWeapon');
+    if(c.weapon){
+      wArea.innerHTML = '<div style="display:flex;align-items:center;gap:8px;">' +
+        '<img src="'+c.weapon.img+'" style="width:36px;height:36px;object-fit:cover;border-radius:5px;">' +
+        '<div><div style="font-size:12px;color:#fff;font-weight:bold;">'+c.weapon.name+'</div>' +
+        '<div style="font-size:11px;color:#aaa;">ATK+'+c.weapon.atk+' / HP+'+c.weapon.hp+'</div></div>' +
+        '</div>' +
+        '<button onclick="ciUnequipWeapon()" style="margin-top:5px;width:100%;background:#2a1010;color:#ff8888;border:1px solid #883333;border-radius:6px;padding:4px;font-size:11px;cursor:pointer;">外す</button>';
+    } else {
+      wArea.textContent = 'なし';
+    }
+  } else if(tab === 'skill'){
+    const skill = c.skill;
+    if(skill && skill.text && skill.text !== 'スキルなし'){
+      document.getElementById('ciSkillText').textContent = skill.text;
+      document.getElementById('ciSkillCT').textContent = skill.cool ? 'CT: ' + skill.cool + 'ターン' : '';
+    } else {
+      document.getElementById('ciSkillText').textContent = 'スキルなし';
+      document.getElementById('ciSkillCT').textContent = '';
+    }
+    const s2Area = document.getElementById('ciSkill2Area');
+    if(c.skill2 && c.skill2.text){
+      s2Area.style.display = '';
+      document.getElementById('ciSkill2Text').textContent = c.skill2.text;
+    } else {
+      s2Area.style.display = 'none';
+    }
+  } else if(tab === 'passive'){
+    const pNone = document.getElementById('ciPassiveNone');
+    const pText = document.getElementById('ciPassiveText');
+    if(c.passive && c.passive.text){
+      pText.textContent = c.passive.text;
+      pText.style.display = '';
+      pNone.style.display = 'none';
+    } else {
+      pText.style.display = 'none';
+      pNone.style.display = '';
+    }
+  } else if(tab === 'tree'){
+    const chosen = c.skillTreeData?.chosen?.length || 0;
+    document.getElementById('ciTreeInfo').innerHTML =
+      '<div style="font-size:13px;font-weight:bold;margin-bottom:4px;">🌳 スキルツリー</div>' +
+      '<div>解放済み: <b style="color:#ffd700;">' + chosen + '</b> / 6 ノード</div>' +
+      (chosen > 0 ? '<div style="margin-top:4px;font-size:11px;color:#88ffaa;">✦ スキルツリーによる強化あり</div>' : '');
+  }
+}
+
+function ciAddToTeam(){
+  if(ciCurrentBoxIndex < 0) return;
+  add(ciCurrentBoxIndex);
+  closeCharInfoModal();
+}
+
+function ciOpenWeapon(){
+  if(ciCurrentBoxIndex < 0) return;
+  // キャラ情報モーダルはそのまま残して武器選択を重ねて開く
+  openWeaponSelect(ciCurrentBoxIndex, true);
+}
+
+function ciUnequipWeapon(){
+  if(ciCurrentBoxIndex < 0) return;
+  unequipWeapon(ciCurrentBoxIndex);
+  // 再描画
+  switchCiTab('status');
+}
+
+function ciUseDupe(){
+  if(ciCurrentBoxIndex < 0) return;
+  useDupe(ciCurrentBoxIndex);
+  switchCiTab('status');
+}
+
+function ciOpenSkillTree(){
+  if(ciCurrentBoxIndex < 0) return;
+  let idx = ciCurrentBoxIndex; // closeする前にindexを保存
+  closeCharInfoModal();
+  openSkillTree(idx);
+}
+// ===== キャラ情報モーダルここまで =====
 
 // ===== バトル統計トラッキング =====
 
