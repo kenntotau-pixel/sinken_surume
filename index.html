@@ -86,10 +86,499 @@ margin-bottom:2px;
 
 .flash{
 position:fixed;top:0;left:0;width:100%;height:100%;
-background:radial-gradient(circle,rgba(255,255,255,0.8),transparent);
-animation:flash 0.6s;
+background:radial-gradient(circle,rgba(255,255,255,0.9),transparent);
+animation:flash 0.6s forwards;
+pointer-events:none;z-index:9990;
 }
 @keyframes flash{0%{opacity:1}100%{opacity:0}}
+
+/* ===== ガチャ強化演出 ===== */
+/* フルスクリーンガチャ演出オーバーレイ */
+#gachaOverlay{
+  display:none;
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:#000;
+  z-index:20000;
+  overflow:hidden;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+#gachaOverlay.active{ display:flex; }
+
+/* 背景パーティクルキャンバス */
+#gachaCanvas{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;
+}
+
+/* ガチャ演出背景グロー */
+.gacha-bg-glow{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:600px;height:600px;
+  border-radius:50%;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity 0.4s;
+}
+.gacha-bg-glow.ssr-glow{
+  background:radial-gradient(circle,rgba(255,215,0,0.3) 0%,rgba(255,140,0,0.15) 40%,transparent 70%);
+}
+.gacha-bg-glow.ultra-glow{
+  background:radial-gradient(circle,rgba(0,255,255,0.4) 0%,rgba(255,0,255,0.2) 40%,transparent 70%);
+  animation:ultraBgPulse 0.8s infinite alternate;
+}
+@keyframes ultraBgPulse{
+  from{transform:translate(-50%,-50%) scale(1);}
+  to{transform:translate(-50%,-50%) scale(1.15);}
+}
+
+/* ===== ガチャ開幕演出 ===== */
+#gachaOpeningText{
+  position:absolute;
+  font-size:48px;
+  font-weight:900;
+  color:#fff;
+  letter-spacing:8px;
+  text-align:center;
+  pointer-events:none;
+  z-index:10;
+  text-shadow:0 0 30px rgba(255,215,0,0.8), 0 0 60px rgba(255,215,0,0.4);
+  opacity:0;
+}
+#gachaOpeningText.show{
+  animation:openingTextAnim 1.2s forwards;
+}
+@keyframes openingTextAnim{
+  0%{opacity:0;transform:scale(0.3) rotate(-10deg);}
+  30%{opacity:1;transform:scale(1.2) rotate(2deg);}
+  60%{opacity:1;transform:scale(1.0) rotate(0deg);}
+  100%{opacity:0;transform:scale(0.8) rotate(0deg);}
+}
+
+/* ===== フルスクリーンカード表示エリア ===== */
+#gachaCardArea{
+  position:relative;
+  z-index:5;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  max-width:500px;
+  padding:10px;
+}
+
+/* ===== ガチャカード（大型） ===== */
+.gacha-card-wrap{
+  opacity:0;
+  transform:translateY(40px) scale(0.8);
+  transition:opacity 0.4s, transform 0.4s;
+}
+.gacha-card-wrap.reveal{
+  opacity:1;
+  transform:translateY(0) scale(1);
+}
+.gacha-card-big{
+  position:relative;
+  width:100px;
+  height:140px;
+  transform-style:preserve-3d;
+  transition:transform 0.7s cubic-bezier(0.4,0,0.2,1);
+  cursor:pointer;
+}
+.gacha-card-big.flipped{
+  transform:rotateY(180deg);
+}
+.gacha-card-front,.gacha-card-back{
+  position:absolute;width:100%;height:100%;
+  backface-visibility:hidden;
+  border-radius:12px;
+  overflow:hidden;
+}
+.gacha-card-front{
+  background:linear-gradient(135deg,#1a1f3a,#2a2f55);
+  border:2px solid #4a5070;
+  display:flex;align-items:center;justify-content:center;
+  font-size:40px;
+}
+.gacha-card-front::after{
+  content:'';
+  position:absolute;top:0;left:-100%;width:60%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);
+  animation:cardShine 2s infinite;
+}
+@keyframes cardShine{
+  0%{left:-100%;}
+  100%{left:200%;}
+}
+.gacha-card-back{
+  transform:rotateY(180deg);
+  background:#1a1f2e;
+  border:2px solid #444;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:4px;
+  font-size:11px;
+}
+.gacha-card-back img{
+  width:90%;height:90px;
+  object-fit:cover;border-radius:8px;
+}
+.gacha-card-back .rarity{ font-size:12px;color:gold;font-weight:bold;margin-bottom:2px;}
+
+/* レア度別カードスタイル */
+.gacha-card-back.rarity-1{ border-color:#888; }
+.gacha-card-back.rarity-2{ border-color:#4488ff;box-shadow:0 0 12px #4488ff66; }
+.gacha-card-back.rarity-3{ border-color:gold;box-shadow:0 0 20px gold; }
+.gacha-card-back.rarity-4{
+  border-color:cyan;
+  box-shadow:0 0 30px cyan,0 0 60px magenta;
+  animation:ultraCardGlow 1s infinite alternate;
+}
+@keyframes ultraCardGlow{
+  from{box-shadow:0 0 20px cyan,0 0 40px magenta;}
+  to{box-shadow:0 0 40px cyan,0 0 80px magenta,0 0 100px #ff00ff55;}
+}
+
+/* SSR演出専用ビーム */
+.ssr-beam{
+  position:absolute;
+  top:50%;left:50%;
+  width:4px;height:300px;
+  transform-origin:bottom center;
+  background:linear-gradient(to top,rgba(255,215,0,0.8),transparent);
+  pointer-events:none;
+  animation:beamFade 1.5s forwards;
+}
+@keyframes beamFade{
+  0%{opacity:1;}
+  100%{opacity:0;}
+}
+
+/* ULTRA専用ビーム（レインボー） */
+.ultra-beam{
+  position:absolute;
+  top:50%;left:50%;
+  width:4px;height:400px;
+  transform-origin:bottom center;
+  pointer-events:none;
+  animation:ultraBeamFade 1.8s forwards;
+}
+@keyframes ultraBeamFade{
+  0%{opacity:1;}
+  100%{opacity:0;}
+}
+
+/* ===== レア度別フルスクリーンフラッシュ ===== */
+.gacha-flash-r2{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:radial-gradient(circle,rgba(68,136,255,0.7),transparent);
+  animation:gachaFlashFade 0.8s forwards;
+  pointer-events:none;z-index:19999;
+}
+.gacha-flash-r3{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:radial-gradient(circle,rgba(255,215,0,0.85),rgba(255,140,0,0.5),transparent);
+  animation:gachaFlashFade 1.0s forwards;
+  pointer-events:none;z-index:19999;
+}
+.gacha-flash-r4{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:linear-gradient(45deg,rgba(255,0,255,0.7),rgba(0,255,255,0.7),rgba(255,215,0,0.7));
+  animation:gachaFlashFadeR4 1.5s forwards;
+  pointer-events:none;z-index:19999;
+}
+@keyframes gachaFlashFade{
+  0%{opacity:1;}100%{opacity:0;}
+}
+@keyframes gachaFlashFadeR4{
+  0%{opacity:1;transform:scale(1);}
+  50%{opacity:0.8;transform:scale(1.05);}
+  100%{opacity:0;transform:scale(1.1);}
+}
+
+/* ===== ULTRA/SSR演出テキスト ===== */
+.gacha-rarity-announce{
+  position:fixed;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  font-size:56px;
+  font-weight:900;
+  letter-spacing:6px;
+  pointer-events:none;
+  z-index:20010;
+  text-align:center;
+  white-space:nowrap;
+}
+.announce-ssr{
+  color:#ffd700;
+  text-shadow:0 0 40px #ffd700,0 0 80px #ff8800,0 0 120px #ff4400;
+  animation:announceSSR 1.8s forwards;
+}
+.announce-ultra{
+  background:linear-gradient(90deg,#ff0080,#ff8c00,#ffd700,#00ff88,#00ffff,#8000ff);
+  background-size:200% auto;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  filter:drop-shadow(0 0 20px rgba(255,255,255,0.8));
+  animation:announceUltra 2.0s forwards, rainbowShift 0.5s infinite linear;
+}
+@keyframes announceSSR{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(0.3);}
+  20%{opacity:1;transform:translate(-50%,-50%) scale(1.3);}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.0);}
+  80%{opacity:1;transform:translate(-50%,-50%) scale(1.0);}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(0.9);}
+}
+@keyframes announceUltra{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(0.2) rotate(-10deg);}
+  15%{opacity:1;transform:translate(-50%,-50%) scale(1.4) rotate(3deg);}
+  40%{opacity:1;transform:translate(-50%,-50%) scale(1.0) rotate(0deg);}
+  80%{opacity:1;transform:translate(-50%,-50%) scale(1.0);}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(0.9);}
+}
+@keyframes rainbowShift{
+  from{background-position:0% center;}
+  to{background-position:200% center;}
+}
+
+/* ===== スキップ/全公開ボタン ===== */
+#gachaSkipBtn{
+  position:fixed;bottom:30px;right:20px;
+  background:rgba(255,255,255,0.15);
+  color:#fff;border:1px solid rgba(255,255,255,0.3);
+  border-radius:20px;padding:8px 20px;
+  font-size:13px;cursor:pointer;
+  z-index:20020;
+  backdrop-filter:blur(4px);
+  transition:background 0.2s;
+}
+#gachaSkipBtn:hover{background:rgba(255,255,255,0.25);}
+
+/* ===== 連打タップ演出 ===== */
+.tap-ripple{
+  position:fixed;
+  border-radius:50%;
+  width:60px;height:60px;
+  background:rgba(255,255,255,0.3);
+  pointer-events:none;
+  z-index:20030;
+  transform:translate(-50%,-50%) scale(0);
+  animation:tapRipple 0.5s forwards;
+}
+@keyframes tapRipple{
+  to{transform:translate(-50%,-50%) scale(3);opacity:0;}
+}
+
+/* ===== フルスクリーン完了後の結果グリッド ===== */
+#gachaResultSummary{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.95);
+  z-index:20000;
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  padding-top:20px;
+  overflow-y:auto;
+}
+#gachaResultSummary.active{display:flex;}
+.summary-title{
+  font-size:20px;font-weight:bold;color:#ffd700;
+  letter-spacing:4px;margin-bottom:16px;
+  text-shadow:0 0 20px #ffd700aa;
+}
+.summary-grid{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:8px;
+  max-width:500px;
+  padding:0 10px;
+}
+.summary-card{
+  background:#1a1f2e;border-radius:10px;
+  padding:6px;width:85px;text-align:center;
+  font-size:10px;
+  border:2px solid #333;
+  transition:transform 0.2s;
+  opacity:0;
+  transform:scale(0.5);
+}
+.summary-card.show{
+  opacity:1;transform:scale(1);
+  transition:opacity 0.3s, transform 0.3s;
+}
+.summary-card img{width:100%;height:72px;object-fit:cover;border-radius:7px;}
+.summary-card.r2{border-color:#4488ff;box-shadow:0 0 8px #4488ff44;}
+.summary-card.r3{border-color:gold;box-shadow:0 0 12px gold;}
+.summary-card.r4{border-color:cyan;box-shadow:0 0 20px cyan,0 0 40px magenta;animation:ultraCardGlow 1s infinite alternate;}
+.summary-close-btn{
+  margin-top:16px;margin-bottom:30px;
+  background:linear-gradient(135deg,#ffd700,#ff8c00);
+  color:#000;font-weight:bold;font-size:15px;
+  border:none;border-radius:12px;padding:12px 40px;
+  cursor:pointer;letter-spacing:2px;
+}
+
+/* ===== 昇格・確定演出 ===== */
+#kakuteiOverlay{
+  display:none;
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  z-index:21000;
+  pointer-events:none;
+  overflow:hidden;
+}
+#kakuteiOverlay.active{ display:block; pointer-events:all; }
+
+.kakutei-text{
+  position:fixed;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  font-size:64px;font-weight:900;
+  letter-spacing:8px;text-align:center;
+  white-space:nowrap;pointer-events:none;z-index:21010;
+}
+.kakutei-kakutei{
+  color:#fff;
+  text-shadow:0 0 30px #ffd700,0 0 60px #ff8800,0 0 100px #ff4400;
+  animation:kakuteiAnim 2.2s forwards;
+}
+.kakutei-shougou{
+  background:linear-gradient(90deg,#ff0080,#ffd700,#00ffff,#8000ff);
+  background-size:200% auto;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 20px rgba(255,255,255,0.9));
+  animation:shougouAnim 2.5s forwards, rainbowShift 0.4s infinite linear;
+}
+.kakutei-attr{
+  font-size:52px;
+  animation:attrConfirmAnim 2.0s forwards;
+}
+.kakutei-dupe{
+  font-size:48px;
+  color:#88ffcc;
+  text-shadow:0 0 20px #44ffaa,0 0 40px #00ff88;
+  animation:dupeAnim 2.0s forwards;
+}
+
+@keyframes kakuteiAnim{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(0.2) rotate(-15deg);}
+  15%{opacity:1;transform:translate(-50%,-50%) scale(1.4) rotate(3deg);}
+  35%{opacity:1;transform:translate(-50%,-50%) scale(1.0) rotate(0deg);}
+  80%{opacity:1;transform:translate(-50%,-50%) scale(1.0);}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(0.9);}
+}
+@keyframes shougouAnim{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(0.1) rotate(20deg);}
+  12%{opacity:1;transform:translate(-50%,-50%) scale(1.5) rotate(-3deg);}
+  30%{opacity:1;transform:translate(-50%,-50%) scale(1.0) rotate(0deg);}
+  80%{opacity:1;transform:translate(-50%,-50%) scale(1.05);}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(0.9);}
+}
+@keyframes attrConfirmAnim{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(0.3);}
+  20%{opacity:1;transform:translate(-50%,-50%) scale(1.2);}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.0);}
+  80%{opacity:1;}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(0.9);}
+}
+@keyframes dupeAnim{
+  0%{opacity:0;transform:translate(-50%,-50%) translateY(40px) scale(0.5);}
+  20%{opacity:1;transform:translate(-50%,-50%) translateY(0) scale(1.1);}
+  70%{opacity:1;transform:translate(-50%,-50%) translateY(0) scale(1.0);}
+  100%{opacity:0;transform:translate(-50%,-50%) translateY(-20px) scale(0.9);}
+}
+
+/* 昇格演出用レインボーライン */
+.shougou-lines{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:20900;
+  overflow:hidden;
+}
+.shougou-line{
+  position:absolute;height:6px;width:120%;
+  opacity:0;
+  animation:shougouLine 1.5s forwards;
+}
+@keyframes shougouLine{
+  0%{opacity:0;transform:translateX(-110%);}
+  40%{opacity:1;}
+  100%{opacity:0;transform:translateX(10%);}
+}
+
+/* 属性背景グロー（ガチャオーバーレイ内） */
+.gacha-bg-glow.attr-glow-fire{
+  background:radial-gradient(circle,rgba(255,80,0,0.4) 0%,rgba(255,140,0,0.2) 40%,transparent 70%);
+}
+.gacha-bg-glow.attr-glow-water{
+  background:radial-gradient(circle,rgba(0,140,255,0.4) 0%,rgba(0,200,255,0.2) 40%,transparent 70%);
+}
+.gacha-bg-glow.attr-glow-thunder{
+  background:radial-gradient(circle,rgba(255,215,0,0.4) 0%,rgba(255,170,0,0.2) 40%,transparent 70%);
+}
+.gacha-bg-glow.attr-glow-wood{
+  background:radial-gradient(circle,rgba(68,200,68,0.4) 0%,rgba(100,255,100,0.2) 40%,transparent 70%);
+}
+.gacha-bg-glow.attr-glow-light{
+  background:radial-gradient(circle,rgba(255,255,220,0.5) 0%,rgba(255,220,150,0.25) 40%,transparent 70%);
+}
+.gacha-bg-glow.attr-glow-dark{
+  background:radial-gradient(circle,rgba(170,0,255,0.45) 0%,rgba(220,100,255,0.2) 40%,transparent 70%);
+}
+
+/* サマリーカードに属性枠 */
+.summary-card.attr-fire{border-color:#ff4444;box-shadow:0 0 10px #ff444466;}
+.summary-card.attr-water{border-color:#4488ff;box-shadow:0 0 10px #4488ff66;}
+.summary-card.attr-thunder{border-color:#ffd700;box-shadow:0 0 10px #ffd70066;}
+.summary-card.attr-wood{border-color:#44cc44;box-shadow:0 0 10px #44cc4466;}
+.summary-card.attr-light{border-color:#ffffff;box-shadow:0 0 10px #ffffff55;}
+.summary-card.attr-dark{border-color:#aa00ff;box-shadow:0 0 10px #aa00ff66;}
+
+/* 確定演出・ゴールドフレーム点滅 */
+.kakutei-border-flash{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  border:6px solid gold;
+  box-sizing:border-box;
+  pointer-events:none;z-index:20990;
+  animation:borderFlash 0.6s 3 alternate;
+}
+@keyframes borderFlash{
+  from{opacity:1;border-color:gold;}
+  to{opacity:0;border-color:transparent;}
+}
+
+/* 属性確定演出: 属性ビーム全面 */
+.attr-beam-overlay{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:20800;
+  animation:attrBeamFade 1.4s forwards;
+}
+@keyframes attrBeamFade{
+  0%{opacity:1;}
+  60%{opacity:0.6;}
+  100%{opacity:0;}
+}
+
+/* 10連昇格: レアリティ段階カウンター */
+.rarity-upgrade-badge{
+  position:fixed;
+  bottom:80px;left:50%;
+  transform:translateX(-50%);
+  background:linear-gradient(135deg,#1a1000,#2a2000);
+  border:2px solid #ffd700;
+  border-radius:12px;
+  padding:8px 20px;
+  font-size:14px;
+  font-weight:bold;
+  color:#ffd700;
+  letter-spacing:2px;
+  z-index:21005;
+  pointer-events:none;
+  animation:badgePop 0.4s forwards;
+}
+@keyframes badgePop{
+  0%{opacity:0;transform:translateX(-50%) scale(0.7);}
+  100%{opacity:1;transform:translateX(-50%) scale(1.0);}
+}
 
 .flip{position:relative;width:90px;height:120px;transform-style:preserve-3d;transition:0.6s}
 .open .flip{transform:rotateY(180deg)}
@@ -97,7 +586,7 @@ animation:flash 0.6s;
 position:absolute;width:100%;height:100%;
 backface-visibility:hidden;border-radius:10px;
 }
-.front{background:#444}
+.front{background:linear-gradient(135deg,#2a2f55,#1a1f3a);border:2px solid #3a4060;}
 .back{transform:rotateY(180deg);background:#1a1f2e}
 
 #battleMain{
@@ -974,7 +1463,7 @@ animation:totalPop 1s forwards;
 </div>
 
 <!-- 武器スキル/パッシブ確認モーダル -->
-<div id="weaponModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:10000;justify-content:center;align-items:center;">
+<div id="weaponModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:14000;justify-content:center;align-items:center;">
   <div id="weaponModalBox" style="background:#1a1f2e;border:2px solid #aaddff;border-radius:14px;padding:20px 24px;max-width:320px;width:90%;text-align:center;position:relative;">
     <img id="weaponModalImg" src="" style="width:80px;height:80px;object-fit:cover;border-radius:10px;margin-bottom:8px;">
     <div id="weaponModalName" style="font-size:16px;font-weight:bold;margin-bottom:6px;"></div>
@@ -1163,36 +1652,261 @@ animation:totalPop 1s forwards;
   </div>
 </div>
 
-<div id="title" class="screen active">
-<h1><img src="https://imgur.com/5Olw81v.png" id="gameTitle"></h1>
-<button onclick="go('gacha')">ガチャ</button>
-<button onclick="go('party')">編成</button>
-<button onclick="go('trial')">試練</button>
-<button onclick="go('event')">イベントの間</button>
+<div id="title" class="screen active" style="padding:0;position:relative;overflow:hidden;min-height:100vh;">
 
-<button onclick="confirmReset()" style="opacity:0.6;font-size:12px;">
-データリセット
-</button>
+  <!-- 背景キャンバス（パーティクル） -->
+  <canvas id="homeBgCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
+
+  <!-- 背景グロー -->
+  <div style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;
+    background:radial-gradient(ellipse at 50% 20%, rgba(80,40,160,0.35) 0%, transparent 60%),
+               radial-gradient(ellipse at 20% 80%, rgba(255,100,0,0.12) 0%, transparent 50%),
+               radial-gradient(ellipse at 80% 60%, rgba(0,180,255,0.10) 0%, transparent 50%);"></div>
+
+  <!-- スキャンライン -->
+  <div style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;
+    background:repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.04) 3px, rgba(0,0,0,0.04) 4px);"></div>
+
+  <!-- タイトルロゴエリア -->
+  <div style="position:relative;z-index:2;padding-top:40px;text-align:center;">
+    <div style="position:relative;display:inline-block;">
+      <!-- ロゴ背景グロー -->
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+        width:320px;height:120px;border-radius:50%;
+        background:radial-gradient(ellipse,rgba(180,120,255,0.4) 0%,transparent 70%);
+        filter:blur(20px);animation:logoGlowPulse 3s infinite alternate;"></div>
+      <img src="https://imgur.com/5Olw81v.png" id="gameTitle" style="position:relative;z-index:1;">
+    </div>
+  </div>
+
+  <!-- 装飾ライン -->
+  <div style="position:relative;z-index:2;margin:18px auto 0;max-width:340px;display:flex;align-items:center;gap:10px;padding:0 20px;">
+    <div style="flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(180,120,255,0.8),transparent);"></div>
+    <span style="color:rgba(200,170,255,0.7);font-size:11px;letter-spacing:4px;font-family:'Helvetica Neue',sans-serif;">BATTLE RPG</span>
+    <div style="flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(180,120,255,0.8),transparent);"></div>
+  </div>
+
+  <!-- 中央メインビジュアルエリア -->
+  <div style="position:relative;z-index:2;margin:24px auto 0;max-width:400px;padding:0 20px;">
+    <!-- スタータイル -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+      <div style="
+        background:linear-gradient(135deg,rgba(255,100,0,0.15),rgba(180,30,0,0.15));
+        border:1px solid rgba(255,120,60,0.35);
+        border-radius:14px;padding:14px;text-align:center;
+        box-shadow:0 0 20px rgba(255,80,0,0.1);
+        cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;
+      " onclick="go('trial')" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'" ontouchstart="this.style.transform='scale(0.95)'" ontouchend="this.style.transform='scale(1)'">
+        <div style="font-size:28px;margin-bottom:4px;">⚔️</div>
+        <div style="color:#ff8844;font-size:11px;font-weight:bold;letter-spacing:1px;">試練</div>
+        <div style="color:rgba(255,150,100,0.5);font-size:9px;margin-top:2px;">TRIAL</div>
+      </div>
+      <div style="
+        background:linear-gradient(135deg,rgba(0,180,255,0.15),rgba(0,80,180,0.15));
+        border:1px solid rgba(60,160,255,0.35);
+        border-radius:14px;padding:14px;text-align:center;
+        box-shadow:0 0 20px rgba(0,150,255,0.1);
+        cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;
+      " onclick="go('event')" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'" ontouchstart="this.style.transform='scale(0.95)'" ontouchend="this.style.transform='scale(1)'">
+        <div style="font-size:28px;margin-bottom:4px;">🌌</div>
+        <div style="color:#44aaff;font-size:11px;font-weight:bold;letter-spacing:1px;">イベント</div>
+        <div style="color:rgba(100,180,255,0.5);font-size:9px;margin-top:2px;">EVENT</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- リセットボタン（小さく） -->
+  <div style="position:relative;z-index:2;text-align:center;padding-bottom:130px;">
+    <button onclick="confirmReset()" style="
+      background:transparent;border:1px solid rgba(100,100,130,0.3);
+      color:rgba(120,120,150,0.5);font-size:10px;border-radius:6px;
+      padding:5px 14px;cursor:pointer;letter-spacing:1px;
+    ">⚠ データリセット</button>
+  </div>
+
+  <!-- ===== ボトムナビゲーションバー ===== -->
+  <nav style="
+    position:fixed;bottom:0;left:0;width:100%;z-index:9000;
+    background:linear-gradient(0deg,rgba(8,5,20,0.98),rgba(12,8,30,0.95));
+    border-top:1px solid rgba(140,100,255,0.25);
+    backdrop-filter:blur(20px);
+    box-shadow:0 -4px 40px rgba(100,60,200,0.2);
+    display:flex;align-items:stretch;
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  ">
+    <!-- ガチャ -->
+    <button onclick="go('gacha')" style="
+      flex:1;background:none;border:none;cursor:pointer;
+      padding:10px 4px 12px;display:flex;flex-direction:column;align-items:center;gap:3px;
+      position:relative;overflow:hidden;
+      transition:background 0.2s;
+    " onmouseenter="this.style.background='rgba(255,200,60,0.07)'" onmouseleave="this.style.background='none'">
+      <div style="
+        width:46px;height:46px;border-radius:14px;
+        background:linear-gradient(135deg,rgba(255,200,30,0.2),rgba(255,120,0,0.2));
+        border:1.5px solid rgba(255,200,60,0.5);
+        display:flex;align-items:center;justify-content:center;
+        font-size:22px;
+        box-shadow:0 0 14px rgba(255,180,0,0.25),inset 0 1px 0 rgba(255,255,200,0.1);
+        transition:box-shadow 0.2s,transform 0.15s;
+      " onmouseenter="this.style.boxShadow='0 0 22px rgba(255,180,0,0.5)';this.style.transform='translateY(-2px)'" onmouseleave="this.style.boxShadow='0 0 14px rgba(255,180,0,0.25)';this.style.transform='translateY(0)'">💫</div>
+      <span style="color:rgba(255,210,80,0.9);font-size:10px;font-weight:bold;letter-spacing:1.5px;">ガチャ</span>
+    </button>
+
+    <!-- 編成 -->
+    <button onclick="go('party')" style="
+      flex:1;background:none;border:none;cursor:pointer;
+      padding:10px 4px 12px;display:flex;flex-direction:column;align-items:center;gap:3px;
+      position:relative;overflow:hidden;
+      transition:background 0.2s;
+    " onmouseenter="this.style.background='rgba(140,255,120,0.07)'" onmouseleave="this.style.background='none'">
+      <div style="
+        width:46px;height:46px;border-radius:14px;
+        background:linear-gradient(135deg,rgba(100,255,100,0.2),rgba(0,180,60,0.2));
+        border:1.5px solid rgba(100,220,100,0.5);
+        display:flex;align-items:center;justify-content:center;
+        font-size:22px;
+        box-shadow:0 0 14px rgba(80,220,80,0.2),inset 0 1px 0 rgba(200,255,200,0.1);
+        transition:box-shadow 0.2s,transform 0.15s;
+      " onmouseenter="this.style.boxShadow='0 0 22px rgba(80,220,80,0.45)';this.style.transform='translateY(-2px)'" onmouseleave="this.style.boxShadow='0 0 14px rgba(80,220,80,0.2)';this.style.transform='translateY(0)'">🛡️</div>
+      <span style="color:rgba(120,255,120,0.9);font-size:10px;font-weight:bold;letter-spacing:1.5px;">編成</span>
+    </button>
+
+    <!-- 中央（試練）大きめ -->
+    <button onclick="go('trial')" style="
+      flex:1;background:none;border:none;cursor:pointer;
+      padding:4px 4px 12px;display:flex;flex-direction:column;align-items:center;gap:3px;
+      position:relative;
+    ">
+      <div style="
+        width:58px;height:58px;border-radius:18px;
+        background:linear-gradient(135deg,#c87eff,#7b4fff,#ff6ab4);
+        border:2px solid rgba(255,255,255,0.25);
+        display:flex;align-items:center;justify-content:center;
+        font-size:26px;
+        box-shadow:0 0 24px rgba(180,100,255,0.55),0 -2px 0 rgba(255,255,255,0.1),inset 0 1px 0 rgba(255,255,255,0.2);
+        animation:centerBtnPulse 3s infinite;
+        position:relative;top:-10px;
+      ">⚔️</div>
+      <span style="color:rgba(220,180,255,1);font-size:10px;font-weight:bold;letter-spacing:1.5px;margin-top:-6px;">試練</span>
+    </button>
+
+    <!-- イベント -->
+    <button onclick="go('event')" style="
+      flex:1;background:none;border:none;cursor:pointer;
+      padding:10px 4px 12px;display:flex;flex-direction:column;align-items:center;gap:3px;
+      transition:background 0.2s;
+    " onmouseenter="this.style.background='rgba(60,160,255,0.07)'" onmouseleave="this.style.background='none'">
+      <div style="
+        width:46px;height:46px;border-radius:14px;
+        background:linear-gradient(135deg,rgba(60,160,255,0.2),rgba(0,80,200,0.2));
+        border:1.5px solid rgba(60,160,255,0.5);
+        display:flex;align-items:center;justify-content:center;
+        font-size:22px;
+        box-shadow:0 0 14px rgba(40,140,255,0.2),inset 0 1px 0 rgba(180,220,255,0.1);
+        transition:box-shadow 0.2s,transform 0.15s;
+      " onmouseenter="this.style.boxShadow='0 0 22px rgba(40,140,255,0.45)';this.style.transform='translateY(-2px)'" onmouseleave="this.style.boxShadow='0 0 14px rgba(40,140,255,0.2)';this.style.transform='translateY(0)'">🌌</div>
+      <span style="color:rgba(100,190,255,0.9);font-size:10px;font-weight:bold;letter-spacing:1.5px;">イベント</span>
+    </button>
+
+    <!-- ミッション -->
+    <button onclick="openMissionModal()" style="
+      flex:1;background:none;border:none;cursor:pointer;
+      padding:10px 4px 12px;display:flex;flex-direction:column;align-items:center;gap:3px;
+      transition:background 0.2s;position:relative;
+    " onmouseenter="this.style.background='rgba(100,255,200,0.07)'" onmouseleave="this.style.background='none'">
+      <div style="
+        width:46px;height:46px;border-radius:14px;
+        background:linear-gradient(135deg,rgba(60,220,140,0.2),rgba(0,120,80,0.2));
+        border:1.5px solid rgba(60,220,140,0.5);
+        display:flex;align-items:center;justify-content:center;
+        font-size:22px;
+        box-shadow:0 0 14px rgba(40,200,120,0.2),inset 0 1px 0 rgba(180,255,220,0.1);
+        position:relative;
+        transition:box-shadow 0.2s,transform 0.15s;
+      " onmouseenter="this.style.boxShadow='0 0 22px rgba(40,200,120,0.45)';this.style.transform='translateY(-2px)'" onmouseleave="this.style.boxShadow='0 0 14px rgba(40,200,120,0.2)';this.style.transform='translateY(0)'">
+        📋
+        <span id="missionNavBadge" style="display:none;position:absolute;top:-4px;right:-4px;background:#ff4444;color:#fff;border-radius:50%;font-size:9px;width:14px;height:14px;line-height:14px;text-align:center;font-weight:bold;">!</span>
+      </div>
+      <span style="color:rgba(80,220,160,0.9);font-size:10px;font-weight:bold;letter-spacing:1.5px;">ミッション</span>
+    </button>
+  </nav>
+
 </div>
 
-<!-- 固定ミッションボタン（全画面共通） -->
-<button onclick="openMissionModal()" id="missionBtn" style="
-  position:fixed;
-  bottom:20px;
-  left:14px;
-  background:linear-gradient(135deg,#1a2a1a,#0d3a1a);
-  border:2px solid #44cc88;
-  color:#88ffaa;
-  font-weight:bold;
-  border-radius:12px;
-  padding:10px 14px;
-  font-size:14px;
-  cursor:pointer;
-  z-index:8000;
-  box-shadow:0 0 12px #44cc8866;
-">
-  📋 ミッション<span id="missionNewBadge" style="display:none;position:absolute;top:-6px;right:-6px;background:#ff4444;color:#fff;border-radius:50%;font-size:10px;width:16px;height:16px;align-items:center;justify-content:center;font-weight:bold;">!</span>
-</button>
+<style>
+@keyframes logoGlowPulse{
+  from{opacity:0.6;transform:translate(-50%,-50%) scale(0.9);}
+  to{opacity:1;transform:translate(-50%,-50%) scale(1.1);}
+}
+@keyframes centerBtnPulse{
+  0%,100%{box-shadow:0 0 24px rgba(180,100,255,0.55),0 -2px 0 rgba(255,255,255,0.1),inset 0 1px 0 rgba(255,255,255,0.2);}
+  50%{box-shadow:0 0 40px rgba(200,120,255,0.8),0 0 60px rgba(180,80,255,0.3),0 -2px 0 rgba(255,255,255,0.1),inset 0 1px 0 rgba(255,255,255,0.2);}
+}
+#title{
+  background:#060412;
+  min-height:100vh;
+}
+</style>
+
+<script>
+// ホーム背景パーティクル
+(function(){
+  let canvas = document.getElementById("homeBgCanvas");
+  if(!canvas) return;
+  let ctx = canvas.getContext("2d");
+  let W, H, particles = [];
+
+  function resize(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  window.addEventListener("resize", resize);
+  resize();
+
+  for(let i = 0; i < 60; i++){
+    particles.push({
+      x: Math.random()*W, y: Math.random()*H,
+      r: Math.random()*1.5+0.3,
+      vx: (Math.random()-0.5)*0.3,
+      vy: -Math.random()*0.5-0.1,
+      alpha: Math.random()*0.6+0.1,
+      color: Math.random() < 0.5 ? "180,120,255" : Math.random() < 0.5 ? "255,160,60" : "60,180,255"
+    });
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    particles.forEach(p=>{
+      p.x += p.vx; p.y += p.vy;
+      if(p.y < -4){ p.y = H+4; p.x = Math.random()*W; }
+      if(p.x < -4) p.x = W+4;
+      if(p.x > W+4) p.x = -4;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(${p.color},${p.alpha})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ミッションバッジ同期
+(function(){
+  let orig = window.updateMissionBadge;
+  window.updateMissionBadge = function(){
+    if(orig) orig();
+    let b1 = document.getElementById("missionNewBadge");
+    let b2 = document.getElementById("missionNavBadge");
+    if(b1 && b2) b2.style.display = b1.style.display;
+  };
+})();
+</script>
+
+<!-- ミッションボタンはボトムナビに統合済み -->
+<!-- missionNewBadgeのidはJS参照のため残す -->
+<span id="missionNewBadge" style="display:none;"></span>
 
 
 <div id="gacha" class="screen">
@@ -1210,7 +1924,7 @@ animation:totalPop 1s forwards;
 <div id="bannerSlide" style="display:flex;transition:0.4s;"></div>
 </div>
 
-<div id="gachaResult"></div>
+<div id="gachaResult" style="display:none;"></div>
 
 <div style="margin-top:20px;">
   <button onclick="go('exchange')" style="background:#ffd700;color:#000;font-weight:bold;padding:8px 18px;border-radius:8px;border:none;cursor:pointer;">
@@ -1324,6 +2038,10 @@ return players.map(p=>{
 }
 
 function saveData(){
+// ミッション報酬で解放された称号IDリストを保存（関数は保存できないためIDのみ）
+const unlockedMissionTitleIds = profileTitles
+  .filter(t => t._fromMission)
+  .map(t => t.id);
 const data = {
 stone,
 box,
@@ -1336,7 +2054,8 @@ weaponBox,
 profileData,
 charUseCount,
 missionStats,
-missionData
+missionData,
+unlockedMissionTitleIds
 };
 localStorage.setItem("gachaData", JSON.stringify(data));
 }
@@ -1358,7 +2077,13 @@ if(data.charUseCount) Object.assign(charUseCount, data.charUseCount);
 if(data.missionStats) Object.assign(missionStats, data.missionStats);
 if(data.missionData) Object.assign(missionData, data.missionData);
 
+// ミッション報酬称号の復元 - IDを一時退避し、missionDefs定義後に同期復元する
+// （missionDefsはファイル後半で定義されるため、ここでは保存だけ行う）
+if(data.unlockedMissionTitleIds && Array.isArray(data.unlockedMissionTitleIds)){
+  window._pendingMissionTitleIds = data.unlockedMissionTitleIds;
 }
+
+} // loadData end
 
 let stone=100;
 let box=[],team=[],players=[],deadPlayers=[],enemy;
@@ -1388,6 +2113,16 @@ let trialPage = 0;
 const perPage = 8;
 const attrClass = {火:"fire",水:"water",雷:"thunder",木:"wood",光:"light",闇:"dark"};
 const advantage={火:"木",木:"雷",雷:"水",水:"火",光:"闇",闇:"光"};
+
+// 属性カラー定義（枠・演出に使用）
+const attrColor = {
+  火: { main:"#ff4444", sub:"#ff8800", glow:"rgba(255,68,0,0.6)", particle:["#ff4444","#ff8800","#ffcc00","#ff2200"] },
+  水: { main:"#4488ff", sub:"#00ccff", glow:"rgba(0,136,255,0.6)", particle:["#4488ff","#00ccff","#88ccff","#0044cc"] },
+  雷: { main:"#ffd700", sub:"#ffee44", glow:"rgba(255,215,0,0.6)", particle:["#ffd700","#ffee44","#ffe066","#ff8c00"] },
+  木: { main:"#44cc44", sub:"#88ff44", glow:"rgba(68,200,68,0.6)", particle:["#44cc44","#88ff44","#00ff88","#226622"] },
+  光: { main:"#ffffff", sub:"#ffeeaa", glow:"rgba(255,255,200,0.7)", particle:["#ffffff","#ffeeaa","#ffffcc","#ffcc88"] },
+  闇: { main:"#aa00ff", sub:"#cc44ff", glow:"rgba(150,0,255,0.6)", particle:["#aa00ff","#cc44ff","#8800cc","#ff00ff"] },
+};
 
 const chars=[
 {name:"室井元武",rarity:1,attr:"火",img:"https://imgur.com/21T5sVB.png",role:"attacker",
@@ -2620,86 +3355,42 @@ stone -= 10;
 
 gachaResult.innerHTML="";
 
-// 演出
-let flash=document.createElement("div");
-flash.className="flash";
-document.body.appendChild(flash);
-setTimeout(()=>flash.remove(),600);
-
 // キャラ取得
 let c = getGachaChar();
-
-// 表示
-// ☆4専用演出
-if(c.rarity === 4){
-
-// 虹フラッシュ
-let rainbow=document.createElement("div");
-rainbow.className="rainbowFlash";
-document.body.appendChild(rainbow);
-setTimeout(()=>rainbow.remove(),800);
-
-// 画面揺れ
-document.body.classList.add("shake");
-setTimeout(()=>document.body.classList.remove("shake"),400);
-
-update();
-saveData();
-
-}
-let div=document.createElement("div");
-div.className=`card ${attrClass[c.attr]}`;
-div.innerHTML=`
-<div class="flip">
-<div class="front"></div>
-<div class="back ${c.rarity==3?"ssr":""}">
-<div class="rarity">${star(c.rarity)}</div>
-<img src="${c.img}">
-${c.name}
-</div>
-</div>`;
-gachaResult.appendChild(div);
-setTimeout(()=>div.classList.add("open"),50);
 
 // BOX処理（凸含む）
 let exist=box.find(b=>b.name===c.name);
 if(exist){
-// 上限10
 if(exist.dupe < maxDupe[exist.rarity]){
-
     exist.dupe++;
-
     let atkUp=0,hpUp=0;
-
-    if(exist.rarity===1){
-        atkUp=12; hpUp=42;
-    }else if(exist.rarity===2){
-        atkUp=17; hpUp=54;
-    }else if(exist.rarity===3){
-        atkUp=24; hpUp=72;
-    }else if(exist.rarity===4){
-        atkUp=72; hpUp=184;
-    }
-
-    exist.atk += atkUp;
-    exist.hp += hpUp;
-
+    if(exist.rarity===1){atkUp=12;hpUp=42;}
+    else if(exist.rarity===2){atkUp=17;hpUp=54;}
+    else if(exist.rarity===3){atkUp=24;hpUp=72;}
+    else if(exist.rarity===4){atkUp=72;hpUp=184;}
+    exist.atk+=atkUp;exist.hp+=hpUp;
 }else{
-    // 🔥余剰 → 凸塊
-    let gain = 0;
-
-    if(exist.rarity === 1) gain = 1;
-    if(exist.rarity === 2) gain = 3;
-    if(exist.rarity === 3) gain = 10;
-    if(exist.rarity === 4) gain = 30;
-
-    dupeStone += gain;
+    let gain=0;
+    if(exist.rarity===1)gain=1;
+    if(exist.rarity===2)gain=3;
+    if(exist.rarity===3)gain=10;
+    if(exist.rarity===4)gain=30;
+    dupeStone+=gain;
 }
-
 }else{
 box.push({...c,dupe:0,atk:20+5*c.rarity,hp:100+20*c.rarity,weapon:null});
 }
 
+// 🎴 フルスクリーン演出
+showGachaFullscreen1(c, ()=>{
+  // 演出後にgachaResultに小さく表示
+  let div=document.createElement("div");
+  div.className=`card ${attrClass[c.attr]}`;
+  div.innerHTML=`<div class="flip open"><div class="front"></div><div class="back ${c.rarity==3?"ssr":""} ${c.rarity==4?"ultra":""}"><div class="rarity">${star(c.rarity)}</div><img src="${c.img}">${c.name}</div></div>`;
+  gachaResult.appendChild(div);
+  update();
+  saveData();
+});
 update();
 }
 
@@ -2709,89 +3400,51 @@ stone-=100;
 
 gachaResult.innerHTML="";
 
-let flash=document.createElement("div");
-flash.className="flash";
-document.body.appendChild(flash);
-setTimeout(()=>flash.remove(),600);
-
 let results=[];
 
 for(let i=0;i<9;i++){
-results.push(getGachaChar());
-
-update();
-saveData();
+  results.push(getGachaChar());
 }
 
 let ssr=chars.filter(c=>c.rarity==3);
 results.push(ssr[Math.random()*ssr.length|0]);
 
-results.forEach((c,i)=>{
-if(c.rarity === 4){
-
-let rainbow=document.createElement("div");
-rainbow.className="rainbowFlash";
-document.body.appendChild(rainbow);
-setTimeout(()=>rainbow.remove(),800);
-
-document.body.classList.add("shake");
-setTimeout(()=>document.body.classList.remove("shake"),400);
-
-}
-setTimeout(()=>{
-let div=document.createElement("div");
-div.className=`card ${attrClass[c.attr]}`;
-div.innerHTML=`
-<div class="flip">
-<div class="front"></div><div class="back ${c.rarity==3?"ssr":""} ${c.rarity==4?"ultra":""}">
-<div class="rarity">${star(c.rarity)}</div>
-<img src="${c.img}">
-${c.name}
-</div>
-</div>`;
-gachaResult.appendChild(div);
-setTimeout(()=>div.classList.add("open"),50);
-
-let exist=box.find(b=>b.name===c.name);
-if(exist){
-// 上限10
-if(exist.dupe < maxDupe[exist.rarity]){
-
-    exist.dupe++;
-
-    let atkUp=0,hpUp=0;
-
-    if(exist.rarity===1){
-        atkUp=20; hpUp=50;
-    }else if(exist.rarity===2){
-        atkUp=25; hpUp=62;
-    }else if(exist.rarity===3){
-        atkUp=32; hpUp=80;
-    }else if(exist.rarity===4){
-        atkUp=72; hpUp=184;
+// BOX処理（全キャラ）
+results.forEach((c)=>{
+  let exist=box.find(b=>b.name===c.name);
+  if(exist){
+    if(exist.dupe < maxDupe[exist.rarity]){
+      exist.dupe++;
+      let atkUp=0,hpUp=0;
+      if(exist.rarity===1){atkUp=20;hpUp=50;}
+      else if(exist.rarity===2){atkUp=25;hpUp=62;}
+      else if(exist.rarity===3){atkUp=32;hpUp=80;}
+      else if(exist.rarity===4){atkUp=72;hpUp=184;}
+      exist.atk+=atkUp;exist.hp+=hpUp;
+    }else{
+      let gain=0;
+      if(exist.rarity===1)gain=1;
+      if(exist.rarity===2)gain=3;
+      if(exist.rarity===3)gain=10;
+      if(exist.rarity===4)gain=30;
+      dupeStone+=gain;
     }
+  }else{
+    box.push({...c,dupe:0,atk:20+5*c.rarity,hp:100+20*c.rarity,weapon:null});
+  }
+});
 
-
-    exist.atk += atkUp;
-    exist.hp += hpUp;
-
-}else{
-    // 🔥余剰 → 凸塊
-    let gain = 0;
-
-    if(exist.rarity === 1) gain = 1;
-    if(exist.rarity === 2) gain = 3;
-    if(exist.rarity === 3) gain = 10;
-    if(exist.rarity === 4) gain = 30;
-
-    dupeStone += gain;
-}
-
-}else{
-box.push({...c,dupe:0,atk:20+5*c.rarity,hp:100+20*c.rarity,weapon:null});
-}
-
-},i*250);
+// 🎴 フルスクリーン10連演出
+showGachaFullscreen10(results, ()=>{
+  // 演出後にgachaResultに小さく表示
+  results.forEach((c)=>{
+    let div=document.createElement("div");
+    div.className=`card ${attrClass[c.attr]}`;
+    div.innerHTML=`<div class="flip open"><div class="front"></div><div class="back ${c.rarity==3?"ssr":""} ${c.rarity==4?"ultra":""}"><div class="rarity">${star(c.rarity)}</div><img src="${c.img}">${c.name}</div></div>`;
+    gachaResult.appendChild(div);
+  });
+  update();
+  saveData();
 });
 
 update();
@@ -6319,75 +6972,41 @@ stone -= 10;
 
 gachaResult.innerHTML="";
 
-// 演出
-let flash=document.createElement("div");
-flash.className="flash";
-document.body.appendChild(flash);
-setTimeout(()=>flash.remove(),600);
-
 // キャラ取得
 let c = getEventChar();
-
-if(c.rarity === 4){
-    playSSRLight();
-    playEventEffect();
-}
-
-// 表示
-let div=document.createElement("div");
-div.className=`card ${attrClass[c.attr]}`;
-div.innerHTML=`
-<div class="flip">
-<div class="front"></div>
-<div class="back ${c.rarity>=3?"ssr":""} ${c.rarity==4?"ultra":""}">
-<div class="rarity">${star(c.rarity)}</div>
-<img src="${c.img}">
-${c.name}
-</div>
-</div>`;
-gachaResult.appendChild(div);
-setTimeout(()=>div.classList.add("open"),50);
 
 // BOX処理
 let exist=box.find(b=>b.name===c.name);
 if(exist){
-    // 上限10
-if(exist.dupe < maxDupe[exist.rarity]){
-
+  if(exist.dupe < maxDupe[exist.rarity]){
     exist.dupe++;
-
     let atkUp=0,hpUp=0;
-
-    if(exist.rarity===1){
-        atkUp=20; hpUp=50;
-    }else if(exist.rarity===2){
-        atkUp=25; hpUp=62;
-    }else if(exist.rarity===3){
-        atkUp=32; hpUp=80;
-    }else if(exist.rarity===4){
-        atkUp=72; hpUp=184;
-    }
-
-    exist.atk += atkUp;
-    exist.hp += hpUp;
-
+    if(exist.rarity===1){atkUp=20;hpUp=50;}
+    else if(exist.rarity===2){atkUp=25;hpUp=62;}
+    else if(exist.rarity===3){atkUp=32;hpUp=80;}
+    else if(exist.rarity===4){atkUp=72;hpUp=184;}
+    exist.atk+=atkUp;exist.hp+=hpUp;
+  }else{
+    let gain=0;
+    if(exist.rarity===1)gain=1;
+    if(exist.rarity===2)gain=3;
+    if(exist.rarity===3)gain=10;
+    if(exist.rarity===4)gain=30;
+    dupeStone+=gain;
+  }
 }else{
-    // 🔥余剰 → 凸塊
-    let gain = 0;
-
-    if(exist.rarity === 1) gain = 1;
-    if(exist.rarity === 2) gain = 3;
-    if(exist.rarity === 3) gain = 10;
-    if(exist.rarity === 4) gain = 30;
-
-    dupeStone += gain;
-}
-}else{
-    box.push({...c,dupe:0,atk:20+5*c.rarity,hp:100+20*c.rarity,weapon:null});
+  box.push({...c,dupe:0,atk:20+5*c.rarity,hp:100+20*c.rarity,weapon:null});
 }
 
+// 🎴 フルスクリーン演出
+showGachaFullscreen1(c, ()=>{
+  let div=document.createElement("div");
+  div.className=`card ${attrClass[c.attr]}`;
+  div.innerHTML=`<div class="flip open"><div class="front"></div><div class="back ${c.rarity>=3?"ssr":""} ${c.rarity==4?"ultra":""}"><div class="rarity">${star(c.rarity)}</div><img src="${c.img}">${c.name}</div></div>`;
+  gachaResult.appendChild(div);
+  update();saveData();
+});
 update();
-saveData();
 }
 
 function drawEvent10(){
@@ -6403,102 +7022,1093 @@ for(let i=0;i<9;i++){
     results.push(getEventChar());
 }
 
-// ② ☆3以上確定枠を作る
-let highPool = [
-    ...eventChars.filter(c=>c.rarity === 3)
-];
-
-// プールが空対策
-if(highPool.length === 0){
-    highPool = chars.filter(c=>c.rarity === 3);
-}
-
-// 1体追加
+// ② ☆3以上確定枠
+let highPool = [...eventChars.filter(c=>c.rarity === 3)];
+if(highPool.length === 0){ highPool = chars.filter(c=>c.rarity === 3); }
 results.push(highPool[Math.random()*highPool.length|0]);
 
-// ③ 表示＆BOX処理
-results.forEach((c,i)=>{
-
-    if(c.rarity === 4){
-        playSSRLight();
-        playEventEffect();
+// BOX処理
+results.forEach((c)=>{
+  let exist=box.find(b=>b.name===c.name);
+  if(exist){
+    if(exist.dupe < maxDupe[exist.rarity]){
+      exist.dupe++;
+      let atkUp=0,hpUp=0;
+      if(exist.rarity===1){atkUp=20;hpUp=50;}
+      else if(exist.rarity===2){atkUp=25;hpUp=62;}
+      else if(exist.rarity===3){atkUp=32;hpUp=80;}
+      else if(exist.rarity===4){atkUp=72;hpUp=184;}
+      exist.atk+=atkUp;exist.hp+=hpUp;
+    }else{
+      let gain=0;
+      if(exist.rarity===1)gain=1;
+      if(exist.rarity===2)gain=3;
+      if(exist.rarity===3)gain=10;
+      if(exist.rarity===4)gain=30;
+      dupeStone+=gain;
     }
+  }else{
+    box.push({...c,dupe:0,atk:20+5*c.rarity,hp:100+20*c.rarity,weapon:null});
+  }
+});
 
-    setTimeout(()=>{
-        let div=document.createElement("div");
-        div.className=`card ${attrClass[c.attr]}`;
-        div.innerHTML=`
-        <div class="flip">
-        <div class="front"></div>
-        <div class="back ${c.rarity>=3?"ssr":""} ${c.rarity==4?"ultra":""}">
-        <div class="rarity">${star(c.rarity)}</div>
-        <img src="${c.img}">
-        ${c.name}
-        </div>
-        </div>`;
-        gachaResult.appendChild(div);
-        setTimeout(()=>div.classList.add("open"),50);
-
-        // BOX処理
-        let exist=box.find(b=>b.name===c.name);
-        if(exist){
-            // 上限10
-if(exist.dupe < maxDupe[exist.rarity]){
-
-    exist.dupe++;
-
-    let atkUp=0,hpUp=0;
-
-    if(exist.rarity===1){
-        atkUp=20; hpUp=50;
-    }else if(exist.rarity===2){
-        atkUp=25; hpUp=62;
-    }else if(exist.rarity===3){
-        atkUp=32; hpUp=80;
-    }else if(exist.rarity===4){
-        atkUp=72; hpUp=184;
-    }
-
-    exist.atk += atkUp;
-    exist.hp += hpUp;
-
-}else{
-    // 🔥余剰 → 凸塊
-    let gain = 0;
-
-    if(exist.rarity === 1) gain = 1;
-    if(exist.rarity === 2) gain = 3;
-    if(exist.rarity === 3) gain = 10;
-    if(exist.rarity === 4) gain = 30;
-
-    dupeStone += gain;
-}
-
-        }else{
-            box.push({...c,dupe:0,atk:20+5*c.rarity,hp:100+20*c.rarity,weapon:null});
-        }
-
-    },i*200);
+// 🎴 フルスクリーン10連演出
+showGachaFullscreen10(results, ()=>{
+  results.forEach((c)=>{
+    let div=document.createElement("div");
+    div.className=`card ${attrClass[c.attr]}`;
+    div.innerHTML=`<div class="flip open"><div class="front"></div><div class="back ${c.rarity>=3?"ssr":""} ${c.rarity==4?"ultra":""}"><div class="rarity">${star(c.rarity)}</div><img src="${c.img}">${c.name}</div></div>`;
+    gachaResult.appendChild(div);
+  });
+  update();saveData();
 });
 
 update();
 saveData();
 }
 
+// ========================================
+// ===== 🎴 強化ガチャ演出エンジン =====
+// ========================================
+
+// フルスクリーンオーバーレイを生成（初回のみ）
+function ensureGachaOverlay(){
+  if(document.getElementById("gachaOverlay")) return;
+  const html = `
+  <div id="gachaOverlay">
+    <canvas id="gachaCanvas"></canvas>
+    <div class="gacha-bg-glow" id="gachaBgGlow"></div>
+    <div id="gachaOpeningText"></div>
+    <div id="gachaCardArea"></div>
+    <button id="gachaSkipBtn" onclick="gachaSkipAll()">タップで全公開 ▶</button>
+  </div>
+  <div id="gachaResultSummary">
+    <div class="summary-title">✨ 結　果 ✨</div>
+    <div class="summary-grid" id="summaryGrid"></div>
+    <button class="summary-close-btn" onclick="closeGachaSummary()">OK</button>
+  </div>`;
+  document.body.insertAdjacentHTML("beforeend", html);
+}
+
+// 属性対応パーティクル（属性カラーを受け取る）
+function startGachaParticlesAttr(mode, attrColors){
+  const canvas = document.getElementById("gachaCanvas");
+  if(!canvas) return;
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  gachaCanvasCtx = canvas.getContext("2d");
+  gachaParticles = [];
+
+  const colors = attrColors || (
+    mode === "ultra"
+      ? ["#ff00ff","#00ffff","#ffd700","#ff0088","#00ff88","#8800ff"]
+      : mode === "ssr"
+      ? ["#ffd700","#ff8c00","#ffee88","#fff"]
+      : ["#4488ff","#88aaff","#fff","#aaaaff"]
+  );
+
+  const count = mode === "ultra" ? 300 : mode === "ssr" ? 200 : 60;
+
+  for(let i=0;i<count;i++){
+    gachaParticles.push({
+      x: Math.random()*canvas.width,
+      y: Math.random()*canvas.height + canvas.height,
+      vx: (Math.random()-0.5)*6,
+      vy: -(Math.random()*6+3),
+      size: Math.random()*7+1.5,
+      color: colors[Math.floor(Math.random()*colors.length)],
+      life: 1,
+      decay: Math.random()*0.006+0.002,
+      shape: Math.random() > 0.4 ? "circle" : "star"
+    });
+  }
+
+  function tick(){
+    if(!gachaCanvasCtx) return;
+    const W = canvas.width, H = canvas.height;
+    gachaCanvasCtx.clearRect(0,0,W,H);
+    gachaParticles = gachaParticles.filter(p=>p.life>0);
+    gachaParticles.forEach(p=>{
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.04;
+      p.life -= p.decay;
+      gachaCanvasCtx.globalAlpha = Math.max(0, p.life);
+      gachaCanvasCtx.fillStyle = p.color;
+      gachaCanvasCtx.shadowColor = p.color;
+      gachaCanvasCtx.shadowBlur = 14;
+      if(p.shape === "star"){
+        drawStar(gachaCanvasCtx, p.x, p.y, p.size*1.5);
+      } else {
+        gachaCanvasCtx.beginPath();
+        gachaCanvasCtx.arc(p.x,p.y,p.size,0,Math.PI*2);
+        gachaCanvasCtx.fill();
+      }
+    });
+    gachaCanvasCtx.globalAlpha = 1;
+    gachaCanvasCtx.shadowBlur = 0;
+    const replenish = mode==="ultra"?60:mode==="ssr"?40:20;
+    if(gachaParticles.length < replenish && gachaAnimFrame){
+      for(let n=0;n<3;n++){
+        const col = colors[Math.floor(Math.random()*colors.length)];
+        gachaParticles.push({
+          x: Math.random()*W, y: H,
+          vx: (Math.random()-0.5)*6, vy: -(Math.random()*6+3),
+          size: Math.random()*7+1.5, color: col, life: 1,
+          decay: Math.random()*0.006+0.002,
+          shape: Math.random()>0.4?"circle":"star"
+        });
+      }
+    }
+    gachaAnimFrame = requestAnimationFrame(tick);
+  }
+  gachaAnimFrame = requestAnimationFrame(tick);
+}
+
+// パーティクルシステム
+let gachaParticles = [];
+let gachaAnimFrame = null;
+let gachaCanvasCtx = null;
+
+function startGachaParticles(mode){
+  const canvas = document.getElementById("gachaCanvas");
+  if(!canvas) return;
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  gachaCanvasCtx = canvas.getContext("2d");
+  gachaParticles = [];
+
+  const colors = mode === "ultra"
+    ? ["#ff00ff","#00ffff","#ffd700","#ff0088","#00ff88","#8800ff"]
+    : mode === "ssr"
+    ? ["#ffd700","#ff8c00","#ffee88","#fff"]
+    : ["#4488ff","#88aaff","#fff","#aaaaff"];
+
+  const count = mode === "ultra" ? 220 : mode === "ssr" ? 150 : 50;
+
+  for(let i=0;i<count;i++){
+    gachaParticles.push({
+      x: Math.random()*canvas.width,
+      y: Math.random()*canvas.height + canvas.height,
+      vx: (Math.random()-0.5)*3,
+      vy: -(Math.random()*4+2),
+      size: Math.random()*4+1,
+      color: colors[Math.floor(Math.random()*colors.length)],
+      life: 1,
+      decay: Math.random()*0.008+0.004,
+      shape: Math.random() > 0.5 ? "circle" : "star"
+    });
+  }
+
+  function tick(){
+    if(!gachaCanvasCtx) return;
+    const W = canvas.width, H = canvas.height;
+    gachaCanvasCtx.clearRect(0,0,W,H);
+    gachaParticles = gachaParticles.filter(p=>p.life>0);
+    gachaParticles.forEach(p=>{
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.05; // 重力
+      p.life -= p.decay;
+      gachaCanvasCtx.globalAlpha = Math.max(0, p.life);
+      gachaCanvasCtx.fillStyle = p.color;
+      gachaCanvasCtx.shadowColor = p.color;
+      gachaCanvasCtx.shadowBlur = 8;
+      if(p.shape === "star"){
+        drawStar(gachaCanvasCtx, p.x, p.y, p.size*1.5);
+      } else {
+        gachaCanvasCtx.beginPath();
+        gachaCanvasCtx.arc(p.x,p.y,p.size,0,Math.PI*2);
+        gachaCanvasCtx.fill();
+      }
+    });
+    gachaCanvasCtx.globalAlpha = 1;
+    gachaCanvasCtx.shadowBlur = 0;
+    // 補充
+    if(gachaParticles.length < 30 && gachaAnimFrame){
+      const col = colors[Math.floor(Math.random()*colors.length)];
+      gachaParticles.push({
+        x: Math.random()*W,
+        y: H,
+        vx: (Math.random()-0.5)*3,
+        vy: -(Math.random()*4+2),
+        size: Math.random()*4+1,
+        color: col,
+        life: 1,
+        decay: Math.random()*0.008+0.004,
+        shape: Math.random()>0.5?"circle":"star"
+      });
+    }
+    gachaAnimFrame = requestAnimationFrame(tick);
+  }
+  gachaAnimFrame = requestAnimationFrame(tick);
+}
+
+function drawStar(ctx, x, y, r){
+  ctx.beginPath();
+  for(let i=0;i<5;i++){
+    const a1 = (i*2*Math.PI/5) - Math.PI/2;
+    const a2 = a1 + Math.PI/5;
+    if(i===0) ctx.moveTo(x+r*Math.cos(a1), y+r*Math.sin(a1));
+    else ctx.lineTo(x+r*Math.cos(a1), y+r*Math.sin(a1));
+    ctx.lineTo(x+(r*0.4)*Math.cos(a2), y+(r*0.4)*Math.sin(a2));
+  }
+  ctx.closePath();
+  ctx.fill();
+}
+
+function stopGachaParticles(){
+  if(gachaAnimFrame){ cancelAnimationFrame(gachaAnimFrame); gachaAnimFrame=null; }
+  gachaCanvasCtx = null;
+  gachaParticles = [];
+}
+
+// ビームエフェクト（SSR/ULTRA用）
+function spawnBeams(container, mode){
+  const count = mode === "ultra" ? 16 : 10;
+  for(let i=0;i<count;i++){
+    const beam = document.createElement("div");
+    const angleClass = mode === "ultra" ? "ultra-beam" : "ssr-beam";
+    beam.className = angleClass;
+    beam.style.transform = `rotate(${(360/count)*i}deg) translateX(-50%)`;
+    if(mode === "ultra"){
+      const hue = (360/count)*i;
+      beam.style.background = `linear-gradient(to top, hsla(${hue},100%,60%,0.9), transparent)`;
+    }
+    container.appendChild(beam);
+    setTimeout(()=>beam.remove(), 1800);
+  }
+}
+
+// アナウンスバナー
+function showAnnounce(mode){
+  const el = document.createElement("div");
+  el.className = "gacha-rarity-announce " + (mode==="ultra"?"announce-ultra":"announce-ssr");
+  el.textContent = mode==="ultra" ? "✦ ULTRA ✦" : "✦ S S R ✦";
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(), 2100);
+}
+
+// フラッシュ
+function gachaFlash(rarity){
+  const cls = rarity===4?"gacha-flash-r4":rarity===3?"gacha-flash-r3":"gacha-flash-r2";
+  const el = document.createElement("div");
+  el.className = cls;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(), rarity===4?1600:1100);
+}
+
+// タップリップル
+document.addEventListener("click", function(e){
+  if(!document.getElementById("gachaOverlay")?.classList.contains("active")) return;
+  const r = document.createElement("div");
+  r.className = "tap-ripple";
+  r.style.left = e.clientX+"px";
+  r.style.top = e.clientY+"px";
+  document.body.appendChild(r);
+  setTimeout(()=>r.remove(), 600);
+});
+
+// スキップシステム
+// 1回目: 演出をすべてキャンセルして全カード即公開
+// 2回目: サマリーを閉じてオーバーレイを終了
+let gachaFlipQueue = [];
+let gachaSkipStage = 0; // 0=未スキップ, 1=カード公開済み
+let _gachaSkipped = false;
+
+function gachaSkipAll(){
+  if(gachaSkipStage === 0){
+    // 1回目: 全演出キャンセル + 全カード即公開
+    gachaSkipStage = 1;
+    _gachaSkipped = true;
+    // キューに入っている即公開関数を実行
+    gachaFlipQueue.forEach(fn=>fn());
+    gachaFlipQueue = [];
+    // 属性確定・昇格テキストをすべて除去
+    document.querySelectorAll(".kakutei-text,.shougou-lines,.kakutei-border-flash,.attr-beam-overlay,.rarity-upgrade-badge").forEach(el=>el.remove());
+  } else {
+    // 2回目: サマリー/オーバーレイを閉じる
+    gachaSkipStage = 0;
+    _gachaSkipped = false;
+    const s = document.getElementById("gachaResultSummary");
+    if(s && s.classList.contains("active")){
+      s.classList.remove("active");
+    } else {
+      closeGachaOverlay();
+    }
+  }
+}
+
+// サマリーを閉じる
+function closeGachaSummary(){
+  const s = document.getElementById("gachaResultSummary");
+  if(s) s.classList.remove("active");
+  // 既存gachaResultにも反映済みなのでそのまま
+}
+
+// オーバーレイを閉じる
+function closeGachaOverlay(){
+  const ov = document.getElementById("gachaOverlay");
+  if(ov) ov.classList.remove("active");
+  stopGachaParticles();
+  const bg = document.getElementById("gachaBgGlow");
+  if(bg) bg.className = "gacha-bg-glow";
+}
+
+// ========================================
+// ===== 確定・昇格演出システム =====
+// ========================================
+
+// ========================================
+// ===== ★4 超強化確定演出システム =====
+// ========================================
+// 確定演出パターンをランダムに選択（3種類）
+function showKakuteiEffect(c, onDone){
+  const pattern = Math.floor(Math.random() * 3);
+  if(pattern === 0) _kakuteiPattern_Explosion(c, onDone);
+  else if(pattern === 1) _kakuteiPattern_Portal(c, onDone);
+  else _kakuteiPattern_Nova(c, onDone);
+}
+
+// ===== パターン1: 爆発型 ★ EXPLOSION ★ =====
+function _kakuteiPattern_Explosion(c, onDone){
+  const colors = attrColor[c.attr] || attrColor["火"];
+  _addKakuteiStyle();
+
+  // 黒→白フラッシュ連続
+  [0, 200, 400].forEach((t, i)=>{
+    setTimeout(()=>{
+      const f = document.createElement("div");
+      f.style.cssText = `position:fixed;top:0;left:0;width:100%;height:100%;z-index:21100;pointer-events:none;
+        background:${i%2===0?`radial-gradient(circle,rgba(255,255,255,0.95),${colors.main}88,transparent)`:`radial-gradient(circle,${colors.main}cc,transparent)`};
+        animation:kakuteiFlashPop 0.35s forwards;`;
+      document.body.appendChild(f);
+      setTimeout(()=>f.remove(), 400);
+    }, t);
+  });
+
+  // 大型タイトルテキスト「✦ ULTRA RARE ✦」
+  setTimeout(()=>{
+    const title = document.createElement("div");
+    title.style.cssText = `
+      position:fixed;top:28%;left:50%;transform:translate(-50%,-50%);
+      font-size:18px;font-weight:900;letter-spacing:6px;white-space:nowrap;
+      color:#fff;text-shadow:0 0 20px ${colors.main},0 0 50px ${colors.sub};
+      z-index:21110;pointer-events:none;
+      animation:kakuteiTitleRise 2.5s forwards;
+    `;
+    title.textContent = "✦  U L T R A  R A R E  ✦";
+    document.body.appendChild(title);
+    setTimeout(()=>title.remove(), 2600);
+  }, 300);
+
+  // メイン確定テキスト（超巨大）
+  setTimeout(()=>{
+    const txt = document.createElement("div");
+    txt.style.cssText = `
+      position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+      font-size:72px;font-weight:900;letter-spacing:8px;white-space:nowrap;
+      z-index:21115;pointer-events:none;
+      background:linear-gradient(135deg,#fff 0%,${colors.main} 40%,${colors.sub} 80%,#fff 100%);
+      background-size:200% auto;
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+      filter:drop-shadow(0 0 30px ${colors.main}) drop-shadow(0 0 60px ${colors.sub});
+      animation:kakuteiMainPop 2.4s forwards, kakuteiShine 0.6s infinite linear;
+    `;
+    txt.textContent = "確　定";
+    document.body.appendChild(txt);
+    setTimeout(()=>txt.remove(), 2500);
+  }, 400);
+
+  // 放射ビーム（16本 レインボー）
+  setTimeout(()=>{
+    const beamCont = document.createElement("div");
+    beamCont.style.cssText = "position:fixed;top:0;left:0;width:100%;height:100%;z-index:21105;pointer-events:none;overflow:hidden;";
+    for(let i=0;i<16;i++){
+      const b = document.createElement("div");
+      const hue = (360/16)*i;
+      b.style.cssText = `
+        position:absolute;top:50%;left:50%;
+        width:6px;height:60vh;transform-origin:bottom center;
+        transform:rotate(${(360/16)*i}deg) translateX(-50%);
+        background:linear-gradient(to top,hsla(${hue},100%,65%,0.95),transparent);
+        animation:kakuteiBeamFade 1.8s forwards;
+        border-radius:3px;
+      `;
+      beamCont.appendChild(b);
+    }
+    document.body.appendChild(beamCont);
+    setTimeout(()=>beamCont.remove(), 1900);
+  }, 350);
+
+  // 星エフェクト（大量）
+  setTimeout(()=>{
+    for(let i=0;i<24;i++){
+      setTimeout(()=>{
+        const star = document.createElement("div");
+        const angle = Math.random()*360;
+        const dist = 80+Math.random()*160;
+        const size = 16+Math.random()*28;
+        star.style.cssText = `
+          position:fixed;top:50%;left:50%;z-index:21108;pointer-events:none;
+          font-size:${size}px;transform:translate(-50%,-50%);
+          animation:kakuteiStarBurst 1.2s forwards;
+          --dx:${Math.cos(angle*Math.PI/180)*dist}px;
+          --dy:${Math.sin(angle*Math.PI/180)*dist}px;
+        `;
+        star.textContent = ["✦","★","✧","✩","✪"][Math.floor(Math.random()*5)];
+        star.style.color = `hsl(${Math.random()*360},100%,70%)`;
+        document.body.appendChild(star);
+        setTimeout(()=>star.remove(), 1300);
+      }, i*30);
+    }
+  }, 300);
+
+  // 外枠フラッシュ（レインボー）
+  const border = document.createElement("div");
+  border.style.cssText = `
+    position:fixed;top:0;left:0;width:100%;height:100%;
+    border:8px solid ${colors.main};box-sizing:border-box;
+    z-index:21103;pointer-events:none;
+    animation:kakuteiBorderRainbow 1.8s forwards;
+  `;
+  document.body.appendChild(border);
+  setTimeout(()=>border.remove(), 1900);
+
+  setTimeout(()=>{ if(onDone) onDone(); }, 2600);
+}
+
+// ===== パターン2: ポータル型 ★ PORTAL ★ =====
+function _kakuteiPattern_Portal(c, onDone){
+  const colors = attrColor[c.attr] || attrColor["火"];
+  _addKakuteiStyle();
+
+  // 暗転から光出現
+  const dark = document.createElement("div");
+  dark.style.cssText = `position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:21100;pointer-events:none;animation:kakuteiDarkFade 0.5s forwards;`;
+  document.body.appendChild(dark);
+  setTimeout(()=>dark.remove(), 600);
+
+  // 渦巻きポータル（CSS アニメ）
+  setTimeout(()=>{
+    const portal = document.createElement("div");
+    portal.style.cssText = `
+      position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+      width:0;height:0;border-radius:50%;z-index:21102;pointer-events:none;
+      background:conic-gradient(from 0deg,${colors.main},${colors.sub},#ff00ff,#00ffff,#ffd700,${colors.main});
+      box-shadow:0 0 60px ${colors.main},0 0 120px ${colors.sub},0 0 200px #ff00ff;
+      animation:kakuteiPortalOpen 1.2s cubic-bezier(0.2,0,0.2,1) forwards;
+    `;
+    document.body.appendChild(portal);
+    setTimeout(()=>portal.remove(), 2400);
+  }, 200);
+
+  // 「★4 確定！」中央テキスト
+  setTimeout(()=>{
+    const txt = document.createElement("div");
+    txt.style.cssText = `
+      position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+      font-size:58px;font-weight:900;letter-spacing:6px;white-space:nowrap;
+      z-index:21116;pointer-events:none;
+      color:#fff;
+      text-shadow:0 0 20px ${colors.main},0 0 50px ${colors.sub},0 0 80px #fff;
+      animation:kakuteiPortalText 2.2s forwards;
+    `;
+    txt.textContent = "★ 4  確  定 ★";
+    document.body.appendChild(txt);
+    setTimeout(()=>txt.remove(), 2400);
+  }, 800);
+
+  // 光の粒子が四方から集まってくる
+  setTimeout(()=>{
+    for(let i=0;i<20;i++){
+      const p = document.createElement("div");
+      const angle = (360/20)*i;
+      const dist = 200+Math.random()*120;
+      p.style.cssText = `
+        position:fixed;top:50%;left:50%;width:10px;height:10px;border-radius:50%;
+        background:${colors.main};z-index:21109;pointer-events:none;
+        box-shadow:0 0 10px ${colors.main};
+        transform:translate(calc(-50% + ${Math.cos(angle*Math.PI/180)*dist}px), calc(-50% + ${Math.sin(angle*Math.PI/180)*dist}px));
+        animation:kakuteiGather 0.8s ${i*0.03}s cubic-bezier(0.3,0,0.2,1) forwards;
+      `;
+      document.body.appendChild(p);
+      setTimeout(()=>p.remove(), 1000);
+    }
+  }, 300);
+
+  setTimeout(()=>{ if(onDone) onDone(); }, 2600);
+}
+
+// ===== パターン3: 新星型 ★ SUPERNOVA ★ =====
+function _kakuteiPattern_Nova(c, onDone){
+  const colors = attrColor[c.attr] || attrColor["火"];
+  _addKakuteiStyle();
+
+  // 全画面レインボースキャン
+  const scan = document.createElement("div");
+  scan.style.cssText = `
+    position:fixed;top:0;left:-100%;width:100%;height:100%;z-index:21101;pointer-events:none;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,0.9),${colors.main}cc,transparent);
+    animation:kakuteiScan 0.6s cubic-bezier(0.4,0,0.2,1) forwards;
+  `;
+  document.body.appendChild(scan);
+  setTimeout(()=>scan.remove(), 700);
+
+  // 超新星背景（拡大する円）
+  setTimeout(()=>{
+    const nova = document.createElement("div");
+    nova.style.cssText = `
+      position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+      width:10px;height:10px;border-radius:50%;z-index:21102;pointer-events:none;
+      background:radial-gradient(circle,#fff 0%,${colors.main} 30%,${colors.sub} 60%,transparent 80%);
+      box-shadow:0 0 100px ${colors.main},0 0 200px ${colors.sub};
+      animation:kakuteiNovaExpand 1.4s cubic-bezier(0.2,0,0.2,1) forwards;
+    `;
+    document.body.appendChild(nova);
+    setTimeout(()=>nova.remove(), 1500);
+  }, 200);
+
+  // タイトルテキスト「SUPERNOVA」
+  setTimeout(()=>{
+    const label = document.createElement("div");
+    label.style.cssText = `
+      position:fixed;top:30%;left:50%;transform:translate(-50%,-50%);
+      font-size:16px;font-weight:900;letter-spacing:10px;white-space:nowrap;
+      color:${colors.main};opacity:0;
+      text-shadow:0 0 20px ${colors.main};z-index:21113;pointer-events:none;
+      animation:kakuteiLabelFade 2.5s 0.4s forwards;
+    `;
+    label.textContent = "✦ S U P E R N O V A ✦";
+    document.body.appendChild(label);
+    setTimeout(()=>label.remove(), 3100);
+  }, 300);
+
+  // メイン「確定」テキスト
+  setTimeout(()=>{
+    const txt = document.createElement("div");
+    txt.style.cssText = `
+      position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+      font-size:76px;font-weight:900;letter-spacing:8px;white-space:nowrap;
+      z-index:21115;pointer-events:none;
+      color:#fff;
+      text-shadow:0 0 40px ${colors.main},0 0 80px ${colors.sub},0 0 120px #fff,0 0 200px ${colors.main};
+      animation:kakuteiNovaPop 2.4s forwards;
+    `;
+    txt.textContent = "確　定！";
+    document.body.appendChild(txt);
+    setTimeout(()=>txt.remove(), 2600);
+  }, 500);
+
+  // 外枠レインボー点滅
+  for(let i=0;i<3;i++){
+    setTimeout(()=>{
+      const border = document.createElement("div");
+      const hue = i*120;
+      border.style.cssText = `
+        position:fixed;top:0;left:0;width:100%;height:100%;
+        border:${8-i*2}px solid hsl(${hue},100%,65%);box-sizing:border-box;
+        z-index:21103;pointer-events:none;
+        animation:kakuteiBorderFade 0.5s forwards;
+      `;
+      document.body.appendChild(border);
+      setTimeout(()=>border.remove(), 600);
+    }, 200+i*180);
+  }
+
+  setTimeout(()=>{ if(onDone) onDone(); }, 2700);
+}
+
+// 確定演出用CSS（1回だけ追加）
+let _kakuteiStyleAdded = false;
+function _addKakuteiStyle(){
+  if(_kakuteiStyleAdded) return;
+  _kakuteiStyleAdded = true;
+  const s = document.createElement("style");
+  s.textContent = `
+    @keyframes kakuteiFlashPop{0%{opacity:1;}100%{opacity:0;}}
+    @keyframes kakuteiMainPop{
+      0%{opacity:0;transform:translate(-50%,-50%) scale(0.1) rotate(-20deg);}
+      15%{opacity:1;transform:translate(-50%,-50%) scale(1.5) rotate(4deg);}
+      30%{opacity:1;transform:translate(-50%,-50%) scale(1.0) rotate(0deg);}
+      80%{opacity:1;transform:translate(-50%,-50%) scale(1.05);}
+      100%{opacity:0;transform:translate(-50%,-50%) scale(0.9);}
+    }
+    @keyframes kakuteiShine{
+      from{background-position:0% center;}
+      to{background-position:200% center;}
+    }
+    @keyframes kakuteiTitleRise{
+      0%{opacity:0;transform:translate(-50%,-50%) translateY(30px) scale(0.6);}
+      20%{opacity:1;transform:translate(-50%,-50%) translateY(0) scale(1.0);}
+      80%{opacity:1;}
+      100%{opacity:0;}
+    }
+    @keyframes kakuteiNameSlide{
+      0%{opacity:0;transform:translate(-50%,-50%) translateX(-40px);}
+      20%{opacity:1;transform:translate(-50%,-50%) translateX(0);}
+      80%{opacity:1;}
+      100%{opacity:0;transform:translate(-50%,-50%) translateX(20px);}
+    }
+    @keyframes kakuteiBeamFade{
+      0%{opacity:0.9;transform:rotate(var(--r,0deg)) translateX(-50%) scaleY(0);}
+      20%{opacity:0.9;transform:rotate(var(--r,0deg)) translateX(-50%) scaleY(1);}
+      100%{opacity:0;transform:rotate(var(--r,0deg)) translateX(-50%) scaleY(1);}
+    }
+    @keyframes kakuteiStarBurst{
+      0%{opacity:1;transform:translate(calc(-50%),calc(-50%)) scale(1);}
+      100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(0.3);}
+    }
+    @keyframes kakuteiBorderRainbow{
+      0%{opacity:1;border-color:#ff0080;}
+      16%{border-color:#ff8c00;}
+      33%{border-color:#ffd700;}
+      50%{border-color:#00ff88;}
+      66%{border-color:#00ffff;}
+      83%{border-color:#8000ff;}
+      100%{opacity:0;border-color:#ff0080;}
+    }
+    @keyframes kakuteiDarkFade{0%{opacity:1;}100%{opacity:0;}}
+    @keyframes kakuteiPortalOpen{
+      0%{width:0;height:0;}
+      60%{width:320px;height:320px;opacity:1;}
+      100%{width:360px;height:360px;opacity:0;}
+    }
+    @keyframes kakuteiPortalText{
+      0%{opacity:0;transform:translate(-50%,-50%) scale(0.3);}
+      20%{opacity:1;transform:translate(-50%,-50%) scale(1.15);}
+      40%{opacity:1;transform:translate(-50%,-50%) scale(1.0);}
+      80%{opacity:1;}
+      100%{opacity:0;}
+    }
+    @keyframes kakuteiGather{
+      0%{}
+      100%{transform:translate(-50%,-50%) scale(0.1);opacity:0;}
+    }
+    @keyframes kakuteiScan{
+      0%{left:-100%;}
+      100%{left:100%;}
+    }
+    @keyframes kakuteiNovaExpand{
+      0%{width:10px;height:10px;opacity:1;}
+      70%{width:150vw;height:150vw;opacity:0.6;}
+      100%{width:180vw;height:180vw;opacity:0;}
+    }
+    @keyframes kakuteiLabelFade{
+      0%{opacity:0;letter-spacing:20px;}
+      30%{opacity:1;letter-spacing:10px;}
+      80%{opacity:1;}
+      100%{opacity:0;}
+    }
+    @keyframes kakuteiNovaPop{
+      0%{opacity:0;transform:translate(-50%,-50%) scale(0.2);}
+      15%{opacity:1;transform:translate(-50%,-50%) scale(1.3);}
+      35%{opacity:1;transform:translate(-50%,-50%) scale(1.0);}
+      80%{opacity:1;}
+      100%{opacity:0;}
+    }
+    @keyframes kakuteiBorderFade{
+      0%{opacity:1;}
+      100%{opacity:0;}
+    }
+  `;
+  document.head.appendChild(s);
+}
+
+// 昇格演出（★3が出た時）超強化
+function showShougouEffect(c, onDone){
+  const colors = attrColor[c.attr] || attrColor["火"];
+
+  // フラッシュ
+  const flash = document.createElement("div");
+  flash.style.cssText = `position:fixed;top:0;left:0;width:100%;height:100%;z-index:21099;pointer-events:none;
+    background:radial-gradient(circle,rgba(255,215,0,0.8),${colors.main}88,transparent);
+    animation:kakuteiFlashPop 0.5s forwards;`;
+  document.body.appendChild(flash);
+  setTimeout(()=>flash.remove(), 600);
+
+  // 水平ライン流れ（12本・より派手に）
+  const lineContainer = document.createElement("div");
+  lineContainer.className = "shougou-lines";
+  for(let i=0;i<12;i++){
+    const line = document.createElement("div");
+    line.className = "shougou-line";
+    line.style.top = (5+i*8) + "%";
+    line.style.animationDelay = (i*0.07) + "s";
+    line.style.height = "4px";
+    const hue = (i*22) % 360;
+    line.style.background = `linear-gradient(90deg, transparent, hsl(${hue},100%,65%), hsl(${(hue+60)%360},100%,65%), transparent)`;
+    lineContainer.appendChild(line);
+  }
+  document.body.appendChild(lineContainer);
+  setTimeout(()=>lineContainer.remove(), 1900);
+
+  // 「S S R」メインテキスト（大型）
+  const txt = document.createElement("div");
+  txt.style.cssText = `
+    position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+    font-size:62px;font-weight:900;letter-spacing:10px;white-space:nowrap;
+    z-index:21115;pointer-events:none;
+    color:${colors.main};
+    text-shadow:0 0 30px ${colors.main},0 0 60px ${colors.sub},0 0 100px ${colors.main};
+    animation:announceSSR 2.2s forwards;
+  `;
+  txt.textContent = "✦ S S R ✦";
+  document.body.appendChild(txt);
+  setTimeout(()=>txt.remove(), 2300);
+
+  // 外枠ゴールド点滅（3回）
+  for(let i=0;i<3;i++){
+    setTimeout(()=>{
+      const border = document.createElement("div");
+      border.style.cssText = `position:fixed;top:0;left:0;width:100%;height:100%;
+        border:6px solid ${i%2===0?"#ffd700":colors.main};box-sizing:border-box;
+        z-index:21103;pointer-events:none;
+        animation:kakuteiBorderFade 0.4s forwards;`;
+      document.body.appendChild(border);
+      setTimeout(()=>border.remove(), 500);
+    }, i*200);
+  }
+
+  setTimeout(()=>txt.remove(), 2300);
+  setTimeout(()=>{ if(onDone) onDone(); }, 2400);
+}
+
+// 属性確定演出（上部に表示 → 中央のopenTextと重ならない）
+function showAttrConfirmEffect(attr){
+  if(_gachaSkipped) return;
+  const colors = attrColor[attr] || attrColor["火"];
+  const attrName = { 火:"🔥 炎", 水:"💧 水", 雷:"⚡ 雷", 木:"🌿 木", 光:"✨ 光", 闇:"🌑 闇" };
+  const txt = document.createElement("div");
+  txt.className = "kakutei-text kakutei-attr";
+  txt.textContent = (attrName[attr] || attr) + " 属性確定！";
+  txt.style.color = colors.main;
+  txt.style.textShadow = `0 0 20px ${colors.main}, 0 0 40px ${colors.sub}`;
+  // 上部に配置（top:20%）して中央の演出テキストと重ならないようにする
+  txt.style.top = "18%";
+  txt.style.transform = "translateX(-50%)";
+  txt.style.left = "50%";
+  txt.style.position = "fixed";
+  txt.style.fontSize = "36px";
+  document.body.appendChild(txt);
+  setTimeout(()=>txt.remove(), 2100);
+}
+
+// 凸かぶりコンボ演出
+function showDupeEffect(count){
+  if(count < 3) return;
+  const txt = document.createElement("div");
+  txt.className = "kakutei-text kakutei-dupe";
+  txt.textContent = "凸×" + count + " コンボ！";
+  txt.style.cssText += "top:65%;font-size:36px;";
+  document.body.appendChild(txt);
+  setTimeout(()=>txt.remove(), 2100);
+}
+
+// ========================================
+// ===== 🎴 メイン演出: 1枚引き =====
+// ========================================
+function showGachaFullscreen1(c, onDone){
+  ensureGachaOverlay();
+  // スキップ状態リセット
+  _gachaSkipped = false;
+  gachaSkipStage = 0;
+
+  const ov = document.getElementById("gachaOverlay");
+  const cardArea = document.getElementById("gachaCardArea");
+  const bgGlow = document.getElementById("gachaBgGlow");
+  const openText = document.getElementById("gachaOpeningText");
+
+  cardArea.innerHTML = "";
+  ov.classList.add("active");
+
+  const mode = c.rarity===4?"ultra":c.rarity===3?"ssr":"normal";
+  const colors = attrColor[c.attr] || { main:"#4488ff", sub:"#88ccff", glow:"rgba(68,136,255,0.5)", particle:["#4488ff","#88ccff","#fff"] };
+
+  // 属性対応パーティクル
+  startGachaParticlesAttr(mode, colors.particle);
+
+  // 背景グロー（属性色 + レアリティ）
+  bgGlow.className = "gacha-bg-glow";
+  const attrGlowClass = "attr-glow-" + (attrClass[c.attr] || "fire");
+  if(c.rarity>=3) bgGlow.classList.add(c.rarity===4?"ultra-glow":"ssr-glow");
+  bgGlow.classList.add(attrGlowClass);
+  setTimeout(()=>{ bgGlow.style.opacity="1"; }, 100);
+
+  // 開幕テキスト
+  openText.textContent = c.rarity===4 ? "✦ ULTRA RARE ✦" : c.rarity===3 ? "★ SUPER RARE ★" : "GACHA";
+  openText.className = "";
+  void openText.offsetWidth;
+  openText.classList.add("show");
+
+  // レア度フラッシュ
+  if(c.rarity>=3) gachaFlash(c.rarity);
+
+  // 確定・昇格演出（★3/4）
+  if(c.rarity===4){
+    setTimeout(()=>{ if(!_gachaSkipped) showKakuteiEffect(c, null); }, 300);
+    setTimeout(()=>{ if(!_gachaSkipped) showAnnounce(mode); }, 2600);
+  } else if(c.rarity===3){
+    setTimeout(()=>{ if(!_gachaSkipped) showShougouEffect(c, null); }, 300);
+    setTimeout(()=>{ if(!_gachaSkipped) showAnnounce(mode); }, 2400);
+  } else if(c.rarity>=2){
+    setTimeout(()=>{ if(!_gachaSkipped) showAnnounce(mode); }, 400);
+  }
+
+  // カード生成
+  const cardDelay = c.rarity===4 ? 2800 : c.rarity===3 ? 2600 : 600;
+  setTimeout(()=>{
+    const rarityClass = c.rarity===4?"rarity-4":c.rarity===3?"rarity-3":c.rarity===2?"rarity-2":"";
+    const wrap = document.createElement("div");
+    wrap.className = "gacha-card-wrap";
+
+    const cardEl = document.createElement("div");
+    cardEl.className = "gacha-card-big";
+
+    // 属性色のカード枠
+    const attrBorderStyle = c.rarity>=2 ? `border:3px solid ${colors.main};box-shadow:0 0 18px ${colors.main}88,0 0 40px ${colors.glow};` : "";
+
+    cardEl.innerHTML = `
+      <div class="gacha-card-front">🎴</div>
+      <div class="gacha-card-back ${rarityClass}" style="${attrBorderStyle}">
+        <div class="rarity">${star(c.rarity)}</div>
+        <img src="${c.img}" onerror="this.style.display='none'">
+      </div>`;
+
+    if(c.rarity>=3) spawnBeams(wrap, mode);
+
+    wrap.appendChild(cardEl);
+    cardArea.appendChild(wrap);
+
+    setTimeout(()=>wrap.classList.add("reveal"), 50);
+
+    const flipFn = ()=>{
+      cardEl.classList.add("flipped");
+      if(c.rarity>=3){
+        setTimeout(()=>{
+          bgGlow.style.opacity="0";
+          stopGachaParticles();
+        }, 1200);
+      }
+      setTimeout(()=>{
+        closeGachaOverlay();
+        gachaSkipStage = 0;
+        _gachaSkipped = false;
+        if(onDone) onDone();
+      }, 1800);
+    };
+
+    gachaFlipQueue = [()=>{
+      // スキップ時は即フリップして即終了
+      cardEl.classList.add("flipped");
+      bgGlow.style.opacity="0";
+      stopGachaParticles();
+      setTimeout(()=>{
+        closeGachaOverlay();
+        gachaSkipStage = 0;
+        _gachaSkipped = false;
+        if(onDone) onDone();
+      }, 300);
+    }];
+
+    cardEl.addEventListener("click", function once(){
+      cardEl.removeEventListener("click", once);
+      gachaFlipQueue = gachaFlipQueue.filter(f=>f!==flipFn);
+      flipFn();
+    });
+
+    const delay = c.rarity===4 ? 1600 : c.rarity===3 ? 1200 : 800;
+    setTimeout(()=>{ if(!_gachaSkipped) flipFn(); }, delay + 600);
+  }, cardDelay);
+}
+
+
+// ========================================
+// ===== 🎴 メイン演出: 10連ガチャ =====
+// ========================================
+function showGachaFullscreen10(results, onDone){
+  ensureGachaOverlay();
+  // スキップ状態リセット
+  _gachaSkipped = false;
+  gachaSkipStage = 0;
+
+  const ov = document.getElementById("gachaOverlay");
+  const cardArea = document.getElementById("gachaCardArea");
+  const bgGlow = document.getElementById("gachaBgGlow");
+  const openText = document.getElementById("gachaOpeningText");
+
+  cardArea.innerHTML = "";
+  ov.classList.add("active");
+
+  // 最高レアリティ検出
+  const maxRarity = Math.max(...results.map(c=>c.rarity));
+  const mode = maxRarity===4?"ultra":maxRarity===3?"ssr":"normal";
+
+  // 最高レアキャラの属性色を使用
+  const topChar = results.reduce((best,c)=>c.rarity>best.rarity?c:best, results[0]);
+  const colors = attrColor[topChar.attr] || { main:"#4488ff", sub:"#88ccff", glow:"rgba(68,136,255,0.5)", particle:["#4488ff","#88ccff","#fff"] };
+
+  startGachaParticlesAttr(mode, colors.particle);
+
+  bgGlow.className = "gacha-bg-glow";
+  const attrGlowClass = "attr-glow-" + (attrClass[topChar.attr] || "fire");
+  if(maxRarity>=3) bgGlow.classList.add(maxRarity===4?"ultra-glow":"ssr-glow");
+  bgGlow.classList.add(attrGlowClass);
+  setTimeout(()=>{ bgGlow.style.opacity="1"; }, 100);
+
+  openText.textContent = maxRarity===4 ? "✦ ULTRA RARE 出現！ ✦" : maxRarity===3 ? "★ 10連ガチャ ★" : "10連ガチャ";
+  openText.className = "";
+  void openText.offsetWidth;
+  openText.classList.add("show");
+
+  if(maxRarity>=3) gachaFlash(maxRarity);
+
+  // 昇格・確定演出（openTextとは別レイヤーなので重複なし）
+  if(maxRarity===4){
+    setTimeout(()=>{ if(!_gachaSkipped) showKakuteiEffect(topChar, null); }, 300);
+    setTimeout(()=>{ if(!_gachaSkipped) showAnnounce(mode); }, 2600);
+  } else if(maxRarity===3){
+    setTimeout(()=>{ if(!_gachaSkipped) showShougouEffect(topChar, null); }, 300);
+    setTimeout(()=>{ if(!_gachaSkipped) showAnnounce(mode); }, 2400);
+  } else {
+    setTimeout(()=>{ if(!_gachaSkipped) showAnnounce(mode); }, 500);
+  }
+
+  // カードを順次生成
+  const wraps = [];
+  const cardEls = [];
+  const flipFns = [];
+
+  results.forEach((c,i)=>{
+    const rarityClass = c.rarity===4?"rarity-4":c.rarity===3?"rarity-3":c.rarity===2?"rarity-2":"";
+    const cColors = attrColor[c.attr] || { main:"#4488ff", sub:"#88ccff", glow:"rgba(68,136,255,0.5)" };
+    const attrBorderStyle = c.rarity>=2 ? `border:2px solid ${cColors.main};box-shadow:0 0 10px ${cColors.main}88;` : "";
+
+    const wrap = document.createElement("div");
+    wrap.className = "gacha-card-wrap";
+    wrap.style.width = "80px";
+
+    const cardEl = document.createElement("div");
+    cardEl.style.cssText = "position:relative;width:80px;height:110px;transform-style:preserve-3d;transition:transform 0.7s cubic-bezier(0.4,0,0.2,1);cursor:pointer;";
+
+    cardEl.innerHTML = `
+      <div style="position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;background:linear-gradient(135deg,#1a1f3a,#2a2f55);border:2px solid #4a5070;display:flex;align-items:center;justify-content:center;font-size:28px;">🎴</div>
+      <div style="position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;transform:rotateY(180deg);background:#1a1f2e;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3px;box-sizing:border-box;${attrBorderStyle}" class="${rarityClass}">
+        <div style="font-size:10px;color:${cColors.main};font-weight:bold;text-shadow:0 0 4px ${cColors.main};">${star(c.rarity)}</div>
+        <img src="${c.img}" style="width:90%;height:60px;object-fit:cover;border-radius:6px;" onerror="this.style.display='none'">
+      </div>`;
+
+    wrap.appendChild(cardEl);
+    cardArea.appendChild(wrap);
+    wraps.push(wrap);
+    cardEls.push(cardEl);
+
+    const flipFn = (force)=>{
+      if(cardEl.dataset.flipped) return;
+      cardEl.dataset.flipped = "1";
+      cardEl.style.transform = "rotateY(180deg)";
+      if(c.rarity>=3 && !force){
+        gachaFlash(c.rarity);
+        if(c.rarity>=3) spawnBeams(wrap, c.rarity===4?"ultra":"ssr");
+        // ★4個別フリップ時は確定演出
+        if(c.rarity===4){
+          setTimeout(()=>{ if(!_gachaSkipped) showKakuteiEffect(c, null); }, 200);
+        }
+      }
+    };
+
+    flipFns.push(flipFn);
+
+    cardEl.addEventListener("click", function once(){
+      cardEl.removeEventListener("click",once);
+      flipFn(false);
+    });
+  });
+
+  gachaFlipQueue = [()=>{
+    wraps.forEach((w)=>{ w.classList.add("reveal"); });
+    flipFns.forEach(f=>f(true));
+    // スキップ時はすぐサマリーへ
+    setTimeout(()=>{
+      closeGachaOverlay();
+      showGachaSummary(results);
+      if(onDone) onDone();
+      gachaSkipStage = 1; // サマリー待ちへ移行
+    }, 400);
+  }];
+
+  let revealIndex = 0;
+  const startDelay = maxRarity===4 ? 3000 : maxRarity===3 ? 2600 : 800;
+
+  const startReveal = ()=>{
+    function revealNext(){
+      if(_gachaSkipped) return; // スキップ済みなら自動進行を止める
+      if(revealIndex >= results.length){
+        setTimeout(()=>{
+          closeGachaOverlay();
+          showGachaSummary(results);
+          if(onDone) onDone();
+          gachaSkipStage = 1; // サマリー待ちへ
+        }, 2000);
+        return;
+      }
+      const i = revealIndex++;
+      wraps[i].classList.add("reveal");
+      const c = results[i];
+      const autoFlipDelay = c.rarity===4 ? 1200 : c.rarity===3 ? 900 : 400;
+      setTimeout(()=>{
+        if(_gachaSkipped) return;
+        flipFns[i](false);
+        setTimeout(revealNext, c.rarity>=3 ? 700 : 250);
+      }, autoFlipDelay);
+    }
+    revealNext();
+  };
+
+  setTimeout(()=>{ if(!_gachaSkipped) startReveal(); }, startDelay);
+}
+
+
+// 結果サマリー表示（属性色対応）
+function showGachaSummary(results){
+  const summary = document.getElementById("gachaResultSummary");
+  const grid = document.getElementById("summaryGrid");
+  grid.innerHTML = "";
+
+  // レアリティ降順ソート
+  const sorted = [...results].sort((a,b)=>b.rarity-a.rarity);
+
+  sorted.forEach((c,i)=>{
+    const div = document.createElement("div");
+    const rClass = c.rarity>=4?"r4":c.rarity>=3?"r3":c.rarity>=2?"r2":"";
+    const aClass = "attr-" + (attrClass[c.attr] || "fire");
+    const cColors = attrColor[c.attr] || { main:"#4488ff" };
+    div.className = `summary-card ${rClass} ${aClass}`;
+    div.innerHTML = `<div style="font-size:10px;color:${cColors.main};margin-bottom:2px;text-shadow:0 0 4px ${cColors.main};">${star(c.rarity)}</div>
+      <img src="${c.img}" onerror="this.style.display='none'">`;
+    grid.appendChild(div);
+    setTimeout(()=>div.classList.add("show"), i*60+50);
+  });
+
+  summary.classList.add("active");
+}
+
+
+// ============== 後方互換: 旧 showGachaResult ==============
 function showGachaResult(c){
-let div=document.createElement("div");
-div.className=`card ${attrClass[c.attr]}`;
-div.innerHTML=`
-<div class="flip">
-<div class="front"></div>
-<div class="back ${c.rarity==3?"ssr":""} ${c.rarity==4?"ultra":""}">
-<div class="rarity">${star(c.rarity)}</div>
-<img src="${c.img}">
-${c.name}
-</div>
-</div>`;
-gachaResult.appendChild(div);
-setTimeout(()=>div.classList.add("open"),50);
+  let div=document.createElement("div");
+  div.className=`card ${attrClass[c.attr]}`;
+  div.innerHTML=`
+  <div class="flip">
+  <div class="front"></div>
+  <div class="back ${c.rarity==3?"ssr":""} ${c.rarity==4?"ultra":""}">
+  <div class="rarity">${star(c.rarity)}</div>
+  <img src="${c.img}">
+  ${c.name}
+  </div>
+  </div>`;
+  gachaResult.appendChild(div);
+  setTimeout(()=>div.classList.add("open"),50);
 }
 
 function addToBox(c){
@@ -6767,55 +8377,39 @@ return pool[Math.random()*pool.length|0];
 function drawEvent2_1(){
 if(stone < 10) return;
 stone -= 10;
-
 gachaResult.innerHTML="";
-
 let c = getEventChar2();
-
-if(c.rarity === 4){
-    playSSRLight();
-    playEventEffect();
-}
-
-showGachaResult(c);
 addToBox(c);
-
-update();
-saveData();
+showGachaFullscreen1(c, ()=>{
+  let div=document.createElement("div");
+  div.className=`card ${attrClass[c.attr]}`;
+  div.innerHTML=`<div class="flip open"><div class="front"></div><div class="back ${c.rarity>=3?"ssr":""} ${c.rarity==4?"ultra":""}"><div class="rarity">${star(c.rarity)}</div><img src="${c.img}">${c.name}</div></div>`;
+  gachaResult.appendChild(div);
+  update();saveData();
+});
+update();saveData();
 }
 
 function drawEvent2_10(){
 if(stone < 100) return;
 stone -= 100;
-
 gachaResult.innerHTML="";
-
 let results = [];
-
-for(let i=0;i<9;i++){
-    results.push(getEventChar2());
-}
-
-// ☆3確定
+for(let i=0;i<9;i++){ results.push(getEventChar2()); }
 let pool = eventChars2.filter(c=>c.rarity===3);
 if(pool.length===0) pool = chars.filter(c=>c.rarity===3);
-
 results.push(pool[Math.random()*pool.length|0]);
-
-results.forEach((c,i)=>{
-    if(c.rarity === 4){
-    playSSRLight();
-        playEventEffect();
-    }
-
-    setTimeout(()=>{
-        showGachaResult(c);
-        addToBox(c);
-    },i*200);
+results.forEach(c=>addToBox(c));
+showGachaFullscreen10(results, ()=>{
+  results.forEach(c=>{
+    let div=document.createElement("div");
+    div.className=`card ${attrClass[c.attr]}`;
+    div.innerHTML=`<div class="flip open"><div class="front"></div><div class="back ${c.rarity>=3?"ssr":""} ${c.rarity==4?"ultra":""}"><div class="rarity">${star(c.rarity)}</div><img src="${c.img}">${c.name}</div></div>`;
+    gachaResult.appendChild(div);
+  });
+  update();saveData();
 });
-
-update();
-saveData();
+update();saveData();
 }
 
 function confirmReset(){
@@ -6918,55 +8512,39 @@ function useDupe(i){
 function drawEvent3_1(){
 if(stone < 10) return;
 stone -= 10;
-
 gachaResult.innerHTML="";
-
 let c = getEventChar3();
-
-if(c.rarity === 4){
-    playSSRLight();
-    playEventEffect();
-}
-
-showGachaResult(c);
 addToBox(c);
-
-update();
-saveData();
+showGachaFullscreen1(c, ()=>{
+  let div=document.createElement("div");
+  div.className=`card ${attrClass[c.attr]}`;
+  div.innerHTML=`<div class="flip open"><div class="front"></div><div class="back ${c.rarity>=3?"ssr":""} ${c.rarity==4?"ultra":""}"><div class="rarity">${star(c.rarity)}</div><img src="${c.img}">${c.name}</div></div>`;
+  gachaResult.appendChild(div);
+  update();saveData();
+});
+update();saveData();
 }
 
 function drawEvent3_10(){
 if(stone < 100) return;
 stone -= 100;
-
 gachaResult.innerHTML="";
-
 let results = [];
-
-for(let i=0;i<9;i++){
-    results.push(getEventChar3());
-}
-
-// ☆3確定
+for(let i=0;i<9;i++){ results.push(getEventChar3()); }
 let pool = eventChars3.filter(c=>c.rarity===3);
 if(pool.length===0) pool = chars.filter(c=>c.rarity===3);
-
 results.push(pool[Math.random()*pool.length|0]);
-
-results.forEach((c,i)=>{
-    if(c.rarity === 4){
-    playSSRLight();
-        playEventEffect();
-    }
-
-    setTimeout(()=>{
-        showGachaResult(c);
-        addToBox(c);
-    },i*200);
+results.forEach(c=>addToBox(c));
+showGachaFullscreen10(results, ()=>{
+  results.forEach(c=>{
+    let div=document.createElement("div");
+    div.className=`card ${attrClass[c.attr]}`;
+    div.innerHTML=`<div class="flip open"><div class="front"></div><div class="back ${c.rarity>=3?"ssr":""} ${c.rarity==4?"ultra":""}"><div class="rarity">${star(c.rarity)}</div><img src="${c.img}">${c.name}</div></div>`;
+    gachaResult.appendChild(div);
+  });
+  update();saveData();
 });
-
-update();
-saveData();
+update();saveData();
 }
 
 function renderEvent(){
@@ -7212,21 +8790,17 @@ let interval = setInterval(()=>{
 function drawEvent4_1(){
 if(stone < 10) return;
 stone -= 10;
-
 gachaResult.innerHTML="";
-
 let c = getEventChar4();
-
-if(c.rarity === 4){
-    playSSRLight();
-    playEventEffect();
-}
-
-showGachaResult(c);
 addToBox(c);
-
-update();
-saveData();
+showGachaFullscreen1(c, ()=>{
+  let div=document.createElement("div");
+  div.className=`card ${attrClass[c.attr]}`;
+  div.innerHTML=`<div class="flip open"><div class="front"></div><div class="back ${c.rarity>=3?"ssr":""} ${c.rarity==4?"ultra":""}"><div class="rarity">${star(c.rarity)}</div><img src="${c.img}">${c.name}</div></div>`;
+  gachaResult.appendChild(div);
+  update();saveData();
+});
+update();saveData();
 }
 
 function drawEvent4_10(){
@@ -7247,19 +8821,17 @@ if(pool.length===0) pool = chars.filter(c=>c.rarity===3);
 
 results.push(pool[Math.random()*pool.length|0]);
 
-results.forEach((c,i)=>{
-    if(c.rarity === 4){
-        playSSRLight();
-    }
-
-    setTimeout(()=>{
-        showGachaResult(c);
-        addToBox(c);
-    },i*200);
+results.forEach(c=>addToBox(c));
+showGachaFullscreen10(results, ()=>{
+  results.forEach(c=>{
+    let div=document.createElement("div");
+    div.className=`card ${attrClass[c.attr]}`;
+    div.innerHTML=`<div class="flip open"><div class="front"></div><div class="back ${c.rarity>=3?"ssr":""} ${c.rarity==4?"ultra":""}"><div class="rarity">${star(c.rarity)}</div><img src="${c.img}">${c.name}</div></div>`;
+    gachaResult.appendChild(div);
+  });
+  update();saveData();
 });
-
-update();
-saveData();
+update();saveData();
 }
 
 function getEventChar4(){
@@ -7365,21 +8937,17 @@ return pool[Math.random()*pool.length|0];
 function drawEvent5_1(){
 if(stone < 10) return;
 stone -= 10;
-
 gachaResult.innerHTML="";
-
 let c = getEventChar5();
-
-if(c.rarity === 4){
-    playSSRLight();
-    playEventEffect();
-}
-
-showGachaResult(c);
 addToBox(c);
-
-update();
-saveData();
+showGachaFullscreen1(c, ()=>{
+  let div=document.createElement("div");
+  div.className=`card ${attrClass[c.attr]}`;
+  div.innerHTML=`<div class="flip open"><div class="front"></div><div class="back ${c.rarity>=3?"ssr":""} ${c.rarity==4?"ultra":""}"><div class="rarity">${star(c.rarity)}</div><img src="${c.img}">${c.name}</div></div>`;
+  gachaResult.appendChild(div);
+  update();saveData();
+});
+update();saveData();
 }
 
 function drawEvent5_10(){
@@ -7400,19 +8968,17 @@ if(pool.length===0) pool = chars.filter(c=>c.rarity===3);
 
 results.push(pool[Math.random()*pool.length|0]);
 
-results.forEach((c,i)=>{
-    if(c.rarity === 4){
-        playSSRLight();
-    }
-
-    setTimeout(()=>{
-        showGachaResult(c);
-        addToBox(c);
-    },i*200);
+results.forEach(c=>addToBox(c));
+showGachaFullscreen10(results, ()=>{
+  results.forEach(c=>{
+    let div=document.createElement("div");
+    div.className=`card ${attrClass[c.attr]}`;
+    div.innerHTML=`<div class="flip open"><div class="front"></div><div class="back ${c.rarity>=3?"ssr":""} ${c.rarity==4?"ultra":""}"><div class="rarity">${star(c.rarity)}</div><img src="${c.img}">${c.name}</div></div>`;
+    gachaResult.appendChild(div);
+  });
+  update();saveData();
 });
-
-update();
-saveData();
+update();saveData();
 }
 
 
@@ -7438,7 +9004,7 @@ if(s.type==="buff"){
     }
 
     if(s.type === "poison"){
-        enemy.poisons ||= [];
+        enemy.poisons = enemy.poisons || [];
         enemy.poisons.push({
             power: s.power,
             turn:3,
@@ -7509,100 +9075,104 @@ players.forEach((t,i)=>{
 
 
 
+// ========================================
+// ===== ⚔ 武器ガチャ専用演出（シンプル） =====
+// ========================================
+function showWeaponGachaResult(weapons_arr, onDone){
+  // シンプルな武器ガチャ演出（属性確定・SSR演出なし）
+  let overlay = document.createElement("div");
+  overlay.style.cssText = `
+    position:fixed;top:0;left:0;width:100%;height:100%;
+    background:rgba(0,0,0,0.92);
+    z-index:20000;
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    gap:14px;
+  `;
+
+  // タイトル
+  let title = document.createElement("div");
+  title.style.cssText = "font-size:22px;font-weight:900;color:#c0c0c0;letter-spacing:4px;text-shadow:0 0 18px #888,0 0 40px #aaa;";
+  title.textContent = "⚔ 武器ガチャ ⚔";
+  overlay.appendChild(title);
+
+  // カードグリッド
+  let grid = document.createElement("div");
+  grid.style.cssText = "display:flex;flex-wrap:wrap;justify-content:center;gap:10px;max-width:500px;padding:0 12px;";
+  overlay.appendChild(grid);
+
+  weapons_arr.forEach((w, i)=>{
+    let rarityColor = w.rarity===3?"#ffd700":w.rarity===2?"#88ccff":"#888";
+    let border = w.rarity===3?"2px solid #ffd700;box-shadow:0 0 12px #ffd70066;":w.rarity===2?"2px solid #88ccff;box-shadow:0 0 8px #88ccff44;":"1px solid #444;";
+    let card = document.createElement("div");
+    card.style.cssText = `
+      background:#1a1f2e;border:${border}
+      border-radius:12px;padding:8px;width:78px;text-align:center;
+      opacity:0;transform:translateY(20px) scale(0.85);
+      transition:opacity 0.35s,transform 0.35s;
+    `;
+    card.innerHTML = `
+      <div style="font-size:11px;color:${rarityColor};font-weight:bold;margin-bottom:3px;">${"★".repeat(w.rarity)}</div>
+      <img src="${w.img}" style="width:100%;height:60px;object-fit:cover;border-radius:8px;" onerror="this.style.display='none'">
+      <div style="font-size:9px;color:#ccc;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${w.name}</div>
+      <div style="font-size:8px;color:#aaa;">ATK+${w.atk}</div>
+    `;
+    grid.appendChild(card);
+    setTimeout(()=>{ card.style.opacity="1"; card.style.transform="translateY(0) scale(1)"; }, 80+i*60);
+  });
+
+  // 閉じるボタン
+  let closeBtn = document.createElement("button");
+  closeBtn.style.cssText = "margin-top:8px;background:linear-gradient(135deg,#333,#555);color:#fff;border:1px solid #888;border-radius:12px;padding:10px 36px;font-size:14px;cursor:pointer;letter-spacing:2px;";
+  closeBtn.textContent = "閉じる";
+  closeBtn.onclick = ()=>{ overlay.remove(); if(onDone) onDone(); };
+  overlay.appendChild(closeBtn);
+
+  document.body.appendChild(overlay);
+}
+
 function drawWeapon1(){
     if(stone < 10) return;
     stone -= 10;
-
     gachaResult.innerHTML = "";
 
-    // 演出（イベント1と同じ）
-    let flash = document.createElement("div");
-    flash.className = "flash";
-    document.body.appendChild(flash);
-    setTimeout(()=>flash.remove(), 600);
-
     let w = getWeapon();
-
-    // 高レアリティ演出
-    if(w.rarity >= 3){
-        playSSRLight();
-        playEventEffect();
-    }
-
-    // カードフリップ表示
     let isDupe = hasWeapon(w);
-    if(isDupe){
-        dupeStone++;
-    } else {
-        weaponBox.push(w);
-    }
+    if(isDupe){ dupeStone++; } else { weaponBox.push(w); }
 
-    let div = document.createElement("div");
-    div.className = "card";
-    div.innerHTML = `
-<div class="flip">
-<div class="front"></div>
-<div class="back ${w.rarity>=3?"ssr":""}">
-<div class="rarity" style="color:${getRarityColor(w.rarity)}">${"★".repeat(w.rarity)}</div>
-<img src="${w.img}" style="width:80px;height:80px;border-radius:8px;">
-<div>${w.name}</div>
-<div style="font-size:10px;color:#aaa;">${isDupe ? "（被り）" : `ATK:${w.atk} HP:${w.hp}`}</div>
-</div>
-</div>`;
-    gachaResult.appendChild(div);
-    setTimeout(()=>div.classList.add("open"), 50);
-
-    update();
-    saveData();
+    showWeaponGachaResult([w], ()=>{
+      let div = document.createElement("div");
+      div.className = "card";
+      div.innerHTML = `<div class="flip open"><div class="front"></div><div class="back ${w.rarity>=3?"ssr":""}"><div class="rarity" style="color:${getRarityColor(w.rarity)}">${"★".repeat(w.rarity)}</div><img src="${w.img}" style="width:80px;height:80px;border-radius:8px;"><div>${w.name}</div><div style="font-size:10px;color:#aaa;">${isDupe?"（被り）":`ATK:${w.atk} HP:${w.hp}`}</div></div></div>`;
+      gachaResult.appendChild(div);
+      update();saveData();
+    });
+    update();saveData();
 }
 
 function drawWeapon10(){
     if(stone < 100) return;
     stone -= 100;
-
     gachaResult.innerHTML = "";
 
     let results = [];
-    for(let i=0;i<10;i++){
-        results.push(getWeapon());
-    }
+    for(let i=0;i<10;i++){ results.push(getWeapon()); }
 
-    // ③ 表示＆BOX処理（イベント1と同じ演出）
-    results.forEach((w, i)=>{
-
-        if(w.rarity >= 3){
-            playSSRLight();
-            playEventEffect();
-        }
-
-        setTimeout(()=>{
-            let isDupe = hasWeapon(w);
-            if(isDupe){
-                dupeStone++;
-            } else {
-                weaponBox.push(w);
-            }
-
-            let div = document.createElement("div");
-            div.className = "card";
-            div.innerHTML = `
-<div class="flip">
-<div class="front"></div>
-<div class="back ${w.rarity>=3?"ssr":""}">
-<div class="rarity" style="color:${getRarityColor(w.rarity)}">${"★".repeat(w.rarity)}</div>
-<img src="${w.img}" style="width:80px;height:80px;border-radius:8px;">
-<div>${w.name}</div>
-<div style="font-size:10px;color:#aaa;">${isDupe ? "（被り）" : `ATK:${w.atk} HP:${w.hp}`}</div>
-</div>
-</div>`;
-            gachaResult.appendChild(div);
-            setTimeout(()=>div.classList.add("open"), 50);
-
-        }, i*200);
+    // BOX処理
+    results.forEach(w=>{
+      if(hasWeapon(w)){ dupeStone++; } else { weaponBox.push(w); }
     });
 
-    update();
-    saveData();
+    showWeaponGachaResult(results, ()=>{
+      results.forEach(w=>{
+        let div=document.createElement("div");
+        div.className="card";
+        div.innerHTML=`<div class="flip open"><div class="front"></div><div class="back ${w.rarity>=3?"ssr":""}"><div class="rarity" style="color:${getRarityColor(w.rarity)}">${"★".repeat(w.rarity)}</div><img src="${w.img}" style="width:80px;height:80px;border-radius:8px;"><div>${w.name}</div><div style="font-size:10px;color:#aaa;">ATK:${w.atk} HP:${w.hp}</div></div></div>`;
+        gachaResult.appendChild(div);
+      });
+      update();saveData();
+    });
+    update();saveData();
 }
 
 function getWeapon(){
@@ -7853,21 +9423,17 @@ return pool[Math.random()*pool.length|0];
 function drawEvent7_1(){
 if(stone < 10) return;
 stone -= 10;
-
 gachaResult.innerHTML="";
-
 let c = getEventChar7();
-
-if(c.rarity === 4){
-    playSSRLight();
-    playEventEffect();
-}
-
-showGachaResult(c);
 addToBox(c);
-
-update();
-saveData();
+showGachaFullscreen1(c, ()=>{
+  let div=document.createElement("div");
+  div.className=`card ${attrClass[c.attr]}`;
+  div.innerHTML=`<div class="flip open"><div class="front"></div><div class="back ${c.rarity>=3?"ssr":""} ${c.rarity==4?"ultra":""}"><div class="rarity">${star(c.rarity)}</div><img src="${c.img}">${c.name}</div></div>`;
+  gachaResult.appendChild(div);
+  update();saveData();
+});
+update();saveData();
 }
 
 function drawEvent7_10(){
@@ -7888,39 +9454,33 @@ if(pool.length===0) pool = chars.filter(c=>c.rarity===3);
 
 results.push(pool[Math.random()*pool.length|0]);
 
-results.forEach((c,i)=>{
-    if(c.rarity === 4){
-        playSSRLight();
-    }
-
-    setTimeout(()=>{
-        showGachaResult(c);
-        addToBox(c);
-    },i*200);
+results.forEach(c=>addToBox(c));
+showGachaFullscreen10(results, ()=>{
+  results.forEach(c=>{
+    let div=document.createElement("div");
+    div.className=`card ${attrClass[c.attr]}`;
+    div.innerHTML=`<div class="flip open"><div class="front"></div><div class="back ${c.rarity>=3?"ssr":""} ${c.rarity==4?"ultra":""}"><div class="rarity">${star(c.rarity)}</div><img src="${c.img}">${c.name}</div></div>`;
+    gachaResult.appendChild(div);
+  });
+  update();saveData();
 });
-
-update();
-saveData();
+update();saveData();
 }
 
 function drawEvent6_1(){
 if(stone < 10) return;
 stone -= 10;
-
 gachaResult.innerHTML="";
-
 let c = getEventChar6();
-
-if(c.rarity === 4){
-    playSSRLight();
-    playEventEffect();
-}
-
-showGachaResult(c);
 addToBox(c);
-
-update();
-saveData();
+showGachaFullscreen1(c, ()=>{
+  let div=document.createElement("div");
+  div.className=`card ${attrClass[c.attr]}`;
+  div.innerHTML=`<div class="flip open"><div class="front"></div><div class="back ${c.rarity>=3?"ssr":""} ${c.rarity==4?"ultra":""}"><div class="rarity">${star(c.rarity)}</div><img src="${c.img}">${c.name}</div></div>`;
+  gachaResult.appendChild(div);
+  update();saveData();
+});
+update();saveData();
 }
 
 function drawEvent6_10(){
@@ -7941,19 +9501,17 @@ if(pool.length===0) pool = chars.filter(c=>c.rarity===3);
 
 results.push(pool[Math.random()*pool.length|0]);
 
-results.forEach((c,i)=>{
-    if(c.rarity === 4){
-        playSSRLight();
-    }
-
-    setTimeout(()=>{
-        showGachaResult(c);
-        addToBox(c);
-    },i*200);
+results.forEach(c=>addToBox(c));
+showGachaFullscreen10(results, ()=>{
+  results.forEach(c=>{
+    let div=document.createElement("div");
+    div.className=`card ${attrClass[c.attr]}`;
+    div.innerHTML=`<div class="flip open"><div class="front"></div><div class="back ${c.rarity>=3?"ssr":""} ${c.rarity==4?"ultra":""}"><div class="rarity">${star(c.rarity)}</div><img src="${c.img}">${c.name}</div></div>`;
+    gachaResult.appendChild(div);
+  });
+  update();saveData();
 });
-
-update();
-saveData();
+update();saveData();
 }
 
 
@@ -7987,21 +9545,17 @@ return pool[Math.random()*pool.length|0];
 function drawEvent8_1(){
 if(stone < 10) return;
 stone -= 10;
-
 gachaResult.innerHTML="";
-
 let c = getEventChar8();
-
-if(c.rarity === 4){
-    playSSRLight();
-    playEventEffect();
-}
-
-showGachaResult(c);
 addToBox(c);
-
-update();
-saveData();
+showGachaFullscreen1(c, ()=>{
+  let div=document.createElement("div");
+  div.className=`card ${attrClass[c.attr]}`;
+  div.innerHTML=`<div class="flip open"><div class="front"></div><div class="back ${c.rarity>=3?"ssr":""} ${c.rarity==4?"ultra":""}"><div class="rarity">${star(c.rarity)}</div><img src="${c.img}">${c.name}</div></div>`;
+  gachaResult.appendChild(div);
+  update();saveData();
+});
+update();saveData();
 }
 
 function drawEvent8_10(){
@@ -8022,19 +9576,17 @@ if(pool.length===0) pool = chars.filter(c=>c.rarity===3);
 
 results.push(pool[Math.random()*pool.length|0]);
 
-results.forEach((c,i)=>{
-    if(c.rarity === 4){
-        playSSRLight();
-    }
-
-    setTimeout(()=>{
-        showGachaResult(c);
-        addToBox(c);
-    },i*200);
+results.forEach(c=>addToBox(c));
+showGachaFullscreen10(results, ()=>{
+  results.forEach(c=>{
+    let div=document.createElement("div");
+    div.className=`card ${attrClass[c.attr]}`;
+    div.innerHTML=`<div class="flip open"><div class="front"></div><div class="back ${c.rarity>=3?"ssr":""} ${c.rarity==4?"ultra":""}"><div class="rarity">${star(c.rarity)}</div><img src="${c.img}">${c.name}</div></div>`;
+    gachaResult.appendChild(div);
+  });
+  update();saveData();
 });
-
-update();
-saveData();
+update();saveData();
 }
 
 function getEventChar9(){
@@ -8067,21 +9619,17 @@ return pool[Math.random()*pool.length|0];
 function drawEvent9_1(){
 if(stone < 10) return;
 stone -= 10;
-
 gachaResult.innerHTML="";
-
 let c = getEventChar9();
-
-if(c.rarity === 4){
-    playSSRLight();
-    playEventEffect();
-}
-
-showGachaResult(c);
 addToBox(c);
-
-update();
-saveData();
+showGachaFullscreen1(c, ()=>{
+  let div=document.createElement("div");
+  div.className=`card ${attrClass[c.attr]}`;
+  div.innerHTML=`<div class="flip open"><div class="front"></div><div class="back ${c.rarity>=3?"ssr":""} ${c.rarity==4?"ultra":""}"><div class="rarity">${star(c.rarity)}</div><img src="${c.img}">${c.name}</div></div>`;
+  gachaResult.appendChild(div);
+  update();saveData();
+});
+update();saveData();
 }
 
 function drawEvent9_10(){
@@ -8102,19 +9650,17 @@ if(pool.length===0) pool = chars.filter(c=>c.rarity===3);
 
 results.push(pool[Math.random()*pool.length|0]);
 
-results.forEach((c,i)=>{
-    if(c.rarity === 4){
-        playSSRLight();
-    }
-
-    setTimeout(()=>{
-        showGachaResult(c);
-        addToBox(c);
-    },i*200);
+results.forEach(c=>addToBox(c));
+showGachaFullscreen10(results, ()=>{
+  results.forEach(c=>{
+    let div=document.createElement("div");
+    div.className=`card ${attrClass[c.attr]}`;
+    div.innerHTML=`<div class="flip open"><div class="front"></div><div class="back ${c.rarity>=3?"ssr":""} ${c.rarity==4?"ultra":""}"><div class="rarity">${star(c.rarity)}</div><img src="${c.img}">${c.name}</div></div>`;
+    gachaResult.appendChild(div);
+  });
+  update();saveData();
 });
-
-update();
-saveData();
+update();saveData();
 }
 
 function getEventChar10(){
@@ -8148,21 +9694,17 @@ return pool[Math.random()*pool.length|0];
 function drawEvent10_1(){
 if(stone < 10) return;
 stone -= 10;
-
 gachaResult.innerHTML="";
-
 let c = getEventChar10();
-
-if(c.rarity === 4){
-    playSSRLight();
-    playEventEffect();
-}
-
-showGachaResult(c);
 addToBox(c);
-
-update();
-saveData();
+showGachaFullscreen1(c, ()=>{
+  let div=document.createElement("div");
+  div.className=`card ${attrClass[c.attr]}`;
+  div.innerHTML=`<div class="flip open"><div class="front"></div><div class="back ${c.rarity>=3?"ssr":""} ${c.rarity==4?"ultra":""}"><div class="rarity">${star(c.rarity)}</div><img src="${c.img}">${c.name}</div></div>`;
+  gachaResult.appendChild(div);
+  update();saveData();
+});
+update();saveData();
 }
 
 function drawEvent10_10(){
@@ -8183,19 +9725,17 @@ if(pool.length===0) pool = chars.filter(c=>c.rarity===3);
 
 results.push(pool[Math.random()*pool.length|0]);
 
-results.forEach((c,i)=>{
-    if(c.rarity === 4){
-        playSSRLight();
-    }
-
-    setTimeout(()=>{
-        showGachaResult(c);
-        addToBox(c);
-    },i*200);
+results.forEach(c=>addToBox(c));
+showGachaFullscreen10(results, ()=>{
+  results.forEach(c=>{
+    let div=document.createElement("div");
+    div.className=`card ${attrClass[c.attr]}`;
+    div.innerHTML=`<div class="flip open"><div class="front"></div><div class="back ${c.rarity>=3?"ssr":""} ${c.rarity==4?"ultra":""}"><div class="rarity">${star(c.rarity)}</div><img src="${c.img}">${c.name}</div></div>`;
+    gachaResult.appendChild(div);
+  });
+  update();saveData();
 });
-
-update();
-saveData();
+update();saveData();
 }
 
 function renderExchange(){
@@ -9516,6 +11056,29 @@ const missionDefs = [
   },
 ];
 
+// ===== ミッション報酬称号の遅延復元（missionDefs定義直後に同期実行）=====
+// loadData()でIDを _pendingMissionTitleIds に退避していたものをここで反映する
+(function restoreMissionTitles(){
+  let ids = window._pendingMissionTitleIds;
+  if(!ids || !Array.isArray(ids)) return;
+  ids.forEach(titleId => {
+    if(profileTitles.some(x=>x.id===titleId)) return;
+    let m = missionDefs.find(m => m.reward && m.reward.title && m.reward.title.id === titleId);
+    if(!m) return;
+    let t = m.reward.title;
+    profileTitles.push({
+      id: t.id,
+      label: t.label,
+      colors: t.colors,
+      textColor: t.textColor,
+      _fromMission: true,
+      unlockCond: ()=>!!(missionData.claimed[m.id]),
+      condLabel: "ミッション「"+m.title+"」達成"
+    });
+  });
+  window._pendingMissionTitleIds = null;
+})();
+
 // ミッション達成・受取済み管理
 // (missionData変数はグローバルで宣言済み)
 
@@ -9865,6 +11428,7 @@ function claimMission(id){
         label: t.label,
         colors: t.colors,
         textColor: t.textColor,
+        _fromMission: true,
         unlockCond: ()=>!!(missionData.claimed[id]),
         condLabel: "ミッション「"+m.title+"」達成"
       });
