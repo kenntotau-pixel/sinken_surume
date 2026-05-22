@@ -11337,7 +11337,7 @@ function onTrialWin(){
   let hasSpecial = players.some(p => p.name.includes("死橋轟"));
   if(hasSpecial && enemy && enemy.name === "黒峰天音"){
     let id = chars.findIndex(c=>c.name==="黒峰天音");
-    let lv = progress[id] || 1;
+    let lv2 = (progress[id] || 1) + 1;
     let cur = missionStats.trialHighLvWin["黒峰天音"] || 0;
     if(lv > cur) missionStats.trialHighLvWin["黒峰天音"] = lv;
   }
@@ -11346,7 +11346,7 @@ function onTrialWin(){
   let hasMuroi = players.some(p => p.name.includes("室井元武"));
   if(hasMuroi && enemy && enemy.name === "コード5.2"){
     let id2 = chars.findIndex(c=>c.name==="コード5.2");
-    let lv2 = progress[id2] || 1;
+    let lv2 = (progress[id2] || 1) + 1;
     let cur2 = missionStats.trialHighLvWin["コード5.2"] || 0;
     if(lv2 > cur2) missionStats.trialHighLvWin["コード5.2"] = lv2;
   }
@@ -11355,7 +11355,7 @@ function onTrialWin(){
   let hasKurishima = players.some(p => p.name.includes("栗島トウヤ"));
   if(hasKurishima && enemy && enemy.name === "フセイン"){
     let id3 = chars.findIndex(c=>c.name==="フセイン");
-    let lv3 = progress[id3] || 1;
+    let lv2 = (progress[id3] || 1) + 1;
     let cur3 = missionStats.trialHighLvWin["フセイン"] || 0;
     if(lv3 > cur3) missionStats.trialHighLvWin["フセイン"] = lv3;
   }
