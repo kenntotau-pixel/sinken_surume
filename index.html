@@ -2671,6 +2671,36 @@ rarity:3,
 effect:"poison",
 skill:{type:"multi", power:0.4, hits:7, text:"7連撃+デバフ",weaponCool:3},
 passive:{type:"multi_hit_bonus",value:0.12,text:"🔪切れ味：多段攻撃の各ヒットATK+12%"}
+},
+{
+name:"前人未踏の共闘",
+img:"https://imgur.com/02WB0Fx.png",
+atk:120,
+hp:30,
+rarity:3,
+effect:"poison",
+skill:{type:"shield", power:0.75, turn:2, text:"2T被ダメ75%軽減",weaponCool:3},
+passive:{type:"tank_passive",value:0.09,text:"🛡防壁：常時被ダメを9%軽減"}
+},
+{
+name:"楽園の主従",
+img:"https://imgur.com/10SFpp8.png",
+atk:150,
+hp:0,
+rarity:3,
+effect:"poison",
+skill:{type:"taunt", power:1, turn:3, text:"挑発: 3T敵の攻撃を集める+被ダメ25%減",weaponCool:4},
+passive:{type:"dmg_boost_low_hp",threshold:0.5,value:0.25,text:"💣覚醒：HP50%以下でATK+25%"}
+},
+{
+name:"神に届く力",
+img:"https://imgur.com/AIPmGkJ.png",
+atk:25,
+hp:125,
+rarity:3,
+effect:"poison",
+skill:{type:"shock", power:0.5, text:"感電付与(次撃+50%)",cool:3},
+passive:{type:"weapon_regen3t",value:0.1,text:"✨神の息吹：装備中3Tの間、毎ターン味方全体HP10%回復"}
 }
 ];
 
@@ -3666,6 +3696,13 @@ players.forEach(p => {
       enemy.baseAtk = enemy.atk;
     }
   });
+});
+
+// ✨ weapon_regen3t: 武器パッシブ「3Tの間毎ターンHP10%回復」初期化
+players.forEach(p => {
+  if(p.weaponPassive && p.weaponPassive.type === "weapon_regen3t"){
+    p.weaponRegen3tLeft = 3;
+  }
 });
 
 renderBattle();
@@ -4843,6 +4880,24 @@ function triggerTurnStartPassive(){
           }, 100);
         }
       });
+    }
+  });
+
+  // ✨ weapon_regen3t: 武器パッシブ「3Tの間毎ターン全体HP10%回復」処理
+  players.forEach((p, pi)=>{
+    if(p.weaponPassive && p.weaponPassive.type === "weapon_regen3t"){
+      if(p.weaponRegen3tLeft === undefined) p.weaponRegen3tLeft = 3;
+      if(p.weaponRegen3tLeft > 0){
+        let regenVal = p.weaponPassive.value || 0.1;
+        players.forEach((target, ti)=>{
+          if(target.currentHp <= 0) return;
+          let healAmt = Math.floor(target.hp * regenVal);
+          target.currentHp = Math.min(target.hp, target.currentHp + healAmt);
+          setTimeout(()=>showDamage("p"+ti,{dmg:healAmt,type:"heal"}), ti*80+50);
+        });
+        p.weaponRegen3tLeft--;
+        setTimeout(()=>showSynergyText("✨ "+p.name+"の武器パッシブ！神の息吹 残り"+p.weaponRegen3tLeft+"T！全体HP10%回復！"), 200);
+      }
     }
   });
 }
@@ -9028,6 +9083,20 @@ if(s.type === "rage"){
     },10);
 }
 
+// ⚡ 感電
+if(s.type==="shock"){
+  enemy.shockTurn = 2;
+  enemy.shockPower = atk * s.power;
+  // ツリー: スキル威力強化
+  let _sac = box.find(b=>b.name===p.name);
+  if(_sac && _sac.treeSkillPower) enemy.shockPower *= (1 + _sac.treeSkillPower);
+  showSynergyText("感電付与！");
+  triggerKokuShoku(1);
+  trackAilment(1); // ミッション
+  // シナジー判定
+  checkSynergy(p, atk);
+}
+
 if(s.type==="multi"){
 
     for(let i=0;i<s.hits;i++){
@@ -9067,7 +9136,22 @@ players.forEach((t,i)=>{
     },10);
 });}
 
-    p.weaponCool = 3
+if(s.type==="shield"){
+    if(!p.shields) p.shields = [];
+    p.shields.push({ turn: s.turn, power: s.power });
+    showSynergyText("🛡 シールド発動！被ダメ" + Math.floor(s.power*100) + "%" + s.turn + "T軽減！");
+    renderBattle();
+}
+
+if(s.type==="taunt"){
+    p.taunt = { turn: s.turn };
+    if(!p.shields) p.shields = [];
+    p.shields.push({ turn: s.turn, power: 0.25 });
+    showSynergyText("🎯 挑発発動！" + s.turn + "T間、攻撃を引き受ける！");
+    renderBattle();
+}
+
+    p.weaponCool = s.weaponCool || 3
 
     renderBattle();
     endTurn();
