@@ -1252,11 +1252,13 @@ animation:totalPop 1s forwards;
   background:#0d1120;
 }
 /* ── TOP3 ── */
-.profileTop3Row{display:flex;gap:6px;}
+.profileTop3Row{display:flex;gap:6px;flex-wrap:nowrap;}
 .profileTop3Card{
   flex:1;
+  min-width:0;
   background:#0d1a28;border:1px solid #1a3050;
   border-radius:8px;padding:6px;text-align:center;
+  overflow:hidden;
 }
 .profileTop3Card img{
   width:44px;height:44px;object-fit:cover;
@@ -1425,6 +1427,18 @@ animation:totalPop 1s forwards;
       <div class="profileLabel">使用回数 TOP3</div>
       <div class="profileTop3Row" id="profileTop3">
         <div style="color:#556;font-size:12px;">まだ戦闘なし</div>
+      </div>
+    </div>
+
+    <!-- 🏋️ 鍛錬 最大ダメージ -->
+    <div class="profileCard">
+      <div class="profileLabel">🏋️ 鍛錬 最大ダメージ</div>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:4px;">
+        <div id="profileMaxDmgCharIcon" style="width:44px;height:44px;border-radius:10px;overflow:hidden;background:#111;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;border:1px solid #333;">─</div>
+        <div>
+          <div class="profileValue" id="profileMaxDmgVal" style="color:#ff6666;font-size:18px;">─</div>
+          <div id="profileMaxDmgChar" style="font-size:11px;color:#aaa;margin-top:2px;">─</div>
+        </div>
       </div>
     </div>
 
@@ -1689,7 +1703,7 @@ animation:totalPop 1s forwards;
   <!-- 中央メインビジュアルエリア -->
   <div style="position:relative;z-index:2;margin:24px auto 0;max-width:400px;padding:0 20px;">
     <!-- スタータイル -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
       <div style="
         background:linear-gradient(135deg,rgba(255,100,0,0.15),rgba(180,30,0,0.15));
         border:1px solid rgba(255,120,60,0.35);
@@ -1713,6 +1727,23 @@ animation:totalPop 1s forwards;
         <div style="color:rgba(100,180,255,0.5);font-size:9px;margin-top:2px;">EVENT</div>
       </div>
     </div>
+    <!-- 鍛錬ボタン -->
+    <div style="margin-bottom:16px;">
+      <div style="
+        background:linear-gradient(135deg,rgba(80,200,120,0.15),rgba(20,100,60,0.15));
+        border:1px solid rgba(80,200,120,0.4);
+        border-radius:14px;padding:14px;text-align:center;
+        box-shadow:0 0 20px rgba(60,180,100,0.12);
+        cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;
+        display:flex;align-items:center;gap:14px;justify-content:center;
+      " onclick="go('training')" onmousedown="this.style.transform='scale(0.97)'" onmouseup="this.style.transform='scale(1)'" ontouchstart="this.style.transform='scale(0.97)'" ontouchend="this.style.transform='scale(1)'">
+        <div style="font-size:28px;">🏋️</div>
+        <div style="text-align:left;">
+          <div style="color:#66dd99;font-size:12px;font-weight:bold;letter-spacing:1.5px;">鍛錬</div>
+          <div style="color:rgba(100,220,150,0.5);font-size:9px;margin-top:2px;">TRAINING — 自由設定バトル</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- リセットボタン（小さく） -->
@@ -1723,6 +1754,21 @@ animation:totalPop 1s forwards;
       padding:5px 14px;cursor:pointer;letter-spacing:1px;
     ">⚠ データリセット</button>
   </div>
+
+  <!-- 設定ボタン（右上固定） -->
+  <button onclick="openSettingsPanel()" id="settingsFab" style="
+    position:fixed;top:16px;right:16px;z-index:8000;
+    width:44px;height:44px;border-radius:14px;
+    background:linear-gradient(135deg,rgba(80,60,140,0.85),rgba(40,30,80,0.85));
+    border:1.5px solid rgba(160,120,255,0.5);
+    backdrop-filter:blur(10px);
+    color:#fff;font-size:22px;
+    cursor:pointer;
+    box-shadow:0 0 16px rgba(140,80,255,0.35),inset 0 1px 0 rgba(255,255,255,0.1);
+    display:flex;align-items:center;justify-content:center;
+    transition:transform 0.15s,box-shadow 0.2s;
+  " onmousedown="this.style.transform='scale(0.92)'" onmouseup="this.style.transform='scale(1)'"
+     ontouchstart="this.style.transform='scale(0.92)'" ontouchend="this.style.transform='scale(1)'">⚙️</button>
 
   <!-- ===== ボトムナビゲーションバー ===== -->
   <nav style="
@@ -1772,23 +1818,42 @@ animation:totalPop 1s forwards;
       <span style="color:rgba(120,255,120,0.9);font-size:10px;font-weight:bold;letter-spacing:1.5px;">編成</span>
     </button>
 
-    <!-- 中央（試練）大きめ -->
-    <button onclick="go('trial')" style="
+    <!-- 中央（ホーム）大きめ -->
+    <button onclick="go('title')" style="
       flex:1;background:none;border:none;cursor:pointer;
       padding:4px 4px 12px;display:flex;flex-direction:column;align-items:center;gap:3px;
       position:relative;
     ">
       <div style="
         width:58px;height:58px;border-radius:18px;
-        background:linear-gradient(135deg,#c87eff,#7b4fff,#ff6ab4);
+        background:linear-gradient(135deg,#a0b4ff,#5060ff,#8060ff);
         border:2px solid rgba(255,255,255,0.25);
         display:flex;align-items:center;justify-content:center;
         font-size:26px;
-        box-shadow:0 0 24px rgba(180,100,255,0.55),0 -2px 0 rgba(255,255,255,0.1),inset 0 1px 0 rgba(255,255,255,0.2);
+        box-shadow:0 0 24px rgba(100,120,255,0.55),0 -2px 0 rgba(255,255,255,0.1),inset 0 1px 0 rgba(255,255,255,0.2);
         animation:centerBtnPulse 3s infinite;
         position:relative;top:-10px;
-      ">⚔️</div>
-      <span style="color:rgba(220,180,255,1);font-size:10px;font-weight:bold;letter-spacing:1.5px;margin-top:-6px;">試練</span>
+      ">🏠</div>
+      <span style="color:rgba(180,200,255,1);font-size:10px;font-weight:bold;letter-spacing:1.5px;margin-top:-6px;">ホーム</span>
+    </button>
+
+    <!-- 試練 -->
+    <button onclick="go('trial')" style="
+      flex:1;background:none;border:none;cursor:pointer;
+      padding:10px 4px 12px;display:flex;flex-direction:column;align-items:center;gap:3px;
+      position:relative;overflow:hidden;
+      transition:background 0.2s;
+    " onmouseenter="this.style.background='rgba(200,100,255,0.07)'" onmouseleave="this.style.background='none'">
+      <div style="
+        width:46px;height:46px;border-radius:14px;
+        background:linear-gradient(135deg,rgba(200,120,255,0.2),rgba(120,60,200,0.2));
+        border:1.5px solid rgba(180,100,255,0.5);
+        display:flex;align-items:center;justify-content:center;
+        font-size:22px;
+        box-shadow:0 0 14px rgba(160,80,255,0.25),inset 0 1px 0 rgba(220,180,255,0.1);
+        transition:box-shadow 0.2s,transform 0.15s;
+      " onmouseenter="this.style.boxShadow='0 0 22px rgba(160,80,255,0.5)';this.style.transform='translateY(-2px)'" onmouseleave="this.style.boxShadow='0 0 14px rgba(160,80,255,0.25)';this.style.transform='translateY(0)'">⚔️</div>
+      <span style="color:rgba(200,160,255,0.9);font-size:10px;font-weight:bold;letter-spacing:1.5px;">試練</span>
     </button>
 
     <!-- イベント -->
@@ -2011,6 +2076,138 @@ animation:totalPop 1s forwards;
 <button onclick="go('title')">戻る</button>
 </div>
 
+<!-- ===== 鍛錬スクリーン ===== -->
+<div id="training" class="screen" style="padding:0;min-height:100vh;background:#0b0f1a;">
+  <div style="padding:16px 16px 0;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+      <button onclick="go('title')" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:#aaa;border-radius:10px;padding:7px 14px;cursor:pointer;font-size:13px;">← 戻る</button>
+      <div>
+        <div style="color:#66dd99;font-size:16px;font-weight:bold;letter-spacing:2px;">🏋️ 鍛錬</div>
+        <div style="color:rgba(100,200,140,0.5);font-size:10px;">報酬なし・自由設定バトル</div>
+      </div>
+    </div>
+
+    <!-- 敵キャラ選択 -->
+    <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(100,220,150,0.2);border-radius:14px;padding:14px;margin-bottom:12px;">
+      <div style="color:#88ddaa;font-size:12px;font-weight:bold;letter-spacing:1px;margin-bottom:10px;">👾 敵キャラクター</div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <div id="trainingEnemyPreview" style="width:64px;height:64px;border-radius:12px;background:#1a2a1a;border:2px solid rgba(100,220,150,0.3);overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:28px;">❓</div>
+        <div style="flex:1;min-width:120px;">
+          <select id="trainingEnemySelect" onchange="onTrainingEnemyChange()" style="width:100%;background:#0f1f18;border:1px solid rgba(100,220,150,0.3);color:#ccc;border-radius:8px;padding:7px 10px;font-size:12px;margin-bottom:6px;">
+            <option value="">-- キャラを選択 --</option>
+          </select>
+          <div id="trainingEnemyAttrBadge" style="display:inline-block;font-size:11px;padding:2px 8px;border-radius:6px;background:rgba(100,220,150,0.1);color:#88ddaa;border:1px solid rgba(100,220,150,0.2);"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HP / ATK カスタム -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(100,220,150,0.2);border-radius:14px;padding:12px;">
+        <div style="color:#88ddaa;font-size:11px;font-weight:bold;letter-spacing:1px;margin-bottom:8px;">❤️ 敵HP</div>
+        <input id="trainingHP" type="number" min="100" max="9999999" value="50000" style="width:100%;box-sizing:border-box;background:#0f1f18;border:1px solid rgba(100,220,150,0.3);color:#fff;border-radius:8px;padding:8px;font-size:14px;font-weight:bold;">
+        <div style="display:flex;gap:4px;margin-top:6px;flex-wrap:wrap;">
+          <button onclick="setTrainingHP(5000)" style="flex:1;background:rgba(100,220,150,0.1);border:1px solid rgba(100,220,150,0.25);color:#88ddaa;border-radius:6px;padding:4px 2px;font-size:10px;cursor:pointer;">5k</button>
+          <button onclick="setTrainingHP(50000)" style="flex:1;background:rgba(100,220,150,0.1);border:1px solid rgba(100,220,150,0.25);color:#88ddaa;border-radius:6px;padding:4px 2px;font-size:10px;cursor:pointer;">50k</button>
+          <button onclick="setTrainingHP(200000)" style="flex:1;background:rgba(100,220,150,0.1);border:1px solid rgba(100,220,150,0.25);color:#88ddaa;border-radius:6px;padding:4px 2px;font-size:10px;cursor:pointer;">200k</button>
+          <button onclick="setTrainingHP(1000000)" style="flex:1;background:rgba(100,220,150,0.1);border:1px solid rgba(100,220,150,0.25);color:#88ddaa;border-radius:6px;padding:4px 2px;font-size:10px;cursor:pointer;">1M</button>
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(100,220,150,0.2);border-radius:14px;padding:12px;">
+        <div style="color:#88ddaa;font-size:11px;font-weight:bold;letter-spacing:1px;margin-bottom:8px;">⚔️ 敵ATK</div>
+        <input id="trainingATK" type="number" min="0" max="999999" value="2000" style="width:100%;box-sizing:border-box;background:#0f1f18;border:1px solid rgba(100,220,150,0.3);color:#fff;border-radius:8px;padding:8px;font-size:14px;font-weight:bold;">
+        <div style="display:flex;gap:4px;margin-top:6px;flex-wrap:wrap;">
+          <button onclick="setTrainingATK(500)" style="flex:1;background:rgba(100,220,150,0.1);border:1px solid rgba(100,220,150,0.25);color:#88ddaa;border-radius:6px;padding:4px 2px;font-size:10px;cursor:pointer;">500</button>
+          <button onclick="setTrainingATK(2000)" style="flex:1;background:rgba(100,220,150,0.1);border:1px solid rgba(100,220,150,0.25);color:#88ddaa;border-radius:6px;padding:4px 2px;font-size:10px;cursor:pointer;">2k</button>
+          <button onclick="setTrainingATK(5000)" style="flex:1;background:rgba(100,220,150,0.1);border:1px solid rgba(100,220,150,0.25);color:#88ddaa;border-radius:6px;padding:4px 2px;font-size:10px;cursor:pointer;">5k</button>
+          <button onclick="setTrainingATK(0)" style="flex:1;background:rgba(100,220,150,0.1);border:1px solid rgba(100,220,150,0.25);color:#88ddaa;border-radius:6px;padding:4px 2px;font-size:10px;cursor:pointer;">0</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 属性選択 -->
+    <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(100,220,150,0.2);border-radius:14px;padding:12px;margin-bottom:12px;">
+      <div style="color:#88ddaa;font-size:11px;font-weight:bold;letter-spacing:1px;margin-bottom:8px;">🔮 敵属性</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;" id="trainingAttrBtns">
+        <button onclick="selectTrainingAttr('火')" class="tattrBtn" data-attr="火" style="flex:1;min-width:44px;padding:7px 4px;border-radius:8px;font-size:12px;cursor:pointer;border:1.5px solid rgba(255,80,60,0.5);background:rgba(255,60,40,0.1);color:#ff8866;transition:all 0.15s;">🔥火</button>
+        <button onclick="selectTrainingAttr('水')" class="tattrBtn" data-attr="水" style="flex:1;min-width:44px;padding:7px 4px;border-radius:8px;font-size:12px;cursor:pointer;border:1.5px solid rgba(60,140,255,0.5);background:rgba(40,120,255,0.1);color:#88aaff;transition:all 0.15s;">💧水</button>
+        <button onclick="selectTrainingAttr('雷')" class="tattrBtn" data-attr="雷" style="flex:1;min-width:44px;padding:7px 4px;border-radius:8px;font-size:12px;cursor:pointer;border:1.5px solid rgba(255,210,40,0.5);background:rgba(255,200,0,0.1);color:#ffdd55;transition:all 0.15s;">⚡雷</button>
+        <button onclick="selectTrainingAttr('木')" class="tattrBtn" data-attr="木" style="flex:1;min-width:44px;padding:7px 4px;border-radius:8px;font-size:12px;cursor:pointer;border:1.5px solid rgba(60,200,80,0.5);background:rgba(40,180,60,0.1);color:#66dd77;transition:all 0.15s;">🌿木</button>
+        <button onclick="selectTrainingAttr('光')" class="tattrBtn" data-attr="光" style="flex:1;min-width:44px;padding:7px 4px;border-radius:8px;font-size:12px;cursor:pointer;border:1.5px solid rgba(240,240,240,0.5);background:rgba(220,220,220,0.08);color:#eeeeee;transition:all 0.15s;">✨光</button>
+        <button onclick="selectTrainingAttr('闇')" class="tattrBtn" data-attr="闇" style="flex:1;min-width:44px;padding:7px 4px;border-radius:8px;font-size:12px;cursor:pointer;border:1.5px solid rgba(160,60,255,0.5);background:rgba(140,40,255,0.1);color:#cc88ff;transition:all 0.15s;">🌑闇</button>
+      </div>
+    </div>
+
+    <!-- ギミック設定 -->
+    <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(100,220,150,0.2);border-radius:14px;padding:12px;margin-bottom:16px;">
+      <div style="color:#88ddaa;font-size:11px;font-weight:bold;letter-spacing:1px;margin-bottom:10px;">⚙️ ステージギミック（複数選択可）</div>
+      <div style="display:flex;flex-direction:column;gap:8px;" id="trainingGimmickList">
+
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:8px 10px;border-radius:9px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);">
+          <input type="checkbox" id="tg_shield" style="width:16px;height:16px;accent-color:#66dd99;">
+          <div>
+            <div style="color:#fff;font-size:12px;font-weight:bold;">🛡 シールド</div>
+            <div style="color:#888;font-size:10px;">開始時に敵シールドを付与</div>
+          </div>
+          <input id="tg_shieldVal" type="number" min="100" max="999999" value="5000" onclick="event.stopPropagation()" style="margin-left:auto;width:70px;background:#0f1f18;border:1px solid rgba(100,220,150,0.3);color:#fff;border-radius:7px;padding:5px 6px;font-size:12px;">
+        </label>
+
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:8px 10px;border-radius:9px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);">
+          <input type="checkbox" id="tg_attrOnly" style="width:16px;height:16px;accent-color:#66dd99;">
+          <div style="flex:1;">
+            <div style="color:#fff;font-size:12px;font-weight:bold;">🔮 属性制限</div>
+            <div style="color:#888;font-size:10px;">指定属性のみ有効ダメージ</div>
+          </div>
+          <select id="tg_attrOnlyVal" onclick="event.stopPropagation()" style="width:60px;background:#0f1f18;border:1px solid rgba(100,220,150,0.3);color:#ccc;border-radius:7px;padding:5px 4px;font-size:12px;">
+            <option value="火">火</option><option value="水">水</option><option value="雷">雷</option>
+            <option value="木">木</option><option value="光">光</option><option value="闇">闇</option>
+          </select>
+        </label>
+
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:8px 10px;border-radius:9px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);">
+          <input type="checkbox" id="tg_turnBuff" style="width:16px;height:16px;accent-color:#66dd99;">
+          <div>
+            <div style="color:#fff;font-size:12px;font-weight:bold;">📈 毎ターンATKバフ</div>
+            <div style="color:#888;font-size:10px;">ターン毎ATK+8%（上限+80%）</div>
+          </div>
+        </label>
+
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:8px 10px;border-radius:9px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);">
+          <input type="checkbox" id="tg_phaseRage" style="width:16px;height:16px;accent-color:#66dd99;">
+          <div>
+            <div style="color:#fff;font-size:12px;font-weight:bold;">💀 HP50%狂化</div>
+            <div style="color:#888;font-size:10px;">HP50%以下でATK2倍・属性制限解除</div>
+          </div>
+        </label>
+
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:8px 10px;border-radius:9px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);">
+          <input type="checkbox" id="tg_turnLimit" style="width:16px;height:16px;accent-color:#66dd99;">
+          <div style="flex:1;">
+            <div style="color:#fff;font-size:12px;font-weight:bold;">⏱ ターン制限</div>
+            <div style="color:#888;font-size:10px;">指定ターン内に撃破</div>
+          </div>
+          <input id="tg_turnLimitVal" type="number" min="1" max="99" value="10" onclick="event.stopPropagation()" style="width:50px;background:#0f1f18;border:1px solid rgba(100,220,150,0.3);color:#fff;border-radius:7px;padding:5px 6px;font-size:12px;">
+        </label>
+
+      </div>
+    </div>
+
+    <!-- 開始ボタン -->
+    <button onclick="startTrainingBattle()" style="
+      width:100%;padding:16px;border-radius:14px;
+      background:linear-gradient(135deg,#22aa66,#118844);
+      border:1.5px solid rgba(100,255,160,0.4);
+      color:#fff;font-size:15px;font-weight:bold;letter-spacing:2px;
+      cursor:pointer;box-shadow:0 0 24px rgba(60,200,120,0.35);
+      margin-bottom:30px;
+      transition:transform 0.12s,box-shadow 0.15s;
+    " onmousedown="this.style.transform='scale(0.97)'" onmouseup="this.style.transform='scale(1)'"
+       ontouchstart="this.style.transform='scale(0.97)'" ontouchend="this.style.transform='scale(1)'">
+      🏋️ 鍛錬開始
+    </button>
+  </div>
+</div>
+
 <div id="battle" class="screen">
 <div id="battleMain">
 <div class="teamArea" id="teamArea"></div>
@@ -2098,14 +2295,23 @@ let eventProgress = {};
 let lastAllySkill = null; // コピー用: 直前に発動した味方スキル情報
 
 // プロフィールデータ
-let profileData = { playerName: "", oshi: "", selectedTitleId: "beginner" };
+let profileData = { playerName: "", oshi: "", selectedTitleId: "beginner", trainingMaxDmg: 0, trainingMaxDmgChar: "" };
 // キャラ使用回数（キャラ名→回数）
 let charUseCount = {};
+
+// 🏋️ 鍛錬ダメージ記録
+let trainingMaxDmg = 0;
+let trainingMaxDmgChar = "";
+let currentAttacker = "";
 
 // ミッションデータ
 let missionStats = {
   trialWins:0, eventWins:0, ailmentCount:0, thunderWins:0,
-  trialHighLvWin:{}, _currentBattleAilments:0, _currentBattleAttrs:[]
+  fireWins:0, waterWins:0, woodWins:0, lightWins:0, darkWins:0,
+  mixedAttrWins:0, soloWins:0, poisonCount:0, burnCount:0, shockCount:0, freezeCount:0,
+  totalGachaDraws:0, ssr4Count:0,
+  trialHighLvWin:{}, trialSpecialWin:{},
+  _currentBattleAilments:0, _currentBattleAttrs:[]
 };
 let missionData = { claimed:{} };
 
@@ -2234,7 +2440,7 @@ passive:{type:"poison_power_up",value:0.25,text:"☠猛毒：毒ダメージを2
 {name:"死橋轟(β)",rarity:4,attr:"水",img:"https://imgur.com/TAk0JKU.png",role:"attacker",
 skill:{type:"bunshin", cool:5, text:"分身: 3Tパーティを4人に(重複不可)"},noTrial:true,
 passive:{type:"shock_on_attack",chance:0.5,text:"⚡水雷：攻撃時50%で感電付与"}},
-{name:"阿波牛星夜(β)",rarity:4,attr:"火",img:"https://imgur.com/yJ89rjI.png",role:"attacker",
+{name:"阿波牛星夜(β)",rarity:4,attr:"火",img:"https://imgur.com/yJ89rjI.png",role:"tank",
 skill:{type:"counterStack", power:1.0, text:"カウンター3回＋発動毎に威力+100%", cool:1},noTrial:true,
 passive:{type:"dmg_boost_low_hp",threshold:0.7,value:0.4,text:"🔥逆境の炎：HP70%以下でATK+40%"}},
 {name:"コード5.2(β)",rarity:4,attr:"光",img:"https://imgur.com/F87rtOY.png",role:"attacker",
@@ -2267,12 +2473,30 @@ passive:{type:"shock_power_up",value:0.35,text:"⚡暴嵐：感電ボーナス�
 {name:"跳田収滋(β)",rarity:4,attr:"水",img:"https://imgur.com/W7tDIOm.png",role:"support",
 skill:{type:"weaponSummon", cool:5, text:"武器召喚: 3ターンの間、味方全体の攻撃時にランダム追加デバフ(毒/燃焼/感電)を付与"},noTrial:true,
 passive:{type:"heal_on_damaged",value:0.08,text:"💧水の盾：味方が被ダメ時に8%回復"}},
-{name:"オリバー(β)",rarity:4,attr:"光",img:"https://imgur.com/InZgh9E.png",role:"attacker",
+{name:"オリバー(β)",rarity:4,attr:"光",img:"https://imgur.com/InZgh9E.png",role:"tank",
 skill:{type:"mimicry", cool:0, text:"無許可の模倣者: HPが減るほど防御&ATK上昇(最大+70%)(永続)"},noTrial:true,
 passive:{type:"freeze_on_attack",chance:0.3,text:"✨氷光：攻撃時30%で凍結付与(1T)"}},
-{name:"湯照司吉基(β)",rarity:4,attr:"闇",img:"https://imgur.com/8OPS0rW.png",role:"attacker",
+{name:"湯照司吉基(β)",rarity:4,attr:"闇",img:"https://imgur.com/8OPS0rW.png",role:"debuffer",
 skill:{type:"erosion", cool:4, power:2.2, text:"侵蝕：ATK220%ダメ。毒・燃焼・感電を侵蝕に変換。侵蝕状態時被ダメ+25%/行動終了時に最大HP4%ダメ。解除不能(3T)侵蝕1種につき自身ATK+40%(3T)"},noTrial:true,
 passive:{type:"koku_shoku",text:"⬛黒蝕体質：敵に状態異常付与のたび「黒蝕」+1(最大10)。1stにつき与ダメ+12%・被ダメ-5%"}},
+{name:"黒瀬武人(β)",rarity:4,attr:"光",img:"https://imgur.com/ENp01aX.png",role:"attacker",
+skill:{type:"tenGeki", power:2.0, text:"破壊的で覇界的な一撃(天撃カウント+2・ATK200%ダメ)", cool:4},noTrial:true,
+passive:{type:"michiPassive",text:"🌌未知な道：HP割合に応じて被ダメ軽減(HP10%ごとに8%up、最大80%)"}},
+{name:"明石啓希(β)",rarity:4,attr:"雷",img:"https://imgur.com/lraRm0Y.png",role:"support",noTrial:true,
+skill:{type:"jokaku", coolMin:1, coolMax:1, text:"解錠：味方1人に解錠カウント+1付与。カウント1つにつきATK+25%・被ダメHP5%回復(CT2)"},
+passive:{type:"berserk_jokaku", text:"⚡暴走解錠：戦線離脱時、解錠カウントを暴走カウントに変換。暴走カウント1につきATK+70%・攻撃時HP10%回復。ターン終了時-1。0で離脱"}},
+{name:"珠濃雅紀(β)",rarity:4,attr:"木",img:"https://imgur.com/erdWgsw.png",role:"support",
+skill:{type:"saikouchiB", power:0.3, text:"再構築：味方全体HP30%回復＋「再構築」付与(3T・HP0でHP1耐える)", cool:4},noTrial:true,
+passive:{type:"fated_backup",value:0.15,text:"🌿運命のバックアップ：戦闘開始時、味方全体のHP上限+15%"}},
+{name:"鈴鹿(β)",rarity:4,attr:"火",img:"https://imgur.com/YaJTUuQ.png",role:"support",
+skill:{type:"happyAura", turn:5, text:"幸せの作り方：味方全体に幸福状態付与(5T)幸福状態：味方全体に、与ダメージ+20%＆被ダメージ-5%＆毎タンHP5%回復", cool:4},noTrial:true,
+passive:{type:"happy_on_damaged",text:"💛幸福の守護：被ダメ時、味方全体に幸福カウント+1"}},
+{name:"沢華(β)",rarity:4,attr:"闇",img:"https://imgur.com/3p48Flw.png",role:"debuffer",
+skill:{type:"taketogeGrant", stacks:2, healRate:0.12, text:"竹取の翁：相手に竹棘スタック+2付与(3T)・自身HP12%回復", cool:4},noTrial:true,
+passive:{type:"taketogeGarden", stackValue:0.05, text:"🎋竹棘の庭園：ターン開始時相手に竹棘スタック+1付与(3T)。竹棘1つにつき敵ATK5%減少"}},
+{name:"壬陸(β)",rarity:4,attr:"水",img:"https://imgur.com/aIlGQae.png",role:"attacker",
+skill:{type:"hp_ratio_atk_buff", text:"奢れるものも久からず：敵最大HPと自分の最大HPの割合分ATK上昇/低下(上限ありあり)(3T)", cool:3},noTrial:true,
+passive:{type:"on_retire_buff_allies",atkBonus:0.35,healRate:0.20,text:"🌊盛者必衰：戦線離脱時、他キャラATK+35%(永続)＆HP20%回復"}},
 
 
 {name:"ゲガント",rarity:1,attr:"木",img:"https://imgur.com/dXFpBIJ.png",role:"attacker",
@@ -2389,7 +2613,7 @@ passive:{type:"freeze_on_attack",chance:0.25,text:"❄水狂：攻撃時25%で�
 skill:{type:"poison",power:1.0,text:"100%毒付与",cool:1},
 passive:{type:"poison_power_up",value:0.3,text:"✨光毒：毒ダメージを30%増幅"}},
 {name:"黒瀬武人🌌",rarity:4,attr:"闇",img:"https://imgur.com/0PV2wHo.png",role:"attacker",
-skill:{type:"buff", power:3, text:"300%バフ",cool:3},
+skill:{type:"buff", power:2, text:"200%バフ",cool:3},
 passive:{type:"dmg_boost_low_hp",threshold:0.5,value:0.5,text:"🌑闇爆：HP50%以下でATK+50%"}},
 {name:"コード5.2🌌",rarity:3,attr:"木",img:"https://imgur.com/S3szYva.png",role:"tank",
 skill:{type:"counter",power:0.25,turn:4,text:"反撃25%ダメ",cool:1},
@@ -2558,7 +2782,7 @@ img:"https://imgur.com/jsw1PNC.png",
 atk:50,
 hp:100,
 rarity:3,
-effect:"fire",
+effect:"poison",
 skill:{type:"buff", power:1.3, text:"30%バフ",weaponCool:2},
 passive:{type:"atk_up_on_attack",value:0.06,text:"🔥天剣の加護：攻撃時ATK+6%(3T、最大+18%)"}
 },
@@ -3157,6 +3381,16 @@ const charDetails = {
     story:"　",},
   "湯照司吉基(β)": {title:"look to the future",
     story:"　",},
+  "黒瀬武人(β)": {title:"力と武の極致",
+    story:"　",},
+  "明石啓希(β)": {title:"呪いと祝いの茜の眼",
+    story:"　",},
+  "珠濃雅紀(β)": {title:"蒼の肉体変化",
+    story:"　",},
+  "鈴鹿(β)": {title:"幸せを授ける",
+    story:"　",},
+  "沢華(β)": {title:"竹林の静寂なひととき",
+    story:"　",},
   "ゲガント": {title:"再生",
     story:"元武達によって倒された最初の敵。固有能罪符は「再生」",},
   "ホーレン": {title:"空気殺し",
@@ -3378,6 +3612,7 @@ if(id==="event") renderEvent();
 if(id==="dex") renderDex(); // ←追加
 if(id==="exchange") renderExchange();
 if(id==="gacha") initBannerTabs();
+if(id==="training") initTrainingScreen();
 }
 function draw1(){
 if(stone < 10) return;
@@ -3672,6 +3907,7 @@ return {
       debuffTurn: 0,
       debuffs:[], // デバフ重ね掛け配列
       erosions:[],
+      taketogeStacks:[], // 🎋 竹棘スタック配列
       gimmick: null,
       turnCount: 0
   };
@@ -3703,6 +3939,23 @@ players.forEach(p => {
   if(p.weaponPassive && p.weaponPassive.type === "weapon_regen3t"){
     p.weaponRegen3tLeft = 3;
   }
+});
+
+// 🌿 fated_backup: 戦闘開始時、味方全体HP上限+15%（珠濃雅紀(β)パッシブ）
+players.forEach(p => {
+  let passives = [];
+  if(p.passive) passives.push(p.passive);
+  if(p.weaponPassive) passives.push(p.weaponPassive);
+  passives.forEach(ps => {
+    if(ps.type === "fated_backup"){
+      players.forEach(ally => {
+        let bonus = Math.floor(ally.hp * ps.value);
+        ally.hp += bonus;
+        ally.currentHp += bonus;
+      });
+      setTimeout(()=>showSynergyText("🌿 "+p.name+"の運命のバックアップ！全体HP上限+15%！"), 300);
+    }
+  });
 });
 
 renderBattle();
@@ -3744,6 +3997,17 @@ if(!el){
     renderBattle();
     el=document.getElementById(id);
     if(!el) return;
+}
+
+// 🏋️ 鍛錬中: 敵への最大ダメージを記録
+if(isTrainingBattle && id === "enemy" && res.type !== "heal" && res.dmg > 0){
+    let dmgVal = Math.floor(res.dmg);
+    if(dmgVal > trainingMaxDmg){
+        trainingMaxDmg = dmgVal;
+        // charNameが付与されていれば優先、なければcurrentAttackerを使用
+        trainingMaxDmgChar = res.charName || currentAttacker || "";
+    }
+    addTrainingDamage(res.dmg);
 }
 
 let div=document.createElement("div");
@@ -3817,6 +4081,19 @@ function getPlayerStatusHTML(p){
     let ammo = p.sniperAmmo ?? (p.skill.maxAmmo||6);
     h += `<span class="sBadge" style="background:#336699;color:#fff;">🔫残弾${ammo}/${p.skill.maxAmmo||6}</span>`;
   }
+  // ⚡ 天撃カウント表示（黒瀬武人(β)）
+  if(p.skill && p.skill.type==="tenGeki"){
+    let cnt = p.tenGekiCount || 0;
+    let atkBonus = cnt * 25;
+    h += `<span class="sBadge" style="background:#1a0033;color:#cc88ff;border:1px solid #8833ff;">⚡天撃×${cnt}(ATK+${atkBonus}%)</span>`;
+  }
+  // 🌌 未知な道 被ダメ軽減表示（黒瀬武人(β)）
+  if(p.passive && p.passive.type==="michiPassive"){
+    let hpRatio = (p.hp > 0) ? p.currentHp / p.hp : 0;
+    let tier = Math.min(10, Math.floor((1 - hpRatio) / 0.1) + 1);
+    let michiReduction = tier * 8;
+    h += `<span class="sBadge" style="background:#0a1a2a;color:#88ddff;border:1px solid #2255aa;">🌌未知な道(被ダメ-${michiReduction}%)</span>`;
+  }
   // 🔗 紐カウント表示（八並解徒🎮）
   if(p.himoCount > 0){
     let himoReduction = Math.min(45, p.himoCount * 3);
@@ -3871,6 +4148,14 @@ function getPlayerStatusHTML(p){
     let bonus = Math.min(700, turns * 100);
     h += `<span class="sBadge" style="background:#333;color:#ff6600;">🔥ヒートアップ待機(発動で+${bonus}%)</span>`;
   }
+  // 💛 幸福状態表示
+  if(p.happyStacks && p.happyStacks.length > 0){
+    let maxTurn = Math.max(...p.happyStacks.map(s=>s.turn));
+    let count = p.happyStacks.length;
+    let atkBonus = Math.round((Math.pow(1.20, count) - 1) * 100);
+    let defBonus = Math.round((1 - Math.pow(0.95, count)) * 100);
+    h+=`<span class="sBadge" style="background:#ffdd00;color:#333;border:1px solid #ffaa00;">💛幸福×${count}(与+${atkBonus}%被-${defBonus}%回復${count*5}%/${maxTurn}T)</span>`;
+  }
   if(p.isBunshin) h+=`<span class="sBadge" style="background:#00ccff;color:#000;">👥分身(${p.bunshinTurn}T)</span>`;
   // 🌟 パッシブ表示
   if(p.passive){
@@ -3920,6 +4205,18 @@ function getPlayerStatusHTML(p){
     let maxTurn = Math.max(...p.echoHeals.map(e=>e.turn));
     h+=`<span class="sBadge" style="background:#0066cc;color:#fff;">💧共鳴×${p.echoHeals.length}(${maxTurn}T HP+10%/T)</span>`;
   }
+  // 🔓 解錠カウント表示
+  if(p.jokakuCount && p.jokakuCount > 0){
+    h+=`<span class="sBadge" style="background:#1a2a00;color:#aaff44;border:1px solid #88cc00;">🔓解錠×${p.jokakuCount}(ATK+${p.jokakuCount*25}%・被ダメHP回復)</span>`;
+  }
+  // ⚡ 暴走カウント表示
+  if(p.berserkCount && p.berserkCount > 0){
+    h+=`<span class="sBadge" style="background:#1a0020;color:#ff88ff;border:1px solid #aa00ff;">⚡暴走×${p.berserkCount}(ATK+${p.berserkCount*70}%・攻撃時HP回復)</span>`;
+  }
+  // 🌿 再構築バフ表示
+  if(p.saikouchiBuff && p.saikouchiBuff > 0){
+    h+=`<span class="sBadge" style="background:#003300;color:#88ff88;border:1px solid #44cc44;">🌿再構築(${p.saikouchiBuff}T・HP1耐え)</span>`;
+  }
   return h;
 }
 
@@ -3932,6 +4229,7 @@ function getEnemyStatusHTML(){
   if(enemy.shockTurn>0) h+=`<span class="sBadge sShock">⚡感${enemy.shockTurn}</span>`;
   if(enemy.debuffs && enemy.debuffs.length>0) h+=`<span class="sBadge sDebuff">↓弱体${enemy.debuffs.length}重(${enemy.debuffTurn}T)</span>`;
   else if(enemy.debuffTurn>0) h+=`<span class="sBadge sDebuff">↓弱体${enemy.debuffTurn}</span>`;
+  if(enemy.taketogeStacks && enemy.taketogeStacks.length>0){ let tt=enemy.taketogeStacks; let total=tt.length; let maxT=Math.max(...tt.map(s=>s.turn)); h+=`<span class="sBadge" style="background:#1a3a1a;color:#88ff88;border:1px solid #44aa44;">🎋竹棘×${total}(ATK-${total*5}%)(${maxT}T)</span>`; }
   if(enemy.erosions && enemy.erosions.length>0) h+=`<span class="sBadge" style="background:#440044;color:#ff88ff;border:1px solid #aa44aa;">⬛侵蝕×${enemy.erosions.length}(${enemy.erosions[0]?.turn}T)</span>`;
   if(enemy.frozenCrystals && enemy.frozenCrystals.length>0) h+=`<span class="sBadge" style="background:#001a3a;color:#88eeff;border:1px solid #0088cc;">❄凍裂×${enemy.frozenCrystals.length} 蓄積:${Math.floor(enemy.frozenCrystalAccum||0)}</span>`;
   if(enemy.shield>0) h+=`<span class="sBadge sShield">🛡${Math.floor(enemy.shield)}</span>`;
@@ -4007,9 +4305,10 @@ function renderBattle(){
   let p = players[turnIndex];
   actions.innerHTML =
     turn==="player"
-    ? `<button onclick="attack()">通常攻撃</button>
+    ? `${isTrainingBattle ? `<div id="trainingDmgBar" style="display:flex;align-items:center;justify-content:space-between;background:rgba(60,180,100,0.1);border:1px solid rgba(100,220,150,0.25);border-radius:10px;padding:8px 12px;margin-bottom:8px;"><span style="color:#88ddaa;font-size:11px;font-weight:bold;letter-spacing:1px;">🏋️ 鍛錬中</span><span style="color:#fff;font-size:14px;font-weight:bold;">最大ダメージ: <span id="trainingTotalDmgDisp" style="color:#66ffaa;">${trainingMaxDmg.toLocaleString()}</span></span><button onclick="endTrainingBattle()" style="background:rgba(255,80,80,0.2);border:1px solid rgba(255,100,100,0.4);color:#ff8888;border-radius:8px;padding:5px 12px;font-size:12px;cursor:pointer;font-weight:bold;">終了</button></div>` : ""}
+       <button onclick="attack()">通常攻撃</button>
        <button onclick="skill()" ${(p.cool>0 || p.heatUpUsed || (p.skill?.type==="sniper" && (p.sniperAmmo??6)<=0))?"disabled":""}>
-       スキル1 ${p.skill?.type==="sniper" ? "[🔫残弾"+(p.sniperAmmo??6)+"/6]" : p.heatUpUsed ? "[🔥ヒートアップ中]" : "(CT:"+p.cool+")"}${p.skill?.type==="chinkoPo" ? " [💢"+(p.chinkoPoCount||0)+"カウント]" : ""}${p.skill?.type==="kenSword" ? " [⚔剣×"+(p.swordCount||0)+"]" : ""}
+       スキル1 ${p.skill?.type==="sniper" ? "[🔫残弾"+(p.sniperAmmo??6)+"/6]" : p.heatUpUsed ? "[🔥ヒートアップ中]" : "(CT:"+p.cool+")"}${p.skill?.type==="chinkoPo" ? " [💢"+(p.chinkoPoCount||0)+"カウント]" : ""}${p.skill?.type==="kenSword" ? " [⚔剣×"+(p.swordCount||0)+"]" : ""}${p.skill?.type==="tenGeki" ? " [⚡天撃×"+(p.tenGekiCount||0)+"]" : ""}
        </button>
 ${p.skill2 ? `<button onclick="skill2()" ${(p.cool2>0 || (p.skill2.type==="bunshin" && players.some(pl=>pl.isBunshin)))?"disabled":""}>スキル2 (CT:${p.cool2})${p.skill2.type==="bunshin" && players.some(pl=>pl.isBunshin)?" [分身中]":""}</button>` : ""}
 ${p.weapon ? `<button onclick="weaponSkill()" ${(p.weaponCool??0)>0?"disabled":""}>武器スキル (CT:${p.weaponCool})</button>` : ""}
@@ -4019,6 +4318,7 @@ ${p.weapon ? `<button onclick="weaponSkill()" ${(p.weaponCool??0)>0?"disabled":"
 
 function attack(){
 let p=players[turnIndex];
+currentAttacker = p.name;
 
 let atk = p.atk;
 if(p.buffs){
@@ -4106,6 +4406,7 @@ if(p.sakuraDrainTurn && p.sakuraDrainTurn > 0 && res.dmg > 0){
 
 renderBattle();
 
+res.charName = p.name;
 setTimeout(()=>{
     showDamage("enemy",res);
 },10);
@@ -4236,6 +4537,7 @@ endTurn();
 
 function ultimate(){
 let p = players[turnIndex];
+currentAttacker = p.name;
 if(p.ult < 100) return;
 
 let atk = p.atk;
@@ -4267,7 +4569,8 @@ renderBattle();
 setTimeout(()=>{
     showDamage("enemy", {
         dmg: res.dmg,
-        type: "ultimate"
+        type: "ultimate",
+        charName: p.name
     });
 },10);
 
@@ -4383,6 +4686,11 @@ if(tauntTarget) target = tauntTarget;
 
 let index = players.indexOf(target);
 let atk = enemy.atk * enemy.debuffPower;
+// 🎋 竹棘スタック: スタック数×5%のATK減少
+if(enemy.taketogeStacks && enemy.taketogeStacks.length > 0){
+  let reduction = Math.min(enemy.taketogeStacks.length * 0.05, 0.75);
+  atk *= (1 - reduction);
+}
 
 // ギミック: HP50%以下で狂化（phaseRage）→ ATK2倍・属性制限解除
 if(enemy.gimmick?.phaseRage && enemy.hp <= enemy.maxHp * 0.5 && !enemy.phaseRaged){
@@ -4438,6 +4746,12 @@ if(target.kokuShoku && target.kokuShoku > 0){
 }
 
 target.currentHp -= res.dmg;
+// 🌿 再構築バフ: HP0になる攻撃を1回だけHP1で耐える
+if(target.currentHp <= 0 && target.saikouchiBuff && target.saikouchiBuff > 0){
+    target.currentHp = 1;
+    target.saikouchiBuff = 0; // 使用済み（1回限り）
+    setTimeout(()=>showSynergyText("🌿 "+target.name+"の再構築発動！HP1で耐えた！"), 150);
+}
 if(target.currentHp <= 0) target.currentHp = 0;
 
 // 🌟 パッシブ: 被ダメ時回復
@@ -4447,6 +4761,16 @@ triggerDamagedPassive(target);
 if(target.skill && target.skill.type==="kenSword"){
     target.swordCount = (target.swordCount||0) + 1;
     showSynergyText("⚔ 被攻撃！剣カウント→"+(target.swordCount));
+}
+
+// ⚡ 天撃: 被ダメ時にカウント+1（永遠）→ ATK+25%/カウント
+if(target.skill && target.skill.type==="tenGeki"){
+    target.tenGekiCount = (target.tenGekiCount||0) + 1;
+    let cnt = target.tenGekiCount;
+    if(!target.buffs) target.buffs = [];
+    target.buffs = target.buffs.filter(b=>!b.isTenGeki);
+    target.buffs.push({power: 1 + cnt * 0.25, turn: 999999, permanent: true, isTenGeki: true});
+    showSynergyText("⚡ 被撃！天撃カウント→" + cnt + "！ATK+" + (cnt*25) + "%！");
 }
 
 renderBattle();
@@ -4479,8 +4803,49 @@ setTimeout(()=>{
     // HP0キャラをdeadPlayersへ移動
     let fallen = players.filter(p => p.currentHp <= 0);
     fallen.forEach(p => { if(!deadPlayers.find(d=>d.name===p.name)) deadPlayers.push(p); });
+
+    // 🔓 暴走解錠パッシブ: 戦線離脱時に解錠カウントを暴走カウントに変換
+    fallen.forEach(dead => {
+      if(dead.passive && dead.passive.type === "berserk_jokaku"){
+        players.forEach(ally => {
+          if(ally.currentHp > 0 && ally.jokakuCount > 0){
+            ally.berserkCount = (ally.berserkCount || 0) + ally.jokakuCount;
+            ally.jokakuCount = 0;
+            updateJokakuBuff(ally);
+            updateBerserkBuff(ally);
+            setTimeout(()=>showSynergyText("⚡ "+dead.name+"の暴走解錠発動！解錠→暴走カウント×"+ally.berserkCount+"に変換！"), 300);
+          }
+        });
+      }
+    });
+
+    // 🌊 盛者必衰パッシブ: 戦線離脱時、他のキャラATK+35%(永続)＆HP20%回復
+    fallen.forEach(dead => {
+      if(dead.passive && dead.passive.type === "on_retire_buff_allies"){
+        let ps = dead.passive;
+        let atkBonus = ps.atkBonus || 0.35;
+        let healRate = ps.healRate || 0.20;
+        players.filter(p => p.currentHp > 0).forEach(ally => {
+          // ATK永続バフ
+          if(!ally.buffs) ally.buffs = [];
+          // 既存の盛者必衰バフを合算
+          let existing = ally.buffs.find(b=>b.isShojahissui);
+          if(existing){
+            existing.power = existing.power * (1 + atkBonus);
+          } else {
+            ally.buffs.push({power: 1 + atkBonus, turn: 999999, permanent: true, isShojahissui: true});
+          }
+          // HP回復
+          let healAmt = Math.floor(ally.hp * healRate);
+          ally.currentHp = Math.min(ally.hp, ally.currentHp + healAmt);
+        });
+        setTimeout(()=>showSynergyText("🌊 "+dead.name+"の盛者必衰発動！仲間のATK+35%(永続)＆HP20%回復！"), 300);
+      }
+    });
+
     players = players.filter(p => p.currentHp > 0);
     if(players.length === 0){
+      if(isTrainingBattle){ isTrainingBattle=false; if(trainingMaxDmg>(profileData.trainingMaxDmg||0)){profileData.trainingMaxDmg=trainingMaxDmg;profileData.trainingMaxDmgChar=trainingMaxDmgChar;saveData();} let _cin=trainingMaxDmgChar?"\n("+trainingMaxDmgChar+")":""; alert("🏋️ 鍛錬終了\n\n最大ダメージ: "+trainingMaxDmg.toLocaleString()+_cin+"\n\n（敗北）"); trainingMaxDmg=0;trainingMaxDmgChar=""; go("training"); return; }
       alert("敗北");
       if(currentEvent !== undefined){ currentEvent=undefined; go("event"); }
       else go("trial");
@@ -4501,6 +4866,7 @@ setTimeout(()=>{
     // 分身消滅後、操作可能なキャラが0人になった場合の敗北チェック
     if(players.length === 0){
       setTimeout(()=>{
+        if(isTrainingBattle){ isTrainingBattle=false; if(trainingMaxDmg>(profileData.trainingMaxDmg||0)){profileData.trainingMaxDmg=trainingMaxDmg;profileData.trainingMaxDmgChar=trainingMaxDmgChar;saveData();} let _cin=trainingMaxDmgChar?"\n("+trainingMaxDmgChar+")":""; alert("🏋️ 鍛錬終了\n\n最大ダメージ: "+trainingMaxDmg.toLocaleString()+_cin+"\n\n（敗北）"); trainingMaxDmg=0;trainingMaxDmgChar=""; go("training"); return; }
         alert("敗北");
         if(currentEvent !== undefined){ currentEvent=undefined; go("event"); }
         else go("trial");
@@ -4561,6 +4927,15 @@ setTimeout(()=>{
       // 🗡 武器召喚ターンカウントダウン
       if(pl.weaponSummonTurn && pl.weaponSummonTurn > 0){
         pl.weaponSummonTurn--;
+      }
+      // 💛 幸福状態: スタック毎にHP5%回復 & ターンカウントダウン
+      if(pl.happyStacks && pl.happyStacks.length > 0){
+        let stackCount = pl.happyStacks.length;
+        let happyHeal = Math.floor(pl.hp * 0.05 * stackCount);
+        pl.currentHp = Math.min(pl.hp, pl.currentHp + happyHeal);
+        setTimeout(()=>showDamage("p"+pli, {dmg:happyHeal, type:"heal"}), 100 + pli*80);
+        pl.happyStacks = pl.happyStacks.filter(s=>{ s.turn--; return s.turn > 0; });
+        if(pl.happyStacks.length === 0) showSynergyText("💛 "+pl.name+"の幸福状態がすべて切れた…");
       }
     });
 
@@ -4709,6 +5084,7 @@ function checkTurnLimit(){
   if(!enemy.gimmick?.turnLimit) return;
   let rem = enemy.gimmick.turnLimit - (enemy.turnCount||0);
   if(rem<=0 && enemy.hp>0){
+    if(isTrainingBattle){ isTrainingBattle=false; if(trainingMaxDmg>(profileData.trainingMaxDmg||0)){profileData.trainingMaxDmg=trainingMaxDmg;profileData.trainingMaxDmgChar=trainingMaxDmgChar;saveData();} let _cin=trainingMaxDmgChar?"\n("+trainingMaxDmgChar+")":""; alert("🏋️ 鍛錬終了\n\n最大ダメージ: "+trainingMaxDmg.toLocaleString()+_cin+"\n\nターン制限超過"); trainingMaxDmg=0;trainingMaxDmgChar=""; go("training"); return; }
     alert("⏱ ターン制限超過！敗北...");
     if(currentEvent!==undefined){ currentEvent=undefined; go("event"); }
     else go("trial");
@@ -4821,6 +5197,14 @@ function triggerAttackPassive(p){
   }); // end passives.forEach
   // ツリー追加パッシブ（攻撃時）
   triggerTreePassiveOnAttack(p);
+  // ⚡ 暴走カウント: 攻撃時HP10%×カウント数回復
+  if(p.berserkCount && p.berserkCount > 0){
+    let bHeal = Math.floor(p.hp * 0.10 * p.berserkCount);
+    p.currentHp = Math.min(p.hp, p.currentHp + bHeal);
+    let _bpi = players.indexOf(p);
+    if(_bpi >= 0) setTimeout(()=>showDamage("p"+_bpi, {dmg:bHeal, type:"heal"}), 250);
+    showSynergyText("⚡ "+p.name+"の暴走カウント！攻撃→HP+"+(p.berserkCount*10)+"%回復！");
+  }
   // ⚡ sakuraBoost: 与ダメの10%分HP回復（sakuraDrainTurnが残っている間）
   if(p.sakuraDrainTurn && p.sakuraDrainTurn > 0){
     // 実際の回収はatk計算後に呼ばれるのでここでは基礎ATKから推定
@@ -4881,6 +5265,13 @@ function triggerTurnStartPassive(){
         }
       });
     }
+    // 🎋 taketogeGarden: ターン開始時に竹棘スタック+1付与(3T)
+    if(ps.type === "taketogeGarden"){
+      if(!enemy.taketogeStacks) enemy.taketogeStacks = [];
+      enemy.taketogeStacks.push({ turn: 3 });
+      let total = enemy.taketogeStacks.length;
+      setTimeout(()=>showSynergyText("🎋 "+p.name+"の庭園！竹棘+1(合計×"+total+"・ATK-"+(total*5)+"%)"), 100);
+    }
   });
 
   // ✨ weapon_regen3t: 武器パッシブ「3Tの間毎ターン全体HP10%回復」処理
@@ -4914,6 +5305,15 @@ function triggerDamagedPassive(target){
       target.currentHp = Math.min(target.hp, target.currentHp + healAmt);
       let ti = players.indexOf(target);
       if(ti>=0) setTimeout(()=>showDamage("p"+ti,{dmg:healAmt,type:"heal"}),300);
+    }
+    // 💛 幸福の守護: 自キャラ被ダメ時、味方全体に幸福カウント+1
+    if(p === target && p.passive && p.passive.type === "happy_on_damaged"){
+      players.forEach(ally=>{
+        if(!ally.happyStacks) ally.happyStacks = [];
+        ally.happyStacks.push({ turn: 5 });
+      });
+      let selfCount = p.happyStacks ? p.happyStacks.length : 0;
+      showSynergyText("💛 "+p.name+"のパッシブ！被ダメ→味方全体に幸福カウント+1(自身×"+selfCount+")！");
     }
     // ⚡ 桜木彰🎮パッシブ: 被ダメ時ATK+50%(3T) + HP5%回復
     if(p === target && p.passive.type === "dmg_on_damaged_buff"){
@@ -4951,6 +5351,15 @@ function triggerDamagedPassive(target){
       showSynergyText("⚡ "+p.name+"のパッシブ！被ダメ→連撃カウント→"+p.rengekiCount+"！ATK+"+(Math.floor(rb*100))+"%！");
     }
   });
+  // 🔓 解錠カウント: 被ダメ時HP5%×カウント数回復
+  if(target.jokakuCount && target.jokakuCount > 0){
+    let jHeal = Math.floor(target.hp * 0.05 * target.jokakuCount);
+    target.currentHp = Math.min(target.hp, target.currentHp + jHeal);
+    let _jti = players.indexOf(target);
+    if(_jti >= 0) setTimeout(()=>showDamage("p"+_jti, {dmg:jHeal, type:"heal"}), 400);
+    showSynergyText("🔓 "+target.name+"の解錠カウント！被ダメ→HP+"+(target.jokakuCount*5)+"%回復！");
+  }
+
   // ツリーパッシブ: 反撃の炎
   triggerTreePassiveOnDamaged(target);
 }
@@ -4978,6 +5387,8 @@ function applyPassiveAtk(p){
       if(enemy.shockTurn > 0) bonus *= 1.25;
     }
   });
+  // 💛 幸福状態: 与ダメ+20%×スタック数(累乗)
+  if(p.happyStacks && p.happyStacks.length > 0) bonus *= Math.pow(1.20, p.happyStacks.length);
   // ツリー追加パッシブのATK補正
   bonus *= applyTreePassiveAtk(p);
   return bonus;
@@ -5000,7 +5411,17 @@ function applyPassiveDef(target){
       let himoReduction = Math.min(0.45, target.himoCount * 0.03); // 最大15カウント→45%軽減上限
       reduction *= (1 - himoReduction);
     }
+    // 🌌 michiPassive: HP割合に応じて被ダメ軽減（HP10%ごとに8%up、最大80%）
+    // 100%以下:8%, 90%以下:16%, ... 10%以下:80%
+    if(ps.type === "michiPassive"){
+      let hpRatio = (target.hp > 0) ? target.currentHp / target.hp : 0;
+      let tier = Math.min(10, Math.floor((1 - hpRatio) / 0.1) + 1);
+      let michiReduction = tier * 0.08;
+      reduction *= (1 - michiReduction);
+    }
   });
+  // 💛 幸福状態: 被ダメ-5%×スタック数(累乗)
+  if(target.happyStacks && target.happyStacks.length > 0) reduction *= Math.pow(0.95, target.happyStacks.length);
   // ツリー追加パッシブの被ダメ軽減
   reduction *= applyTreePassiveDef(target);
   return reduction;
@@ -5035,6 +5456,8 @@ function applySkillDmgPassives(dmg, attacker){
   // ツリー: スキル威力強化 (攻撃者本人のtreeSkillPowerを適用)
   let ac = box.find(b=>b.name===attacker.name);
   if(ac && ac.treeSkillPower) mult *= (1 + ac.treeSkillPower);
+  // 💛 幸福状態: スキルダメージ与ダメ+20%×スタック数(累乗)
+  if(attacker.happyStacks && attacker.happyStacks.length > 0) mult *= Math.pow(1.20, attacker.happyStacks.length);
   // ツリー: ツリーパッシブATK補正（属性共鳴・不屈・滅亡の刻など）も反映
   mult *= applyTreePassiveAtk(attacker);
   return Math.floor(dmg * mult);
@@ -5057,6 +5480,10 @@ if(turn === "enemy"){
         enemy.debuffTurn--;
         if(enemy.debuffTurn <= 0) enemy.debuffPower = 1;
     }
+    // 🎋 竹棘スタックのターン減少
+    if(enemy.taketogeStacks && enemy.taketogeStacks.length > 0){
+        enemy.taketogeStacks = enemy.taketogeStacks.filter(s=>{ s.turn--; return s.turn > 0; });
+    }
 }
 
 let p = players[turnIndex];
@@ -5075,6 +5502,8 @@ if(p.weaponCool > 0) p.weaponCool--;
 if(p.taunt && p.taunt.turn > 0){ p.taunt.turn--; if(p.taunt.turn<=0) p.taunt=null; }
 // ⚡ 桜木彰🎮: sakuraDrainTurnのターン経過
 if(p.sakuraDrainTurn && p.sakuraDrainTurn > 0){ p.sakuraDrainTurn--; }
+// 🌿 再構築バフ: ターン経過
+if(p.saikouchiBuff && p.saikouchiBuff > 0){ p.saikouchiBuff--; }
 
 // 🌿 修復革命: ターン経過でHP元に戻す
 if(p.repairRevTurn && p.repairRevTurn > 0){
@@ -5103,6 +5532,33 @@ if(p.runawayBurn && p.runawayBurn.turn > 0){
     }
 }
 
+// ⚡ 暴走カウント: 自分のターン終了時に-1、0で戦線離脱
+if(p.berserkCount && p.berserkCount > 0){
+    p.berserkCount--;
+    updateBerserkBuff(p);
+    if(p.berserkCount <= 0){
+        showSynergyText("⚡ "+p.name+"の暴走カウントが尽きた！戦線離脱！");
+        p.currentHp = 0;
+        let _bIdx = players.indexOf(p);
+        if(_bIdx >= 0 && !deadPlayers.find(d=>d.name===p.name)) deadPlayers.push(p);
+        players = players.filter(pl => pl.currentHp > 0);
+        if(players.length === 0){
+            setTimeout(()=>{ 
+              if(isTrainingBattle){ isTrainingBattle=false; if(trainingMaxDmg>(profileData.trainingMaxDmg||0)){profileData.trainingMaxDmg=trainingMaxDmg;profileData.trainingMaxDmgChar=trainingMaxDmgChar;saveData();} let _cin=trainingMaxDmgChar?"\n("+trainingMaxDmgChar+")":""; alert("🏋️ 鍛錬終了\n\n最大ダメージ: "+trainingMaxDmg.toLocaleString()+_cin+"\n\n（敗北）"); trainingMaxDmg=0;trainingMaxDmgChar=""; go("training"); return; }
+              alert("敗北"); if(currentEvent!==undefined){currentEvent=undefined;go("event");}else go("trial"); }, 300);
+            return;
+        }
+        // 離脱後turnIndexを再調整
+        if(turnIndex >= players.length) turnIndex = 0;
+        renderBattle();
+        turn = "enemy";
+        setTimeout(enemyTurn, 700);
+        return;
+    } else {
+        showSynergyText("⚡ "+p.name+"の暴走カウント→"+p.berserkCount+"(0で離脱)");
+    }
+}
+
 if(enemy.hp <= 0){
     setTimeout(()=>win(), 500);
     return;
@@ -5117,7 +5573,231 @@ turnIndex=0;
 renderBattle();
 }
 
+// =====================================================
+// 🏋️ 鍛錬システム
+// =====================================================
+let isTrainingBattle = false;
+let trainingTotalDmg = 0;   // 後方互換用（使用しない）
+let trainingSelectedAttr = "火";
+
+function initTrainingScreen(){
+  // キャラ選択セレクトを構築
+  let sel = document.getElementById("trainingEnemySelect");
+  if(!sel) return;
+  // 全キャラプールを結合
+  let allPools = [chars, eventChars, eventChars2, eventChars3, eventChars4,
+    eventChars5, eventChars6, eventChars7, eventChars8, eventChars9, eventChars10, rewardChar];
+  let allChars = [];
+  allPools.forEach(pool=>{ if(pool) pool.forEach(c=>{ if(!allChars.find(x=>x.name===c.name)) allChars.push(c); }); });
+  allChars.sort((a,b)=>b.rarity-a.rarity || a.name.localeCompare(b.name));
+  sel.innerHTML = '<option value="">-- キャラを選択 --</option>';
+  allChars.forEach(c=>{
+    let opt = document.createElement("option");
+    opt.value = c.name;
+    opt.textContent = `${"★".repeat(c.rarity)} ${c.name} (${c.attr})`;
+    sel.appendChild(opt);
+  });
+  // 属性ボタンの初期選択
+  selectTrainingAttr(trainingSelectedAttr || "火");
+}
+
+function onTrainingEnemyChange(){
+  let sel = document.getElementById("trainingEnemySelect");
+  let name = sel.value;
+  if(!name){ 
+    document.getElementById("trainingEnemyPreview").innerHTML = "❓";
+    document.getElementById("trainingEnemyAttrBadge").textContent = "";
+    return;
+  }
+  let allPools = [chars, eventChars, eventChars2, eventChars3, eventChars4,
+    eventChars5, eventChars6, eventChars7, eventChars8, eventChars9, eventChars10, rewardChar];
+  let c = null;
+  allPools.forEach(pool=>{ if(pool && !c) c = pool.find(x=>x.name===name); });
+  if(!c) return;
+  let prev = document.getElementById("trainingEnemyPreview");
+  prev.innerHTML = `<img src="${c.img}" style="width:100%;height:100%;object-fit:cover;">`;
+  let badge = document.getElementById("trainingEnemyAttrBadge");
+  const attrColorMap = {火:"#ff8866",水:"#88aaff",雷:"#ffdd55",木:"#66dd77",光:"#eeeeee",闇:"#cc88ff"};
+  badge.textContent = c.attr + "属性";
+  badge.style.color = attrColorMap[c.attr] || "#aaa";
+  // 属性を自動セット
+  selectTrainingAttr(c.attr);
+}
+
+function selectTrainingAttr(attr){
+  trainingSelectedAttr = attr;
+  document.querySelectorAll(".tattrBtn").forEach(btn=>{
+    let a = btn.getAttribute("data-attr");
+    btn.style.opacity = (a === attr) ? "1" : "0.4";
+    btn.style.transform = (a === attr) ? "scale(1.06)" : "scale(1)";
+    if(a === attr) btn.style.boxShadow = "0 0 10px rgba(100,255,160,0.3)";
+    else btn.style.boxShadow = "none";
+  });
+}
+
+function setTrainingHP(v){ document.getElementById("trainingHP").value = v; }
+function setTrainingATK(v){ document.getElementById("trainingATK").value = v; }
+
+function buildTrainingGimmick(){
+  let g = {};
+  if(document.getElementById("tg_shield").checked){
+    let sv = parseInt(document.getElementById("tg_shieldVal").value)||5000;
+    g.shield = sv; g.shieldLabel = `シールド${sv.toLocaleString()}`;
+  }
+  if(document.getElementById("tg_attrOnly").checked){
+    let av = document.getElementById("tg_attrOnlyVal").value;
+    g.attrOnly = av; g.attrOnlyLabel = `${av}属性のみ有効`;
+  }
+  if(document.getElementById("tg_turnBuff").checked){
+    g.turnBuff = true; g.turnBuffLabel = "毎T ATK+8%(上限+80%)";
+  }
+  if(document.getElementById("tg_phaseRage").checked){
+    g.phaseRage = true; g.phaseRageLabel = "HP50%以下で狂化";
+  }
+  if(document.getElementById("tg_turnLimit").checked){
+    let tlv = parseInt(document.getElementById("tg_turnLimitVal").value)||10;
+    g.turnLimit = tlv; g.turnLimitLabel = `${tlv}T以内に撃破`;
+  }
+  return Object.keys(g).length > 0 ? g : null;
+}
+
+function startTrainingBattle(){
+  if(team.length === 0){ alert("編成にキャラがいません"); return; }
+  let selName = document.getElementById("trainingEnemySelect").value;
+  let hp = parseInt(document.getElementById("trainingHP").value) || 50000;
+  let atk = parseInt(document.getElementById("trainingATK").value) || 2000;
+  let attr = trainingSelectedAttr || "火";
+  let gimmick = buildTrainingGimmick();
+
+  // キャラ画像取得
+  let allPools = [chars, eventChars, eventChars2, eventChars3, eventChars4,
+    eventChars5, eventChars6, eventChars7, eventChars8, eventChars9, eventChars10, rewardChar];
+  let baseChar = null;
+  if(selName){ allPools.forEach(pool=>{ if(pool && !baseChar) baseChar = pool.find(x=>x.name===selName); }); }
+
+  let enemyName = baseChar ? baseChar.name : "鍛錬ダミー";
+  let enemyImg = baseChar ? baseChar.img : "https://imgur.com/3sgyjeg.png";
+
+  isTrainingBattle = true;
+  trainingTotalDmg = 0;
+  trainingMaxDmg = 0;
+  trainingMaxDmgChar = "";
+  currentEvent = undefined;
+
+  go("battle");
+
+  players = applyTeamBuff(team.map(c=>{
+    let base =
+      chars.find(ch=>ch.name===c.name)||eventChars.find(ch=>ch.name===c.name)||
+      eventChars2.find(ch=>ch.name===c.name)||eventChars3.find(ch=>ch.name===c.name)||
+      eventChars4.find(ch=>ch.name===c.name)||eventChars5.find(ch=>ch.name===c.name)||
+      eventChars6.find(ch=>ch.name===c.name)||eventChars7.find(ch=>ch.name===c.name)||
+      eventChars8.find(ch=>ch.name===c.name)||eventChars9.find(ch=>ch.name===c.name)||
+      eventChars10.find(ch=>ch.name===c.name)||rewardChar.find(ch=>ch.name===c.name);
+    let weapon = c.weapon;
+    let finalAtk = getEffectiveAtk(c)+(weapon?.atk||0);
+    let finalHp = getEffectiveHp(c)+(weapon?.hp||0);
+    let initSkill = base?.skill||c.skill;
+    return {
+      ...c, atk:finalAtk, hp:finalHp, currentHp:finalHp,
+      skill:initSkill, skill2:base?.skill2||c.skill2||null, cool2:0,
+      weapon:c.weapon?{...c.weapon}:null, weaponCool:0,
+      sniperAmmo:initSkill?.type==="sniper"?(initSkill.maxAmmo||6):undefined,
+      swordCount:initSkill?.type==="kenSword"?0:undefined,
+      swordBuff:initSkill?.type==="kenSword"?0:undefined,
+      passive:base?.passive||c.passive||null, passiveAtkBonus:0, kokuShoku:0,
+      weaponPassive:c.weapon?.passive||null,
+    };
+  }));
+
+  enemy = {
+    name: enemyName, attr: attr, img: enemyImg,
+    hp: hp, maxHp: hp, atk: atk, baseAtk: atk,
+    poison:0, poisons:[], burnTurn:0, burnPower:0, burns:[],
+    freezeTurn:0, shockTurn:0, shockPower:0, shield:0,
+    debuffUsed:false, debuffPower:1, debuffTurn:0, debuffs:[],
+    erosions:[], taketogeStacks:[], gimmick:gimmick||null, turnCount:0
+  };
+
+  if(gimmick?.shield) enemy.shield = gimmick.shield;
+
+  turn="player"; turnIndex=0; deadPlayers=[]; lastAllySkill=null;
+  players.forEach(p=>p.weaponCool=0);
+
+  players.forEach(p=>{
+    let passives=[];
+    if(p.passive) passives.push(p.passive);
+    if(p.weaponPassive) passives.push(p.weaponPassive);
+    passives.forEach(ps=>{
+      if(ps.type==="reduce_enemy_atk_passive"){ enemy.atk=Math.floor(enemy.atk*(1-ps.value)); enemy.baseAtk=enemy.atk; }
+    });
+  });
+  players.forEach(p=>{ if(p.weaponPassive&&p.weaponPassive.type==="weapon_regen3t") p.weaponRegen3tLeft=3; });
+  players.forEach(p=>{
+    let passives=[];
+    if(p.passive) passives.push(p.passive);
+    if(p.weaponPassive) passives.push(p.weaponPassive);
+    passives.forEach(ps=>{
+      if(ps.type==="fated_backup"){
+        players.forEach(ally=>{ let bonus=Math.floor(ally.hp*ps.value); ally.hp+=bonus; ally.currentHp+=bonus; });
+      }
+    });
+  });
+
+  renderBattle();
+}
+
+function endTrainingBattle(){
+  // 鍛錬結果を表示してタイトルへ
+  isTrainingBattle = false;
+  // プロフィールに最大ダメージを保存（更新があった場合のみ）
+  if(trainingMaxDmg > (profileData.trainingMaxDmg || 0)){
+    profileData.trainingMaxDmg = trainingMaxDmg;
+    profileData.trainingMaxDmgChar = trainingMaxDmgChar;
+    saveData();
+  }
+  let charInfo = trainingMaxDmgChar ? `\nキャラ: ${trainingMaxDmgChar}` : "";
+  let msg = `🏋️ 鍛錬終了\n\n最大ダメージ: ${trainingMaxDmg.toLocaleString()}${charInfo}\n\nお疲れさまでした！`;
+  alert(msg);
+  trainingMaxDmg = 0;
+  trainingMaxDmgChar = "";
+  go("training");
+}
+
+function addTrainingDamage(dmg){
+  if(!isTrainingBattle) return;
+  if(dmg > 0) trainingTotalDmg += Math.floor(dmg);
+  let el = document.getElementById("trainingTotalDmgDisp");
+  if(el) el.textContent = trainingMaxDmg.toLocaleString();
+}
+
 function win(){
+
+    // 🏋️ 鍛錬中なら敵HPをリセットして継続（ループ鍛錬）
+    if(isTrainingBattle){
+        let _cwin=trainingMaxDmgChar?`\n(${trainingMaxDmgChar})`:""; let msg = `🏋️ 撃破！\n最大ダメージ: ${trainingMaxDmg.toLocaleString()}${_cwin}\n\n鍛錬を続けますか？`;
+        if(confirm(msg)){
+            // 敵HPを全回復して再スタート
+            enemy.hp = enemy.maxHp;
+            enemy.poisons=[]; enemy.burns=[]; enemy.burnTurn=0; enemy.burnPower=0;
+            enemy.freezeTurn=0; enemy.shockTurn=0; enemy.shockPower=0;
+            enemy.debuffs=[]; enemy.debuffPower=1; enemy.debuffTurn=0;
+            enemy.erosions=[]; enemy.taketogeStacks=[];
+            enemy.shield = enemy.gimmick?.shield || 0;
+            enemy.turnCount=0; enemy.phaseRaged=false; enemy.turnBuffStacks=0;
+            turn="player"; turnIndex=0;
+            showSynergyText("🔄 鍛錬継続！敵HP全回復！");
+            renderBattle();
+            return;
+        } else {
+            isTrainingBattle = false;
+            if(trainingMaxDmg>(profileData.trainingMaxDmg||0)){profileData.trainingMaxDmg=trainingMaxDmg;profileData.trainingMaxDmgChar=trainingMaxDmgChar;saveData();} let _cnr=trainingMaxDmgChar?`\n(${trainingMaxDmgChar})`:""; alert(`🏋️ 鍛錬終了\n\n最大ダメージ: ${trainingMaxDmg.toLocaleString()}${_cnr}\n\n（報酬なし）`);
+            trainingMaxDmg = 0;
+            trainingMaxDmgChar = "";
+            go("training");
+            return;
+        }
+    }
 
     // ⭐ イベント中ならイベント処理
     if(currentEvent !== undefined){
@@ -5144,6 +5824,7 @@ location.reload();
 
 loadData();
 update();
+go('title');
 
 
 
@@ -5175,6 +5856,7 @@ return {
 
 function skill(){
 let p = players[turnIndex];
+currentAttacker = p.name;
 
 if(!p.skill || !p.skill.type) return;
 if(p.cool > 0) return;
@@ -5386,6 +6068,17 @@ if(s.type==="shock"){
   trackAilment(1); // ミッション
   // シナジー判定
   checkSynergy(p, atk);
+}
+
+// 💛 幸福のオーラ
+if(s.type==="happyAura"){
+    let turns = s.turn || 5;
+    players.forEach(t=>{
+      if(!t.happyStacks) t.happyStacks = [];
+      t.happyStacks.push({ turn: turns });
+    });
+    showSynergyText("💛 "+p.name+"のスキル！味方全体に幸福状態付与("+turns+"T)！与ダメ+20%＆被ダメ-5%＆毎ターンHP5%回復！");
+    renderBattle();
 }
 
 // 👥 全体バフ
@@ -5651,6 +6344,22 @@ if(s.type==="drain"){
     },120);
 }
 
+// 🎋 竹取の翁: 竹棘スタック+2付与(3T) + 自身HP12%回復
+if(s.type==="taketogeGrant"){
+  if(!enemy.taketogeStacks) enemy.taketogeStacks = [];
+  let addStacks = s.stacks || 2;
+  for(let i = 0; i < addStacks; i++){
+    enemy.taketogeStacks.push({ turn: 3 });
+  }
+  let healAmt = Math.floor(p.hp * (s.healRate || 0.12));
+  let pi2 = players.indexOf(p);
+  p.currentHp = Math.min(p.hp, p.currentHp + healAmt);
+  let totalStacks = enemy.taketogeStacks.length;
+  showSynergyText("🎋 竹取の翁！竹棘×" + totalStacks + "スタック(ATK-"+(totalStacks*5)+"%)＋HP回復！");
+  renderBattle();
+  setTimeout(()=>{ showDamage("p"+pi2, {dmg:healAmt, type:"heal"}); }, 100);
+}
+
 // 💀 HPカット
 if(s.type==="hpCut"){
     let dmg = enemy.maxHp * s.power;
@@ -5757,8 +6466,7 @@ if(s.type==="taunt"){
 }
 
 // 💢 珍古砲: カウント×77%ダメージ、発動後リセット
-if(s.type==="chinkoPo"){
-    let count = p.chinkoPoCount || 0;
+if(s.type==="chinkoPo"){    let count = p.chinkoPoCount || 0;
     let multiplier = 1 + count * 0.77;
     let res = calcDamage(p.attr, enemy.attr, atk * s.power * multiplier);
     if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
@@ -5770,6 +6478,56 @@ if(s.type==="chinkoPo"){
     let oldCount = count;
     p.chinkoPoCount = 0;
     showSynergyText("💢 珍古砲！カウント" + oldCount + "×77%=" + Math.floor(oldCount*77) + "%強化！");
+    renderBattle();
+    setTimeout(()=>showDamage("enemy", res), 10);
+    if(enemy.hp <= 0){ setTimeout(()=>win(), 500); return; }
+}
+
+// 👑 奢れるものも久からず: 敵最大HPと自分の最大HPの割合分ATK上昇/低下(3T)
+if(s.type==="hp_ratio_atk_buff"){
+    let myMaxHp = p.hp;
+    let enemyMaxHp = enemy.maxHp || enemy.hp;
+    let ratio = enemyMaxHp / myMaxHp;
+    if(!p.buffs) p.buffs = [];
+    p.buffs = p.buffs.filter(b=>!b.isHpRatioBuff);
+    if(ratio > 1){
+        // 敵の最大HPが自分より高い → ATK上昇
+        let buffPower = 1 + (ratio - 1);
+        buffPower = Math.min(buffPower, 11.0); // 最大1000%上昇に制限
+        p.buffs.push({power: buffPower, turn: 3, isHpRatioBuff: true});
+        showSynergyText("👑 奢れるものも久からず！敵HP比率×" + ratio.toFixed(2) + " → ATK+" + Math.floor((ratio-1)*100) + "%(3T)！");
+    } else {
+        // 敵の最大HPが自分以下 → ATK低下（デバフとして自分にかける）
+        let debuffPower = ratio; // 1未満→ATK低下
+        debuffPower = Math.max(debuffPower, 0.1); // 最低10%残す
+        p.buffs.push({power: debuffPower, turn: 3, isHpRatioBuff: true});
+        showSynergyText("👑 奢れるものも久からず…敵HP比率×" + ratio.toFixed(2) + " → ATK" + Math.floor((ratio-1)*100) + "%(3T)");
+    }
+    renderBattle();
+}
+
+// ⚡ 破壊的で覇界的な一撃(tenGeki): 天撃カウント+2してATK200%ダメ（カウント×ATK+25%バフ込み）
+if(s.type==="tenGeki"){
+    let addCount = 2;
+    let oldCount = p.tenGekiCount || 0;
+    p.tenGekiCount = oldCount + addCount;
+    let totalCount = p.tenGekiCount;
+    // 天撃バフ更新（カウント×ATK+25%、永続）
+    if(!p.buffs) p.buffs = [];
+    p.buffs = p.buffs.filter(b=>!b.isTenGeki);
+    p.buffs.push({power: 1 + totalCount * 0.25, turn: 999999, permanent: true, isTenGeki: true});
+    // バフ込みATK再計算
+    let atkNew = p.atk;
+    p.buffs.forEach(b=>{ atkNew *= b.power; });
+    let res = calcDamage(p.attr, enemy.attr, atkNew * s.power);
+    if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
+    if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+    if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
+    res.dmg = applySkillDmgPassives(res.dmg, p);
+    enemy.hp -= res.dmg;
+    applyShockBonus(p, atk);
+    triggerAttackPassive(p);
+    showSynergyText("⚡ 天撃！カウント+" + addCount + "→" + totalCount + "！ATK+" + (totalCount*25) + "%で200%の一撃！");
     renderBattle();
     setTimeout(()=>showDamage("enemy", res), 10);
     if(enemy.hp <= 0){ setTimeout(()=>win(), 500); return; }
@@ -6107,6 +6865,24 @@ if(s.type==="echoHeal"){
             showSynergyText("💧 "+ally.name+"のパッシブ！全体シールド+10%(1T)！");
         }
     });
+    renderBattle();
+    p.cool = p.skill.cool;
+    lastAllySkill = s;
+    endTurn();
+    return;
+}
+
+// 🌿 再構築(saikouchiB): 味方全体HP30%回復 + 「再構築」バフ付与(3T・HP0でHP1耐える)
+if(s.type==="saikouchiB"){
+    players.forEach((t,i)=>{
+        // HP回復
+        let heal = Math.floor(t.hp * s.power);
+        t.currentHp = Math.min(t.hp, t.currentHp + heal);
+        setTimeout(()=>showDamage("p"+i, {dmg:heal, type:"heal"}), i*80);
+        // 再構築バフ付与(3T)
+        t.saikouchiBuff = 3;
+    });
+    showSynergyText("🌿 再構築！全体HP30%回復＋「再構築」付与(3T)！");
     renderBattle();
     p.cool = p.skill.cool;
     lastAllySkill = s;
@@ -6694,6 +7470,120 @@ if(s.type==="copy"){
             renderBattle();
         }
 
+        // ⚡ 天撃コピー
+        if(s2.type==="tenGeki"){
+            let addCount = 2;
+            let oldCount = p.tenGekiCount || 0;
+            p.tenGekiCount = oldCount + addCount;
+            let totalCount = p.tenGekiCount;
+            if(!p.buffs) p.buffs=[];
+            p.buffs=p.buffs.filter(b=>!b.isTenGeki);
+            p.buffs.push({power: 1 + totalCount * 0.25, turn: 999999, permanent: true, isTenGeki: true});
+            let atkNew = p.atk; p.buffs.forEach(b=>{atkNew*=b.power;});
+            let res=calcDamage(p.attr,enemy.attr,atkNew*(s2.power||2.0));
+            if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
+            if(enemy.shield>0){let ab=Math.min(enemy.shield,res.dmg);enemy.shield-=ab;res.dmg-=ab;}
+            if(enemy.allDebuffMark) res.dmg=Math.floor(res.dmg*1.5);
+            res.dmg=applySkillDmgPassives(res.dmg,p);
+            enemy.hp-=res.dmg;
+            showSynergyText("⚡ 天撃コピー！カウント+"+addCount+"→"+totalCount+"！ATK+"+(totalCount*25)+"%で200%の一撃！"); renderBattle(); setTimeout(()=>showDamage("enemy",res),10);
+        }
+
+        // 🌿 再構築コピー
+        if(s2.type==="saikouchiB"){
+            players.forEach((t,i)=>{
+                let heal=Math.floor(t.hp*(s2.power||0.3)*pw);
+                t.currentHp=Math.min(t.hp,t.currentHp+heal);
+                setTimeout(()=>showDamage("p"+i,{dmg:heal,type:"heal"}),i*80);
+                t.saikouchiBuff=3;
+            });
+            showSynergyText("🌿 再構築コピー！全体HP30%回復＋「再構築」付与(3T)！"); renderBattle();
+        }
+
+        // ⚡ オフセット覚醒コピー
+        if(s2.type==="sakuraBoost"){
+            if(!p.buffs) p.buffs=[];
+            p.buffs=p.buffs.filter(b=>!b.isSakuraBoost);
+            p.buffs.push({ power:2.5*pw, turn:3, isSakuraBoost:true });
+            p.sakuraDrainTurn=3;
+            showSynergyText("⚡ オフセット覚醒コピー！ATK+150%(3T)＋与ダメ10%HP回復(3T)！"); renderBattle();
+        }
+
+        // 🔗 一触即没コピー
+        if(s2.type==="himoCounter"){
+            if(!p.himoCount) p.himoCount=0;
+            p.himoCount=Math.min(15,p.himoCount+4);
+            let dmg=Math.floor(p.atk*0.5*p.himoCount*(pw||1));
+            if(p.buffs) p.buffs.forEach(b=>{dmg=Math.floor(dmg*b.power);});
+            if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) dmg=Math.floor(dmg*0.05);
+            if(enemy.shield>0){let ab=Math.min(enemy.shield,dmg);enemy.shield-=ab;dmg-=ab;}
+            dmg=applySkillDmgPassives(dmg,p);
+            enemy.hp-=dmg;
+            showSynergyText("🔗 一触即没コピー！紐カウント→"+p.himoCount+"！"); renderBattle(); setTimeout(()=>showDamage("enemy",{dmg,type:"weak"}),10);
+        }
+
+        // 🔥 視覚共有コピー
+        if(s2.type==="harumiBuff"){
+            players.forEach(t=>{
+                if(!t.buffs) t.buffs=[];
+                t.buffs.push({ power:1.4*pw, turn:3, isHarumiBuff:true });
+            });
+            let pi2=players.indexOf(p);
+            players.forEach((t,ti)=>{ if(ti!==pi2){ if(!t.shields)t.shields=[]; t.shields.push({ power:0.6, turn:1, isHarumiShield:true }); } });
+            showSynergyText("🔥 視覚共有コピー！全体ATK+40%(3T)＋自分以外に被ダメ60%カット(1T)！"); renderBattle();
+        }
+
+        // 🎯 正確無比コピー
+        if(s2.type==="comboAccurate"){
+            let comboCount=p.comboCount||0;
+            if(comboCount>0){
+                players.forEach((t,i)=>{ let healAmt=Math.floor(t.hp*0.03*comboCount); t.currentHp=Math.min(t.hp,t.currentHp+healAmt); setTimeout(()=>showDamage("p"+i,{dmg:healAmt,type:"heal"}),i*80); });
+                showSynergyText("🎯 正確無比コピー！コンボ×"+comboCount+"→全体HP+"+(comboCount*3)+"%回復！");
+            }
+            let comboAtkBonus=1+(comboCount*0.20);
+            let res=calcDamage(p.attr,enemy.attr,atkC*2.0*comboAtkBonus*pw);
+            if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
+            if(enemy.shield>0){let ab=Math.min(enemy.shield,res.dmg);enemy.shield-=ab;res.dmg-=ab;}
+            res.dmg=applySkillDmgPassives(res.dmg,p);
+            enemy.hp-=res.dmg;
+            renderBattle(); setTimeout(()=>{ showDamage("enemy",res); showSynergyText("🎯 正確無比コピー！ATK200%ダメ！(コンボボーナス+"+Math.floor(comboCount*20)+"%)！"); },10);
+        }
+
+        // ⚡ 最大出力コピー
+        if(s2.type==="maxOutput"){
+            if(!p.rengekiCount) p.rengekiCount=0;
+            p.rengekiCount=Math.min(15,p.rengekiCount+3);
+            let rengekiBonus=Math.min(15,p.rengekiCount)*0.08;
+            if(!p.buffs) p.buffs=[];
+            p.buffs=p.buffs.filter(b=>!b.isRengeki);
+            p.buffs.push({ power:1+rengekiBonus, turn:999999, permanent:true, isRengeki:true });
+            let res=calcDamage(p.attr,enemy.attr,atkC*2.5*pw);
+            if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
+            if(enemy.shield>0){let ab=Math.min(enemy.shield,res.dmg);enemy.shield-=ab;res.dmg-=ab;}
+            res.dmg=applySkillDmgPassives(res.dmg,p);
+            enemy.hp-=res.dmg;
+            showSynergyText("⚡ 最大出力コピー！連撃カウント→"+p.rengekiCount+"！ATK+"+(Math.floor(rengekiBonus*100))+"%！"); renderBattle(); setTimeout(()=>showDamage("enemy",res),10);
+        }
+
+        // 💛 幸福のオーラコピー
+        if(s2.type==="happyAura"){
+            let turns=s2.turn||5;
+            players.forEach(t=>{ if(!t.happyStacks)t.happyStacks=[]; t.happyStacks.push({turn:turns}); });
+            showSynergyText("💛 幸福のオーラコピー！味方全体に幸福状態付与("+turns+"T)！"); renderBattle();
+        }
+
+        // 🔓 解錠コピー（ランダム対象）
+        if(s2.type==="jokaku"){
+            let target2 = players.find(t=>t.currentHp>0);
+            if(target2){
+                target2.jokakuCount = (target2.jokakuCount||0)+1;
+                if(!target2.buffs) target2.buffs=[];
+                target2.buffs=target2.buffs.filter(b=>!b.isJokaku);
+                target2.buffs.push({ power:1+target2.jokakuCount*0.25, turn:999999, permanent:true, isJokaku:true });
+                showSynergyText("🔓 解錠コピー！"+target2.name+"に解錠カウント+1（×"+(target2.jokakuCount)+"）！"); renderBattle();
+            }
+        }
+
         renderBattle();
     }
 }
@@ -6795,6 +7685,12 @@ if(s.type==="spiritStrike"){
     if(enemy.hp <= 0){ setTimeout(()=>win(), 500); return; }
 }
 
+// 🔓 解錠: 味方1人に解錠カウント付与（ターゲット選択）
+if(s.type === "jokaku"){
+    showJokakuTargetSelect(p, s);
+    return; // CT・endTurnはターゲット選択後に処理
+}
+
 if(s.type !== "heatUp" && s.type !== "sniper") p.cool = p.skill.cool;
 
 // ⏳ 時間崩壊: スキルで与えたダメージをパーティ全体で累積
@@ -6811,6 +7707,7 @@ endTurn();
 
 function skill2(){
 let p = players[turnIndex];
+currentAttacker = p.name;
 if(!p.skill2 || !p.skill2.type) return;
 if(p.cool2 > 0) return;
 
@@ -6930,6 +7827,19 @@ if(s.type==="hpCut"){
     showSynergyText("HPカット！");
     renderBattle();
     setTimeout(()=>showDamage("enemy",{dmg,type:""}),10);
+}
+// 🎋 竹取の翁(スキル2枠)
+if(s.type==="taketogeGrant"){
+  if(!enemy.taketogeStacks) enemy.taketogeStacks = [];
+  let addStacks = s.stacks || 2;
+  for(let i = 0; i < addStacks; i++){ enemy.taketogeStacks.push({ turn: 3 }); }
+  let healAmt = Math.floor(p.hp * (s.healRate || 0.12));
+  let pi2 = players.indexOf(p);
+  p.currentHp = Math.min(p.hp, p.currentHp + healAmt);
+  let total = enemy.taketogeStacks.length;
+  showSynergyText("🎋 竹取の翁！竹棘×"+total+"スタック(ATK-"+(total*5)+"%)＋HP回復！");
+  renderBattle();
+  setTimeout(()=>{ showDamage("p"+pi2, {dmg:healAmt, type:"heal"}); }, 100);
 }
 if(s.type==="double"){
     let res = calcDamage(p.attr, enemy.attr, atk * s.power);
@@ -8238,51 +9148,198 @@ const bannerHTML = {
   normal: `<div style="min-width:100%;text-align:center;">
 <img src="https://imgur.com/QTGUO26.png" class="banner" style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
 <br><button onclick="draw1()">単発</button><button onclick="draw10()">10連</button>
+<br><button onclick="showGachaDetails('normal')" class="gachaDetailBtn">📋 排出詳細</button>
 </div>`,
   1: `<div style="min-width:100%;text-align:center;">
 <img src="https://imgur.com/S4GoGo7.png" class="banner" style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
 <br><button onclick="drawEvent1()">イベント単発</button><button onclick="drawEvent10()">イベント10連</button>
+<br><button onclick="showGachaDetails(1)" class="gachaDetailBtn">📋 排出詳細</button>
 </div>`,
   2: `<div style="min-width:100%;text-align:center;">
 <img src="https://imgur.com/qANeyJ5.png" class="banner" style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
 <br><button onclick="drawEvent2_1()">イベント単発</button><button onclick="drawEvent2_10()">イベント10連</button>
+<br><button onclick="showGachaDetails(2)" class="gachaDetailBtn">📋 排出詳細</button>
 </div>`,
   3: `<div style="min-width:100%;text-align:center;">
 <img src="https://imgur.com/yBeTnrB.png" class="banner" style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
 <br><button onclick="drawEvent3_1()">イベント単発</button><button onclick="drawEvent3_10()">イベント10連</button>
+<br><button onclick="showGachaDetails(3)" class="gachaDetailBtn">📋 排出詳細</button>
 </div>`,
   4: `<div style="min-width:100%;text-align:center;">
 <img src="https://imgur.com/paHDrzx.png" class="banner" style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
 <br><button onclick="drawEvent4_1()">イベント単発</button><button onclick="drawEvent4_10()">イベント10連</button>
+<br><button onclick="showGachaDetails(4)" class="gachaDetailBtn">📋 排出詳細</button>
 </div>`,
   5: `<div style="min-width:100%;text-align:center;">
 <img src="https://imgur.com/YMifcUQ.png" class="banner" style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
 <br><button onclick="drawEvent5_1()">イベント単発</button><button onclick="drawEvent5_10()">イベント10連</button>
+<br><button onclick="showGachaDetails(5)" class="gachaDetailBtn">📋 排出詳細</button>
 </div>`,
   6: `<div style="min-width:100%;text-align:center;">
 <img src="https://imgur.com/bpY0gk0.png" class="banner" style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
 <br><button onclick="drawEvent6_1()">イベント単発</button><button onclick="drawEvent6_10()">イベント10連</button>
+<br><button onclick="showGachaDetails(6)" class="gachaDetailBtn">📋 排出詳細</button>
 </div>`,
   7: `<div style="min-width:100%;text-align:center;">
 <img src="https://imgur.com/JL9LqwT.png" class="banner" style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;border:3px solid gold;box-shadow:0 0 20px gold;">
 <br><button onclick="drawEvent7_1()">イベント単発</button><button onclick="drawEvent7_10()">イベント10連</button>
+<br><button onclick="showGachaDetails(7)" class="gachaDetailBtn">📋 排出詳細</button>
 </div>`,
   8: `<div style="min-width:100%;text-align:center;">
 <img src="https://imgur.com/FYpjdyf.png" class="banner" style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;border:3px solid #88ccff;box-shadow:0 0 20px #44aaff;">
 <br><button onclick="drawEvent8_1()">イベント単発</button><button onclick="drawEvent8_10()">イベント10連</button>
+<br><button onclick="showGachaDetails(8)" class="gachaDetailBtn">📋 排出詳細</button>
 </div>`,
   9: `<div style="min-width:100%;text-align:center;">
 <img src="https://imgur.com/QFbe0h0.png" class="banner" style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;border:3px solid #ffd700;box-shadow:0 0 20px #ffd700;">
 <br><button onclick="drawEvent9_1()">イベント単発</button><button onclick="drawEvent9_10()">イベント10連</button>
+<br><button onclick="showGachaDetails(9)" class="gachaDetailBtn">📋 排出詳細</button>
 </div>`,
   10: `<div style="min-width:100%;text-align:center;">
 <img src="https://imgur.com/cUYDYLx.png" class="banner" style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;border:3px solid #e5a3ff;box-shadow:0 0 20px #e5a3ff;">
 <br><button onclick="drawEvent10_1()">イベント単発</button><button onclick="drawEvent10_10()">イベント10連</button>
+<br><button onclick="showGachaDetails(10)" class="gachaDetailBtn">📋 排出詳細</button>
 </div>`,
   weapon: `<div style="min-width:100%;text-align:center;">
 <img src="https://imgur.com/49WMZSP.png" class="banner" style="width:90%;max-width:400px;border-radius:12px;margin-bottom:10px;">
 <br><button onclick="drawWeapon1()">武器単発</button><button onclick="drawWeapon10()">武器10連</button>
+<br><button onclick="showGachaDetails('weapon')" class="gachaDetailBtn">📋 排出詳細</button>
 </div>`
+};
+
+// ===== 各バナー排出データ =====
+const gachaBannerData = {
+  normal: {
+    name: "通常ガチャ",
+    rates: [{r:4,label:"★4",pct:"1%",color:"cyan"},{r:3,label:"★3",pct:"9%",color:"gold"},{r:2,label:"★2",pct:"20%",color:"#4488ff"},{r:1,label:"★1",pct:"70%",color:"#aaa"}],
+    note: "★4は通常プール(β含む)から排出",
+    pools: {
+      4: ["弐呪刻","フセイン","リボルト","死橋凪","アステレス","バルナウス","室井元武(β)","栗島トウヤ(β)","死橋轟(β)","阿波牛星夜(β)","コード5.2(β)","FqEa(β)","黒峰天音(β)","甲斐翔也(β)","玉垣剣城(β)","蒼井朔也(β)","石倉有栖(β)","ミニモータ(β)","ソーメーン(β)","跳田収滋(β)","オリバー(β)","湯照司吉基(β)","黒瀬武人(β)","明石啓希(β)","珠濃雅紀(β)","鈴鹿(β)","沢華(β)","壬陸(β)"],
+      3: ["阿波牛星夜","コード5.2","FqEa","黒峰天音","甲斐翔也","玉垣剣城","蒼井朔也","石倉有栖","ミニモータ","ソーメーン","跳田収滋","オリバー","黒瀬武人"],
+      2: ["沢華","阿波牛壬陸","湯照司吉基","明石啓希","珠濃雅紀","晴海亨","赤羽悠真","桜木彰","八並解徒"],
+      1: ["室井元武","栗島トウヤ","鈴鹿","死橋轟","ゲガント","ホーレン","ボムブ","霊剛","安村康夫","返網転","和辺重治","和辺重信","ヒナル","マタイ","ログフ"]
+    }
+  },
+  1: {
+    name: "イベントガチャ 🍖",
+    rates: [{r:4,label:"★4",pct:"1%",color:"cyan"},{r:3,label:"★3",pct:"9%",color:"gold"},{r:2,label:"★2",pct:"20%",color:"#4488ff"},{r:1,label:"★1",pct:"70%",color:"#aaa"}],
+    note: "★4はイベント限定のみ / ★3以下は通常+イベントの混合",
+    pools: {
+      4: ["コード5.2🍖 ★[限定]","FqEa🍖 ★[限定]","甲斐翔也🍖 ★[限定]"],
+      3: ["黒峰天音🍖","晴海亨🍖","赤羽悠真🍖","桜木彰🍖","八並解徒🍖","＋通常★3全員"],
+      2: ["通常★2全員"],
+      1: ["通常★1全員"]
+    }
+  },
+  2: {
+    name: "イベントガチャ2 🌊",
+    rates: [{r:4,label:"★4",pct:"1%",color:"cyan"},{r:3,label:"★3",pct:"9%",color:"gold"},{r:2,label:"★2",pct:"20%",color:"#4488ff"},{r:1,label:"★1",pct:"70%",color:"#aaa"}],
+    note: "★4はイベント限定のみ / ★3以下は通常+イベントの混合",
+    pools: {
+      4: ["室井元武🌊 ★[限定]","栗島トウヤ🌊 ★[限定]","死橋轟🌊 ★[限定]"],
+      3: ["鈴鹿🌊","沢華🌊","阿波牛壬陸🌊","湯照司吉基🌊","＋通常★3全員"],
+      2: ["通常★2全員"],
+      1: ["通常★1全員"]
+    }
+  },
+  3: {
+    name: "イベントガチャ3 🃏",
+    rates: [{r:4,label:"★4",pct:"1%",color:"cyan"},{r:3,label:"★3",pct:"9%",color:"gold"},{r:2,label:"★2",pct:"20%",color:"#4488ff"},{r:1,label:"★1",pct:"70%",color:"#aaa"}],
+    note: "★4はイベント限定のみ / ★3以下は通常+イベントの混合",
+    pools: {
+      4: ["玉垣剣城🃏 ★[限定]","蒼井朔也🃏 ★[限定]","跳田収滋🃏 ★[限定]"],
+      3: ["石倉有栖🃏","ミニモータ🃏","ソーメーン🃏","オリバー🃏","＋通常★3全員"],
+      2: ["通常★2全員"],
+      1: ["通常★1全員"]
+    }
+  },
+  4: {
+    name: "イベントガチャ4 🌌",
+    rates: [{r:4,label:"★4",pct:"1%",color:"cyan"},{r:3,label:"★3",pct:"9%",color:"gold"},{r:2,label:"★2",pct:"20%",color:"#4488ff"},{r:1,label:"★1",pct:"70%",color:"#aaa"}],
+    note: "★4はイベント限定のみ / ★3以下は通常+イベントの混合",
+    pools: {
+      4: ["FqEa🌌 ★[限定]","返網転🌌 ★[限定]","黒瀬武人🌌 ★[限定]"],
+      3: ["コード5.2🌌","阿波牛星夜🌌","室井元武🌌","栗島トウヤ🌌","＋通常★3全員"],
+      2: ["通常★2全員"],
+      1: ["通常★1全員"]
+    }
+  },
+  5: {
+    name: "イベントガチャ5 👻",
+    rates: [{r:4,label:"★4",pct:"1%",color:"cyan"},{r:3,label:"★3",pct:"9%",color:"gold"},{r:2,label:"★2",pct:"20%",color:"#4488ff"},{r:1,label:"★1",pct:"70%",color:"#aaa"}],
+    note: "★4はイベント限定のみ / ★3以下は通常+イベントの混合",
+    pools: {
+      4: ["霊剛👻 ★[限定]","阿波牛星夜👻 ★[限定]","湯照司吉基👻 ★[限定]"],
+      3: ["死橋轟👻","玉垣剣城👻","甲斐翔也👻","オリバー👻","＋通常★3全員"],
+      2: ["通常★2全員"],
+      1: ["通常★1全員"]
+    }
+  },
+  6: {
+    name: "イベントガチャ6 🔒",
+    rates: [{r:4,label:"★4",pct:"1%",color:"cyan"},{r:3,label:"★3",pct:"9%",color:"gold"},{r:2,label:"★2",pct:"20%",color:"#4488ff"},{r:1,label:"★1",pct:"70%",color:"#aaa"}],
+    note: "★4はイベント限定のみ / ★3以下は通常+イベントの混合",
+    pools: {
+      4: ["黒峰天音🔒 ★[限定]","沢華🔒 ★[限定]","ヒナル🔒 ★[限定]"],
+      3: ["石倉有栖🔒","ミニモータ🔒","ソーメーン🔒","赤羽悠真🔒","＋通常★3全員"],
+      2: ["通常★2全員"],
+      1: ["通常★1全員"]
+    }
+  },
+  7: {
+    name: "イベントガチャ7 🎸",
+    rates: [{r:4,label:"★4",pct:"1%",color:"cyan"},{r:3,label:"★3",pct:"9%",color:"gold"},{r:2,label:"★2",pct:"20%",color:"#4488ff"},{r:1,label:"★1",pct:"70%",color:"#aaa"}],
+    note: "★4はイベント限定のみ / ★3以下は通常+イベントの混合",
+    pools: {
+      4: ["鈴鹿🎸 ★[限定]","赤羽悠真🎸 ★[限定]","阿波牛壬陸🎸 ★[限定]"],
+      3: ["甲斐翔也🎸","室井元武🎸","蒼井朔也🎸","跳田収滋🎸","＋通常★3全員"],
+      2: ["通常★2全員"],
+      1: ["通常★1全員"]
+    }
+  },
+  8: {
+    name: "イベントガチャ8 ⛄",
+    rates: [{r:4,label:"★4",pct:"1%",color:"cyan"},{r:3,label:"★3",pct:"9%",color:"gold"},{r:2,label:"★2",pct:"20%",color:"#4488ff"},{r:1,label:"★1",pct:"70%",color:"#aaa"}],
+    note: "★4はイベント限定のみ / ★3以下は通常+イベントの混合",
+    pools: {
+      4: ["明石啓希⛄ ★[限定]","珠濃雅紀⛄ ★[限定]","コード5.2⛄ ★[限定]"],
+      3: ["栗島トウヤ⛄","死橋轟⛄","鈴鹿⛄","沢華⛄","＋通常★3全員"],
+      2: ["通常★2全員"],
+      1: ["通常★1全員"]
+    }
+  },
+  9: {
+    name: "イベントガチャ9 🎮",
+    rates: [{r:4,label:"★4",pct:"1%",color:"cyan"},{r:3,label:"★3",pct:"9%",color:"gold"},{r:2,label:"★2",pct:"20%",color:"#4488ff"},{r:1,label:"★1",pct:"70%",color:"#aaa"}],
+    note: "★4はイベント限定のみ / ★3以下は通常+イベントの混合",
+    pools: {
+      4: ["桜木彰🎮 ★[限定]","八並解徒🎮 ★[限定]","晴海亨🎮 ★[限定]"],
+      3: ["FqEa🎮","黒峰天音🎮","阿波牛星夜🎮","阿波牛壬陸🎮","＋通常★3全員"],
+      2: ["通常★2全員"],
+      1: ["通常★1全員"]
+    }
+  },
+  10: {
+    name: "イベントガチャ10 🕹",
+    rates: [{r:4,label:"★4",pct:"1%",color:"cyan"},{r:3,label:"★3",pct:"9%",color:"gold"},{r:2,label:"★2",pct:"20%",color:"#4488ff"},{r:1,label:"★1",pct:"70%",color:"#aaa"}],
+    note: "★4はイベント限定のみ / ★3以下は通常+イベントの混合",
+    pools: {
+      4: ["ソーメーン🕹 ★[限定]","ミニモータ🕹 ★[限定]","石倉有栖🕹 ★[限定]"],
+      3: ["オリバー🕹","跳田収滋🕹","蒼井朔也🕹","玉垣剣城🕹","＋通常★3全員"],
+      2: ["通常★2全員"],
+      1: ["通常★1全員"]
+    }
+  },
+  weapon: {
+    name: "武器ガチャ",
+    rates: [{r:3,label:"★3",pct:"5%",color:"gold"},{r:2,label:"★2",pct:"25%",color:"#4488ff"},{r:1,label:"★1",pct:"70%",color:"#aaa"}],
+    note: "武器専用プールから排出。キャラには影響なし",
+    pools: {
+      3: ["蒼天剣","亡者の鎌","その他★3武器"],
+      2: ["★2武器全種"],
+      1: ["★1武器全種"]
+    }
+  }
 };
 
 // 現在のスライドインデックス管理
@@ -8678,6 +9735,9 @@ players = applyTeamBuff(team.map(c=>{
         weaponCool: 0,
         debuffPower: 1, // 通常は1倍
         debuffTurn: 0,  // 残りターン
+        passive: base?.passive || c.passive || null,
+        passiveAtkBonus: 0,
+        kokuShoku: 0,
         weaponPassive: c.weapon?.passive || null,
     };
 }));
@@ -8718,6 +9778,23 @@ deadPlayers=[];
 
 // 使用回数カウント
 players.forEach(p => { charUseCount[p.name] = (charUseCount[p.name]||0) + 1; });
+
+// 🌿 fated_backup: 戦闘開始時、味方全体HP上限+15%（珠濃雅紀(β)パッシブ）
+players.forEach(p => {
+  let passives = [];
+  if(p.passive) passives.push(p.passive);
+  if(p.weaponPassive) passives.push(p.weaponPassive);
+  passives.forEach(ps => {
+    if(ps.type === "fated_backup"){
+      players.forEach(ally => {
+        let bonus = Math.floor(ally.hp * ps.value);
+        ally.hp += bonus;
+        ally.currentHp += bonus;
+      });
+      setTimeout(()=>showSynergyText("🌿 "+p.name+"の運命のバックアップ！全体HP上限+15%！"), 300);
+    }
+  });
+});
 
 currentEvent = i;
 
@@ -9041,6 +10118,7 @@ update();saveData();
 
 function weaponSkill(){
     let p = players[turnIndex];
+    currentAttacker = p.name;
     let s = p.weapon?.skill;
     if(!s) return;
 
@@ -10916,8 +11994,9 @@ function getEventTitles(){
 function getTop3Chars(){
   let sorted = Object.entries(charUseCount).sort((a,b)=>b[1]-a[1]).slice(0,3);
   return sorted.map(([name,count])=>{
-    let c=getAllChars().find(ch=>ch.name===name);
-    return {name,count,img:c?.img||""};
+    // boxから先に探す（所持キャラのimgが確実）
+    let c = box.find(b=>b.name===name) || getAllChars().find(ch=>ch.name===name);
+    return {name, count, img: c?.img || ""};
   });
 }
 
@@ -10961,14 +12040,46 @@ function openProfileModal(){
       top3El.innerHTML = top3.map((c,i)=>`
         <div class="profileTop3Card">
           <div class="profileTop3Medal">${medals[i]}</div>
-          ${c.img?`<img src="${c.img}">`:""}
-          <div style="font-size:9px;color:#aaa;margin-top:2px;">${c.name}</div>
+          ${c.img
+            ? `<img src="${c.img}">`
+            : `<div style="width:44px;height:44px;background:#1a2a3a;border-radius:6px;margin:0 auto 3px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#556;">${c.name.slice(0,2)}</div>`
+          }
+          <div style="font-size:9px;color:#aaa;margin-top:2px;word-break:break-all;">${c.name}</div>
           <div style="font-size:12px;font-weight:bold;color:#ffd700;">${c.count}回</div>
         </div>`).join("");
     }
   }
 
+  // 🏋️ 鍛錬最大ダメージ
+  updateProfileMaxDmg();
+
   document.getElementById("profileModal").classList.add("open");
+}
+
+// 🏋️ 鍛錬最大ダメージをプロフィールに反映
+function updateProfileMaxDmg(){
+  let dmg = profileData.trainingMaxDmg || 0;
+  let charName = profileData.trainingMaxDmgChar || "";
+  let dmgEl = document.getElementById("profileMaxDmgVal");
+  let charEl = document.getElementById("profileMaxDmgChar");
+  let iconEl = document.getElementById("profileMaxDmgCharIcon");
+  if(dmgEl) dmgEl.textContent = dmg > 0 ? dmg.toLocaleString() : "─";
+  if(charEl) charEl.textContent = charName || "─";
+  if(iconEl){
+    if(charName){
+      // boxから先に探す（確実にimgを持つ）
+      let c = box.find(b=>b.name===charName) || getAllChars().find(ch=>ch.name===charName);
+      if(c && c.img){
+        iconEl.innerHTML = `<img src="${c.img}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`;
+      } else {
+        iconEl.innerHTML = "";
+        iconEl.textContent = charName.slice(0,2);
+      }
+    } else {
+      iconEl.innerHTML = "";
+      iconEl.textContent = "─";
+    }
+  }
 }
 
 function closeProfileModal(){
@@ -11137,6 +12248,372 @@ const missionDefs = [
     goal: 100,
     isSpecial: true,
     reward: { stone: 300, sp: 50, title: { id:"m_arata_kanrisha", label:"新たな管理者", colors:["#000a1a","#001428","#000a1a"], textColor:"#44aaff" } },
+  },
+
+  // ===== 属性縛り強化版 =====
+  {
+    id:"attr_fire_10",
+    category:"attr",
+    title:"火炎の猛者",
+    desc:"火属性キャラのみで試練に勝利する（10回）",
+    target: ()=> missionStats.fireWins||0,
+    goal: 10,
+    reward: { stone: 150, sp: 25, title: { id:"m_fire_10", label:"火炎の猛者", colors:["#1a0500","#3a0800","#1a0500"], textColor:"#ff6633" } },
+  },
+  {
+    id:"attr_water_10",
+    category:"attr",
+    title:"水流の達人",
+    desc:"水属性キャラのみで試練に勝利する（10回）",
+    target: ()=> missionStats.waterWins||0,
+    goal: 10,
+    reward: { stone: 150, sp: 25, title: { id:"m_water_10", label:"水流の達人", colors:["#000a1a","#001428","#000a1a"], textColor:"#44aaff" } },
+  },
+  {
+    id:"attr_wood_10",
+    category:"attr",
+    title:"大地の守護者",
+    desc:"木属性キャラのみで試練に勝利する（10回）",
+    target: ()=> missionStats.woodWins||0,
+    goal: 10,
+    reward: { stone: 150, sp: 25, title: { id:"m_wood_10", label:"大地の守護者", colors:["#001a00","#003000","#001a00"], textColor:"#44ff88" } },
+  },
+  {
+    id:"attr_light_5",
+    category:"attr",
+    title:"光輝の使者",
+    desc:"光属性キャラのみで試練に勝利する（5回）",
+    target: ()=> missionStats.lightWins||0,
+    goal: 5,
+    reward: { stone: 200, sp: 40, title: { id:"m_light_5", label:"光輝の使者", colors:["#1a1810","#2a2818","#1a1810"], textColor:"#ffffaa" } },
+  },
+  {
+    id:"attr_dark_5",
+    category:"attr",
+    title:"闇夜の支配者",
+    desc:"闇属性キャラのみで試練に勝利する（5回）",
+    target: ()=> missionStats.darkWins||0,
+    goal: 5,
+    reward: { stone: 200, sp: 40, title: { id:"m_dark_5", label:"闇夜の支配者", colors:["#0a0010","#140020","#0a0010"], textColor:"#cc44ff" } },
+  },
+  {
+    id:"attr_mixed_10",
+    category:"attr",
+    title:"全属性の使い手",
+    desc:"3属性以上混成で試練に勝利する（10回）",
+    target: ()=> missionStats.mixedAttrWins||0,
+    goal: 10,
+    reward: { stone: 180, sp: 35, title: { id:"m_mixed_10", label:"全属性の使い手", colors:["#100a1a","#1e1430","#100a1a"], textColor:"#ffaaff" } },
+  },
+  {
+    id:"solo_win_3",
+    category:"attr",
+    title:"孤高の戦士",
+    desc:"1人で試練に勝利する（3回）",
+    target: ()=> missionStats.soloWins||0,
+    goal: 3,
+    reward: { stone: 250, sp: 50, title: { id:"m_solo_3", label:"孤高の戦士", colors:["#1a1000","#2a1a00","#1a1000"], textColor:"#ffdd44" } },
+  },
+
+  // ===== 状態異常種別 =====
+  {
+    id:"poison_30",
+    category:"ailment",
+    title:"毒の使い手",
+    desc:"毒を30回付与する",
+    target: ()=> missionStats.poisonCount||0,
+    goal: 30,
+    reward: { stone: 60, sp: 10, title: null },
+  },
+  {
+    id:"burn_30",
+    category:"ailment",
+    title:"炎の使い手",
+    desc:"燃焼を30回付与する",
+    target: ()=> missionStats.burnCount||0,
+    goal: 30,
+    reward: { stone: 60, sp: 10, title: null },
+  },
+  {
+    id:"shock_30",
+    category:"ailment",
+    title:"感電の使い手",
+    desc:"感電を30回付与する",
+    target: ()=> missionStats.shockCount||0,
+    goal: 30,
+    reward: { stone: 60, sp: 10, title: null },
+  },
+  {
+    id:"freeze_20",
+    category:"ailment",
+    title:"氷結の使い手",
+    desc:"凍結を20回付与する",
+    target: ()=> missionStats.freezeCount||0,
+    goal: 20,
+    reward: { stone: 80, sp: 15, title: null },
+  },
+  {
+    id:"ailment_500",
+    category:"ailment",
+    title:"状態異常の魔人",
+    desc:"状態異常を合計500回付与する",
+    target: ()=> missionStats.ailmentCount||0,
+    goal: 500,
+    reward: { stone: 600, sp: 120, title: { id:"m_ailment_500", label:"状態異常の魔人", colors:["#10001a","#200030","#10001a"], textColor:"#ff55ff" } },
+  },
+
+  // ===== 試練高Lv =====
+  {
+    id:"trial_lv50_any",
+    category:"trial",
+    title:"Lv50の壁",
+    desc:"いずれかの試練でLv.50以上をクリア",
+    target: ()=> Object.values(missionStats.trialHighLvWin).reduce((a,b)=>Math.max(a,b),0),
+    goal: 50,
+    reward: { stone: 100, sp: 20, title: null },
+  },
+  {
+    id:"trial_lv200_any",
+    category:"trial",
+    title:"限界突破",
+    desc:"いずれかの試練でLv.200以上をクリア",
+    target: ()=> Object.values(missionStats.trialHighLvWin).reduce((a,b)=>Math.max(a,b),0),
+    goal: 200,
+    reward: { stone: 400, sp: 80, title: { id:"m_genkaitoppa", label:"限界突破", colors:["#1a0010","#300020","#1a0010"], textColor:"#ff44cc" } },
+  },
+  {
+    id:"trial_200",
+    category:"trial",
+    title:"永遠の修行者",
+    desc:"試練を200回クリアする",
+    target: ()=> missionStats.trialWins,
+    goal: 200,
+    reward: { stone: 800, sp: 200, title: { id:"m_trial_200", label:"永遠の修行者", colors:["#001428","#001e40","#001428"], textColor:"#88ccff" } },
+  },
+
+  // ===== イベント高難度 =====
+  {
+    id:"event_100",
+    category:"event",
+    title:"イベントの覇者",
+    desc:"イベントステージを100回クリアする",
+    target: ()=> missionStats.eventWins,
+    goal: 100,
+    reward: { stone: 500, sp: 100, title: { id:"m_event_100", label:"イベントの覇者", colors:["#001a10","#003020","#001a10"], textColor:"#44ffaa" } },
+  },
+
+  // ===== キャラ×敵 特殊ミッション大量追加 =====
+  {
+    id:"special_sawahana_aoba",
+    category:"special",
+    title:"毒と渦の共鳴",
+    desc:"「沢華」を名前に含むキャラを編成して試練「阿波牛星夜」Lv.80以上をクリア",
+    target: ()=> missionStats.trialSpecialWin["沢華_vs_阿波牛星夜"]||0,
+    goal: 80,
+    isSpecial: true,
+    reward: { stone: 250, sp: 40, title: { id:"m_sawahana_aoba", label:"毒と渦の共鳴", colors:["#001a0a","#003018","#001a0a"], textColor:"#44ffbb" } },
+  },
+  {
+    id:"special_fqea_code52",
+    category:"special",
+    title:"先遣隊の激突",
+    desc:"「FqEa」を名前に含むキャラを編成して試練「コード5.2」Lv.80以上をクリア",
+    target: ()=> missionStats.trialSpecialWin["FqEa_vs_コード5.2"]||0,
+    goal: 80,
+    isSpecial: true,
+    reward: { stone: 250, sp: 40, title: { id:"m_fqea_code52", label:"先遣隊の激突", colors:["#1a0800","#301200","#1a0800"], textColor:"#ff8833" } },
+  },
+  {
+    id:"special_awagyu_revolt",
+    category:"special",
+    title:"木々の激流",
+    desc:"「阿波牛壬陸」を名前に含むキャラを編成して試練「リボルト」Lv.80以上をクリア",
+    target: ()=> missionStats.trialSpecialWin["阿波牛壬陸_vs_リボルト"]||0,
+    goal: 80,
+    isSpecial: true,
+    reward: { stone: 250, sp: 40, title: { id:"m_awagyu_revolt", label:"木々の激流", colors:["#001a00","#003000","#001a00"], textColor:"#88ff44" } },
+  },
+  {
+    id:"special_akashi_asterese",
+    category:"special",
+    title:"癒しの応酬",
+    desc:"「明石啓希」を名前に含むキャラを編成して試練「アステレス」Lv.80以上をクリア",
+    target: ()=> missionStats.trialSpecialWin["明石啓希_vs_アステレス"]||0,
+    goal: 80,
+    isSpecial: true,
+    reward: { stone: 250, sp: 40, title: { id:"m_akashi_asterese", label:"癒しの応酬", colors:["#000a1a","#001230","#000a1a"], textColor:"#55bbff" } },
+  },
+  {
+    id:"special_tamagaki_nijyujyuku",
+    category:"special",
+    title:"雷剣の決戦",
+    desc:"「玉垣剣城」を名前に含むキャラを編成して試練「弐呪刻」Lv.100以上をクリア",
+    target: ()=> missionStats.trialSpecialWin["玉垣剣城_vs_弐呪刻"]||0,
+    goal: 100,
+    isSpecial: true,
+    reward: { stone: 300, sp: 50, title: { id:"m_tamagaki_nijyujyuku", label:"雷剣の決戦", colors:["#0a0a00","#1a1a00","#0a0a00"], textColor:"#ffd700" } },
+  },
+  {
+    id:"special_soai_shihashi",
+    category:"special",
+    title:"氷焔の覇道",
+    desc:"「蒼井朔也」を名前に含むキャラを編成して試練「死橋凪」Lv.100以上をクリア",
+    target: ()=> missionStats.trialSpecialWin["蒼井朔也_vs_死橋凪"]||0,
+    goal: 100,
+    isSpecial: true,
+    reward: { stone: 300, sp: 50, title: { id:"m_soai_shihashi", label:"氷焔の覇道", colors:["#000a14","#001020","#000a14"], textColor:"#44ccff" } },
+  },
+  {
+    id:"special_kai_barnaus",
+    category:"special",
+    title:"草林の猛毒",
+    desc:"「甲斐翔也」を名前に含むキャラを編成して試練「バルナウス」Lv.100以上をクリア",
+    target: ()=> missionStats.trialSpecialWin["甲斐翔也_vs_バルナウス"]||0,
+    goal: 100,
+    isSpecial: true,
+    reward: { stone: 300, sp: 50, title: { id:"m_kai_barnaus", label:"草林の猛毒", colors:["#001800","#003000","#001800"], textColor:"#88ff33" } },
+  },
+  {
+    id:"special_ishikura_hussein",
+    category:"special",
+    title:"有栖の覇権",
+    desc:"「石倉有栖」を名前に含むキャラを編成して試練「フセイン」Lv.100以上をクリア",
+    target: ()=> missionStats.trialSpecialWin["石倉有栖_vs_フセイン"]||0,
+    goal: 100,
+    isSpecial: true,
+    reward: { stone: 300, sp: 50, title: { id:"m_ishikura_hussein", label:"有栖の覇権", colors:["#001800","#002800","#001800"], textColor:"#66ff99" } },
+  },
+  {
+    id:"special_kuromine_shihashi",
+    category:"special",
+    title:"炎と光の衝突",
+    desc:"「黒峰天音」を名前に含むキャラを編成して試練「死橋凪」Lv.100以上をクリア",
+    target: ()=> missionStats.trialSpecialWin["黒峰天音_vs_死橋凪"]||0,
+    goal: 100,
+    isSpecial: true,
+    reward: { stone: 300, sp: 50, title: { id:"m_kuromine_shihashi", label:"炎と光の衝突", colors:["#1a0500","#300a00","#1a0500"], textColor:"#ff7733" } },
+  },
+  {
+    id:"special_yuteru_barnaus",
+    category:"special",
+    title:"毒師の頂点",
+    desc:"「湯照司吉基」を名前に含むキャラを編成して試練「バルナウス」Lv.80以上をクリア",
+    target: ()=> missionStats.trialSpecialWin["湯照司吉基_vs_バルナウス"]||0,
+    goal: 80,
+    isSpecial: true,
+    reward: { stone: 250, sp: 40, title: { id:"m_yuteru_barnaus", label:"毒師の頂点", colors:["#0a0010","#180020","#0a0010"], textColor:"#dd88ff" } },
+  },
+  {
+    id:"special_suzuka_asterese",
+    category:"special",
+    title:"鈴と星の共鳴",
+    desc:"「鈴鹿」を名前に含むキャラを編成して試練「アステレス」Lv.80以上をクリア",
+    target: ()=> missionStats.trialSpecialWin["鈴鹿_vs_アステレス"]||0,
+    goal: 80,
+    isSpecial: true,
+    reward: { stone: 250, sp: 40, title: { id:"m_suzuka_asterese", label:"鈴と星の共鳴", colors:["#1a0800","#2a1000","#1a0800"], textColor:"#ffaa44" } },
+  },
+  {
+    id:"special_minimota_revolt",
+    category:"special",
+    title:"毒ガスの解放",
+    desc:"「ミニモータ」を名前に含むキャラを編成して試練「リボルト」Lv.80以上をクリア",
+    target: ()=> missionStats.trialSpecialWin["ミニモータ_vs_リボルト"]||0,
+    goal: 80,
+    isSpecial: true,
+    reward: { stone: 250, sp: 40, title: { id:"m_minimota_revolt", label:"毒ガスの解放", colors:["#001800","#003000","#001800"], textColor:"#55ff88" } },
+  },
+  {
+    id:"special_somen_nijyujyuku",
+    category:"special",
+    title:"感電嵐の決闘",
+    desc:"「ソーメーン」を名前に含むキャラを編成して試練「弐呪刻」Lv.80以上をクリア",
+    target: ()=> missionStats.trialSpecialWin["ソーメーン_vs_弐呪刻"]||0,
+    goal: 80,
+    isSpecial: true,
+    reward: { stone: 250, sp: 40, title: { id:"m_somen_nijyujyuku", label:"感電嵐の決闘", colors:["#1a0800","#3a1400","#1a0800"], textColor:"#ffcc22" } },
+  },
+  {
+    id:"special_oliver_shihashi",
+    category:"special",
+    title:"氷と光の交差",
+    desc:"「オリバー」を名前に含むキャラを編成して試練「死橋凪」Lv.100以上をクリア",
+    target: ()=> missionStats.trialSpecialWin["オリバー_vs_死橋凪"]||0,
+    goal: 100,
+    isSpecial: true,
+    reward: { stone: 300, sp: 50, title: { id:"m_oliver_shihashi", label:"氷と光の交差", colors:["#000a1a","#001428","#000a1a"], textColor:"#88ddff" } },
+  },
+  {
+    id:"special_toida_code52",
+    category:"special",
+    title:"圧力と猛火",
+    desc:"「跳田収滋」を名前に含むキャラを編成して試練「コード5.2」Lv.80以上をクリア",
+    target: ()=> missionStats.trialSpecialWin["跳田収滋_vs_コード5.2"]||0,
+    goal: 80,
+    isSpecial: true,
+    reward: { stone: 250, sp: 40, title: { id:"m_toida_code52", label:"圧力と猛火", colors:["#1a0500","#301000","#1a0500"], textColor:"#ff8844" } },
+  },
+
+  // ===== 属性縛りで特定の敵に勝利 =====
+  {
+    id:"attr_fire_vs_hussein",
+    category:"special",
+    title:"炎で雷を制す",
+    desc:"火属性のみで試練「フセイン」に勝利する（3回）",
+    target: ()=> missionStats.trialSpecialWin["attrwin_火_vs_フセイン"]||0,
+    goal: 3,
+    isSpecial: true,
+    reward: { stone: 200, sp: 30, title: { id:"m_fire_vs_hussein", label:"炎で雷を制す", colors:["#1a0500","#2a0800","#1a0500"], textColor:"#ff6622" } },
+  },
+  {
+    id:"attr_water_vs_barnaus",
+    category:"special",
+    title:"水で火を制す",
+    desc:"水属性のみで試練「バルナウス」に勝利する（3回）",
+    target: ()=> missionStats.trialSpecialWin["attrwin_水_vs_バルナウス"]||0,
+    goal: 3,
+    isSpecial: true,
+    reward: { stone: 200, sp: 30, title: { id:"m_water_vs_barnaus", label:"水で火を制す", colors:["#000a1a","#001428","#000a1a"], textColor:"#44aaff" } },
+  },
+  {
+    id:"attr_thunder_vs_revolt",
+    category:"special",
+    title:"雷で木を制す",
+    desc:"雷属性のみで試練「リボルト」に勝利する（3回）",
+    target: ()=> missionStats.trialSpecialWin["attrwin_雷_vs_リボルト"]||0,
+    goal: 3,
+    isSpecial: true,
+    reward: { stone: 200, sp: 30, title: { id:"m_thunder_vs_revolt", label:"雷で木を制す", colors:["#0a0a00","#1a1a00","#0a0a00"], textColor:"#ffdd00" } },
+  },
+  {
+    id:"attr_wood_vs_shihashi",
+    category:"special",
+    title:"木で火を制す",
+    desc:"木属性のみで試練「死橋凪」に勝利する（3回）",
+    target: ()=> missionStats.trialSpecialWin["attrwin_木_vs_死橋凪"]||0,
+    goal: 3,
+    isSpecial: true,
+    reward: { stone: 200, sp: 30, title: { id:"m_wood_vs_shihashi", label:"木で火を制す", colors:["#001800","#003000","#001800"], textColor:"#55ff44" } },
+  },
+  {
+    id:"attr_light_vs_nijyujyuku",
+    category:"special",
+    title:"光で水を制す",
+    desc:"光属性のみで試練「弐呪刻」に勝利する（3回）",
+    target: ()=> missionStats.trialSpecialWin["attrwin_光_vs_弐呪刻"]||0,
+    goal: 3,
+    isSpecial: true,
+    reward: { stone: 200, sp: 30, title: { id:"m_light_vs_nijyujyuku", label:"光で水を制す", colors:["#1a1a10","#2a2a18","#1a1a10"], textColor:"#ffff88" } },
+  },
+  {
+    id:"attr_dark_vs_asterese",
+    category:"special",
+    title:"闇で水を制す",
+    desc:"闇属性のみで試練「アステレス」に勝利する（3回）",
+    target: ()=> missionStats.trialSpecialWin["attrwin_闇_vs_アステレス"]||0,
+    goal: 3,
+    isSpecial: true,
+    reward: { stone: 200, sp: 30, title: { id:"m_dark_vs_asterese", label:"闇で水を制す", colors:["#0a0010","#140020","#0a0010"], textColor:"#cc44ff" } },
   },
 ];
 
@@ -11327,38 +12804,74 @@ function onBattleStart(){
 function onTrialWin(){
   missionStats.trialWins = (missionStats.trialWins || 0) + 1;
 
-  // 雷属性のみかチェック
-  let allThunder = players.length > 0 && players.every(p => p.attr === "雷");
-  if(allThunder){
-    missionStats.thunderWins = (missionStats.thunderWins || 0) + 1;
+  // 属性別カウント
+  let attrs = players.map(p => p.attr);
+  let uniqAttrs = [...new Set(attrs)];
+  let allSameAttr = players.length > 0 && uniqAttrs.length === 1;
+
+  if(allSameAttr){
+    let a = uniqAttrs[0];
+    if(a==="雷") missionStats.thunderWins = (missionStats.thunderWins||0)+1;
+    if(a==="火") missionStats.fireWins    = (missionStats.fireWins||0)+1;
+    if(a==="水") missionStats.waterWins   = (missionStats.waterWins||0)+1;
+    if(a==="木") missionStats.woodWins    = (missionStats.woodWins||0)+1;
+    if(a==="光") missionStats.lightWins   = (missionStats.lightWins||0)+1;
+    if(a==="闇") missionStats.darkWins    = (missionStats.darkWins||0)+1;
+  }
+  if(uniqAttrs.length >= 3) missionStats.mixedAttrWins = (missionStats.mixedAttrWins||0)+1;
+  if(players.length === 1)  missionStats.soloWins = (missionStats.soloWins||0)+1;
+
+  // 特殊ミッション汎用: 「○○を名前に含むキャラ」×「敵名」のLv記録
+  function trackSpecialCharVsEnemy(charKeyword, enemyName){
+    if(!enemy || !enemy.name.includes(enemyName)) return;
+    let has = players.some(p => p.name.includes(charKeyword));
+    if(!has) return;
+    let id = chars.findIndex(c=>c.name===enemyName);
+    let lv = id >= 0 ? ((progress[id]||1)) : 0;
+    let key = charKeyword + "_vs_" + enemyName;
+    let cur = missionStats.trialHighLvWin[enemyName] || 0;
+    if(lv > cur) missionStats.trialHighLvWin[enemyName] = lv;
+    // trialSpecialWin: キーワード+敵の組み合わせ
+    let comboKey = key;
+    let cur2 = missionStats.trialSpecialWin[comboKey] || 0;
+    if(lv > cur2) missionStats.trialSpecialWin[comboKey] = lv;
   }
 
-  // 特殊ミッション: 死橋轟（名前に含む）編成 + 黒峰天音 Lv判定
-  let hasSpecial = players.some(p => p.name.includes("死橋轟"));
-  if(hasSpecial && enemy && enemy.name === "黒峰天音"){
-    let id = chars.findIndex(c=>c.name==="黒峰天音");
-    let lv2 = (progress[id] || 1) + 1;
-    let cur = missionStats.trialHighLvWin["黒峰天音"] || 0;
-    if(lv > cur) missionStats.trialHighLvWin["黒峰天音"] = lv;
-  }
+  // 既存3種
+  trackSpecialCharVsEnemy("死橋轟",   "黒峰天音");
+  trackSpecialCharVsEnemy("室井元武", "コード5.2");
+  trackSpecialCharVsEnemy("栗島トウヤ","フセイン");
 
-  // 特殊ミッション: 室井元武（名前に含む）編成 + コード5.2 Lv判定
-  let hasMuroi = players.some(p => p.name.includes("室井元武"));
-  if(hasMuroi && enemy && enemy.name === "コード5.2"){
-    let id2 = chars.findIndex(c=>c.name==="コード5.2");
-    let lv2 = (progress[id2] || 1) + 1;
-    let cur2 = missionStats.trialHighLvWin["コード5.2"] || 0;
-    if(lv2 > cur2) missionStats.trialHighLvWin["コード5.2"] = lv2;
-  }
+  // 新規追加
+  trackSpecialCharVsEnemy("沢華",     "阿波牛星夜");
+  trackSpecialCharVsEnemy("FqEa",     "コード5.2");
+  trackSpecialCharVsEnemy("阿波牛壬陸","リボルト");
+  trackSpecialCharVsEnemy("明石啓希", "アステレス");
+  trackSpecialCharVsEnemy("玉垣剣城", "弐呪刻");
+  trackSpecialCharVsEnemy("蒼井朔也", "死橋凪");
+  trackSpecialCharVsEnemy("甲斐翔也", "バルナウス");
+  trackSpecialCharVsEnemy("石倉有栖", "フセイン");
+  trackSpecialCharVsEnemy("黒峰天音", "死橋凪");
+  trackSpecialCharVsEnemy("湯照司吉基","バルナウス");
+  trackSpecialCharVsEnemy("鈴鹿",     "アステレス");
+  trackSpecialCharVsEnemy("ミニモータ","リボルト");
+  trackSpecialCharVsEnemy("ソーメーン","弐呪刻");
+  trackSpecialCharVsEnemy("オリバー",  "死橋凪");
+  trackSpecialCharVsEnemy("跳田収滋", "コード5.2");
 
-  // 特殊ミッション: 栗島トウヤ（名前に含む）編成 + フセイン Lv判定
-  let hasKurishima = players.some(p => p.name.includes("栗島トウヤ"));
-  if(hasKurishima && enemy && enemy.name === "フセイン"){
-    let id3 = chars.findIndex(c=>c.name==="フセイン");
-    let lv2 = (progress[id3] || 1) + 1;
-    let cur3 = missionStats.trialHighLvWin["フセイン"] || 0;
-    if(lv3 > cur3) missionStats.trialHighLvWin["フセイン"] = lv3;
+  // 属性縛りで敵倒した
+  function trackAttrVsEnemy(attr, enemyName){
+    if(!enemy || !enemy.name.includes(enemyName)) return;
+    if(!allSameAttr || uniqAttrs[0] !== attr) return;
+    let key = "attrwin_"+attr+"_vs_"+enemyName;
+    missionStats.trialSpecialWin[key] = (missionStats.trialSpecialWin[key]||0)+1;
   }
+  trackAttrVsEnemy("火","フセイン");
+  trackAttrVsEnemy("水","バルナウス");
+  trackAttrVsEnemy("雷","リボルト");
+  trackAttrVsEnemy("木","死橋凪");
+  trackAttrVsEnemy("光","弐呪刻");
+  trackAttrVsEnemy("闇","アステレス");
 
   checkMissionComplete();
 }
@@ -11370,28 +12883,28 @@ function onEventWin(){
 }
 
 // 状態異常付与カウント（毒・燃焼・感電・凍結の付与時に呼ぶ）
-function trackAilment(count){
+function trackAilment(count, type){
   count = count || 1;
   missionStats.ailmentCount = (missionStats.ailmentCount || 0) + count;
   missionStats._currentBattleAilments = (missionStats._currentBattleAilments || 0) + count;
+  if(type==="poison") missionStats.poisonCount = (missionStats.poisonCount||0) + count;
+  if(type==="burn")   missionStats.burnCount   = (missionStats.burnCount||0)   + count;
+  if(type==="shock")  missionStats.shockCount  = (missionStats.shockCount||0)  + count;
+  if(type==="freeze") missionStats.freezeCount = (missionStats.freezeCount||0) + count;
 }
 
-// ===== 状態異常付与フックのため triggerAttackPassive に注入 =====
-// poison/burn/shock/freeze の付与箇所に trackAilment() を呼ぶ
-// → 既存のtriggerAttackPassive関数をラップ
-
 function trackAilmentsFromPassive(p){
-  // poison_on_attack
   if(p.passive && p.passive.type === "poison_on_attack" && Math.random() < p.passive.chance){
-    trackAilment(1);
+    trackAilment(1,"poison");
   }
-  // burn_on_attack
   if(p.passive && p.passive.type === "burn_on_attack" && Math.random() < p.passive.chance){
-    trackAilment(1);
+    trackAilment(1,"burn");
   }
-  // shock_on_attack
   if(p.passive && p.passive.type === "shock_on_attack" && Math.random() < p.passive.chance){
-    trackAilment(1);
+    trackAilment(1,"shock");
+  }
+  if(p.passive && p.passive.type === "freeze_on_attack" && Math.random() < p.passive.chance){
+    trackAilment(1,"freeze");
   }
 }
 
@@ -11588,6 +13101,917 @@ setTimeout(()=>{ updateMissionBadge(); }, 500);
 // ===== ミッションシステムここまで =====
 // ===== プロフィール機能ここまで =====
 // ===== スキルツリーここまで =====
+
+// ===== 🔓 解錠・暴走解錠 ユーティリティ =====
+
+// 解錠カウントに応じてbuffを更新（ATK+25%/カウント）
+function updateJokakuBuff(target){
+  if(!target.buffs) target.buffs = [];
+  target.buffs = target.buffs.filter(b => !b.isJokaku);
+  if(target.jokakuCount && target.jokakuCount > 0){
+    target.buffs.push({ power: 1 + target.jokakuCount * 0.25, turn: 999999, permanent: true, isJokaku: true });
+  }
+}
+
+// 暴走カウントに応じてbuffを更新（ATK+70%/カウント）
+function updateBerserkBuff(target){
+  if(!target.buffs) target.buffs = [];
+  target.buffs = target.buffs.filter(b => !b.isBerserk);
+  if(target.berserkCount && target.berserkCount > 0){
+    target.buffs.push({ power: 1 + target.berserkCount * 0.70, turn: 999999, permanent: true, isBerserk: true });
+  }
+}
+
+// 解錠スキル: ターゲット選択モーダルを表示
+function showJokakuTargetSelect(caster, s){
+  let modal = document.getElementById("jokakuTargetModal");
+  if(!modal) return;
+  let list = document.getElementById("jokakuTargetList");
+  list.innerHTML = "";
+  players.forEach((pl, i) => {
+    let btn = document.createElement("button");
+    btn.style.cssText = [
+      "display:block","width:100%","margin:6px 0","padding:11px 14px",
+      "background:#0d1f00","color:#aaff44","border:2px solid #66aa00",
+      "border-radius:10px","font-size:14px","font-weight:bold","cursor:pointer",
+      "text-align:left","transition:background 0.15s"
+    ].join(";");
+    btn.innerHTML = `🔓 ${pl.name} &nbsp;<span style="color:#88cc44;font-size:12px;">現在: 解錠カウント×${pl.jokakuCount||0} (ATK+${(pl.jokakuCount||0)*25}%)</span>`;
+    btn.onmouseover = function(){ this.style.background="#1a3a00"; };
+    btn.onmouseout  = function(){ this.style.background="#0d1f00"; };
+    btn.onclick = function(){
+      modal.style.display = "none";
+      pl.jokakuCount = (pl.jokakuCount || 0) + 1;
+      updateJokakuBuff(pl);
+      // CT: coolMin〜coolMaxのランダム
+      let coolMin = s.coolMin !== undefined ? s.coolMin : 2;
+      let coolMax = s.coolMax !== undefined ? s.coolMax : 4;
+      let coolRoll = coolMin + Math.floor(Math.random() * (coolMax - coolMin + 1));
+      caster.cool = coolRoll;
+      renderBattle();
+      let pi = players.indexOf(pl);
+      if(pi >= 0) setTimeout(()=>showDamage("p"+pi, {dmg:0, type:"heal"}), 30);
+      showSynergyText("🔓 "+caster.name+"の解錠！"+pl.name+"に解錠カウント×"+pl.jokakuCount+"付与！CT"+coolRoll+"！");
+      lastAllySkill = s;
+      endTurn();
+    };
+    list.appendChild(btn);
+  });
+  modal.style.display = "flex";
+}
+
+// ===== 解錠・暴走解錠ここまで =====
 </script>
+<!-- 🔓 解錠スキル: ターゲット選択モーダル -->
+<div id="jokakuTargetModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.80);z-index:25000;justify-content:center;align-items:center;">
+  <div style="background:#0d1a00;border:2px solid #88cc00;border-radius:16px;padding:22px 24px;max-width:320px;width:90%;box-shadow:0 0 30px #44aa0088;text-align:center;">
+    <div style="font-size:18px;font-weight:bold;color:#aaff44;margin-bottom:6px;">🔓 解錠</div>
+    <div style="font-size:12px;color:#88cc44;margin-bottom:14px;">解錠カウントを付与する味方を選択</div>
+    <div id="jokakuTargetList"></div>
+    <button onclick="document.getElementById('jokakuTargetModal').style.display='none';" style="margin-top:10px;background:#111;color:#666;border:1px solid #333;border-radius:8px;padding:7px 28px;cursor:pointer;font-size:13px;">キャンセル</button>
+  </div>
+</div>
+
+
+
+<!-- ===== 📋 ガチャ排出詳細モーダル ===== -->
+<div id="gachaDetailModal" onclick="if(event.target===this)closeGachaDetailModal()" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.82);z-index:32000;justify-content:center;align-items:center;">
+  <div style="background:#13100c;border:1px solid rgba(180,140,60,0.35);border-radius:14px;padding:0;max-width:360px;width:93%;max-height:85vh;overflow:hidden;box-shadow:0 8px 48px rgba(0,0,0,0.7);display:flex;flex-direction:column;">
+
+    <!-- タイトルバー -->
+    <div style="background:linear-gradient(180deg,#1e1810,#16130e);border-bottom:1px solid rgba(180,140,60,0.25);padding:13px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:15px;">🎴</span>
+        <div>
+          <div id="gachaDetailTitle" style="font-size:13px;font-weight:bold;color:#e8d090;letter-spacing:1px;"></div>
+          <div style="font-size:10px;color:rgba(200,170,100,0.55);letter-spacing:1px;margin-top:1px;">排出一覧 / タップでスキル・パッシブ確認</div>
+        </div>
+      </div>
+      <button onclick="closeGachaDetailModal()" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#888;border-radius:7px;width:28px;height:28px;cursor:pointer;font-size:13px;line-height:1;">✕</button>
+    </div>
+
+    <!-- 合計確率ヘッダー -->
+    <div id="gachaDetailSummary" style="display:flex;gap:0;border-bottom:1px solid rgba(180,140,60,0.18);flex-shrink:0;background:#0f0c09;"></div>
+
+    <!-- 本体テーブル -->
+    <div id="gachaDetailList" style="overflow-y:auto;flex:1;"></div>
+
+    <!-- 注記フッター -->
+    <div id="gachaDetailNote" style="font-size:10px;color:rgba(180,150,90,0.5);padding:8px 14px;border-top:1px solid rgba(180,140,60,0.15);flex-shrink:0;background:#0f0c09;"></div>
+  </div>
+</div>
+
+<style>
+.gachaDetailBtn {
+  margin-top:8px;
+  background:rgba(200,160,60,0.1);
+  border:1px solid rgba(200,160,60,0.35);
+  color:#d4aa55;
+  border-radius:7px;
+  padding:6px 16px;
+  font-size:11px;
+  cursor:pointer;
+  letter-spacing:1px;
+  transition:background 0.18s;
+}
+.gachaDetailBtn:hover { background:rgba(200,160,60,0.22); }
+
+/* 合計確率タブ */
+.gdSummaryTab {
+  flex:1;text-align:center;padding:7px 4px;font-size:11px;font-weight:bold;
+  border-right:1px solid rgba(180,140,60,0.15);
+}
+.gdSummaryTab:last-child { border-right:none; }
+
+/* レアリティセクションヘッダー */
+.gdRarityHead {
+  display:flex;align-items:center;justify-content:space-between;
+  padding:7px 14px;
+  font-size:12px;font-weight:bold;
+  letter-spacing:1px;
+  position:sticky;top:0;z-index:2;
+}
+
+/* キャラ行 */
+.gdRow {
+  display:flex;align-items:center;
+  padding:6px 14px;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  transition:background 0.12s;
+}
+.gdRow:hover { background:rgba(255,255,255,0.03); }
+.gdAttrDot {
+  width:8px;height:8px;border-radius:50%;
+  flex-shrink:0;margin-right:8px;
+}
+.gdName {
+  flex:1;font-size:12px;color:#ddd;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.gdLimitedBadge {
+  font-size:9px;color:#00ffcc;
+  background:rgba(0,255,200,0.1);
+  border:1px solid rgba(0,255,200,0.3);
+  border-radius:4px;padding:1px 5px;
+  margin-right:6px;flex-shrink:0;
+}
+.gdRate {
+  font-size:12px;font-family:monospace;
+  color:rgba(220,200,140,0.85);
+  flex-shrink:0;min-width:60px;text-align:right;
+}
+</style>
+
+<script>
+// ===== 属性カラー =====
+const gdAttrColor = {
+  "火":"#ff4444","水":"#4488ff","雷":"#ffd700",
+  "木":"#44cc44","光":"#ffffff","闇":"#aa44ff",
+  "fire":"#ff4444","poison":"#aa44ff","default":"#888"
+};
+
+// ===== レアリティ設定 =====
+const gdRarityConf = {
+  4:{ label:"★4　ULTRA",  bg:"linear-gradient(90deg,#0c1a1a,#081818)", color:"#00e8ff", pct:1  },
+  3:{ label:"★3　SSR",    bg:"linear-gradient(90deg,#1a1500,#120f00)", color:"#ffd700", pct:9  },
+  2:{ label:"★2　SR",     bg:"linear-gradient(90deg,#080e1a,#060c14)", color:"#5599ff", pct:20 },
+  1:{ label:"★1　R",      bg:"linear-gradient(90deg,#111111,#0d0d0d)", color:"#aaaaaa", pct:70 }
+};
+const gdWeaponRarityConf = {
+  3:{ label:"★3　SSR",    bg:"linear-gradient(90deg,#1a1500,#120f00)", color:"#ffd700", pct:5  },
+  2:{ label:"★2　SR",     bg:"linear-gradient(90deg,#080e1a,#060c14)", color:"#5599ff", pct:25 },
+  1:{ label:"★1　R",      bg:"linear-gradient(90deg,#111111,#0d0d0d)", color:"#aaaaaa", pct:70 }
+};
+
+// ===== イベントプール対応 =====
+function getEventPool(key) {
+  const pools = {
+    1:typeof eventChars!=="undefined"?eventChars:[],
+    2:typeof eventChars2!=="undefined"?eventChars2:[],
+    3:typeof eventChars3!=="undefined"?eventChars3:[],
+    4:typeof eventChars4!=="undefined"?eventChars4:[],
+    5:typeof eventChars5!=="undefined"?eventChars5:[],
+    6:typeof eventChars6!=="undefined"?eventChars6:[],
+    7:typeof eventChars7!=="undefined"?eventChars7:[],
+    8:typeof eventChars8!=="undefined"?eventChars8:[],
+    9:typeof eventChars9!=="undefined"?eventChars9:[],
+    10:typeof eventChars10!=="undefined"?eventChars10:[]
+  };
+  return pools[key] || [];
+}
+
+// ===== プール計算 =====
+function computeGachaPool(key) {
+  if (key === "normal") {
+    return [4,3,2,1].map(r => {
+      let pool = (typeof chars!=="undefined" ? chars : []).filter(c=>c.rarity===r);
+      let rate = gdRarityConf[r].pct / pool.length;
+      return { rarity:r, entries: pool.map(c=>({name:c.name, attr:c.attr||"", rate, limited:false})) };
+    });
+  }
+  if (key === "weapon") {
+    return [3,2,1].map(r => {
+      let pool = (typeof weapons!=="undefined" ? weapons : []).filter(w=>w.rarity===r);
+      let rate = gdWeaponRarityConf[r].pct / pool.length;
+      return { rarity:r, entries: pool.map(w=>({name:w.name, attr:w.effect||"", rate, limited:false})) };
+    });
+  }
+  // イベントガチャ
+  let evPool = getEventPool(key);
+  let baseChars = typeof chars!=="undefined" ? chars : [];
+  return [4,3,2,1].map(r => {
+    let pool, limited4 = new Set();
+    if (r === 4) {
+      pool = evPool.filter(c=>c.rarity===4);
+      pool.forEach(c=>limited4.add(c.name));
+    } else {
+      pool = [...baseChars.filter(c=>c.rarity===r), ...evPool.filter(c=>c.rarity===r)];
+    }
+    let rConf = gdRarityConf[r];
+    let rate = rConf.pct / pool.length;
+    let evNames = new Set(evPool.map(c=>c.name));
+    return {
+      rarity: r,
+      entries: pool.map(c=>({
+        name: c.name, attr: c.attr||"", rate,
+        limited: (r===4) || (r<4 && evNames.has(c.name))
+      }))
+    };
+  });
+}
+
+// ===== メイン表示関数 =====
+function showGachaDetails(key) {
+  let pool = computeGachaPool(key);
+  let isWeapon = (key === "weapon");
+  let rarityConf = isWeapon ? gdWeaponRarityConf : gdRarityConf;
+
+  // タイトル
+  const bannerNames = {
+    normal:"通常ガチャ", weapon:"武器ガチャ",
+    1:"イベント1 🍖",2:"イベント2 🌊",3:"イベント3 🃏",
+    4:"イベント4 🌌",5:"イベント5 👻",6:"イベント6 🔒",
+    7:"イベント7 🎸",8:"イベント8 ⛄",9:"イベント9 🎮",10:"イベント10 🕹"
+  };
+  document.getElementById("gachaDetailTitle").textContent = bannerNames[key] || "ガチャ詳細";
+
+  // 合計確率タブ
+  let summaryEl = document.getElementById("gachaDetailSummary");
+  summaryEl.innerHTML = pool.map(block => {
+    let rc = rarityConf[block.rarity];
+    return `<div class="gdSummaryTab">
+      <div style="color:${rc.color};font-size:13px;">★${block.rarity}</div>
+      <div style="color:rgba(220,200,140,0.7);font-size:11px;margin-top:1px;">${rc.pct}%</div>
+    </div>`;
+  }).join("");
+
+  // キャラ/武器リスト
+  let listEl = document.getElementById("gachaDetailList");
+  listEl.innerHTML = pool.map(block => {
+    let rc = rarityConf[block.rarity];
+    let rowsHtml = block.entries.map(e => {
+      let dotColor = gdAttrColor[e.attr] || gdAttrColor["default"];
+      let rateStr = e.rate < 0.1 ? e.rate.toFixed(3) : e.rate.toFixed(2);
+      let limitedBadge = e.limited ? `<span class="gdLimitedBadge">限定</span>` : "";
+      let safeName = e.name.replace(/\\/g,"\\\\").replace(/'/g,"\\'");
+      let clickFn = isWeapon ? `showGdWeaponModal('${safeName}')` : `showGdCharModal('${safeName}')`;
+      // 画像取得
+      let imgSrc = isWeapon ? (findWeaponData(e.name)?.img||"") : (findCharData(e.name)?.img||"");
+      let thumb = imgSrc ? `<img src="${imgSrc}" style="width:32px;height:32px;object-fit:cover;border-radius:5px;margin-right:6px;flex-shrink:0;">` : `<div style="width:32px;height:32px;background:#222;border-radius:5px;margin-right:6px;flex-shrink:0;"></div>`;
+      return `<div class="gdRow" style="cursor:pointer;" onclick="${clickFn}">
+        ${thumb}
+        <div class="gdName">${e.name}</div>
+        ${limitedBadge}
+        <div class="gdRate">${rateStr}%</div>
+      </div>`;
+    }).join("");
+
+    return `<div>
+      <div class="gdRarityHead" style="background:${rc.bg};">
+        <span style="color:${rc.color};">${rc.label}</span>
+        <span style="font-size:10px;color:rgba(255,255,255,0.3);font-weight:normal;">全${block.entries.length}種</span>
+      </div>
+      ${rowsHtml}
+    </div>`;
+  }).join("");
+
+  // 注記
+  let noteEl = document.getElementById("gachaDetailNote");
+  if (key !== "normal" && key !== "weapon") {
+    noteEl.textContent = "※ 限定キャラは★4のみイベントプール / ★3以下は通常＋イベント混合";
+    noteEl.style.display = "";
+  } else {
+    noteEl.style.display = "none";
+  }
+
+  document.getElementById("gachaDetailModal").style.display = "flex";
+}
+
+function closeGachaDetailModal() {
+  document.getElementById("gachaDetailModal").style.display = "none";
+}
+
+// ===== データ検索ヘルパー =====
+function findCharData(name) {
+  const pools = [
+    typeof chars!=="undefined"?chars:[],
+    typeof eventChars!=="undefined"?eventChars:[],
+    typeof eventChars2!=="undefined"?eventChars2:[],
+    typeof eventChars3!=="undefined"?eventChars3:[],
+    typeof eventChars4!=="undefined"?eventChars4:[],
+    typeof eventChars5!=="undefined"?eventChars5:[],
+    typeof eventChars6!=="undefined"?eventChars6:[],
+    typeof eventChars7!=="undefined"?eventChars7:[],
+    typeof eventChars8!=="undefined"?eventChars8:[],
+    typeof eventChars9!=="undefined"?eventChars9:[],
+    typeof eventChars10!=="undefined"?eventChars10:[],
+    typeof rewardChar!=="undefined"?rewardChar:[],
+  ];
+  for(let p of pools){ let f=p.find(c=>c.name===name); if(f) return f; }
+  return null;
+}
+function findWeaponData(name) {
+  let pool = typeof weapons!=="undefined"?weapons:[];
+  return pool.find(w=>w.name===name)||null;
+}
+
+// ===== キャラ スキル/パッシブ モーダル =====
+function showGdCharModal(name) {
+  let c = findCharData(name);
+  let modal = document.getElementById("gdCharModal");
+  if(!modal||!c) return;
+  const attrLabel={火:"🔥火",水:"💧水",雷:"⚡雷",木:"🌿木",光:"✨光",闇:"🌑闇"};
+  document.getElementById("gdCharImg").src = c.img||"";
+  document.getElementById("gdCharName").textContent = c.name;
+  document.getElementById("gdCharSub").textContent = "★".repeat(c.rarity||1)+"  "+(attrLabel[c.attr]||c.attr||"")+"  "+(c.role||"");
+  let sk = c.skill;
+  let skillText = (!sk||sk.text==="スキルなし") ? "スキルなし" : sk.text+(sk.cool?"  （CT: "+sk.cool+"T）":"");
+  document.getElementById("gdCharSkill").textContent = skillText;
+  document.getElementById("gdCharPassive").textContent = (c.passive&&c.passive.text)?c.passive.text:"パッシブなし";
+  modal.style.display="flex";
+}
+function closeGdCharModal(){
+  document.getElementById("gdCharModal").style.display="none";
+}
+
+// ===== 武器 スキル/パッシブ モーダル =====
+function showGdWeaponModal(name) {
+  let w = findWeaponData(name);
+  let modal = document.getElementById("gdWeaponModal");
+  if(!modal||!w) return;
+  document.getElementById("gdWeaponImg").src = w.img||"";
+  document.getElementById("gdWeaponName").textContent = w.name;
+  document.getElementById("gdWeaponSub").textContent = "★".repeat(w.rarity||1)+"  ATK:"+w.atk+"  HP:"+w.hp;
+  let sk = w.skill;
+  let ct = sk&&sk.weaponCool ? "CT: "+sk.weaponCool+"T" : "";
+  let skillText = (sk&&sk.text) ? sk.text+(ct?"  （"+ct+"）":"") : "スキルなし";
+  document.getElementById("gdWeaponSkill").textContent = skillText;
+  document.getElementById("gdWeaponPassive").textContent = (w.passive&&w.passive.text)?w.passive.text:"パッシブなし";
+  modal.style.display="flex";
+}
+function closeGdWeaponModal(){
+  document.getElementById("gdWeaponModal").style.display="none";
+}
+</script>
+
+<!-- ===== キャラ スキル/パッシブ確認モーダル ===== -->
+<div id="gdCharModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.82);z-index:33000;justify-content:center;align-items:center;">
+  <div style="background:linear-gradient(160deg,#0a0d1a,#0d1028);border:2px solid #44cc88;border-radius:16px;max-width:340px;width:92%;max-height:82vh;overflow:hidden;box-shadow:0 0 30px rgba(68,200,136,0.2);display:flex;flex-direction:column;">
+    <div style="background:linear-gradient(180deg,rgba(68,200,136,0.15),transparent);border-bottom:1px solid rgba(68,200,136,0.2);padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;">
+      <img id="gdCharImg" src="" style="width:56px;height:56px;border-radius:10px;object-fit:cover;border:1.5px solid rgba(68,200,136,0.45);flex-shrink:0;">
+      <div style="flex:1;min-width:0;">
+        <div id="gdCharName" style="font-size:15px;font-weight:bold;color:#fff;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></div>
+        <div id="gdCharSub" style="font-size:11px;color:#88aabb;"></div>
+      </div>
+      <button onclick="closeGdCharModal()" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.18);color:#fff;border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:17px;line-height:1;flex-shrink:0;">✕</button>
+    </div>
+    <div style="overflow-y:auto;padding:14px 16px;flex:1;">
+      <div style="margin-bottom:12px;">
+        <div style="font-size:10px;color:#aaddff;font-weight:bold;letter-spacing:1px;margin-bottom:5px;">🗡 スキル</div>
+        <div id="gdCharSkill" style="font-size:13px;color:#cce8ff;line-height:1.7;background:rgba(68,136,255,0.07);border:1px solid rgba(68,136,255,0.22);border-radius:8px;padding:8px 10px;"></div>
+      </div>
+      <div>
+        <div style="font-size:10px;color:#44ff88;font-weight:bold;letter-spacing:1px;margin-bottom:5px;">🌟 パッシブスキル</div>
+        <div id="gdCharPassive" style="font-size:13px;color:#aaffcc;line-height:1.7;background:rgba(68,200,136,0.07);border:1px solid rgba(68,200,136,0.22);border-radius:8px;padding:8px 10px;"></div>
+      </div>
+    </div>
+    <div style="padding:10px 16px;border-top:1px solid rgba(68,200,136,0.15);flex-shrink:0;text-align:center;">
+      <button onclick="closeGdCharModal()" style="background:linear-gradient(135deg,#1a3a28,#2a5a3a);color:#88ffcc;border:1px solid #44cc88;border-radius:8px;padding:8px 32px;font-size:13px;font-weight:bold;cursor:pointer;">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 武器 スキル/パッシブ確認モーダル ===== -->
+<div id="gdWeaponModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.82);z-index:33000;justify-content:center;align-items:center;">
+  <div style="background:linear-gradient(160deg,#0a0d1a,#0d1028);border:2px solid #aaddff;border-radius:16px;max-width:340px;width:92%;max-height:82vh;overflow:hidden;box-shadow:0 0 30px rgba(170,220,255,0.15);display:flex;flex-direction:column;">
+    <div style="background:linear-gradient(180deg,rgba(170,220,255,0.12),transparent);border-bottom:1px solid rgba(170,220,255,0.2);padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;">
+      <img id="gdWeaponImg" src="" style="width:56px;height:56px;border-radius:10px;object-fit:cover;border:1.5px solid rgba(170,220,255,0.4);flex-shrink:0;">
+      <div style="flex:1;min-width:0;">
+        <div id="gdWeaponName" style="font-size:15px;font-weight:bold;color:#fff;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></div>
+        <div id="gdWeaponSub" style="font-size:11px;color:#88aacc;"></div>
+      </div>
+      <button onclick="closeGdWeaponModal()" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.18);color:#fff;border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:17px;line-height:1;flex-shrink:0;">✕</button>
+    </div>
+    <div style="overflow-y:auto;padding:14px 16px;flex:1;">
+      <div style="margin-bottom:12px;">
+        <div style="font-size:10px;color:#aaddff;font-weight:bold;letter-spacing:1px;margin-bottom:5px;">⚔ 武器スキル</div>
+        <div id="gdWeaponSkill" style="font-size:13px;color:#cce8ff;line-height:1.7;background:rgba(68,136,255,0.07);border:1px solid rgba(68,136,255,0.22);border-radius:8px;padding:8px 10px;"></div>
+      </div>
+      <div>
+        <div style="font-size:10px;color:#aaddff;font-weight:bold;letter-spacing:1px;margin-bottom:5px;">🌟 パッシブスキル</div>
+        <div id="gdWeaponPassive" style="font-size:13px;color:#c8e8ff;line-height:1.7;background:rgba(100,180,255,0.06);border:1px solid rgba(100,180,255,0.2);border-radius:8px;padding:8px 10px;"></div>
+      </div>
+    </div>
+    <div style="padding:10px 16px;border-top:1px solid rgba(170,220,255,0.15);flex-shrink:0;text-align:center;">
+      <button onclick="closeGdWeaponModal()" style="background:linear-gradient(135deg,#0d2040,#1a3860);color:#aaddff;border:1px solid #aaddff;border-radius:8px;padding:8px 32px;font-size:13px;font-weight:bold;cursor:pointer;">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ⚙️ 設定パネル ===== -->
+<div id="settingsOverlay" onclick="closeSettingsPanel()" style="
+  display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.55);z-index:30000;backdrop-filter:blur(4px);
+"></div>
+
+<div id="settingsPanel" style="
+  position:fixed;top:0;right:-320px;width:300px;height:100%;
+  background:linear-gradient(180deg,#0e0a1f 0%,#080514 100%);
+  border-left:1px solid rgba(140,100,255,0.3);
+  z-index:30001;
+  transition:right 0.32s cubic-bezier(0.4,0,0.2,1);
+  overflow-y:auto;
+  box-shadow:-8px 0 40px rgba(80,40,180,0.3);
+  padding-bottom:env(safe-area-inset-bottom,20px);
+">
+  <!-- ヘッダー -->
+  <div style="
+    display:flex;align-items:center;justify-content:space-between;
+    padding:20px 18px 14px;
+    border-bottom:1px solid rgba(140,100,255,0.18);
+    background:linear-gradient(180deg,rgba(80,50,160,0.25),transparent);
+    position:sticky;top:0;
+    backdrop-filter:blur(10px);
+  ">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span style="font-size:20px;">⚙️</span>
+      <span style="font-size:15px;font-weight:bold;color:#fff;letter-spacing:2px;">設定</span>
+    </div>
+    <button onclick="closeSettingsPanel()" style="
+      background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);
+      color:#aaa;border-radius:8px;width:32px;height:32px;
+      cursor:pointer;font-size:16px;line-height:1;
+    ">✕</button>
+  </div>
+
+  <!-- メニューリスト -->
+  <div style="padding:12px 14px;display:flex;flex-direction:column;gap:6px;">
+
+    <!-- プロフィール -->
+    <button onclick="closeSettingsPanel();openProfileModal();" class="settingsMenuItem">
+      <span class="settingsMenuIcon" style="background:linear-gradient(135deg,#ffd70033,#ff880033);border-color:rgba(255,215,0,0.45);">👤</span>
+      <div class="settingsMenuText">
+        <div class="settingsMenuTitle" style="color:#ffd700;">プロフィール</div>
+        <div class="settingsMenuSub">名前・称号・統計</div>
+      </div>
+      <span class="settingsMenuArrow">›</span>
+    </button>
+
+    <!-- シリアルコード -->
+    <button onclick="openSerialModal();" class="settingsMenuItem">
+      <span class="settingsMenuIcon" style="background:linear-gradient(135deg,#44ff8833,#00cc6633);border-color:rgba(68,255,136,0.45);">🔑</span>
+      <div class="settingsMenuText">
+        <div class="settingsMenuTitle" style="color:#44ff88;">シリアルコード</div>
+        <div class="settingsMenuSub">コードを入力して報酬を受取</div>
+      </div>
+      <span class="settingsMenuArrow">›</span>
+    </button>
+
+    <!-- お知らせ -->
+    <button onclick="openNoticeModal();" class="settingsMenuItem">
+      <span class="settingsMenuIcon" style="background:linear-gradient(135deg,#44aaffcc,#004488cc);border-color:rgba(68,170,255,0.45);">📢</span>
+      <div class="settingsMenuText">
+        <div class="settingsMenuTitle" style="color:#44aaff;">お知らせ</div>
+        <div class="settingsMenuSub">最新情報・アップデート</div>
+      </div>
+      <span class="settingsMenuArrow">›</span>
+    </button>
+
+    <!-- 持ち物 -->
+    <button onclick="openInventoryModal();" class="settingsMenuItem">
+      <span class="settingsMenuIcon" style="background:linear-gradient(135deg,#ff884433,#cc440033);border-color:rgba(255,136,68,0.45);">🎒</span>
+      <div class="settingsMenuText">
+        <div class="settingsMenuTitle" style="color:#ff8844;">持ち物</div>
+        <div class="settingsMenuSub">アイテム・消耗品一覧</div>
+      </div>
+      <span class="settingsMenuArrow">›</span>
+    </button>
+
+    <div style="height:1px;background:rgba(140,100,255,0.15);margin:4px 0;"></div>
+
+    <!-- 利用規約 -->
+    <button onclick="openTosModal();" class="settingsMenuItem">
+      <span class="settingsMenuIcon" style="background:linear-gradient(135deg,#aaaaff22,#6666cc22);border-color:rgba(160,160,255,0.35);">📄</span>
+      <div class="settingsMenuText">
+        <div class="settingsMenuTitle" style="color:#aaaaff;">利用規約</div>
+        <div class="settingsMenuSub">Terms of Service</div>
+      </div>
+      <span class="settingsMenuArrow">›</span>
+    </button>
+
+    <!-- Credit -->
+    <button onclick="openCreditModal();" class="settingsMenuItem">
+      <span class="settingsMenuIcon" style="background:linear-gradient(135deg,#ff88cc22,#aa226622);border-color:rgba(255,136,200,0.35);">✨</span>
+      <div class="settingsMenuText">
+        <div class="settingsMenuTitle" style="color:#ff88cc;">クレジット</div>
+        <div class="settingsMenuSub">制作・素材クレジット</div>
+      </div>
+      <span class="settingsMenuArrow">›</span>
+    </button>
+
+    <!-- プライバシーポリシー -->
+    <button onclick="openPrivacyModal();" class="settingsMenuItem">
+      <span class="settingsMenuIcon" style="background:linear-gradient(135deg,#88ccff22,#224488aa);border-color:rgba(136,204,255,0.35);">🔒</span>
+      <div class="settingsMenuText">
+        <div class="settingsMenuTitle" style="color:#88ccff;">プライバシーポリシー</div>
+        <div class="settingsMenuSub">Privacy Policy</div>
+      </div>
+      <span class="settingsMenuArrow">›</span>
+    </button>
+
+  </div>
+
+  <!-- バージョン表示 -->
+  <div style="text-align:center;padding:20px 0 10px;color:rgba(120,100,180,0.5);font-size:11px;letter-spacing:2px;">
+    ver 1.0.0
+  </div>
+</div>
+
+<!-- ===== シリアルコードモーダル ===== -->
+<div id="serialModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:31000;justify-content:center;align-items:center;">
+  <div style="background:linear-gradient(135deg,#0d1a10,#0a1208);border:2px solid rgba(68,255,136,0.4);border-radius:18px;padding:24px 22px;max-width:320px;width:88%;box-shadow:0 0 40px rgba(40,200,100,0.2);">
+    <div style="font-size:18px;font-weight:bold;color:#44ff88;letter-spacing:2px;margin-bottom:6px;text-align:center;">🔑 シリアルコード</div>
+    <div style="font-size:12px;color:#88cc99;text-align:center;margin-bottom:18px;">コードを入力して報酬を受け取ろう</div>
+    <input id="serialInput" type="text" placeholder="コードを入力..." style="
+      width:100%;box-sizing:border-box;padding:11px 14px;
+      background:#0a1a0d;border:1.5px solid rgba(68,200,100,0.4);
+      border-radius:10px;color:#fff;font-size:14px;letter-spacing:2px;
+      outline:none;text-align:center;
+    " oninput="this.value=this.value.toUpperCase()">
+    <div id="serialMsg" style="font-size:12px;text-align:center;margin-top:8px;min-height:16px;"></div>
+    <div style="display:flex;gap:10px;margin-top:16px;">
+      <button onclick="closeSerialModal()" style="flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:#aaa;border-radius:10px;padding:10px;cursor:pointer;font-size:13px;">キャンセル</button>
+      <button onclick="redeemSerial()" style="flex:1;background:linear-gradient(135deg,#1a4a20,#0d3010);border:1.5px solid #44ff88;color:#44ff88;border-radius:10px;padding:10px;cursor:pointer;font-size:13px;font-weight:bold;">受取</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== お知らせモーダル ===== -->
+<div id="noticeModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:31000;justify-content:center;align-items:center;">
+  <div style="background:linear-gradient(135deg,#0a1220,#060c18);border:2px solid rgba(68,170,255,0.35);border-radius:18px;padding:0;max-width:340px;width:90%;max-height:78vh;overflow:hidden;box-shadow:0 0 40px rgba(40,120,255,0.18);display:flex;flex-direction:column;">
+    <div style="padding:18px 20px 14px;border-bottom:1px solid rgba(68,170,255,0.18);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(180deg,rgba(40,80,180,0.25),transparent);">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:18px;">📢</span>
+        <span style="font-size:15px;font-weight:bold;color:#44aaff;letter-spacing:2px;">お知らせ</span>
+      </div>
+      <button onclick="closeNoticeModal()" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:#aaa;border-radius:8px;width:30px;height:30px;cursor:pointer;font-size:14px;">✕</button>
+    </div>
+    <div style="overflow-y:auto;padding:14px 16px;flex:1;">
+      <div class="noticeItem">
+        <div class="noticeDate">2026.05.31</div>
+        <div class="noticeTitle">🎉 サービス開始のお知らせ</div>
+        <div class="noticeBody">真剣のスルーメ、ついにサービス開始！みなさんのご支援ありがとうございます。今後も定期的なアップデートを予定しております。</div>
+      </div>
+      <div class="noticeItem">
+        <div class="noticeDate">2026.05.31</div>
+        <div class="noticeTitle">📦 Ver 1.0.0 アップデート</div>
+        <div class="noticeBody">バトルシステムの改善、新キャラクター追加、ミッション機能を実装しました。</div>
+      </div>
+      <div class="noticeItem" style="border:none;margin-bottom:0;">
+        <div class="noticeDate">近日公開</div>
+        <div class="noticeTitle">🌟 新イベント準備中</div>
+        <div class="noticeBody">新しいイベントとキャラクターを準備中です。お楽しみに！</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 持ち物モーダル ===== -->
+<div id="inventoryModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:31000;justify-content:center;align-items:center;">
+  <div style="background:linear-gradient(135deg,#130e08,#1a1000);border:2px solid rgba(255,140,40,0.35);border-radius:18px;padding:0;max-width:340px;width:90%;max-height:78vh;overflow:hidden;box-shadow:0 0 40px rgba(200,100,20,0.18);display:flex;flex-direction:column;">
+    <div style="padding:18px 20px 14px;border-bottom:1px solid rgba(255,140,40,0.18);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(180deg,rgba(180,80,20,0.2),transparent);">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:18px;">🎒</span>
+        <span style="font-size:15px;font-weight:bold;color:#ff8844;letter-spacing:2px;">持ち物</span>
+      </div>
+      <button onclick="closeInventoryModal()" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:#aaa;border-radius:8px;width:30px;height:30px;cursor:pointer;font-size:14px;">✕</button>
+    </div>
+    <div id="inventoryList" style="overflow-y:auto;padding:14px 16px;flex:1;">
+      <!-- JS で動的生成 -->
+    </div>
+  </div>
+</div>
+
+<!-- ===== 利用規約モーダル ===== -->
+<div id="tosModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:31000;justify-content:center;align-items:center;">
+  <div style="background:#0a0a14;border:1.5px solid rgba(160,160,255,0.3);border-radius:18px;padding:0;max-width:340px;width:90%;max-height:80vh;overflow:hidden;box-shadow:0 0 30px rgba(100,100,200,0.15);display:flex;flex-direction:column;">
+    <div style="padding:18px 20px 14px;border-bottom:1px solid rgba(160,160,255,0.15);display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:18px;">📄</span>
+        <span style="font-size:15px;font-weight:bold;color:#aaaaff;letter-spacing:2px;">利用規約</span>
+      </div>
+      <button onclick="closeTosModal()" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:#aaa;border-radius:8px;width:30px;height:30px;cursor:pointer;font-size:14px;">✕</button>
+    </div>
+    <div style="overflow-y:auto;padding:16px 18px;flex:1;font-size:12px;color:#aaa;line-height:1.8;">
+      <p style="color:#ccc;font-weight:bold;margin-bottom:10px;">第1条（適用）</p>
+      <p>本規約は、本ゲームを利用する全てのユーザーに適用されます。ゲームを利用した時点で本規約に同意したものとみなします。</p>
+      <p style="color:#ccc;font-weight:bold;margin:14px 0 6px;">第2条（禁止事項）</p>
+      <p>以下の行為を禁止します：不正アクセス・チート行為、他者への嫌がらせ、本ゲームの商業利用、その他法令に違反する行為。</p>
+      <p style="color:#ccc;font-weight:bold;margin:14px 0 6px;">第3条（免責事項）</p>
+      <p>本ゲームの利用により生じた損害について、制作者は一切の責任を負いません。</p>
+      <p style="color:#ccc;font-weight:bold;margin:14px 0 6px;">第4条（ゲーム内容の変更）</p>
+      <p>ゲーム内容は予告なく変更される場合があります。</p>
+      <p style="color:#ccc;font-weight:bold;margin:14px 0 6px;">第5条（規約の変更）</p>
+      <p>制作者は予告なく本規約を変更する場合があります。変更後も継続して利用した場合、変更後の規約に同意したものとみなします。</p>
+      <p style="color:#666;font-size:10px;margin-top:18px;text-align:right;">最終更新：2026年5月31日</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== クレジットモーダル ===== -->
+<div id="creditModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:31000;justify-content:center;align-items:center;">
+  <div style="background:linear-gradient(135deg,#140a12,#0a0610);border:1.5px solid rgba(255,136,200,0.3);border-radius:18px;padding:0;max-width:340px;width:90%;max-height:80vh;overflow:hidden;box-shadow:0 0 30px rgba(200,80,160,0.15);display:flex;flex-direction:column;">
+    <div style="padding:18px 20px 14px;border-bottom:1px solid rgba(255,136,200,0.15);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(180deg,rgba(160,40,100,0.2),transparent);">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:18px;">✨</span>
+        <span style="font-size:15px;font-weight:bold;color:#ff88cc;letter-spacing:2px;">クレジット</span>
+      </div>
+      <button onclick="closeCreditModal()" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:#aaa;border-radius:8px;width:30px;height:30px;cursor:pointer;font-size:14px;">✕</button>
+    </div>
+    <div style="overflow-y:auto;padding:16px 18px;flex:1;">
+      <div style="text-align:center;font-size:13px;color:#ff88cc;font-weight:bold;letter-spacing:3px;margin-bottom:18px;">【Credits】</div>
+      <div class="creditSection">
+        <div class="creditSectionTitle">🎮 Game Design</div>
+        <div class="creditEntry"><span class="creditRole">Game Design</span><span class="creditName">真スル製作委員会</span></div>
+      </div>
+      <div class="creditSection">
+        <div class="creditSectionTitle">🤖 Visual Support</div>
+        <div class="creditEntry"><span class="creditRole">Visual Support</span><span class="creditName">ChatGPT / Gemini</span></div>
+      </div>
+      <div class="creditSection">
+        <div class="creditSectionTitle">🖼️ Image Hosting</div>
+        <div class="creditEntry"><span class="creditRole">Image Hosting</span><span class="creditName">Imgur</span></div>
+      </div>
+      <div class="creditSection" style="border:none;margin-bottom:0;">
+        <div class="creditSectionTitle">💙 Special Thanks</div>
+        <div style="font-size:12px;color:#aaa;line-height:1.8;margin-top:6px;">このゲームを遊んでくれる全プレイヤーに感謝！</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== プライバシーポリシーモーダル ===== -->
+<div id="privacyModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:31000;justify-content:center;align-items:center;">
+  <div style="background:#080c14;border:1.5px solid rgba(136,200,255,0.3);border-radius:18px;padding:0;max-width:340px;width:90%;max-height:80vh;overflow:hidden;box-shadow:0 0 30px rgba(60,140,220,0.15);display:flex;flex-direction:column;">
+    <div style="padding:18px 20px 14px;border-bottom:1px solid rgba(136,200,255,0.15);display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:18px;">🔒</span>
+        <span style="font-size:15px;font-weight:bold;color:#88ccff;letter-spacing:2px;">プライバシーポリシー</span>
+      </div>
+      <button onclick="closePrivacyModal()" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:#aaa;border-radius:8px;width:30px;height:30px;cursor:pointer;font-size:14px;">✕</button>
+    </div>
+    <div style="overflow-y:auto;padding:16px 18px;flex:1;font-size:12px;color:#aaa;line-height:1.8;">
+      <p style="color:#ccc;font-weight:bold;margin-bottom:10px;">収集する情報について</p>
+      <p>本ゲームはブラウザのローカルストレージにゲームデータ（セーブデータ）を保存します。サーバーへの個人情報の送信は行いません。</p>
+      <p style="color:#ccc;font-weight:bold;margin:14px 0 6px;">Cookieの使用</p>
+      <p>本ゲームはCookieを使用しません。</p>
+      <p style="color:#ccc;font-weight:bold;margin:14px 0 6px;">第三者への提供</p>
+      <p>収集した情報を第三者に提供することはありません。</p>
+      <p style="color:#ccc;font-weight:bold;margin:14px 0 6px;">お問い合わせ</p>
+      <p>プライバシーに関するお問い合わせは制作者までご連絡ください。</p>
+      <p style="color:#666;font-size:10px;margin-top:18px;text-align:right;">最終更新：2026年5月31日</p>
+    </div>
+  </div>
+</div>
+
+<style>
+/* ===== 設定パネル共通スタイル ===== */
+.settingsMenuItem{
+  display:flex;align-items:center;gap:12px;width:100%;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:13px;padding:13px 14px;
+  cursor:pointer;text-align:left;
+  transition:background 0.18s,border-color 0.18s,transform 0.12s;
+}
+.settingsMenuItem:active{transform:scale(0.97);}
+.settingsMenuItem:hover{background:rgba(255,255,255,0.08);border-color:rgba(160,120,255,0.3);}
+.settingsMenuIcon{
+  width:42px;height:42px;border-radius:12px;
+  border:1.5px solid transparent;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+}
+.settingsMenuText{flex:1;min-width:0;}
+.settingsMenuTitle{font-size:13px;font-weight:bold;letter-spacing:0.5px;margin-bottom:2px;}
+.settingsMenuSub{font-size:10px;color:rgba(180,160,220,0.6);letter-spacing:0.5px;}
+.settingsMenuArrow{color:rgba(180,150,255,0.5);font-size:22px;line-height:1;}
+
+/* お知らせ */
+.noticeItem{
+  border-bottom:1px solid rgba(68,170,255,0.12);
+  padding-bottom:14px;margin-bottom:14px;
+}
+.noticeDate{font-size:10px;color:#4488ff;margin-bottom:4px;letter-spacing:1px;}
+.noticeTitle{font-size:13px;font-weight:bold;color:#fff;margin-bottom:5px;}
+.noticeBody{font-size:12px;color:#aab;line-height:1.7;}
+
+/* クレジット */
+.creditSection{border-bottom:1px solid rgba(255,136,200,0.12);padding-bottom:14px;margin-bottom:14px;}
+.creditSectionTitle{font-size:12px;font-weight:bold;color:#ff88cc;letter-spacing:1px;margin-bottom:8px;}
+.creditEntry{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
+.creditRole{font-size:11px;color:#888;}
+.creditName{font-size:12px;color:#ddd;font-weight:bold;}
+
+/* 持ち物 */
+.invItem{
+  display:flex;align-items:center;gap:12px;
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,140,40,0.15);
+  border-radius:12px;padding:10px 12px;margin-bottom:8px;
+}
+.invIcon{font-size:24px;width:36px;text-align:center;}
+.invInfo{flex:1;}
+.invName{font-size:13px;font-weight:bold;color:#fff;}
+.invDesc{font-size:10px;color:#888;margin-top:2px;}
+.invCount{font-size:14px;font-weight:bold;color:#ff8844;}
+</style>
+
+<script>
+// ===== 設定パネル =====
+function openSettingsPanel(){
+  document.getElementById("settingsOverlay").style.display = "block";
+  document.getElementById("settingsPanel").style.right = "0";
+}
+function closeSettingsPanel(){
+  document.getElementById("settingsOverlay").style.display = "none";
+  document.getElementById("settingsPanel").style.right = "-320px";
+}
+
+// ===== シリアルコード =====
+// 有効コード定義（コード: 報酬）
+const serialCodes = {
+  "WELCOME2026": { stone: 50,  sp: 0,   msg: "💎 石×50 を獲得！" },
+  "THANKS1000":  { stone: 100, sp: 10,  msg: "💎 石×100 ＋ 🌳 SP×10 を獲得！" },
+  "SPBOOST":     { stone: 0,   sp: 30,  msg: "🌳 SP×30 を獲得！" },
+};
+const usedSerials = JSON.parse(localStorage.getItem("usedSerials") || "[]");
+
+function openSerialModal(){
+  closeSettingsPanel();
+  document.getElementById("serialInput").value = "";
+  document.getElementById("serialMsg").textContent = "";
+  document.getElementById("serialModal").style.display = "flex";
+}
+function closeSerialModal(){
+  document.getElementById("serialModal").style.display = "none";
+}
+function redeemSerial(){
+  let code = document.getElementById("serialInput").value.trim().toUpperCase();
+  let msg = document.getElementById("serialMsg");
+  if(!code){ msg.style.color="#ff8844"; msg.textContent="コードを入力してください"; return; }
+
+  // ── KANPEKI: 全キャラ完凸 + 全武器（セッション管理） ──
+  if(code === "KANPEKI"){
+    if(usedSerialCodes.has(code)){ msg.style.color="#ff9800"; msg.textContent="⚠️ このコードは既に使用済みです"; return; }
+    const allCharPools = [
+      chars,
+      eventChars, eventChars2, eventChars3, eventChars4,
+      eventChars5, eventChars6, eventChars7, eventChars8, eventChars9, eventChars10,
+      rewardChar
+    ];
+    let charAdded = 0, charMaxed = 0;
+    allCharPools.forEach(pool => {
+      if(!pool || !pool.length) return;
+      pool.forEach(c => {
+        let exist = box.find(b => b.name === c.name);
+        const maxD = maxDupe[c.rarity] || 10;
+        const atkPerDupe = c.rarity===4 ? 72 : c.rarity===3 ? 24 : c.rarity===2 ? 17 : 12;
+        const hpPerDupe  = c.rarity===4 ? 184: c.rarity===3 ? 72 : c.rarity===2 ? 54 : 42;
+        if(!exist){
+          let baseAtk = 20 + 5 * c.rarity;
+          let baseHp  = 100 + 20 * c.rarity;
+          box.push({ ...c, dupe: maxD, atk: baseAtk + atkPerDupe * maxD, hp: baseHp + hpPerDupe * maxD, weapon: null });
+          charAdded++;
+        } else if(exist.dupe < maxD){
+          let remaining = maxD - exist.dupe;
+          exist.dupe = maxD;
+          exist.atk += Math.round(atkPerDupe * remaining);
+          exist.hp  += Math.round(hpPerDupe  * remaining);
+          charMaxed++;
+        }
+      });
+    });
+    let weapAdded = 0;
+    weapons.forEach(w => { if(!weaponBox.find(x => x.name === w.name)){ weaponBox.push({...w}); weapAdded++; } });
+    usedSerialCodes.add(code);
+    if(typeof update === "function") update();
+    if(typeof saveData === "function") saveData();
+    let rainbow = document.createElement("div"); rainbow.className = "rainbowFlash"; document.body.appendChild(rainbow); setTimeout(()=>rainbow.remove(), 900);
+    let ef = document.createElement("div"); ef.className = "eventFlash"; document.body.appendChild(ef); setTimeout(()=>ef.remove(), 900);
+    msg.style.color="#ffd700";
+    msg.innerHTML = `✅ 全データ取得完了！<br><small style="color:#aaa;">キャラ新規 ${charAdded}体 / 完凸 ${charMaxed}体<br>武器 ${weapAdded}種 追加</small>`;
+    return;
+  }
+
+  // ── 通常コード（石・SP） ──
+  if(usedSerials.includes(code)){ msg.style.color="#ff4444"; msg.textContent="このコードは既に使用済みです"; return; }
+  if(!serialCodes[code]){ msg.style.color="#ff4444"; msg.textContent="無効なコードです"; return; }
+  let reward = serialCodes[code];
+  if(reward.stone && typeof stone !== "undefined") stone += reward.stone;
+  if(reward.sp && typeof sp !== "undefined") sp += reward.sp;
+  usedSerials.push(code);
+  localStorage.setItem("usedSerials", JSON.stringify(usedSerials));
+  if(typeof saveData === "function") saveData();
+  if(typeof update === "function") update();
+  msg.style.color="#44ff88"; msg.textContent = "✅ " + reward.msg;
+  setTimeout(closeSerialModal, 2000);
+}
+
+// ===== お知らせ =====
+function openNoticeModal(){
+  closeSettingsPanel();
+  document.getElementById("noticeModal").style.display = "flex";
+}
+function closeNoticeModal(){
+  document.getElementById("noticeModal").style.display = "none";
+}
+
+// ===== 持ち物 =====
+function openInventoryModal(){
+  closeSettingsPanel();
+  renderInventory();
+  document.getElementById("inventoryModal").style.display = "flex";
+}
+function closeInventoryModal(){
+  document.getElementById("inventoryModal").style.display = "none";
+}
+function renderInventory(){
+  let list = document.getElementById("inventoryList");
+  // ゲームのアイテム在庫を読み込む（stone / sp / dupeStone など）
+  let stoneVal  = (typeof stone !== "undefined") ? stone : 0;
+  let spVal     = (typeof sp !== "undefined") ? sp : 0;
+  let dupeVal   = (typeof dupeStone !== "undefined") ? dupeStone : 0;
+
+  let items = [
+    { icon:"💎", name:"召喚石",   desc:"ガチャに使用できる石",     count: stoneVal },
+    { icon:"🌳", name:"SP",       desc:"スキルツリーに使用できるポイント", count: spVal },
+    { icon:"🔷", name:"凸塊",     desc:"キャラクターの凸に使用", count: dupeVal },
+  ];
+
+  if(items.every(i => i.count === 0)){
+    list.innerHTML = '<div style="text-align:center;color:#556;padding:20px;font-size:13px;">アイテムがありません</div>';
+    return;
+  }
+
+  list.innerHTML = items.map(i => `
+    <div class="invItem">
+      <div class="invIcon">${i.icon}</div>
+      <div class="invInfo">
+        <div class="invName">${i.name}</div>
+        <div class="invDesc">${i.desc}</div>
+      </div>
+      <div class="invCount">×${i.count}</div>
+    </div>
+  `).join("");
+}
+
+// ===== 利用規約 =====
+function openTosModal(){
+  closeSettingsPanel();
+  document.getElementById("tosModal").style.display = "flex";
+}
+function closeTosModal(){
+  document.getElementById("tosModal").style.display = "none";
+}
+
+// ===== クレジット =====
+function openCreditModal(){
+  closeSettingsPanel();
+  document.getElementById("creditModal").style.display = "flex";
+}
+function closeCreditModal(){
+  document.getElementById("creditModal").style.display = "none";
+}
+
+// ===== プライバシーポリシー =====
+function openPrivacyModal(){
+  closeSettingsPanel();
+  document.getElementById("privacyModal").style.display = "flex";
+}
+function closePrivacyModal(){
+  document.getElementById("privacyModal").style.display = "none";
+}
+</script>
+
 </body>
 </html>
