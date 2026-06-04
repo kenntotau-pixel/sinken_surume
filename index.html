@@ -7889,46 +7889,66 @@ renderBattle();
 showBattleSynergyNotice(team);
 }
 function Eventwin(){
-let eventDropMsg = "";
 if(currentEvent !== undefined){
     let prog = eventProgress[currentEvent] || 1;
     let e = eventStages[currentEvent];
-    if(!eventProgress["clear_"+currentEvent]){
-        stone += e.reward;
-        sp += 3;
-        // イベント基本報酬：経験値書・中
-        itemInventory.expMedium += 1;
-        // イベントランダムドロップ
-        let evDropMsg = "📘経験値書・中×1";
-        if(Math.random() < 0.40){ dupeStone += 1; evDropMsg += " 🧱凸塊×1"; }
-        if(Math.random() < 0.15){ itemInventory.starShard += 1; evDropMsg += " 🔮昇星の欠片×1"; }
-        if(Math.random() < 0.05){ itemInventory.expLarge += 1; evDropMsg += " 📙経験値書・大×1"; }
-        if(Math.random() < 0.02){ itemInventory.starCrystal += 1; evDropMsg += " 💠昇星の結晶×1"; }
-        eventDropMsg = evDropMsg;
-    } else {
-        eventDropMsg = "";
-    }
+    let stage = e.stages[prog - 1];
+    let isBoss = !!(stage && stage.boss);
     prog++;
-    if(prog > e.stages.length){
-        alert("🎉イベント完全制覇！");
+    let isFinalClear = prog > e.stages.length;
+
+    // ===== 毎回ドロップ（通常ステージ or BOSS共通） =====
+    let dropMsg = "";
+    if(isBoss || isFinalClear){
+        // BOSSクリア：毎回高確率ドロップ
+        itemInventory.expMedium += 1;
+        dropMsg += "📘経験値書・中×1";
+        if(Math.random() < 0.70){ dupeStone += 1; dropMsg += " 🧱凸塊×1"; }
+        if(Math.random() < 0.40){ itemInventory.starShard += 1; dropMsg += " 🔮昇星の欠片×1"; }
+        if(Math.random() < 0.20){ itemInventory.expLarge += 1; dropMsg += " 📙経験値書・大×1"; }
+        if(Math.random() < 0.10){ itemInventory.starShard += 1; dropMsg += " 🔮昇星の欠片×1(ボーナス)"; }
+        if(Math.random() < 0.08){ itemInventory.starCrystal += 1; dropMsg += " 💠昇星の結晶×1"; }
+    } else {
+        // 通常ステージ：毎回ドロップ
+        itemInventory.expMedium += 1;
+        dropMsg += "📘経験値書・中×1";
+        if(Math.random() < 0.40){ dupeStone += 1; dropMsg += " 🧱凸塊×1"; }
+        if(Math.random() < 0.15){ itemInventory.starShard += 1; dropMsg += " 🔮昇星の欠片×1"; }
+        if(Math.random() < 0.05){ itemInventory.expLarge += 1; dropMsg += " 📙経験値書・大×1"; }
+        if(Math.random() < 0.02){ itemInventory.starCrystal += 1; dropMsg += " 💠昇星の結晶×1"; }
+    }
+
+    if(isFinalClear){
+        // ===== BOSS（最終ステージ）クリア =====
+        let bossAlertMsg = "🎉イベント完全制覇！\n🎲 ドロップ: " + dropMsg;
+        // 初回一回限り報酬
         if(!eventProgress["clear_"+currentEvent]){
-            stone += e.bossReward || 0;
-            sp += 10;
-            // ボス報酬：大+昇星素材
+            stone += (e.reward || 0) + (e.bossReward || 0);
+            sp += 13;
             itemInventory.expLarge += 2;
             itemInventory.starShard += 3;
+            bossAlertMsg += "\n⭐ 初回ボーナス: 石+" + ((e.reward||0)+(e.bossReward||0)) + " SP+13 📙経験値書・大×2 🔮昇星の欠片×3";
+            alert(bossAlertMsg);
             let rewardChar = e.rewardChar;
             if(rewardChar){
                 addToBox(rewardChar);
-                alert("新キャラGET！！「" + rewardChar.name + "」\n📙経験値書・大×2 🔮昇星の欠片×3 もゲット！");
+                alert("🌟 新キャラGET！！「" + rewardChar.name + "」");
             }
             eventProgress["clear_"+currentEvent] = true;
+        } else {
+            alert(bossAlertMsg);
         }
         prog = e.stages.length;
-    }else{
-        let clearDropLine = eventDropMsg ? "\n🎲 ドロップ: " + eventDropMsg : "";
-        alert("ステージクリア！" + clearDropLine);
+    } else {
+        // ===== 通常ステージ（間BOSS含む）クリア =====
+        // 初回クリア時のみ石・SPボーナス
+        if(!eventProgress["clear_"+currentEvent]){
+            stone += e.reward || 0;
+            sp += 3;
+        }
+        alert("ステージクリア！\n🎲 ドロップ: " + dropMsg);
     }
+
     eventProgress[currentEvent] = prog;
     saveData();
     currentEvent = undefined;
