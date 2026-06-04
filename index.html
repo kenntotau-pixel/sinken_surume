@@ -4495,15 +4495,64 @@ function win(){
     let id=chars.findIndex(c=>c.name===enemy.name);
     let prevLv = progress[id]||1;
     progress[id]=prevLv+1;
-    // 基本報酬：経験値書・小
-    itemInventory.expSmall += 1;
-    let winRewardMsg = "📗経験値書・小×1";
-    // ランダムドロップ
+    // 試練レベルによるドロップ品質変化
+    let winRewardMsg = "";
     let winDropMsg = "";
-    if(Math.random() < 0.30){ dupeStone += 1; winDropMsg += " 🧱凸塊×1"; }
-    if(Math.random() < 0.10){ itemInventory.starShard += 1; winDropMsg += " 🔮昇星の欠片×1"; }
-    if(Math.random() < 0.03){ itemInventory.expMedium += 1; winDropMsg += " 📘経験値書・中×1"; }
-    if(Math.random() < 0.01){ itemInventory.starCrystal += 1; winDropMsg += " 💠昇星の結晶×1"; }
+    if(prevLv >= 200){
+        // 伝説 Lv200+
+        itemInventory.expLarge += 1;
+        dupeStone += 1;
+        winRewardMsg = "【伝説】📙経験値書・大×1 🧱凸塊×1(確定)";
+        if(Math.random() < 0.90){ dupeStone += 1; winDropMsg += " 🧱凸塊×1"; }
+        if(Math.random() < 0.70){ itemInventory.starShard += 1; winDropMsg += " 🔮昇星の欠片×1"; }
+        if(Math.random() < 0.40){ itemInventory.expLarge += 1; winDropMsg += " 📙経験値書・大×1"; }
+        if(Math.random() < 0.20){ itemInventory.expUltra += 1; winDropMsg += " 📕経験値書・極×1"; }
+        if(Math.random() < 0.25){ itemInventory.starCrystal += 1; winDropMsg += " 💠昇星の結晶×1"; }
+        if(Math.random() < 0.05){ itemInventory.starCrystal += 1; winDropMsg += " 💠昇星の結晶×1(ボーナス)"; }
+    } else if(prevLv >= 100){
+        // 達人 Lv100-199
+        itemInventory.expLarge += 1;
+        winRewardMsg = "【達人】📙経験値書・大×1";
+        if(Math.random() < 0.85){ dupeStone += 1; winDropMsg += " 🧱凸塊×1"; }
+        if(Math.random() < 0.60){ itemInventory.starShard += 1; winDropMsg += " 🔮昇星の欠片×1"; }
+        if(Math.random() < 0.30){ itemInventory.expLarge += 1; winDropMsg += " 📙経験値書・大×1"; }
+        if(Math.random() < 0.12){ itemInventory.expUltra += 1; winDropMsg += " 📕経験値書・極×1"; }
+        if(Math.random() < 0.15){ itemInventory.starCrystal += 1; winDropMsg += " 💠昇星の結晶×1"; }
+    } else if(prevLv >= 50){
+        // 熟練 Lv50-99
+        itemInventory.expMedium += 1;
+        winRewardMsg = "【熟練】📘経験値書・中×1";
+        if(Math.random() < 0.75){ dupeStone += 1; winDropMsg += " 🧱凸塊×1"; }
+        if(Math.random() < 0.50){ itemInventory.starShard += 1; winDropMsg += " 🔮昇星の欠片×1"; }
+        if(Math.random() < 0.20){ itemInventory.expLarge += 1; winDropMsg += " 📙経験値書・大×1"; }
+        if(Math.random() < 0.05){ itemInventory.expUltra += 1; winDropMsg += " 📕経験値書・極×1"; }
+        if(Math.random() < 0.08){ itemInventory.starCrystal += 1; winDropMsg += " 💠昇星の結晶×1"; }
+    } else if(prevLv >= 30){
+        // 上級 Lv30-49
+        itemInventory.expMedium += 1;
+        winRewardMsg = "【上級】📘経験値書・中×1";
+        if(Math.random() < 0.65){ dupeStone += 1; winDropMsg += " 🧱凸塊×1"; }
+        if(Math.random() < 0.35){ itemInventory.starShard += 1; winDropMsg += " 🔮昇星の欠片×1"; }
+        if(Math.random() < 0.10){ itemInventory.expLarge += 1; winDropMsg += " 📙経験値書・大×1"; }
+        if(Math.random() < 0.04){ itemInventory.starCrystal += 1; winDropMsg += " 💠昇星の結晶×1"; }
+    } else if(prevLv >= 10){
+        // 中級 Lv10-29
+        itemInventory.expSmall += 1;
+        winRewardMsg = "【中級】📗経験値書・小×1";
+        if(Math.random() < 0.50){ dupeStone += 1; winDropMsg += " 🧱凸塊×1"; }
+        if(Math.random() < 0.20){ itemInventory.starShard += 1; winDropMsg += " 🔮昇星の欠片×1"; }
+        if(Math.random() < 0.10){ itemInventory.expMedium += 1; winDropMsg += " 📘経験値書・中×1"; }
+        if(Math.random() < 0.05){ itemInventory.expLarge += 1; winDropMsg += " 📙経験値書・大×1"; }
+        if(Math.random() < 0.02){ itemInventory.starCrystal += 1; winDropMsg += " 💠昇星の結晶×1"; }
+    } else {
+        // 初級 Lv1-9
+        itemInventory.expSmall += 1;
+        winRewardMsg = "【初級】📗経験値書・小×1";
+        if(Math.random() < 0.30){ dupeStone += 1; winDropMsg += " 🧱凸塊×1"; }
+        if(Math.random() < 0.10){ itemInventory.starShard += 1; winDropMsg += " 🔮昇星の欠片×1"; }
+        if(Math.random() < 0.03){ itemInventory.expMedium += 1; winDropMsg += " 📘経験値書・中×1"; }
+        if(Math.random() < 0.01){ itemInventory.starCrystal += 1; winDropMsg += " 💠昇星の結晶×1"; }
+    }
     onTrialWin();
     saveData();
     let winDropLine = winDropMsg ? "\n🎲 ドロップ:" + winDropMsg : "";
