@@ -186,7 +186,7 @@
       <div style="background:linear-gradient(135deg,#000f1a,#001a2a);border:1px solid rgba(0,220,255,0.3);border-radius:10px;padding:10px;margin-bottom:8px;" id="ciStar5Area">
         <div id="ciStarSectionTitle" style="font-size:9px;color:#44ccff;letter-spacing:1px;margin-bottom:4px;font-weight:bold;">✨ 昇星</div>
         <div id="ciStar5Status" style="font-size:13px;color:#00ffcc;font-weight:bold;margin-bottom:4px;"></div>
-        <div style="font-size:10px;color:#556;margin-bottom:6px;">昇星の欠片×<span id="ciShardCount">0</span> &nbsp; 昇星の結晶×<span id="ciCrystalCount">0</span></div>
+        <div style="font-size:10px;color:#556;margin-bottom:6px;">所持: 欠片×<span id="ciShardCount">0</span> &nbsp; 結晶×<span id="ciCrystalCount">0</span></div>
         <div id="ciStarCostLabel" style="font-size:10px;color:#88ccff;margin-bottom:6px;"></div>
         <button id="ciStar5Btn" onclick="ciAscendStar5()" style="width:100%;background:linear-gradient(135deg,#001a2a,#002a40);color:#00ddff;border:1px solid #0088cc;border-radius:7px;padding:7px;font-size:12px;cursor:pointer;font-weight:bold;">🌟 昇星する（+8% ATK/HP）</button>
       </div>
@@ -570,10 +570,14 @@ function getTeamBuff(team){
 let atkBuff = 0;
 let hpBuff = 0;
 team.forEach(c=>{
-    if(c.rarity === 4){
+    let sl = getCharStarLevel(c);
+    if(sl >= 5){
+        atkBuff += 0.45;
+        hpBuff += 0.45;
+    }else if(sl >= 4){
         atkBuff += 0.30;
         hpBuff += 0.30;
-    }else if(c.rarity === 3){
+    }else if(sl >= 3){
         atkBuff += 0.15;
         hpBuff += 0.15;
     }
@@ -1213,6 +1217,8 @@ if(data.unlockedMissionTitleIds && Array.isArray(data.unlockedMissionTitleIds)){
 let stone=100;
 let box=[],team=[],players=[],deadPlayers=[],enemy;
 let turn="player",turnIndex=0;
+let battleEnded = false;
+let isAttackProcessing = false;
 let progress={};
 let dupeStone = 0;
 let sp = 0;
@@ -2593,7 +2599,17 @@ else rarity =4;
 let pool = chars.filter(c=>c.rarity==rarity);
 return pool[Math.random()*pool.length|0];
 }
+function clearBattleOverlays(){
+  _battleScreenActive = false;
+  _synergyQueue.length = 0;
+  _synergyActive = false;
+  document.querySelectorAll('.synergyText').forEach(el => el.remove());
+  document.querySelectorAll('.damage').forEach(el => el.remove());
+  document.querySelectorAll('.hitText').forEach(el => el.remove());
+  document.querySelectorAll('.totalDamage').forEach(el => el.remove());
+}
 function go(id){
+if(id === "battle"){ _battleScreenActive = true; } else { clearBattleOverlays(); }
 document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
 const activeEl = document.getElementById(id);
 activeEl.classList.add('active');
@@ -2779,10 +2795,17 @@ renderSynergyPanel(team);
 let buffDiv = document.getElementById("teamBuff");
 if(buffDiv){
 let buff = getTeamBuff(team);
+let starBuffLines = team.map(c=>{
+  let sl = getCharStarLevel(c);
+  if(sl >= 5) return `<span style="color:#00ffff;">☆5 ${c.name.slice(0,4)}: ATK/HP+45%</span>`;
+  if(sl >= 4) return `<span style="color:#ffd700;">☆4 ${c.name.slice(0,4)}: ATK/HP+30%</span>`;
+  if(sl >= 3) return `<span style="color:#aaffaa;">☆3 ${c.name.slice(0,4)}: ATK/HP+15%</span>`;
+  return null;
+}).filter(Boolean).join("<br>");
 buffDiv.innerHTML = `
 チームバフ<br>
-ATK +${buff.atk}%<br>
-HP +${buff.hp}%
+ATK +${buff.atk}%　HP +${buff.hp}%
+${starBuffLines ? "<br><div style='font-size:10px;margin-top:4px;line-height:1.6;'>"+starBuffLines+"</div>" : ""}
 `;
 let totalDiv = document.getElementById("teamTotal");
 if(totalDiv){
@@ -2825,6 +2848,8 @@ team.splice(i,1);
 update();
 }
 function startBattle(i){
+battleEnded = false;
+isAttackProcessing = false;
 go("battle");
 onBattleStart();
 let lv = progress[i] || 1;
@@ -3240,6 +3265,10 @@ ${p.weapon ? `<button onclick="weaponSkill()" ${(p.weaponCool??0)>0?"disabled":"
     : "敵のターン";
 }
 function attack(){
+if(isAttackProcessing) return;
+if(battleEnded) return;
+if(enemy && enemy.hp <= 0) return;
+isAttackProcessing = true;
 let p=players[turnIndex];
 currentAttacker = p.name;
 let atk = p.atk;
@@ -3307,6 +3336,7 @@ setTimeout(()=>{
     showDamage("enemy",res);
 },10);
 if(enemy.hp <= 0){
+    isAttackProcessing = false;
     setTimeout(()=>win(), 500);
     return;
 }
@@ -3462,7 +3492,9 @@ endTurn();
 }
 const _synergyQueue = [];
 let _synergyActive = false;
+let _battleScreenActive = false;
 function _processSynergyQueue(){
+  if(!_battleScreenActive){ _synergyQueue.length = 0; _synergyActive = false; return; }
   if(_synergyQueue.length === 0){ _synergyActive = false; return; }
   _synergyActive = true;
   const text = _synergyQueue.shift();
@@ -3476,6 +3508,7 @@ function _processSynergyQueue(){
   }, 1300);
 }
 function showSynergyText(text){
+  if(!_battleScreenActive) return;
   _synergyQueue.push(text);
   if(!_synergyActive) _processSynergyQueue();
 }
@@ -4246,8 +4279,11 @@ if(enemy.hp <= 0){
 turnIndex++;
 if(turnIndex>=players.length){
 turn="enemy";
+isAttackProcessing = false;
 setTimeout(enemyTurn,700);
 turnIndex=0;
+} else {
+isAttackProcessing = false;
 }
 renderBattle();
 }
@@ -4340,6 +4376,8 @@ function startTrainingBattle(){
   let enemyName = baseChar ? baseChar.name : "鍛錬ダミー";
   let enemyImg = baseChar ? baseChar.img : "https://imgur.com/3sgyjeg.png";
   isTrainingBattle = true;
+  battleEnded = false;
+  isAttackProcessing = false;
   trainingTotalDmg = 0;
   trainingMaxDmg = 0;
   trainingMaxDmgChar = "";
@@ -4422,6 +4460,8 @@ function addTrainingDamage(dmg){
   if(el) el.textContent = trainingMaxDmg.toLocaleString();
 }
 function win(){
+    if(battleEnded) return;
+    battleEnded = true;
     if(isTrainingBattle){
         let _cwin=trainingMaxDmgChar?`\n(${trainingMaxDmgChar})`:""; let msg = `🏋️ 撃破！\n最大ダメージ: ${trainingMaxDmg.toLocaleString()}${_cwin}\n\n鍛錬を続けますか？`;
         if(confirm(msg)){
@@ -4455,24 +4495,19 @@ function win(){
     let id=chars.findIndex(c=>c.name===enemy.name);
     let prevLv = progress[id]||1;
     progress[id]=prevLv+1;
-    // レベルに応じた経験値書報酬
-    let expReward = "";
-    if(prevLv >= 50){
-      itemInventory.expUltra += 1; expReward = "📕経験値書・極×1 ";
-    } else if(prevLv >= 20){
-      itemInventory.expLarge += 1; expReward = "📙経験値書・大×1 ";
-    } else if(prevLv >= 5){
-      itemInventory.expMedium += 1; expReward = "📘経験値書・中×1 ";
-    } else {
-      itemInventory.expSmall += 2; expReward = "📗経験値書・小×2 ";
-    }
-    // 昇星素材（ランダム低確率）
-    let starReward = "";
-    if(Math.random() < 0.08){ itemInventory.starShard += 1; starReward = "🔮昇星の欠片×1 "; }
-    if(Math.random() < 0.02){ itemInventory.starCrystal += 1; starReward += "💠昇星の結晶×1"; }
+    // 基本報酬：経験値書・小
+    itemInventory.expSmall += 1;
+    let winRewardMsg = "📗経験値書・小×1";
+    // ランダムドロップ
+    let winDropMsg = "";
+    if(Math.random() < 0.30){ dupeStone += 1; winDropMsg += " 🧱凸塊×1"; }
+    if(Math.random() < 0.10){ itemInventory.starShard += 1; winDropMsg += " 🔮昇星の欠片×1"; }
+    if(Math.random() < 0.03){ itemInventory.expMedium += 1; winDropMsg += " 📘経験値書・中×1"; }
+    if(Math.random() < 0.01){ itemInventory.starCrystal += 1; winDropMsg += " 💠昇星の結晶×1"; }
     onTrialWin();
     saveData();
-    alert("勝利！石+10 / SP+5\n" + expReward + starReward);
+    let winDropLine = winDropMsg ? "\n🎲 ドロップ:" + winDropMsg : "";
+    alert("勝利！石+10 / SP+5\n" + winRewardMsg + winDropLine);
     go("trial");
 }
 function resetData(){
@@ -4483,6 +4518,7 @@ loadData();
 update();
 go('title');
 function skill(){
+if(enemy && enemy.hp <= 0) return;
 let p = players[turnIndex];
 currentAttacker = p.name;
 if(!p.skill || !p.skill.type) return;
@@ -6087,6 +6123,7 @@ if(s.type !== "timeCrash"){
 endTurn();
 }
 function skill2(){
+if(enemy && enemy.hp <= 0) return;
 let p = players[turnIndex];
 currentAttacker = p.name;
 if(!p.skill2 || !p.skill2.type) return;
@@ -7761,6 +7798,8 @@ ${gimmickHTML}
 }).join("");
 }
 function startEventBattle(i){
+battleEnded = false;
+isAttackProcessing = false;
 go("battle");
 let e = eventStages[i];
 let prog = eventProgress[i] || 1;
@@ -7850,14 +7889,24 @@ renderBattle();
 showBattleSynergyNotice(team);
 }
 function Eventwin(){
+let eventDropMsg = "";
 if(currentEvent !== undefined){
     let prog = eventProgress[currentEvent] || 1;
     let e = eventStages[currentEvent];
     if(!eventProgress["clear_"+currentEvent]){
         stone += e.reward;
         sp += 3;
-        // イベント経験値書報酬
+        // イベント基本報酬：経験値書・中
         itemInventory.expMedium += 1;
+        // イベントランダムドロップ
+        let evDropMsg = "📘経験値書・中×1";
+        if(Math.random() < 0.40){ dupeStone += 1; evDropMsg += " 🧱凸塊×1"; }
+        if(Math.random() < 0.15){ itemInventory.starShard += 1; evDropMsg += " 🔮昇星の欠片×1"; }
+        if(Math.random() < 0.05){ itemInventory.expLarge += 1; evDropMsg += " 📙経験値書・大×1"; }
+        if(Math.random() < 0.02){ itemInventory.starCrystal += 1; evDropMsg += " 💠昇星の結晶×1"; }
+        eventDropMsg = evDropMsg;
+    } else {
+        eventDropMsg = "";
     }
     prog++;
     if(prog > e.stages.length){
@@ -7877,7 +7926,8 @@ if(currentEvent !== undefined){
         }
         prog = e.stages.length;
     }else{
-        alert("ステージクリア！\n📘経験値書・中×1 ゲット！");
+        let clearDropLine = eventDropMsg ? "\n🎲 ドロップ: " + eventDropMsg : "";
+        alert("ステージクリア！" + clearDropLine);
     }
     eventProgress[currentEvent] = prog;
     saveData();
@@ -8075,6 +8125,7 @@ showGachaFullscreen10(results, ()=>{
 update();saveData();
 }
 function weaponSkill(){
+    if(enemy && enemy.hp <= 0) return;
     let p = players[turnIndex];
     currentAttacker = p.name;
     let s = p.weapon?.skill;
