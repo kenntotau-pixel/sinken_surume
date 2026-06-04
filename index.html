@@ -3909,22 +3909,26 @@ function triggerAttackPassive(p){
     enemy.burnTurn = Math.max(...enemy.burns.map(b=>b.turn));
     showSynergyText("🔥 "+label+"のパッシブ！燃焼付与！");
     triggerKokuShoku(1);
+    trackAilment(1, "burn");
   }
   if(ps.type === "shock_on_attack" && Math.random() < ps.chance){
     enemy.shockTurn = Math.max(enemy.shockTurn||0, 2);
     showSynergyText("⚡ "+label+"のパッシブ！感電付与！");
     triggerKokuShoku(1);
+    trackAilment(1, "shock");
   }
   if(ps.type === "poison_on_attack" && Math.random() < ps.chance){
     if(!enemy.poisons) enemy.poisons = [];
     enemy.poisons.push({power: ps.power, turn: 3, user: p});
     showSynergyText("☠ "+label+"のパッシブ！毒付与！");
     triggerKokuShoku(1);
+    trackAilment(1, "poison");
   }
   if(ps.type === "freeze_on_attack" && Math.random() < ps.chance){
     enemy.freezeTurn = Math.max(enemy.freezeTurn||0, 1);
     showSynergyText("❄ "+label+"のパッシブ！凍結付与！");
     triggerKokuShoku(1);
+    trackAilment(1, "freeze");
   }
   if(ps.type === "atk_up_on_attack"){
     let maxStacks = 5;
@@ -4685,7 +4689,7 @@ enemy.poisons.push({
     user: p
 });
 triggerKokuShoku(1);
-trackAilment(1);
+trackAilment(1, "poison");
 checkSynergy(p, atk);
 }
 if(s.type==="burn"){
@@ -4709,7 +4713,7 @@ if(s.type==="burn"){
     enemy.burnTurn = Math.max(...enemy.burns.map(b => b.turn));
     showSynergyText("燃焼付与！(×" + enemy.burns.length + "重)");
     triggerKokuShoku(1);
-    trackAilment(1);
+    trackAilment(1, "burn");
     checkSynergy(p, atk);
 }
 if(s.type==="freeze"){
@@ -4719,7 +4723,7 @@ if(s.type==="freeze"){
     enemy.freezeTurn = 1;
     showSynergyText("❄ 凍結成功！行動不能！");
     triggerKokuShoku(1);
-    trackAilment(1);
+    trackAilment(1, "freeze");
   } else {
     showSynergyText("❄ 凍結失敗…");
   }
@@ -4731,7 +4735,7 @@ if(s.type==="shock"){
   if(_sac && _sac.treeSkillPower) enemy.shockPower *= (1 + _sac.treeSkillPower);
   showSynergyText("感電付与！");
   triggerKokuShoku(1);
-  trackAilment(1);
+  trackAilment(1, "shock");
   checkSynergy(p, atk);
 }
 if(s.type==="happyAura"){
@@ -8236,7 +8240,7 @@ if(s.type==="shock"){
   if(_sac && _sac.treeSkillPower) enemy.shockPower *= (1 + _sac.treeSkillPower);
   showSynergyText("感電付与！");
   triggerKokuShoku(1);
-  trackAilment(1);
+  trackAilment(1, "shock");
   checkSynergy(p, atk);
 }
 if(s.type==="multi"){
