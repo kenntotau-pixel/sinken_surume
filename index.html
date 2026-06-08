@@ -447,7 +447,9 @@
 
 </div>
 
-<style>@keyframes logoGlowPulse{from{opacity:0.6;transform:translate(-50%,-50%) scale(0.9)}to{opacity:1;transform:translate(-50%,-50%) scale(1.1)}}@keyframes centerBtnPulse{0%,100%{box-shadow:0 0 24px rgba(180,100,255,0.55),0 -2px 0 rgba(255,255,255,0.1),inset 0 1px 0 rgba(255,255,255,0.2)}50%{box-shadow:0 0 40px rgba(200,120,255,0.8),0 0 60px rgba(180,80,255,0.3),0 -2px 0 rgba(255,255,255,0.1),inset 0 1px 0 rgba(255,255,255,0.2)}}#title{background:#060412;min-height:100vh}</style>
+<style>@keyframes logoGlowPulse{from{opacity:0.6;transform:translate(-50%,-50%) scale(0.9)}to{opacity:1;transform:translate(-50%,-50%) scale(1.1)}}@keyframes centerBtnPulse{0%,100%{box-shadow:0 0 24px rgba(180,100,255,0.55),0 -2px 0 rgba(255,255,255,0.1),inset 0 1px 0 rgba(255,255,255,0.2)}50%{box-shadow:0 0 40px rgba(200,120,255,0.8),0 0 60px rgba(180,80,255,0.3),0 -2px 0 rgba(255,255,255,0.1),inset 0 1px 0 rgba(255,255,255,0.2)}}#title{background:#060412;min-height:100vh}
+
+</style>
 
 <script>var SYNERGY_DEFS = [
   { members:["室井元武","栗島トウヤ"],      emoji:"🔥💧", name:"真剣の絆",         desc:"ATK+15% HP+15%",   atk:15, hp:15 },
@@ -501,6 +503,7 @@
   { members:["甲斐翔也","赤羽悠真"],       emoji:"🦅💙", name:"疾走する青",       desc:"ATK+25%",          atk:25, hp:0  },
   { members:["甲斐翔也","ログフ"],       emoji:"🦅🔩", name:"フリーエリア",       desc:"ATK+18% HP+12%",   atk:18, hp:12 },
   { members:["桜木彰","八並解徒"],         emoji:"🌸🎮", name:"桜と紐",           desc:"ATK+18% HP+12%",   atk:18, hp:12 },
+  { members:["桜木彰","赤羽悠真"],         emoji:"🌸💙", name:"流れる桜",           desc:"ATK+22%",          atk:22, hp:0  },
   { members:["晴海亨","八並解徒"],         emoji:"🌅🎮", name:"力を求めて",           desc:"ATK+20% HP+10%",   atk:20, hp:10 },
   { members:["玉垣剣城","蒼井朔也"],     emoji:"⚔🌀", name:"剣と銃",         desc:"ATK+20%",          atk:20, hp:0  },
   { members:["玉垣剣城","ミニモータ"],     emoji:"⚔🕹", name:"君の希望",         desc:"ATK+22%",          atk:22, hp:0  },
@@ -508,6 +511,7 @@
   { members:["玉垣剣城","死橋凪"],       emoji:"⚔🌬", name:"秘密の協力者",   desc:"ATK+25% HP+15%",   atk:25, hp:15 },
   { members:["蒼井朔也","石倉有栖"],       emoji:"🌀⚡", name:"蒼い連撃",         desc:"ATK+20% HP+8%",    atk:20, hp:8  },
   { members:["蒼井朔也","跳田収滋"],       emoji:"🌀💨", name:"乱流の追跡",       desc:"ATK+22%",          atk:22, hp:0  },
+  { members:["蒼井朔也","室井元武"],       emoji:"🌀🔥", name:"二つの牙",         desc:"ATK+10% HP+14%",    atk:10, hp:14  },
   { members:["石倉有栖","跳田収滋"],       emoji:"⚡💨", name:"連撃乱舞",         desc:"ATK+25%",          atk:25, hp:0  },
   { members:["石倉有栖","オリバー"],       emoji:"⚡🌿", name:"閃光と緑",         desc:"ATK+18% HP+10%",   atk:18, hp:10 },
   { members:["ミニモータ","ソーメーン"],   emoji:"🕹🌀", name:"機械と渦",         desc:"ATK+20% HP+10%",   atk:20, hp:10 },
@@ -525,6 +529,73 @@
   { members:["鈴鹿","沢華","阿波牛壬陸"],            emoji:"⚡🌊🌿", name:"連合のサポーター",desc:"ATK+15% HP+35%",  atk:15, hp:35 },
   { members:["コード5.2","FqEa","玉垣剣城"],            emoji:"💡⚡⚔", name:"三天",desc:"ATK+25% HP+25%",  atk:25, hp:25 },
 ];
+// ===== 武器×キャラ シナジー定義 =====
+const WEAPON_SYNERGY_DEFS = [
+  { weapon:"蒼天剣",      chars:["玉垣剣城"],                          emoji:"⚔✨", name:"蒼天の剣士",       desc:"ATK+10% HP+8%",   atk:10, hp:8  },
+  { weapon:"亡者の鎌",    chars:["死橋凪"],                            emoji:"☠🌬", name:"死の鎌使い",       desc:"ATK+18%",         atk:18, hp:0  },
+  { weapon:"緑藻の弓",    chars:["死橋轟"],                            emoji:"🌿🌊", name:"緑の狩人",         desc:"ATK+7% HP+8%",    atk:7,  hp:8  },
+  { weapon:"蟲毒の拳",    chars:["栗島トウヤ"],                        emoji:"☠💧", name:"毒拳の使い手",     desc:"ATK+10% HP+5%",         atk:10, hp:5  },
+  { weapon:"狙撃銃",      chars:["蒼井朔也"],                          emoji:"🔫🌀", name:"精密狙撃",         desc:"ATK+5% HP+5%",   atk:5, hp:5  },
+  { weapon:"スペースストッカー", chars:["跳田収滋"],                   emoji:"🌌💨", name:"宇宙の守護者",     desc:"ATK+5% HP+10%",   atk:5,  hp:10 },
+  { weapon:"双式魔術・焔",chars:["栗島トウヤ","フセイン"],              emoji:"🔥🧠", name:"焔の魔術師",       desc:"ATK+10%",         atk:10, hp:0  },
+  { weapon:"双式魔術・燈",chars:["フセイン"],                          emoji:"🏮🧠", name:"燈の癒し",         desc:"HP+10%",          atk:0,  hp:10 },
+  { weapon:"草睲術【詮覆】",chars:["ミニモータ"],                      emoji:"🌿🕹", name:"詮覆の機械",       desc:"ATK+8% HP+2%",   atk:8,  hp:2 },
+  { weapon:"in my life【運命の紐】", chars:["八並解徒"],               emoji:"⚡🎮", name:"運命の繋がり",     desc:"ATK+2% HP+8%",   atk:2, hp:8  },
+  { weapon:"紅雷双鎌",    chars:["返網転"],                            emoji:"⚡🔄", name:"紅雷の舞",         desc:"ATK+15%",         atk:15, hp:0  },
+  { weapon:"ジャック・ナイフ", chars:["弐呪刻"],                       emoji:"🔪🃏", name:"呪われた刃",       desc:"ATK+18%",         atk:12, hp:0  },
+  { weapon:"前人未踏の共闘", chars:["室井元武","阿波牛星夜"],           emoji:"🛡🔥", name:"未踏の共闘者",     desc:"ATK+8% HP+10%",   atk:8,  hp:12 },
+  { weapon:"楽園の主従",  chars:["黒瀬武人","リボルト"],               emoji:"🌑🌿", name:"楽園の絆",         desc:"ATK+9% HP+9%",  atk:10, hp:10 },
+  { weapon:"神に届く力",  chars:["FqEa","弐呪刻"],                     emoji:"✨⚡", name:"神域への道",       desc:"ATK+12% HP+6%",         atk:12, hp:6  },
+  { weapon:"英雄の記録",  chars:["甲斐翔也","赤羽悠真"],                     emoji:"🦅💙", name:"双雄",       desc:"ATK+10% HP+8%",         atk:10, hp:8  },
+];
+
+function getActiveWeaponSynergies(team){
+  if(!team || team.length === 0) return [];
+  let result = [];
+  WEAPON_SYNERGY_DEFS.forEach(ws => {
+    // チーム内でこの武器を装備しているキャラを検索
+    let equipped = team.find(c => {
+      let bi = box.findIndex(b => b.name === c.name);
+      if(bi < 0) return false;
+      return box[bi] && box[bi].weapon && box[bi].weapon.name === ws.weapon;
+    });
+    if(!equipped) return;
+    // 装備者のベース名がシナジー対象かチェック
+    let baseName = getBaseName(equipped.name);
+    if(ws.chars.includes(baseName)){
+      result.push({ ...ws, equippedBy: equipped.name });
+    }
+  });
+  return result;
+}
+
+function getWeaponSynergyBuff(team){
+  let atk = 0, hp = 0;
+  getActiveWeaponSynergies(team).forEach(ws => { atk += ws.atk; hp += ws.hp; });
+  return { atk, hp };
+}
+
+function renderWeaponSynergyPanel(team){
+  let panel = document.getElementById("weaponSynergyPanel");
+  if(!panel) return;
+  let active = getActiveWeaponSynergies(team);
+  if(active.length === 0){
+    panel.innerHTML = `<div style="font-size:11px;color:#445;text-align:center;padding:3px 0;">武器シナジーなし</div>`;
+    return;
+  }
+  panel.innerHTML = `<div style="font-size:11px;font-weight:bold;color:#ffcc77;margin-bottom:4px;letter-spacing:1px;">⚔ 武器シナジー</div>` +
+  active.map(ws => `
+    <div style="display:flex;align-items:center;gap:8px;background:rgba(180,120,40,0.1);border:1px solid rgba(220,160,50,0.28);border-radius:10px;padding:6px 10px;margin-bottom:5px;">
+      <span style="font-size:16px;">${ws.emoji}</span>
+      <div style="flex:1;">
+        <div style="font-size:12px;font-weight:bold;color:#ffcc77;">${ws.name}</div>
+        <div style="font-size:10px;color:#998855;">${ws.weapon} ▶ ${ws.equippedBy}</div>
+      </div>
+      <div style="font-size:11px;font-weight:bold;color:#ffddaa;white-space:nowrap;">${ws.desc}</div>
+    </div>
+  `).join("");
+}
+
 function getTeamBaseNames(team){
   return new Set(team.map(c => getBaseName(c.name)));
 }
@@ -565,6 +636,12 @@ function showBattleSynergyNotice(team){
   active.forEach((s, i) => {
     setTimeout(()=>showSynergyText(`${s.emoji} シナジー発動！【${s.name}】${s.desc}`), 400 + i * 700);
   });
+  // 武器シナジーも通知
+  let wactive = getActiveWeaponSynergies(team);
+  let offset = active.length;
+  wactive.forEach((ws, i) => {
+    setTimeout(()=>showSynergyText(`${ws.emoji} 武器シナジー！【${ws.name}】${ws.desc}`), 400 + (offset + i) * 700);
+  });
 }
 function getTeamBuff(team){
 let atkBuff = 0;
@@ -585,6 +662,10 @@ team.forEach(c=>{
 let synBuff = getSynergyBuff(team);
 atkBuff += synBuff.atk / 100;
 hpBuff  += synBuff.hp  / 100;
+// 武器×キャラ シナジーバフ
+let wsynBuff = getWeaponSynergyBuff(team);
+atkBuff += wsynBuff.atk / 100;
+hpBuff  += wsynBuff.hp  / 100;
 return {
     atk: Math.floor(atkBuff * 100),
     hp: Math.floor(hpBuff * 100)
@@ -888,6 +969,8 @@ function renderShopInventory(){
 
 <div id="teamSynergyPanel" style="margin:10px 6px;"></div>
 
+<div id="weaponSynergyPanel" style="margin:4px 6px 10px;"></div>
+
 <div id="teamTotal"></div>
 
 <div id="team"></div>
@@ -916,13 +999,14 @@ function renderShopInventory(){
       </div>
 
       
-      <div id="synergyFilterTabs" style="display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;">
-        <button class="synTabBtn synTabActive" onclick="setSynergyFilter('all',this)" style="flex-shrink:0;background:rgba(255,215,0,0.18);border:1px solid rgba(255,215,0,0.5);color:#ffd700;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:bold;cursor:pointer;white-space:nowrap;">すべて</button>
-        <button class="synTabBtn" onclick="setSynergyFilter('2',this)" style="flex-shrink:0;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#aaa;border-radius:20px;padding:4px 12px;font-size:11px;cursor:pointer;white-space:nowrap;">2名シナジー</button>
-        <button class="synTabBtn" onclick="setSynergyFilter('3',this)" style="flex-shrink:0;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#aaa;border-radius:20px;padding:4px 12px;font-size:11px;cursor:pointer;white-space:nowrap;">3名シナジー</button>
-        <button class="synTabBtn" onclick="setSynergyFilter('active',this)" style="flex-shrink:0;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#aaa;border-radius:20px;padding:4px 12px;font-size:11px;cursor:pointer;white-space:nowrap;">✅ 発動中</button>
-        <button class="synTabBtn" onclick="setSynergyFilter('atk',this)" style="flex-shrink:0;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#aaa;border-radius:20px;padding:4px 12px;font-size:11px;cursor:pointer;white-space:nowrap;">⚔ ATK系</button>
-        <button class="synTabBtn" onclick="setSynergyFilter('hp',this)" style="flex-shrink:0;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#aaa;border-radius:20px;padding:4px 12px;font-size:11px;cursor:pointer;white-space:nowrap;">💚 HP系</button>
+      <div id="synergyFilterTabs" style="display:flex;flex-wrap:wrap;gap:5px;padding-bottom:4px;">
+        <button class="synTabBtn synTabActive" onclick="setSynergyFilter('all',this)" style="background:rgba(255,215,0,0.18);border:1px solid rgba(255,215,0,0.5);color:#ffd700;border-radius:20px;padding:4px 11px;font-size:11px;font-weight:bold;cursor:pointer;white-space:nowrap;">すべて</button>
+        <button class="synTabBtn" onclick="setSynergyFilter('2',this)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#aaa;border-radius:20px;padding:4px 11px;font-size:11px;cursor:pointer;white-space:nowrap;">2名</button>
+        <button class="synTabBtn" onclick="setSynergyFilter('3',this)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#aaa;border-radius:20px;padding:4px 11px;font-size:11px;cursor:pointer;white-space:nowrap;">3名</button>
+        <button class="synTabBtn" onclick="setSynergyFilter('active',this)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#aaa;border-radius:20px;padding:4px 11px;font-size:11px;cursor:pointer;white-space:nowrap;">✅ 発動中</button>
+        <button class="synTabBtn" onclick="setSynergyFilter('atk',this)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#aaa;border-radius:20px;padding:4px 11px;font-size:11px;cursor:pointer;white-space:nowrap;">⚔ ATK系</button>
+        <button class="synTabBtn" onclick="setSynergyFilter('hp',this)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#aaa;border-radius:20px;padding:4px 11px;font-size:11px;cursor:pointer;white-space:nowrap;">💚 HP系</button>
+        <button class="synTabBtn" onclick="setSynergyFilter('weapon',this)" style="background:rgba(255,200,80,0.06);border:1px solid rgba(200,150,60,0.3);color:#cc9944;border-radius:20px;padding:4px 11px;font-size:11px;cursor:pointer;white-space:nowrap;">⚔ 武器</button>
       </div>
     </div>
 
@@ -956,13 +1040,20 @@ function filterSynergyList(){
 }
 function renderSynergyListModal(){
   var query = (document.getElementById('synergySearch').value || '').trim().toLowerCase();
-  var activeSet = new Set(getActiveSynergies(team).map(s => s.name));
+  var activeCharSet = new Set(getActiveSynergies(team).map(s => s.name));
+  var activeWeaponSet = new Set(getActiveWeaponSynergies(team).map(ws => ws.name));
   var ownedBaseNames = new Set((typeof box !== 'undefined' ? box : []).map(function(b){ return getBaseName(b.name); }));
-  var list = SYNERGY_DEFS.filter(function(s){
+  // 所持武器名セット（weapon-synergy用）
+  var ownedWeaponNames = new Set((typeof weaponBox !== 'undefined' ? weaponBox : []).map(function(w){ return w.name; }));
+
+  // --- キャラシナジーフィルタ ---
+  var isWeaponOnly = (_synFilter === 'weapon');
+  var charList = isWeaponOnly ? [] : SYNERGY_DEFS.filter(function(s){
+    // 所持チェック：メンバー全員を持っているか
     if(!s.members.every(function(m){ return ownedBaseNames.has(m); })) return false;
     if(_synFilter === '2' && s.members.length !== 2) return false;
     if(_synFilter === '3' && s.members.length !== 3) return false;
-    if(_synFilter === 'active' && !activeSet.has(s.name)) return false;
+    if(_synFilter === 'active' && !activeCharSet.has(s.name)) return false;
     if(_synFilter === 'atk' && s.atk === 0) return false;
     if(_synFilter === 'hp' && s.hp === 0) return false;
     if(query){
@@ -972,43 +1063,129 @@ function renderSynergyListModal(){
     }
     return true;
   });
-  var totalAvail = SYNERGY_DEFS.filter(function(s){
+
+  // --- 武器シナジーフィルタ ---
+  // 「武器シナジー」タブ か「すべて/発動中/atk/hp」タブのときに表示
+  var showWeapon = (_synFilter === 'weapon' || _synFilter === 'all' || _synFilter === 'active' || _synFilter === 'atk' || _synFilter === 'hp');
+  var weaponList = showWeapon ? WEAPON_SYNERGY_DEFS.filter(function(ws){
+    // 武器を所持 かつ 対象キャラを1人以上所持していること
+    if(!ownedWeaponNames.has(ws.weapon)) return false;
+    if(!ws.chars.some(function(c){ return ownedBaseNames.has(c); })) return false;
+    if(_synFilter === 'active' && !activeWeaponSet.has(ws.name)) return false;
+    if(_synFilter === 'atk' && ws.atk === 0) return false;
+    if(_synFilter === 'hp' && ws.hp === 0) return false;
+    if(query){
+      var hit = ws.name.toLowerCase().includes(query)
+        || ws.weapon.toLowerCase().includes(query)
+        || ws.chars.some(function(c){ return c.toLowerCase().includes(query); });
+      if(!hit) return false;
+    }
+    return true;
+  }) : [];
+
+  // バッジ: キャラシナジー数 + 武器シナジー数
+  var totalCharAvail = SYNERGY_DEFS.filter(function(s){
     return s.members.every(function(m){ return ownedBaseNames.has(m); });
   }).length;
-  document.getElementById('synergyCountBadge').textContent = list.length + ' / ' + totalAvail;
-  if(list.length === 0){
+  var totalWeaponAvail = WEAPON_SYNERGY_DEFS.filter(function(ws){
+    return ownedWeaponNames.has(ws.weapon) && ws.chars.some(function(c){ return ownedBaseNames.has(c); });
+  }).length;
+  var totalAvail = totalCharAvail + totalWeaponAvail;
+  var dispCount = charList.length + weaponList.length;
+  document.getElementById('synergyCountBadge').textContent = dispCount + ' / ' + totalAvail;
+
+  if(charList.length === 0 && weaponList.length === 0){
     document.getElementById('synergyListBody').innerHTML =
-      '<div style="text-align:center;color:#445;padding:40px 0;font-size:13px;">該当するシナジーがありません<br><span style="font-size:11px;color:#334;">（キャラを入手するとシナジーが解放されます）</span></div>';
+      '<div style="text-align:center;color:#445;padding:40px 0;font-size:13px;">該当するシナジーがありません<br><span style="font-size:11px;color:#334;">（キャラ・武器を入手するとシナジーが解放されます）</span></div>';
     return;
   }
+
   var html = '';
-  list.forEach(function(s){
-    var isActive = activeSet.has(s.name);
-    var memberHtml = s.members.map(function(m){
-      var owned = (typeof box !== 'undefined') && box.some(function(b){ return getBaseName(b.name) === m; });
-      return '<span style="display:inline-flex;align-items:center;gap:3px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,'+(owned?'0.2':'0.07')+');border-radius:6px;padding:2px 7px;font-size:10px;color:'+(owned?'#ddd':'#556')+';white-space:nowrap;">'
-        + (owned ? '✓ ' : '') + m + '</span>';
-    }).join('<span style="color:#444;font-size:10px;margin:0 1px;">＋</span>');
-    var atkTxt = s.atk > 0 ? '<span style="color:#ff9944;font-weight:bold;">ATK+'+s.atk+'%</span>' : '';
-    var hpTxt  = s.hp  > 0 ? '<span style="color:#44ee88;font-weight:bold;">HP+'+s.hp+'%</span>' : '';
-    var statRow = [atkTxt, hpTxt].filter(Boolean).join('<span style="color:#445;margin:0 4px;">／</span>');
-    html += '<div style="'
-      + 'background:' + (isActive ? 'linear-gradient(135deg,rgba(255,200,30,0.12),rgba(255,130,0,0.08))' :'rgba(255,255,255,0.03)') + ';'
-      + 'border:1px solid ' + (isActive ? 'rgba(255,200,50,0.45)' :'rgba(255,255,255,0.07)') + ';'
-      + 'border-radius:12px;padding:11px 12px;margin-bottom:7px;position:relative;'
-      + '">'
-      + (isActive ? '<span style="position:absolute;top:10px;right:11px;background:rgba(255,200,30,0.2);border:1px solid rgba(255,200,30,0.6);border-radius:20px;padding:2px 8px;font-size:10px;color:#ffd700;font-weight:bold;">✅ 発動中</span>' : '')
-      + '<div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;">'
-        + '<span style="font-size:20px;flex-shrink:0;">' + s.emoji + '</span>'
-        + '<span style="font-size:13px;font-weight:bold;color:' + (isActive ? '#ffd700' :'#ccc') + ';flex:1;">' + s.name + '</span>'
-        + '<span style="font-size:10px;color:#666;background:rgba(255,255,255,0.05);border-radius:10px;padding:1px 7px;">' + s.members.length + '名</span>'
-      + '</div>'
-      + '<div style="display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-bottom:7px;">' + memberHtml + '</div>'
-      + '<div style="font-size:12px;">' + statRow + '</div>'
-    + '</div>';
-  });
+
+  // --- キャラシナジーセクション ---
+  if(charList.length > 0){
+    if(!isWeaponOnly && weaponList.length > 0){
+      html += '<div style="font-size:11px;font-weight:bold;color:#ffd700;letter-spacing:1px;margin:6px 0 8px;padding-left:2px;">👥 キャラシナジー</div>';
+    }
+    charList.forEach(function(s){
+      var isActive = activeCharSet.has(s.name);
+      var memberHtml = s.members.map(function(m){
+        var owned = (typeof box !== 'undefined') && box.some(function(b){ return getBaseName(b.name) === m; });
+        return '<span style="display:inline-flex;align-items:center;gap:3px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,'+(owned?'0.2':'0.07')+');border-radius:6px;padding:2px 7px;font-size:10px;color:'+(owned?'#ddd':'#556')+';white-space:nowrap;">'
+          + (owned ? '✓ ' : '') + m + '</span>';
+      }).join('<span style="color:#444;font-size:10px;margin:0 1px;">＋</span>');
+      var atkTxt = s.atk > 0 ? '<span style="color:#ff9944;font-weight:bold;">ATK+'+s.atk+'%</span>' : '';
+      var hpTxt  = s.hp  > 0 ? '<span style="color:#44ee88;font-weight:bold;">HP+'+s.hp+'%</span>' : '';
+      var statRow = [atkTxt, hpTxt].filter(Boolean).join('<span style="color:#445;margin:0 4px;">／</span>');
+      html += '<div style="'
+        + 'background:' + (isActive ? 'linear-gradient(135deg,rgba(255,200,30,0.12),rgba(255,130,0,0.08))' :'rgba(255,255,255,0.03)') + ';'
+        + 'border:1px solid ' + (isActive ? 'rgba(255,200,50,0.45)' :'rgba(255,255,255,0.07)') + ';'
+        + 'border-radius:12px;padding:11px 12px;margin-bottom:7px;position:relative;'
+        + '">'
+        + (isActive ? '<span style="position:absolute;top:10px;right:11px;background:rgba(255,200,30,0.2);border:1px solid rgba(255,200,30,0.6);border-radius:20px;padding:2px 8px;font-size:10px;color:#ffd700;font-weight:bold;">✅ 発動中</span>' : '')
+        + '<div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;">'
+          + '<span style="font-size:20px;flex-shrink:0;">' + s.emoji + '</span>'
+          + '<span style="font-size:13px;font-weight:bold;color:' + (isActive ? '#ffd700' :'#ccc') + ';flex:1;">' + s.name + '</span>'
+          + '<span style="font-size:10px;color:#666;background:rgba(255,255,255,0.05);border-radius:10px;padding:1px 7px;">' + s.members.length + '名</span>'
+        + '</div>'
+        + '<div style="display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-bottom:7px;">' + memberHtml + '</div>'
+        + '<div style="font-size:12px;">' + statRow + '</div>'
+      + '</div>';
+    });
+  }
+
+  // --- 武器シナジーセクション ---
+  if(weaponList.length > 0){
+    if(charList.length > 0){
+      html += '<div style="height:1px;background:rgba(200,150,60,0.18);margin:10px 0 12px;"></div>';
+    }
+    html += '<div style="font-size:11px;font-weight:bold;color:#ffcc77;letter-spacing:1px;margin:0 0 8px;padding-left:2px;">⚔ 武器シナジー</div>';
+    weaponList.forEach(function(ws){
+      var isActive = activeWeaponSet.has(ws.name);
+      // 対象キャラのバッジ表示
+      var charHtml = ws.chars.map(function(c){
+        var owned = ownedBaseNames.has(c);
+        // チームで装備中か確認
+        var equippedInTeam = false;
+        if(typeof team !== 'undefined' && typeof box !== 'undefined'){
+          equippedInTeam = team.some(function(tc){
+            var bi = box.findIndex(function(b){ return b.name === tc.name; });
+            return bi >= 0 && box[bi].weapon && box[bi].weapon.name === ws.weapon && getBaseName(tc.name) === c;
+          });
+        }
+        return '<span style="display:inline-flex;align-items:center;gap:3px;background:rgba(255,200,80,0.07);border:1px solid rgba(200,150,60,'+(owned?'0.35':'0.12')+');border-radius:6px;padding:2px 7px;font-size:10px;color:'+(equippedInTeam?'#ffcc44':owned?'#ccaa66':'#554433')+';white-space:nowrap;">'
+          + (equippedInTeam ? '⚔ ' : owned ? '✓ ' : '') + c + '</span>';
+      }).join('<span style="color:#554;font-size:10px;margin:0 1px;">or</span>');
+      // 武器所持バッジ
+      var weaponOwned = ownedWeaponNames.has(ws.weapon);
+      var atkTxt2 = ws.atk > 0 ? '<span style="color:#ff9944;font-weight:bold;">ATK+'+ws.atk+'%</span>' : '';
+      var hpTxt2  = ws.hp  > 0 ? '<span style="color:#44ee88;font-weight:bold;">HP+'+ws.hp+'%</span>' : '';
+      var statRow2 = [atkTxt2, hpTxt2].filter(Boolean).join('<span style="color:#445;margin:0 4px;">／</span>');
+      html += '<div style="'
+        + 'background:' + (isActive ? 'linear-gradient(135deg,rgba(220,160,30,0.13),rgba(180,100,0,0.09))' :'rgba(200,150,60,0.04)') + ';'
+        + 'border:1px solid ' + (isActive ? 'rgba(220,160,50,0.55)' :'rgba(200,150,60,0.15)') + ';'
+        + 'border-radius:12px;padding:11px 12px;margin-bottom:7px;position:relative;'
+        + '">'
+        + (isActive ? '<span style="position:absolute;top:10px;right:11px;background:rgba(220,160,30,0.2);border:1px solid rgba(220,160,30,0.6);border-radius:20px;padding:2px 8px;font-size:10px;color:#ffcc44;font-weight:bold;">✅ 発動中</span>' : '')
+        + '<div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;">'
+          + '<span style="font-size:20px;flex-shrink:0;">' + ws.emoji + '</span>'
+          + '<span style="font-size:13px;font-weight:bold;color:' + (isActive ? '#ffcc44' :'#bb9955') + ';flex:1;">' + ws.name + '</span>'
+          + '<span style="font-size:10px;color:#776633;background:rgba(200,150,60,0.1);border:1px solid rgba(200,150,60,0.2);border-radius:10px;padding:1px 7px;">武器</span>'
+        + '</div>'
+        + '<div style="display:flex;align-items:center;gap:5px;margin-bottom:6px;flex-wrap:wrap;">'
+          + '<span style="display:inline-flex;align-items:center;gap:3px;background:rgba(180,130,40,0.12);border:1px solid rgba(200,160,60,'+(weaponOwned?'0.45':'0.15')+');border-radius:6px;padding:2px 8px;font-size:10px;color:'+(weaponOwned?'#ffcc66':'#665533')+';white-space:nowrap;">'
+            + (weaponOwned ? '🗡 ' : '🗡 ') + ws.weapon + '</span>'
+          + '<span style="color:#554;font-size:10px;margin:0 1px;">✕</span>'
+          + charHtml
+        + '</div>'
+        + '<div style="font-size:12px;">' + statRow2 + '</div>'
+      + '</div>';
+    });
+  }
+
   document.getElementById('synergyListBody').innerHTML = html;
 }</script>
+
 
 <div id="trial" class="screen">
 <h2>試練</h2>
@@ -1505,14 +1682,26 @@ passive:{type:"berserk_jokaku", text:"⚡暴走解錠：戦線離脱時、解錠
 skill:{type:"saikouchiB", power:0.3, text:"再構築：味方全体HP30%回復＋「再構築」付与(3T・HP0でHP1耐える)", cool:4},noTrial:true,
 passive:{type:"fated_backup",value:0.15,text:"🌿運命のバックアップ：戦闘開始時、味方全体のHP上限+15%"}},
 {name:"鈴鹿(β)",rarity:4,attr:"火",img:"https://imgur.com/YaJTUuQ.png",role:"support",
-skill:{type:"happyAura", turn:5, text:"幸せの作り方：味方全体に幸福状態付与(5T)幸福状態：味方全体に、与ダメージ+20%＆被ダメージ-5%＆毎タンHP5%回復", cool:4},noTrial:true,
+skill:{type:"happyAura", turn:5, text:"幸せの作り方：味方全体に幸福状態付与(5T)幸福状態：味方全体に、与ダメージ+20%＆被ダメージ-5%＆毎ターンHP5%回復", cool:4},noTrial:true,
 passive:{type:"happy_on_damaged",text:"💛幸福の守護：被ダメ時、味方全体に幸福カウント+1"}},
 {name:"沢華(β)",rarity:4,attr:"闇",img:"https://imgur.com/3p48Flw.png",role:"debuffer",
 skill:{type:"taketogeGrant", stacks:2, healRate:0.12, text:"竹取の翁：相手に竹棘スタック+2付与(3T)・自身HP12%回復", cool:4},noTrial:true,
 passive:{type:"taketogeGarden", stackValue:0.05, text:"🎋竹棘の庭園：ターン開始時相手に竹棘スタック+1付与(3T)。竹棘1つにつき敵ATK5%減少"}},
 {name:"阿波牛壬陸(β)",rarity:4,attr:"水",img:"https://imgur.com/aIlGQae.png",role:"attacker",
-skill:{type:"hp_ratio_atk_buff", text:"奢れるものも久からず：敵最大HPと自分の最大HPの割合分ATK上昇/低下(上限ありあり)(3T)", cool:3},noTrial:true,
+skill:{type:"hp_ratio_atk_buff", text:"奢れるものも久からず：敵最大HPと自分の最大HPの割合分ATK上昇/低下(上限あり)(3T)", cool:3},noTrial:true,
 passive:{type:"on_retire_buff_allies",atkBonus:0.35,healRate:0.20,text:"🌊盛者必衰：戦線離脱時、他キャラATK+35%(永続)＆HP20%回復"}},
+{name:"赤羽悠真(β)",rarity:4,attr:"火",img:"https://imgur.com/8LcmVK5.png",role:"support",
+skill:{type:"beta_akahane_lucky", text:"🍀幸運：味方全体に幸運状態付与(5T)　幸運状態：味方全体に、与ダメ+25%＆毎ターンHP8%回復", cool:4},noTrial:true,
+passive:{type:"beta_akahane_retire",atkBonus:0.60,healRate:0.20,text:"🌟好運：このキャラの戦線離脱時、他のキャラのHP20%回復＆ATK+60%(永続)"}},
+{name:"晴海亨(β)",rarity:4,attr:"木",img:"https://imgur.com/f8xZj2h.png",role:"debuffer",
+skill:{type:"beta_harumi_sight", text:"👁サイトシェア：味方・敵のいずれかに視覚共有カウント付与(最大3個)。視覚共有カウント(味方に付与時ATK+50%。相手の場合ATK-20%)", cool:3},noTrial:true,
+passive:{type:"tank_passive",value:0.15,text:"🛡無死角：常時被ダメを15%軽減"}},
+{name:"桜木彰(β)",rarity:4,attr:"水",img:"https://imgur.com/DkinHn9.png",role:"attacker",
+skill:{type:"beta_sakuragi_offset", text:"⚔オフセット：被ダメ時相手に同じダメージで反撃(3T)", cool:3},noTrial:true,
+passive:{type:"beta_sakuragi_passive",text:"🛡力の真価：HP50%以下の時オフセット(防御)付与。被ダメ40%軽減"}},
+{name:"八並解徒(β)",rarity:4,attr:"雷",img:"https://imgur.com/bLhyJR2.png",role:"attacker",
+skill:{type:"beta_yatsunami_stack", text:"💀一触即没：攻撃する度相手に一触即没カウント付与。1つにつき被ダメ20%上昇(最大10)", cool:3},noTrial:true,
+passive:{type:"beta_yatsunami_passive",text:"🔗運命の紐：攻撃時・被ダメ時に紐カウント+1。カウント1につき被ダメ3%軽減(最大10個)"}},
 {name:"ゲガント",rarity:1,attr:"木",img:"https://imgur.com/dXFpBIJ.png",role:"attacker",
 skill:{text:"スキルなし"},
 passive:{type:"poison_on_attack",chance:0.15,power:0.1,text:"🌿草毒：攻撃時15%で毒付与(10%)"}},
@@ -1930,6 +2119,16 @@ rarity:3,
 effect:"poison",
 skill:{type:"shock", power:0.5, text:"感電付与(次撃+50%)",cool:3},
 passive:{type:"weapon_regen3t",value:0.1,text:"✨神の息吹：装備中3Tの間、毎ターン味方全体HP10%回復"}
+},
+{
+name:"英雄の記録",
+img:"https://imgur.com/cOwLg0l.png",
+atk:45,
+hp:105,
+rarity:3,
+effect:"poison",
+skill:{type:"damage", power:3.0, text:"英雄の一撃: 300%ダメージ",weaponCool:4},
+passive:{type:"atk_up_on_attack",value:0.05,text:"📜英雄の軌跡：攻撃時ATK+5%(最大+25%)"}
 }
 ];
 const rewardChar = [
@@ -2395,6 +2594,14 @@ const charDetails = {
     story:"　",},
   "阿波牛壬陸(β)": {title:"秘密のショッピング",
     story:"　",},
+  "赤羽悠真(β)": {title:"嵐の中の戦士",
+    story:"　",},
+  "晴海亨(β)": {title:"魔の渦中",
+    story:"　",},
+  "桜木彰(β)": {title:"風に舞う英雄",
+    story:"　",},
+  "八並解徒(β)": {title:"風と地平の間",
+    story:"　",},
   "ゲガント": {title:"再生",
     story:"元武達によって倒された最初の敵。固有能罪符は「再生」",},
   "ホーレン": {title:"空気殺し",
@@ -2792,6 +2999,7 @@ if(t)t.innerHTML=team.map((c,i)=>`
 <img src="${c.img}">
 </div>`).join("");
 renderSynergyPanel(team);
+renderWeaponSynergyPanel(team);
 let buffDiv = document.getElementById("teamBuff");
 if(buffDiv){
 let buff = getTeamBuff(team);
@@ -2838,6 +3046,18 @@ let baseName = getBaseName(box[i].name);
 if(team.find(t=>getBaseName(t.name)===baseName)){
   showToast("⚠️ 同じキャラを複数編成することはできません");
   return;
+}
+// 同じ武器を装備したキャラが既にパーティーにいる場合はブロック
+let addingWeapon = box[i].weapon;
+if(addingWeapon){
+  let conflict = team.find(t => {
+    let bi = box.findIndex(b => b.name === t.name);
+    return bi >= 0 && box[bi].weapon && box[bi].weapon.name === addingWeapon.name;
+  });
+  if(conflict){
+    showToast("⚠️ 「" + addingWeapon.name + "」はすでに " + conflict.name + " が装備しています！");
+    return;
+  }
 }
 if(team.length<3)team.push(box[i]);
 update();
@@ -2888,6 +3108,11 @@ return {
     passiveAtkBonus: 0,
     kokuShoku: 0,
     weaponPassive: c.weapon?.passive || null,
+    betaLuckyTurn: 0,
+    betaLuckyDmgBuff: false,
+    betaSightCount: 0,
+    betaHimoCount: 0,
+    betaSakuragiDefActive: false,
   };
   }));
   enemy={
@@ -2909,7 +3134,9 @@ return {
       erosions:[],
       taketogeStacks:[],
       gimmick: null,
-      turnCount: 0
+      turnCount: 0,
+      betaIssokuCount: 0,
+      betaSightDebuff: 0
   };
 turn="player";turnIndex=0;
 deadPlayers=[];
@@ -3082,12 +3309,28 @@ function getPlayerStatusHTML(p){
   if(p.sakuraDrainTurn > 0){
     h += `<span class="sBadge" style="background:#6600cc;color:#fff;">⚡回収${p.sakuraDrainTurn}T</span>`;
   }
+  if(p.burns && p.burns.length > 0){
+    let maxT = Math.max(...p.burns.map(b=>b.turn||0));
+    h+=`<span class="sBadge sBurn">🔥燃焼×${p.burns.length}(${maxT}T)</span>`;
+  } else if(p.burnTurn > 0){
+    h+=`<span class="sBadge sBurn">🔥燃焼(${p.burnTurn}T)</span>`;
+  }
+  if(p.poisons && p.poisons.length > 0){
+    let maxT = Math.max(...p.poisons.map(po=>po.turn||0));
+    h+=`<span class="sBadge sPoison">☠毒×${p.poisons.length}(${maxT}T)</span>`;
+  }
+  if(p.shockTurn > 0){
+    h+=`<span class="sBadge sShock">⚡感電(${p.shockTurn}T)</span>`;
+  }
+  if(p.freezeTurn && p.freezeTurn > 0){
+    h+=`<span class="sBadge sFreeze">❄凍結(${p.freezeTurn}T)</span>`;
+  }
   if(p.statuses){
     p.statuses.forEach(s=>{
-      if(s.type==="burn") h+=`<span class="sBadge sBurn">🔥燃${s.turn}</span>`;
-      else if(s.type==="freeze") h+=`<span class="sBadge sFreeze">❄凍${s.turn}</span>`;
-      else if(s.type==="shock") h+=`<span class="sBadge sShock">⚡感${s.turn}</span>`;
-      else if(s.type==="poison") h+=`<span class="sBadge sPoison">☠毒${s.turn}</span>`;
+      if(s.type==="burn" && !(p.burns && p.burns.length > 0)) h+=`<span class="sBadge sBurn">🔥燃${s.turn}</span>`;
+      else if(s.type==="freeze" && !(p.freezeTurn > 0)) h+=`<span class="sBadge sFreeze">❄凍${s.turn}</span>`;
+      else if(s.type==="shock" && !(p.shockTurn > 0)) h+=`<span class="sBadge sShock">⚡感${s.turn}</span>`;
+      else if(s.type==="poison" && !(p.poisons && p.poisons.length > 0)) h+=`<span class="sBadge sPoison">☠毒${s.turn}</span>`;
     });
   }
   if(p.shields && p.shields.length>0){
@@ -3123,6 +3366,24 @@ function getPlayerStatusHTML(p){
     h+=`<span class="sBadge" style="background:#ffdd00;color:#333;border:1px solid #ffaa00;">💛幸福×${count}(与+${atkBonus}%被-${defBonus}%回復${count*5}%/${maxTurn}T)</span>`;
   }
   if(p.isBunshin) h+=`<span class="sBadge" style="background:#00ccff;color:#000;">👥分身(${p.bunshinTurn}T)</span>`;
+  // β版 赤羽悠真：幸運状態バッジ
+  if(p.betaLuckyTurn && p.betaLuckyTurn > 0){
+    h+=`<span class="sBadge" style="background:#ffe000;color:#333;border:1px solid #ffaa00;">🍀幸運(与+25%/HP+8%/ターン×${p.betaLuckyTurn}T)</span>`;
+  }
+  // β版 晴海亨：視覚共有バッジ（味方）
+  if(p.betaSightCount && p.betaSightCount > 0){
+    let totalSight = players.reduce((s,pl)=>(s+(pl.betaSightCount||0)),0);
+    h+=`<span class="sBadge" style="background:#00aa66;color:#fff;border:1px solid #00ff88;">👁視覚共有×${p.betaSightCount}(ATK+${p.betaSightCount*50}%) 合計${totalSight}/3</span>`;
+  }
+  // β版 八並解徒：運命の紐バッジ
+  if(p.betaHimoCount && p.betaHimoCount > 0){
+    let bhr = Math.min(30, p.betaHimoCount * 3);
+    h+=`<span class="sBadge" style="background:#002266;color:#88aaff;border:1px solid #3366cc;">🔗運命の紐×${p.betaHimoCount}(被-${bhr}%)</span>`;
+  }
+  // β版 桜木彰：力の真価発動バッジ
+  if(p.betaSakuragiDefActive){
+    h+=`<span class="sBadge" style="background:#004422;color:#88ffcc;border:1px solid #00aa55;">🛡力の真価(被ダメ-40%+オフセット)</span>`;
+  }
   if(p.passive){
     let shortText = p.passive.text ? p.passive.text.split("：")[0] : "パッシブ";
     h+=`<span class="sBadge sPassive">✦${shortText}</span>`;
@@ -3189,6 +3450,14 @@ function getEnemyStatusHTML(){
   if(enemy.shield>0) h+=`<span class="sBadge sShield">🛡${Math.floor(enemy.shield)}</span>`;
   if(enemy.soundCrushAmp) h+=`<span class="sBadge" style="background:#ffcc00;color:#000;">⚡次の被ダメ×2</span>`;
   if(enemy.frozenPrison) h+=`<span class="sBadge" style="background:#001a3a;color:#66ccff;border:1px solid #0088cc;">❄凍裂(${enemy.frozenPrisonTurn||0}T・解除不能)</span>`;
+  // β版 晴海亨：視覚共有デバフバッジ（敵）
+  if(enemy.betaSightDebuff && enemy.betaSightDebuff > 0){
+    h+=`<span class="sBadge" style="background:#003311;color:#66ff88;border:1px solid #00aa44;">👁視覚共有×${enemy.betaSightDebuff}(ATK-${enemy.betaSightDebuff*20}%)</span>`;
+  }
+  // β版 八並解徒：一触即没カウントバッジ
+  if(enemy.betaIssokuCount && enemy.betaIssokuCount > 0){
+    h+=`<span class="sBadge" style="background:#220000;color:#ff6666;border:1px solid #aa0000;">💀一触即没×${enemy.betaIssokuCount}(被ダメ+${enemy.betaIssokuCount*20}%)</span>`;
+  }
   return h;
 }
 function getGimmickHTML(){
@@ -3238,6 +3507,7 @@ function renderBattle(){
   + (deadPlayers.length > 0 ? deadPlayers.map(p=>`
   <div class="unit ally" style="opacity:0.4;filter:grayscale(1);border:2px dashed #ff4444;">
     <img src="${p.img}">
+    <span class="roleBadge ${getRoleClass(p.role)}">${getRoleLabel(p.role)}</span>
     ${p.name}
     <div style="color:#ff4444;font-weight:bold;">💀 戦闘不能</div>
   </div>`).join("") : "");
@@ -3271,6 +3541,20 @@ if(enemy && enemy.hp <= 0) return;
 isAttackProcessing = true;
 let p=players[turnIndex];
 currentAttacker = p.name;
+if(p.freezeTurn && p.freezeTurn > 0){
+  p.freezeTurn--;
+  showSynergyText(`❄️ ${p.name}は凍結中！ターンスキップ(残${p.freezeTurn}T)`);
+  isAttackProcessing = false;
+  turnIndex++;
+  if(turnIndex >= players.length){
+    turnIndex = 0;
+    turn = "enemy";
+    setTimeout(enemyTurn, 700);
+  } else {
+    renderBattle();
+  }
+  return;
+}
 let atk = p.atk;
 if(p.buffs){
     p.buffs.forEach(b=>{
@@ -3296,6 +3580,11 @@ if(enemy.allDebuffMark){
 }
 let _kokuAtk = p.kokuShoku || 0;
 if(_kokuAtk > 0) res.dmg = Math.floor(res.dmg * (1 + 0.12 * _kokuAtk));
+// β版 八並解徒スキル：一触即没カウントによる敵被ダメ増加
+if(enemy.betaIssokuCount && enemy.betaIssokuCount > 0){
+    let issokuBoost = 1 + enemy.betaIssokuCount * 0.20;
+    res.dmg = Math.floor(res.dmg * issokuBoost);
+}
 res = applyErosionBoost(res);
 if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly){
   if(enemy.shield>0){
@@ -3324,6 +3613,12 @@ if(_tcHolder){
     _tcHolder.timeCrash.stored = (_tcHolder.timeCrash.stored || 0) + res.dmg;
 }
 triggerAttackPassive(p);
+// β版 八並解徒スキルキャラが攻撃するたびに一触即没カウント+1
+if(p.skill && p.skill.type === "beta_yatsunami_stack"){
+    if(!enemy.betaIssokuCount) enemy.betaIssokuCount = 0;
+    enemy.betaIssokuCount = Math.min(10, enemy.betaIssokuCount + 1);
+    showSynergyText("💀 "+p.name+"の攻撃！一触即没カウント→"+enemy.betaIssokuCount+"！（被ダメ+"+(enemy.betaIssokuCount*20)+"%）");
+}
 if(p.sakuraDrainTurn && p.sakuraDrainTurn > 0 && res.dmg > 0){
   let drainHeal = Math.floor(res.dmg * 0.10);
   p.currentHp = Math.min(p.hp, p.currentHp + drainHeal);
@@ -3634,6 +3929,18 @@ if(target.skill && target.skill.type==="tenGeki"){
 }
 renderBattle();
 setTimeout(()=>{ showDamage("p" + index, res); }, 50);
+// β版 桜木彰スキル：オフセット反撃 - 被ダメ時に同ダメ反撃
+if(target.currentHp > 0 && target.counters && target.counters.some(c=>c.isOffset && c.turn > 0)){
+    let reflectDmg = res.dmg;
+    if(reflectDmg > 0){
+        enemy.hp -= reflectDmg;
+        setTimeout(()=>{
+            showDamage("enemy",{dmg:reflectDmg, type:"weak"});
+            showSynergyText("⚔ "+target.name+"のオフセット！被ダメ"+reflectDmg+"で反撃！");
+        }, 200);
+        // オフセットのターン消費はcounters処理に任せる
+    }
+}
 if(enemy.gimmick?.counter){
   let cDmg = atk * 0.3;
   enemy.hp -= cDmg;
@@ -3686,6 +3993,41 @@ setTimeout(()=>{
           ally.currentHp = Math.min(ally.hp, ally.currentHp + healAmt);
         });
         setTimeout(()=>showSynergyText("🌊 "+dead.name+"の盛者必衰発動！仲間のATK+35%(永続)＆HP20%回復！"), 300);
+      }
+      if(dead.passive && dead.passive.type === "beta_akahane_retire"){
+        let ps = dead.passive;
+        let atkBonus = ps.atkBonus || 0.60;
+        let healRate = ps.healRate || 0.20;
+        players.filter(p => p.currentHp > 0).forEach(ally => {
+          if(!ally.buffs) ally.buffs = [];
+          let existing = ally.buffs.find(b=>b.isBetaAkahaneRetire);
+          if(existing){ existing.power = existing.power * (1 + atkBonus); }
+          else { ally.buffs.push({power: 1 + atkBonus, turn: 999999, permanent: true, isBetaAkahaneRetire: true}); }
+          let healAmt = Math.floor(ally.hp * healRate);
+          ally.currentHp = Math.min(ally.hp, ally.currentHp + healAmt);
+          let _ai = players.indexOf(ally);
+          if(_ai >= 0) setTimeout(()=>showDamage("p"+_ai, {dmg:healAmt, type:"heal"}), 350 + _ai*80);
+        });
+        setTimeout(()=>showSynergyText("🌟 "+dead.name+"の好運発動！仲間のATK+60%(永続)＆HP20%回復！"), 300);
+      }
+      if(dead.passive && dead.passive.type === "beta_harumi_sight_passive"){
+        let sightCount = dead.betaSightCount || 0;
+        if(sightCount > 0){
+          // 戦線離脱後の残存プレイヤーの合計を計算（deadはまだplayersに残っているので引く）
+          let currentTotal = players.filter(p=>p.currentHp>0&&p!==dead).reduce((s,p)=>(s+(p.betaSightCount||0)),0);
+          let canInherit = Math.min(sightCount, 3 - currentTotal);
+          if(canInherit > 0){
+            players.filter(p => p.currentHp > 0 && p.passive && p.passive.type === "beta_harumi_sight_passive").forEach(harumi => {
+              harumi.betaSightCount = (harumi.betaSightCount || 0) + canInherit;
+              if(!harumi.buffs) harumi.buffs = [];
+              harumi.buffs = harumi.buffs.filter(b=>!b.isBetaHarumiSight);
+              harumi.buffs.push({power: 1 + harumi.betaSightCount * 0.50, turn: 999999, permanent: true, isBetaHarumiSight: true});
+              setTimeout(()=>showSynergyText("♾ "+dead.name+"の無限の視野！視覚共有"+canInherit+"個を"+harumi.name+"に引き継ぎ！ATK+"+(harumi.betaSightCount*50)+"%（合計3/3）！"), 300);
+            });
+          } else {
+            setTimeout(()=>showSynergyText("♾ "+dead.name+"の無限の視野…味方の視覚共有は既に上限(3/3)！"), 300);
+          }
+        }
       }
     });
     players = players.filter(p => p.currentHp > 0);
@@ -3766,6 +4108,20 @@ setTimeout(()=>{
         pl.happyStacks = pl.happyStacks.filter(s=>{ s.turn--; return s.turn > 0; });
         if(pl.happyStacks.length === 0) showSynergyText("💛 "+pl.name+"の幸福状態がすべて切れた…");
       }
+      // β版 赤羽悠真スキル：幸運状態の毎ターンHP8%回復
+      if(pl.betaLuckyTurn && pl.betaLuckyTurn > 0){
+        let luckyHeal = Math.floor(pl.hp * 0.08);
+        pl.currentHp = Math.min(pl.hp, pl.currentHp + luckyHeal);
+        setTimeout(()=>showDamage("p"+pli, {dmg:luckyHeal, type:"heal"}), 150 + pli*80);
+        pl.betaLuckyTurn--;
+        if(pl.betaLuckyTurn <= 0){
+          pl.betaLuckyTurn = 0;
+          pl.betaLuckyDmgBuff = false;
+          if(pl.buffs) pl.buffs = pl.buffs.filter(b=>!b.isBetaLucky);
+          showSynergyText("🍀 "+pl.name+"の幸運状態が切れた…");
+        }
+      }
+      // β版 八並解徒パッシブ：一触即没カウントのターン減少なし（永続）
     });
     turn = "player";
     turnIndex = 0;
@@ -3958,6 +4314,20 @@ function triggerAttackPassive(p){
     p.himoCount = Math.min(15, (p.himoCount||0) + 1);
     showSynergyText("🔗 "+label+"のパッシブ！攻撃→紐カウント→"+p.himoCount+"！被ダメ-"+(Math.min(45,p.himoCount*3))+"%！");
   }
+  // β版 八並解徒パッシブ：運命の紐 - 攻撃時に紐カウント+1(最大10個)
+  if(ps.type === "beta_yatsunami_passive"){
+    p.betaHimoCount = Math.min(10, (p.betaHimoCount||0) + 1);
+    showSynergyText("🔗 "+label+"の運命の紐！攻撃→紐カウント→"+p.betaHimoCount+"！被ダメ-"+(Math.min(30,p.betaHimoCount*3))+"%！");
+  }
+  // β版 八並解徒スキル：一触即没 - 攻撃する度に敵へカウント付与（通常攻撃でも）
+  if(ps.type === "beta_yatsunami_passive" || (p.skill && p.skill.type === "beta_yatsunami_stack")){
+    if(!enemy.betaIssokuCount) enemy.betaIssokuCount = 0;
+    if(p.skill && p.skill.type === "beta_yatsunami_stack"){
+      // スキル発動時はスキル内で処理済みのため通常攻撃時のみここで付与
+    } else {
+      enemy.betaIssokuCount = Math.min(10, enemy.betaIssokuCount + 1);
+    }
+  }
   if(ps.type === "combo_passive"){
     players.forEach(t => {
       if(!t.comboCount) t.comboCount = 0;
@@ -4044,6 +4414,16 @@ function triggerTurnStartPassive(){
       let total = enemy.taketogeStacks.length;
       setTimeout(()=>showSynergyText("🎋 "+p.name+"の庭園！竹棘+1(合計×"+total+"・ATK-"+(total*5)+"%)"), 100);
     }
+    // β版 桜木彰パッシブ：力の真価（HP50%以下でオフセット防御＋被ダメ40%軽減を付与）
+    if(ps.type === "beta_sakuragi_passive"){
+      let hpRatio = (p.hp > 0) ? p.currentHp / p.hp : 0;
+      if(hpRatio <= 0.5 && !p.betaSakuragiDefActive){
+        p.betaSakuragiDefActive = true;
+        if(!p.counters) p.counters = [];
+        p.counters.push({ turn: 999999, power: 1.0, isOffset: true, permanent: true });
+        setTimeout(()=>showSynergyText("🛡 "+p.name+"の力の真価発動！HP50%以下→オフセット防御＆被ダメ40%軽減！"), 100);
+      }
+    }
   });
   players.forEach((p, pi)=>{
     if(p.weaponPassive && p.weaponPassive.type === "weapon_regen3t"){
@@ -4111,6 +4491,23 @@ function triggerDamagedPassive(target){
       p.buffs.push({ power: 1 + rb, turn: 999999, permanent: true, isRengeki: true });
       showSynergyText("⚡ "+p.name+"のパッシブ！被ダメ→連撃カウント→"+p.rengekiCount+"！ATK+"+(Math.floor(rb*100))+"%！");
     }
+    // β版 八並解徒パッシブ：運命の紐 - 被ダメ時に紐カウント+1(最大10個)
+    if(p === target && p.passive.type === "beta_yatsunami_passive"){
+      p.betaHimoCount = Math.min(10, (p.betaHimoCount||0) + 1);
+      showSynergyText("🔗 "+p.name+"の運命の紐！被ダメ→紐カウント→"+p.betaHimoCount+"！被ダメ-"+(Math.min(30,p.betaHimoCount*3))+"%！");
+    }
+    // β版 桜木彰スキル：オフセット - 被ダメ時に同ダメで反撃
+    if(p === target && p.counters && p.counters.some(c=>c.isOffset)){
+      // 反撃はapplyEnemyStatusDamageの中のcounters処理で行われる（power:1.0）
+      // ここではパッシブ版オフセット（力の真価）の発動チェック
+      let hpRatio = (p.hp > 0) ? p.currentHp / p.hp : 0;
+      if(p.passive.type === "beta_sakuragi_passive" && hpRatio <= 0.5 && !p.betaSakuragiDefActive){
+        p.betaSakuragiDefActive = true;
+        if(!p.counters) p.counters = [];
+        p.counters.push({ turn: 999999, power: 1.0, isOffset: true, permanent: true });
+        showSynergyText("🛡 "+p.name+"の力の真価発動！HP50%以下→オフセット防御＆被ダメ40%軽減！");
+      }
+    }
   });
   if(target.jokakuCount && target.jokakuCount > 0){
     let jHeal = Math.floor(target.hp * 0.05 * target.jokakuCount);
@@ -4165,6 +4562,18 @@ function applyPassiveDef(target){
       let tier = Math.min(10, Math.floor((1 - hpRatio) / 0.1) + 1);
       let michiReduction = tier * 0.08;
       reduction *= (1 - michiReduction);
+    }
+    // β版 桜木彰パッシブ：力の真価 - HP50%以下でオフセット防御付与、被ダメ40%軽減
+    if(ps.type === "beta_sakuragi_passive"){
+      let hpRatio = (target.hp > 0) ? target.currentHp / target.hp : 0;
+      if(hpRatio <= 0.5){
+        reduction *= (1 - 0.40);
+      }
+    }
+    // β版 八並解徒パッシブ：運命の紐 - 紐カウント1個につき被ダメ3%軽減(最大10個)
+    if(ps.type === "beta_yatsunami_passive" && target.betaHimoCount > 0){
+      let betaHimoReduction = Math.min(0.30, target.betaHimoCount * 0.03);
+      reduction *= (1 - betaHimoReduction);
     }
   });
   if(target.happyStacks && target.happyStacks.length > 0) reduction *= Math.pow(0.95, target.happyStacks.length);
@@ -4276,6 +4685,78 @@ if(p.berserkCount && p.berserkCount > 0){
         showSynergyText("⚡ "+p.name+"の暴走カウント→"+p.berserkCount+"(0で離脱)");
     }
 }
+// ===== 味方への状態異常DoTダメージ =====
+{
+  let dotDelay = 0;
+  let dotAnyDead = false;
+  players.slice().forEach((target, ti) => {
+    if(target.currentHp <= 0) return;
+    let realIdx = players.indexOf(target);
+    // 燃焼DoT
+    if(target.burns && target.burns.length > 0){
+      target.burns = target.burns.filter(b => {
+        let dmg = Math.floor(b.power * target.hp);
+        if(isNaN(dmg) || dmg <= 0) dmg = Math.floor(target.hp * 0.1);
+        target.currentHp -= dmg;
+        let dIdx = realIdx >= 0 ? realIdx : ti;
+        setTimeout(()=>showDamage("p"+dIdx, {dmg, type:"burn"}), dotDelay);
+        dotDelay += 80;
+        if(target.currentHp <= 0){ target.currentHp = 0; dotAnyDead = true; }
+        b.turn--;
+        return b.turn > 0;
+      });
+    } else if(target.burnTurn > 0){
+      let dmg = Math.floor((target.burnPower||0.1) * target.hp);
+      if(dmg <= 0) dmg = Math.floor(target.hp * 0.1);
+      target.currentHp -= dmg;
+      let dIdx = realIdx >= 0 ? realIdx : ti;
+      setTimeout(()=>showDamage("p"+dIdx, {dmg, type:"burn"}), dotDelay);
+      dotDelay += 80;
+      if(target.currentHp <= 0){ target.currentHp = 0; dotAnyDead = true; }
+      target.burnTurn--;
+    }
+    // 毒DoT
+    if(target.poisons && target.poisons.length > 0){
+      target.poisons = target.poisons.filter(po => {
+        let dmg = Math.floor((po.maxHp || target.hp) * (po.power || 0.12));
+        if(dmg <= 0) dmg = Math.floor(target.hp * 0.12);
+        target.currentHp -= dmg;
+        let dIdx = realIdx >= 0 ? realIdx : ti;
+        setTimeout(()=>showDamage("p"+dIdx, {dmg, type:"poison"}), dotDelay);
+        dotDelay += 80;
+        if(target.currentHp <= 0){ target.currentHp = 0; dotAnyDead = true; }
+        po.turn = (po.turn||3) - 1;
+        return po.turn > 0;
+      });
+    }
+    // 感電DoT（味方感電：ATK分の30%ダメ）
+    if(target.shockTurn > 0){
+      let dmg = Math.floor(target.hp * 0.05);
+      if(dmg <= 0) dmg = 1;
+      target.currentHp -= dmg;
+      let dIdx = realIdx >= 0 ? realIdx : ti;
+      setTimeout(()=>showDamage("p"+dIdx, {dmg, type:"poison"}), dotDelay);
+      dotDelay += 80;
+      if(target.currentHp <= 0){ target.currentHp = 0; dotAnyDead = true; }
+      target.shockTurn--;
+    }
+  });
+  if(dotAnyDead){
+    players.filter(p=>p.currentHp<=0).forEach(dead=>{
+      if(!deadPlayers.find(d=>d.name===dead.name)) deadPlayers.push(dead);
+    });
+    players = players.filter(p=>p.currentHp>0);
+    if(players.length===0){
+      setTimeout(()=>{
+        if(isTrainingBattle){ isTrainingBattle=false; if(trainingMaxDmg>(profileData.trainingMaxDmg||0)){profileData.trainingMaxDmg=trainingMaxDmg;profileData.trainingMaxDmgChar=trainingMaxDmgChar;saveData();} let _cin=trainingMaxDmgChar?"\n("+trainingMaxDmgChar+")":""; alert("🏋️ 鍛錬終了\n\n最大ダメージ: "+trainingMaxDmg.toLocaleString()+_cin+"\n\n（敗北）"); trainingMaxDmg=0;trainingMaxDmgChar=""; go("training"); return; }
+        alert("敗北"); if(currentEvent!==undefined){currentEvent=undefined;go("event");}else go("trial");
+      }, dotDelay + 100);
+      return;
+    }
+    if(turnIndex >= players.length) turnIndex = 0;
+  }
+}
+// ==========================================
 if(enemy.hp <= 0){
     setTimeout(()=>win(), 500);
     return;
@@ -4416,7 +4897,8 @@ function startTrainingBattle(){
     poison:0, poisons:[], burnTurn:0, burnPower:0, burns:[],
     freezeTurn:0, shockTurn:0, shockPower:0, shield:0,
     debuffUsed:false, debuffPower:1, debuffTurn:0, debuffs:[],
-    erosions:[], taketogeStacks:[], gimmick:gimmick||null, turnCount:0
+    erosions:[], taketogeStacks:[], gimmick:gimmick||null, turnCount:0,
+    betaIssokuCount:0, betaSightDebuff:0
   };
   if(gimmick?.shield) enemy.shield = gimmick.shield;
   turn="player"; turnIndex=0; deadPlayers=[]; lastAllySkill=null;
@@ -4494,7 +4976,9 @@ function win(){
         Eventwin();
         return;
     }
-    stone+=10;
+    // 石報酬: 50〜100単位でランダム
+    let stoneGain = (Math.floor(Math.random() * 6) + 5) * 10; // 50,60,70,80,90,100
+    stone += stoneGain;
     sp += 5;
     let id=chars.findIndex(c=>c.name===enemy.name);
     let prevLv = progress[id]||1;
@@ -4505,9 +4989,10 @@ function win(){
     if(prevLv >= 200){
         // 伝説 Lv200+
         itemInventory.expLarge += 1;
-        dupeStone += 1;
-        winRewardMsg = "【伝説】📙経験値書・大×1 🧱凸塊×1(確定)";
-        if(Math.random() < 0.90){ dupeStone += 1; winDropMsg += " 🧱凸塊×1"; }
+        let dc = 10 + Math.floor(Math.random()*21); // 10〜30
+        dupeStone += dc;
+        winRewardMsg = `【伝説】📙経験値書・大×1 🧱凸塊×${dc}(確定)`;
+        if(Math.random() < 0.90){ let d=10+Math.floor(Math.random()*21); dupeStone+=d; winDropMsg+=` 🧱凸塊×${d}`; }
         if(Math.random() < 0.70){ itemInventory.starShard += 1; winDropMsg += " 🔮昇星の欠片×1"; }
         if(Math.random() < 0.40){ itemInventory.expLarge += 1; winDropMsg += " 📙経験値書・大×1"; }
         if(Math.random() < 0.20){ itemInventory.expUltra += 1; winDropMsg += " 📕経験値書・極×1"; }
@@ -4517,7 +5002,7 @@ function win(){
         // 達人 Lv100-199
         itemInventory.expLarge += 1;
         winRewardMsg = "【達人】📙経験値書・大×1";
-        if(Math.random() < 0.85){ dupeStone += 1; winDropMsg += " 🧱凸塊×1"; }
+        if(Math.random() < 0.85){ let d=10+Math.floor(Math.random()*21); dupeStone+=d; winDropMsg+=` 🧱凸塊×${d}`; }
         if(Math.random() < 0.60){ itemInventory.starShard += 1; winDropMsg += " 🔮昇星の欠片×1"; }
         if(Math.random() < 0.30){ itemInventory.expLarge += 1; winDropMsg += " 📙経験値書・大×1"; }
         if(Math.random() < 0.12){ itemInventory.expUltra += 1; winDropMsg += " 📕経験値書・極×1"; }
@@ -4526,7 +5011,7 @@ function win(){
         // 熟練 Lv50-99
         itemInventory.expMedium += 1;
         winRewardMsg = "【熟練】📘経験値書・中×1";
-        if(Math.random() < 0.75){ dupeStone += 1; winDropMsg += " 🧱凸塊×1"; }
+        if(Math.random() < 0.75){ let d=10+Math.floor(Math.random()*16); dupeStone+=d; winDropMsg+=` 🧱凸塊×${d}`; }
         if(Math.random() < 0.50){ itemInventory.starShard += 1; winDropMsg += " 🔮昇星の欠片×1"; }
         if(Math.random() < 0.20){ itemInventory.expLarge += 1; winDropMsg += " 📙経験値書・大×1"; }
         if(Math.random() < 0.05){ itemInventory.expUltra += 1; winDropMsg += " 📕経験値書・極×1"; }
@@ -4535,7 +5020,7 @@ function win(){
         // 上級 Lv30-49
         itemInventory.expMedium += 1;
         winRewardMsg = "【上級】📘経験値書・中×1";
-        if(Math.random() < 0.65){ dupeStone += 1; winDropMsg += " 🧱凸塊×1"; }
+        if(Math.random() < 0.65){ let d=10+Math.floor(Math.random()*11); dupeStone+=d; winDropMsg+=` 🧱凸塊×${d}`; }
         if(Math.random() < 0.35){ itemInventory.starShard += 1; winDropMsg += " 🔮昇星の欠片×1"; }
         if(Math.random() < 0.10){ itemInventory.expLarge += 1; winDropMsg += " 📙経験値書・大×1"; }
         if(Math.random() < 0.04){ itemInventory.starCrystal += 1; winDropMsg += " 💠昇星の結晶×1"; }
@@ -4543,7 +5028,7 @@ function win(){
         // 中級 Lv10-29
         itemInventory.expSmall += 1;
         winRewardMsg = "【中級】📗経験値書・小×1";
-        if(Math.random() < 0.50){ dupeStone += 1; winDropMsg += " 🧱凸塊×1"; }
+        if(Math.random() < 0.50){ let d=10+Math.floor(Math.random()*11); dupeStone+=d; winDropMsg+=` 🧱凸塊×${d}`; }
         if(Math.random() < 0.20){ itemInventory.starShard += 1; winDropMsg += " 🔮昇星の欠片×1"; }
         if(Math.random() < 0.10){ itemInventory.expMedium += 1; winDropMsg += " 📘経験値書・中×1"; }
         if(Math.random() < 0.05){ itemInventory.expLarge += 1; winDropMsg += " 📙経験値書・大×1"; }
@@ -4552,7 +5037,7 @@ function win(){
         // 初級 Lv1-9
         itemInventory.expSmall += 1;
         winRewardMsg = "【初級】📗経験値書・小×1";
-        if(Math.random() < 0.30){ dupeStone += 1; winDropMsg += " 🧱凸塊×1"; }
+        if(Math.random() < 0.30){ let d=10+Math.floor(Math.random()*6); dupeStone+=d; winDropMsg+=` 🧱凸塊×${d}`; }
         if(Math.random() < 0.10){ itemInventory.starShard += 1; winDropMsg += " 🔮昇星の欠片×1"; }
         if(Math.random() < 0.03){ itemInventory.expMedium += 1; winDropMsg += " 📘経験値書・中×1"; }
         if(Math.random() < 0.01){ itemInventory.starCrystal += 1; winDropMsg += " 💠昇星の結晶×1"; }
@@ -4560,7 +5045,7 @@ function win(){
     onTrialWin();
     saveData();
     let winDropLine = winDropMsg ? "\n🎲 ドロップ:" + winDropMsg : "";
-    alert("勝利！石+10 / SP+5\n" + winRewardMsg + winDropLine);
+    alert(`勝利！💎 石+${stoneGain} / SP+5\n` + winRewardMsg + winDropLine);
     go("trial");
 }
 function resetData(){
@@ -5537,6 +6022,56 @@ if(s.type==="harumiBuff"){
     showSynergyText("🔥 視覚共有！全体ATK+40%(3T)＋自分以外に被ダメ60%カット(1T)！");
     renderBattle();
 }
+// ===================== β版スキル実装 =====================
+// 赤羽悠真(β)スキル：幸運 - 味方全体に幸運状態付与(5T)、与ダメ+25%＆毎ターンHP8%回復
+if(s.type==="beta_akahane_lucky"){
+    players.forEach((t, ti)=>{
+        t.betaLuckyTurn = 5;
+        t.betaLuckyDmgBuff = true;
+        if(!t.buffs) t.buffs=[];
+        t.buffs = t.buffs.filter(b=>!b.isBetaLucky);
+        t.buffs.push({ power: 1.25, turn: 5, isBetaLucky: true });
+        let _hpi = players.indexOf(t);
+        setTimeout(()=>showDamage("p"+_hpi, {dmg:Math.floor(t.hp*0.08), type:"heal"}), 200 + ti*80);
+    });
+    showSynergyText("🍀 幸運発動！味方全体に幸運状態付与(5T)！与ダメ+25%＆毎ターンHP8%回復！");
+    renderBattle();
+}
+// 晴海亨(β)スキル：サイトシェア - 味方か敵を選んで視覚共有カウント付与(最大3個)
+// 味方: ATK+50%/個、敵: ATK-20%/個
+if(s.type==="beta_harumi_sight"){
+    openSightShareModal(p);
+    return; // モーダル選択後にendTurnを呼ぶ
+}
+// 桜木彰(β)スキル：オフセット - 被ダメ時に相手へ同じダメージで反撃(3T)
+if(s.type==="beta_sakuragi_offset"){
+    if(!p.counters) p.counters = [];
+    p.counters.push({ turn: 3, power: 1.0, isOffset: true });
+    showSynergyText("⚔ オフセット発動！被ダメ時に相手へ同ダメ反撃(3T)！");
+    renderBattle();
+}
+// 八並解徒(β)スキル：一触即没 - 攻撃する度に相手へカウント付与
+// スキル発動時は通常攻撃 + 一触即没カウント付与マークを立てる
+if(s.type==="beta_yatsunami_stack"){
+    // 通常攻撃ダメージ
+    let res = calcDamage(p.attr, enemy.attr, atk * 2.0);
+    if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
+    if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+    if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
+    res.dmg = applySkillDmgPassives(res.dmg, p);
+    enemy.hp -= res.dmg;
+    applyShockBonus(p, atk);
+    triggerAttackPassive(p);
+    // 一触即没カウントを3個付与
+    if(!enemy.betaIssokuCount) enemy.betaIssokuCount = 0;
+    enemy.betaIssokuCount = Math.min(10, enemy.betaIssokuCount + 3);
+    let atkUpRate = enemy.betaIssokuCount * 20;
+    showSynergyText("💀 一触即没！200%攻撃！敵に一触即没×"+enemy.betaIssokuCount+"付与！（被ダメ+"+atkUpRate+"%）");
+    renderBattle();
+    setTimeout(()=>showDamage("enemy", res), 10);
+    if(enemy.hp <= 0){ setTimeout(()=>win(), 500); return; }
+}
+// ===================== β版スキル実装ここまで =====================
 if(s.type==="mimicry"){
     let ratio = 1 - (p.currentHp / p.hp);
     let bonus = Math.min(0.7, 0.1 + ratio * 0.6);
@@ -8370,22 +8905,34 @@ function drawWeapon10(){
 function openWeaponSelect(charIndex, returnToCharInfo){
     let grid = document.getElementById("weaponSelectGrid");
     if(!grid) return;
+    // パーティーで使用中の武器名セットを作成（自分以外）
+    let usedWeaponNames = new Set();
+    team.forEach(c => {
+        let bi = box.findIndex(b => b.name === c.name);
+        if(bi !== charIndex && box[bi] && box[bi].weapon){
+            usedWeaponNames.add(box[bi].weapon.name);
+        }
+    });
     if(weaponBox.length === 0){
         grid.innerHTML = '<div style="color:#556;font-size:13px;padding:20px;text-align:center;grid-column:1/-1;">武器を所持していません</div>';
     } else {
-        grid.innerHTML = weaponBox.map((w,i)=>`
-        <div style="background:#1a1f2e;border:1px solid ${getRarityBorderColor(w.rarity)};border-radius:12px;padding:8px;text-align:center;display:flex;flex-direction:column;gap:4px;">
+        grid.innerHTML = weaponBox.map((w,i)=>{
+          let isUsed = usedWeaponNames.has(w.name);
+          return `
+        <div style="background:#1a1f2e;border:1px solid ${getRarityBorderColor(w.rarity)};border-radius:12px;padding:8px;text-align:center;display:flex;flex-direction:column;gap:4px;${isUsed?'opacity:0.5;':''}">
           <div style="color:${getRarityColor(w.rarity)};font-size:11px;font-weight:bold;">★${w.rarity}</div>
           <img src="${w.img}" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;">
           <div style="font-size:10px;color:#ccc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${w.name}</div>
           <div style="font-size:9px;color:#aaa;">ATK+${w.atk} / HP+${w.hp}</div>
+          ${isUsed ? '<div style="font-size:9px;color:#ff8888;font-weight:bold;">⚠ 使用中</div>' : ''}
           <div style="display:flex;gap:3px;">
             <button onclick="openWeaponModal(${i},'skill');event.stopPropagation();" style="flex:1;background:#1a2a4a;color:#aaddff;border:1px solid #4488cc;border-radius:5px;padding:3px 2px;font-size:9px;cursor:pointer;">🗡</button>
             <button onclick="openWeaponModal(${i},'passive');event.stopPropagation();" style="flex:1;background:#1a3a1a;color:#88ff88;border:1px solid #44cc44;border-radius:5px;padding:3px 2px;font-size:9px;cursor:pointer;">🌟</button>
           </div>
-          <button onclick="equipWeaponAndReturn(${charIndex},${i},${returnToCharInfo?1:0});" style="background:linear-gradient(135deg,#1a3a5a,#2a5a8a);color:#aaddff;border:1px solid #4488cc;border-radius:7px;padding:5px 0;font-size:11px;cursor:pointer;font-weight:bold;">⚔ 装備</button>
+          <button onclick="equipWeaponAndReturn(${charIndex},${i},${returnToCharInfo?1:0});" style="background:${isUsed?'#2a1a1a':'linear-gradient(135deg,#1a3a5a,#2a5a8a)'};color:${isUsed?'#ff8888':'#aaddff'};border:1px solid ${isUsed?'#883333':'#4488cc'};border-radius:7px;padding:5px 0;font-size:11px;cursor:pointer;font-weight:bold;">⚔ ${isUsed?'使用中':'装備'}</button>
         </div>
-        `).join("");
+        `;
+        }).join("");
     }
     let c = box[charIndex];
     let nameEl = document.getElementById("weaponSelectCharName");
@@ -8475,6 +9022,15 @@ function closeWeaponSelect(){
 }
 function equipWeapon(charIndex, weaponIndex){
     let w = weaponBox[weaponIndex];
+    // パーティー内で同じ武器を使えないチェック
+    let conflict = team.find((c, idx) => {
+        let bi = box.findIndex(b => b.name === c.name);
+        return bi !== charIndex && box[bi] && box[bi].weapon && box[bi].weapon.name === w.name;
+    });
+    if(conflict){
+        showToast("⚠ 「" + w.name + "」はすでに " + conflict.name + " が装備しています！");
+        return;
+    }
     box[charIndex].weapon = {
         ...w,
         weaponCool: 0
@@ -10804,6 +11360,112 @@ function showJokakuTargetSelect(caster, s){
     list.appendChild(btn);
   });
   modal.style.display = "flex";
+}
+// β版 晴海亨(β)サイトシェアモーダル
+// ★ 視覚共有カウントは味方全員の合計で上限3個（敵側は独立して上限3個）
+let _sightShareCaster = null;
+function _getTotalAllySightCount(){
+  return players.reduce((sum, pl) => sum + (pl.betaSightCount || 0), 0);
+}
+function openSightShareModal(caster){
+  _sightShareCaster = caster;
+  let modal = document.getElementById("sightShareModal");
+  if(!modal) return;
+  _renderSightShareTop();
+  modal.style.display = "flex";
+}
+function _renderSightShareTop(){
+  let body = document.getElementById("sightShareBody");
+  if(!body) return;
+  let totalAlly = _getTotalAllySightCount();
+  let allyFull = totalAlly >= 3;
+  let enemyCount = enemy.betaSightDebuff || 0;
+  let enemyFull = enemyCount >= 3;
+  body.innerHTML = `
+    <div style="font-size:12px;color:#88ddaa;margin-bottom:4px;">視覚共有カウントを付与する対象を選択</div>
+    <div style="font-size:11px;color:#55aa77;margin-bottom:14px;">味方合計 <b style="color:${allyFull?'#ff4444':'#44ffaa'}">${totalAlly}/3</b>個　敵 <b style="color:${enemyFull?'#ff4444':'#ffaa44'}">${enemyCount}/3</b>個</div>
+    <div style="display:flex;gap:12px;justify-content:center;">
+      <button onclick="${allyFull?'':' _renderSightShareAllyList()'}"
+        style="flex:1;background:${allyFull?'#111':'#0a2a18'};color:${allyFull?'#444':'#44ffaa'};border:2px solid ${allyFull?'#222':'#00cc66'};border-radius:10px;padding:14px 8px;cursor:${allyFull?'not-allowed':'pointer'};font-size:14px;font-weight:bold;opacity:${allyFull?'0.4':'1'};">
+        👥 味方<br><span style="font-size:11px;color:${allyFull?'#555':'#88ddaa'};">ATK+50%/個${allyFull?' (上限到達)':''}</span>
+      </button>
+      <button onclick="${enemyFull?'':'execSightShareEnemy()'}"
+        style="flex:1;background:${enemyFull?'#111':'#2a0a0a'};color:${enemyFull?'#444':'#ff6644'};border:2px solid ${enemyFull?'#221100':'#cc3300'};border-radius:10px;padding:14px 8px;cursor:${enemyFull?'not-allowed':'pointer'};font-size:14px;font-weight:bold;opacity:${enemyFull?'0.4':'1'};">
+        👹 敵<br><span style="font-size:11px;color:#ffaa88;">ATK-20%/個 (${enemyCount}/3)${enemyFull?' (上限)':''}</span>
+      </button>
+    </div>
+  `;
+}
+function _renderSightShareAllyList(){
+  let body = document.getElementById("sightShareBody");
+  if(!body) return;
+  let totalAlly = _getTotalAllySightCount();
+  let totalFull = totalAlly >= 3;
+  let html = `
+    <div style="font-size:12px;color:#88ddaa;margin-bottom:4px;">視覚共有を付与する味方を選択</div>
+    <div style="font-size:11px;color:#55aa77;margin-bottom:10px;">ATK+50%/個　味方合計残り <b style="color:${totalFull?'#ff4444':'#44ffaa'}">${3-totalAlly}</b>個</div>
+  `;
+  players.forEach((pl, i) => {
+    let cnt = pl.betaSightCount || 0;
+    // 合計が上限に達していたら全員disabled
+    let disabled = totalFull;
+    let hpPct = pl.hp > 0 ? Math.floor(pl.currentHp / pl.hp * 100) : 0;
+    html += `<button onclick="${disabled?'':'execSightShareAllyTarget('+i+')'}"
+      style="display:block;width:100%;margin:5px 0;padding:10px 14px;
+        background:${disabled?'#111':'#0a2018'};
+        color:${disabled?'#444':'#44ffaa'};
+        border:2px solid ${disabled?'#222':'#00cc66'};
+        border-radius:10px;font-size:13px;font-weight:bold;
+        cursor:${disabled?'not-allowed':'pointer'};
+        text-align:left;opacity:${disabled?'0.5':'1'};">
+      👁 ${pl.name}
+      <span style="float:right;font-size:11px;color:#88ddaa;">
+        ×${cnt}(ATK+${cnt*50}%) HP:${hpPct}%
+      </span>
+    </button>`;
+  });
+  html += `<button onclick="_renderSightShareTop()" style="margin-top:8px;background:#0a1a20;color:#88ccff;border:1px solid #336688;border-radius:8px;padding:6px 20px;cursor:pointer;font-size:12px;">← 戻る</button>`;
+  body.innerHTML = html;
+}
+function execSightShareAllyTarget(index){
+  let modal = document.getElementById("sightShareModal");
+  if(modal) modal.style.display = "none";
+  let caster = _sightShareCaster;
+  if(!caster) return;
+  let target = players[index];
+  if(!target || target.currentHp <= 0) return;
+  // 合計上限チェック
+  let total = _getTotalAllySightCount();
+  if(total >= 3){ showSynergyText("👁 味方の視覚共有は合計3個が上限です！"); return; }
+  target.betaSightCount = (target.betaSightCount || 0) + 1;
+  if(!target.buffs) target.buffs=[];
+  target.buffs = target.buffs.filter(b=>!b.isBetaHarumiSight);
+  target.buffs.push({ power: 1 + target.betaSightCount * 0.50, turn: 999999, permanent: true, isBetaHarumiSight: true });
+  let newTotal = _getTotalAllySightCount();
+  showSynergyText("👁 サイトシェア！"+target.name+"に視覚共有×"+target.betaSightCount+"付与！ATK+"+(target.betaSightCount*50)+"%（味方合計"+newTotal+"/3）！");
+  caster.cool = caster.skill ? caster.skill.cool : 3;
+  renderBattle();
+  lastAllySkill = caster.skill;
+  endTurn();
+}
+function execSightShareEnemy(){
+  let modal = document.getElementById("sightShareModal");
+  if(modal) modal.style.display = "none";
+  let p = _sightShareCaster;
+  if(!p) return;
+  if((enemy.betaSightDebuff||0) >= 3){ showSynergyText("👁 敵の視覚共有は既に最大(3個)です！"); return; }
+  enemy.betaSightDebuff = Math.min(3, (enemy.betaSightDebuff||0) + 1);
+  let reduction = enemy.betaSightDebuff * 0.20;
+  if(!enemy.debuffs) enemy.debuffs=[];
+  enemy.debuffs = enemy.debuffs.filter(d=>!d.isBetaSight);
+  enemy.debuffs.push({ power: 1 - reduction, turn: 999999, permanent: true, isBetaSight: true });
+  enemy.debuffPower = enemy.debuffs.reduce((acc,d)=>acc*d.power,1);
+  enemy.debuffTurn = Math.max(...enemy.debuffs.map(d=>d.turn));
+  showSynergyText("👁 サイトシェア！敵に視覚共有×"+enemy.betaSightDebuff+"付与！敵ATK-"+(enemy.betaSightDebuff*20)+"%！");
+  p.cool = p.skill ? p.skill.cool : 3;
+  renderBattle();
+  lastAllySkill = p.skill;
+  endTurn();
 }</script>
 
 <div id="jokakuTargetModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.80);z-index:25000;justify-content:center;align-items:center;">
@@ -10812,6 +11474,14 @@ function showJokakuTargetSelect(caster, s){
     <div style="font-size:12px;color:#88cc44;margin-bottom:14px;">解錠カウントを付与する味方を選択</div>
     <div id="jokakuTargetList"></div>
     <button onclick="document.getElementById('jokakuTargetModal').style.display='none';" style="margin-top:10px;background:#111;color:#666;border:1px solid #333;border-radius:8px;padding:7px 28px;cursor:pointer;font-size:13px;">キャンセル</button>
+  </div>
+</div>
+
+<div id="sightShareModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.82);z-index:25000;justify-content:center;align-items:center;">
+  <div style="background:#081a0f;border:2px solid #00cc66;border-radius:16px;padding:22px 24px;max-width:320px;width:90%;box-shadow:0 0 30px #00aa4488;text-align:center;max-height:80vh;overflow-y:auto;">
+    <div style="font-size:18px;font-weight:bold;color:#44ffaa;margin-bottom:6px;">👁 サイトシェア</div>
+    <div id="sightShareBody"></div>
+    <button onclick="document.getElementById('sightShareModal').style.display='none';" style="margin-top:12px;background:#111;color:#666;border:1px solid #333;border-radius:8px;padding:7px 28px;cursor:pointer;font-size:13px;">キャンセル</button>
   </div>
 </div>
 
@@ -11376,6 +12046,32 @@ function redeemSerial(){
       eventChars5, eventChars6, eventChars7, eventChars8, eventChars9, eventChars10,
       rewardChar
     ];
+    // レベルMAX時のステータス加算を計算するヘルパー
+    function calcLevelBonusForMaxLevel(rarity){
+      let atkBonus = 0, hpBonus = 0;
+      for(let lv = 1; lv < MAX_CHAR_LEVEL; lv++){
+        atkBonus += Math.floor(rarity * 3 + (lv + 1) * 0.5);
+        hpBonus  += Math.floor(rarity * 8 + (lv + 1) * 1.5);
+      }
+      return { atk: atkBonus, hp: hpBonus };
+    }
+    // 昇星MAXまでのATK/HP増加率を計算（各段階+8%を5→MAX_STAR分）
+    function applyMaxStarBonus(charObj){
+      const MAX_STAR = 5;
+      let cur = charObj.starLevel || charObj.rarity;
+      while(cur < MAX_STAR){
+        let atkBonus = Math.floor(charObj.atk * 0.08);
+        let hpBonus  = Math.floor(charObj.hp  * 0.08);
+        charObj.atk += atkBonus;
+        charObj.hp  += hpBonus;
+        if(!charObj.starBonus) charObj.starBonus = {atk: 0, hp: 0};
+        charObj.starBonus.atk += atkBonus;
+        charObj.starBonus.hp  += hpBonus;
+        cur++;
+      }
+      charObj.starLevel = MAX_STAR;
+      charObj.isStar5 = true;
+    }
     let charAdded = 0, charMaxed = 0;
     allCharPools.forEach(pool => {
       if(!pool || !pool.length) return;
@@ -11387,13 +12083,50 @@ function redeemSerial(){
         if(!exist){
           let baseAtk = 20 + 5 * c.rarity;
           let baseHp  = 100 + 20 * c.rarity;
-          box.push({ ...c, dupe: maxD, atk: baseAtk + atkPerDupe * maxD, hp: baseHp + hpPerDupe * maxD, weapon: null });
+          // レベルMAXのステータス加算を事前計算して適用
+          const lvBonus = calcLevelBonusForMaxLevel(c.rarity);
+          let newChar = {
+            ...c,
+            dupe: maxD,
+            atk: baseAtk + atkPerDupe * maxD + lvBonus.atk,
+            hp:  baseHp  + hpPerDupe  * maxD + lvBonus.hp,
+            weapon: null,
+            charLevel: MAX_CHAR_LEVEL,
+            charExp: 0,
+            levelBonus: { atk: lvBonus.atk, hp: lvBonus.hp }
+          };
+          // 昇星MAXを適用
+          applyMaxStarBonus(newChar);
+          box.push(newChar);
           charAdded++;
-        } else if(exist.dupe < maxD){
-          let remaining = maxD - exist.dupe;
-          exist.dupe = maxD;
-          exist.atk += Math.round(atkPerDupe * remaining);
-          exist.hp  += Math.round(hpPerDupe  * remaining);
+        } else {
+          // 既存キャラ: 凸MAX
+          if(exist.dupe < maxD){
+            let remaining = maxD - exist.dupe;
+            exist.dupe = maxD;
+            exist.atk += Math.round(atkPerDupe * remaining);
+            exist.hp  += Math.round(hpPerDupe  * remaining);
+          }
+          // レベルMAX
+          if((exist.charLevel || 1) < MAX_CHAR_LEVEL){
+            const curLv = exist.charLevel || 1;
+            for(let lv = curLv; lv < MAX_CHAR_LEVEL; lv++){
+              let atkGain = Math.floor(exist.rarity * 3 + (lv + 1) * 0.5);
+              let hpGain  = Math.floor(exist.rarity * 8 + (lv + 1) * 1.5);
+              if(!exist.levelBonus) exist.levelBonus = {atk: 0, hp: 0};
+              exist.levelBonus.atk += atkGain;
+              exist.levelBonus.hp  += hpGain;
+              exist.atk += atkGain;
+              exist.hp  += hpGain;
+            }
+            exist.charLevel = MAX_CHAR_LEVEL;
+            exist.charExp = 0;
+          }
+          // 昇星MAX
+          const curStar = exist.starLevel || exist.rarity;
+          if(curStar < 5){
+            applyMaxStarBonus(exist);
+          }
           charMaxed++;
         }
       });
@@ -11406,7 +12139,7 @@ function redeemSerial(){
     let rainbow = document.createElement("div"); rainbow.className = "rainbowFlash"; document.body.appendChild(rainbow); setTimeout(()=>rainbow.remove(), 900);
     let ef = document.createElement("div"); ef.className = "eventFlash"; document.body.appendChild(ef); setTimeout(()=>ef.remove(), 900);
     msg.style.color="#ffd700";
-    msg.innerHTML = `✅ 全データ取得完了！<br><small style="color:#aaa;">キャラ新規 ${charAdded}体 / 完凸 ${charMaxed}体<br>武器 ${weapAdded}種 追加</small>`;
+    msg.innerHTML = `✅ 完璧完了！<br><small style="color:#aaa;">キャラ新規 ${charAdded}体 / 強化 ${charMaxed}体<br>全員 Lv.${MAX_CHAR_LEVEL} ☆5昇星MAX 完凸済<br>武器 ${weapAdded}種 追加</small>`;
     return;
   }
   if(usedSerials.has(code)){ msg.style.color="#ff4444"; msg.textContent="このコードは既に使用済みです"; return; }
@@ -12442,7 +13175,10 @@ document.addEventListener('click', () => {
     else if (active.id === 'gacha')  SoundEngine.playBgmGacha();
     else                             SoundEngine.playBgmTitle();
   }
-}, { passive: true });</script>
+}, { passive: true });
+
+
+</script>
 
 </body>
 </html>
