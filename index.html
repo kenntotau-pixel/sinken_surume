@@ -6,7 +6,7 @@
 <title>真剣のスルーメ</title>
 <meta name="theme-color" content="#0b0f1a">
 
-<style>#loading{position:fixed;top:0;left:0;width:100%;height:100%;background:#0b0f1a;display:flex;justify-content:center;align-items:center;z-index:9999}.loadingBox{text-align:center}.loadingLogo{width:220px;margin-bottom:20px;animation:logoFade 2s infinite}@keyframes logoFade{0%{opacity:0.5}50%{opacity:1}100%{opacity:0.5}}.loadingBar{width:200px;height:10px;background:#333;border-radius:10px;overflow:hidden;margin:0 auto 10px}#loadingFill{height:100%;width:0%;background:linear-gradient(90deg,#ffd700,#ff4444);transition:0.2s}.loadingText{font-size:14px;letter-spacing:2px}body{margin:0;background:#0b0f1a;color:#fff;font-family:sans-serif}.screen{display:none!important;padding:10px;text-align:center;min-height:0!important}.screen.active{display:block!important;min-height:auto}.fire{border:3px solid #ff4444}.water{border:3px solid #4488ff}.thunder{border:3px solid #ffd700}.wood{border:3px solid #44cc44}.light{border:3px solid #ffffff}.dark{border:3px solid #aa00ff}.card{display:inline-block;background:#1a1f2e;padding:6px;margin:5px;border-radius:10px;width:95px}.card img{width:100%;border-radius:8px}.ssr{box-shadow:0 0 20px gold}.rarity{font-size:12px;color:gold;font-weight:bold;margin-bottom:2px}.flash{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle,rgba(255,255,255,0.9),transparent);animation:flash 0.6s forwards;pointer-events:none;z-index:9990}@keyframes flash{0%{opacity:1}100%{opacity:0}}@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}@keyframes toastOut{from{opacity:1;transform:translateX(-50%) translateY(0)}to{opacity:0;transform:translateX(-50%) translateY(10px)}}#gachaOverlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:20000;overflow:hidden;flex-direction:column;align-items:center;justify-content:center}#gachaOverlay.active{display:flex}#gachaCanvas{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}.gacha-bg-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;border-radius:50%;pointer-events:none;opacity:0;transition:opacity 0.4s}.gacha-bg-glow.ssr-glow{background:radial-gradient(circle,rgba(255,215,0,0.3) 0%,rgba(255,140,0,0.15) 40%,transparent 70%)}.gacha-bg-glow.ultra-glow{background:radial-gradient(circle,rgba(0,255,255,0.4) 0%,rgba(255,0,255,0.2) 40%,transparent 70%);animation:ultraBgPulse 0.8s infinite alternate}@keyframes ultraBgPulse{from{transform:translate(-50%,-50%) scale(1)}to{transform:translate(-50%,-50%) scale(1.15)}}#gachaOpeningText{position:absolute;font-size:48px;font-weight:900;color:#fff;letter-spacing:8px;text-align:center;pointer-events:none;z-index:10;text-shadow:0 0 30px rgba(255,215,0,0.8),0 0 60px rgba(255,215,0,0.4);opacity:0}#gachaOpeningText.show{animation:openingTextAnim 1.2s forwards}@keyframes openingTextAnim{0%{opacity:0;transform:scale(0.3) rotate(-10deg)}30%{opacity:1;transform:scale(1.2) rotate(2deg)}60%{opacity:1;transform:scale(1.0) rotate(0deg)}100%{opacity:0;transform:scale(0.8) rotate(0deg)}}#gachaCardArea{position:relative;z-index:5;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;max-width:500px;padding:10px}.gacha-card-wrap{opacity:0;transform:translateY(40px) scale(0.8);transition:opacity 0.4s,transform 0.4s}.gacha-card-wrap.reveal{opacity:1;transform:translateY(0) scale(1)}.gacha-card-big{position:relative;width:100px;height:140px;transform-style:preserve-3d;transition:transform 0.7s cubic-bezier(0.4,0,0.2,1);cursor:pointer}.gacha-card-big.flipped{transform:rotateY(180deg)}.gacha-card-front,.gacha-card-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:12px;overflow:hidden}.gacha-card-front{background:linear-gradient(135deg,#1a1f3a,#2a2f55);border:2px solid #4a5070;display:flex;align-items:center;justify-content:center;font-size:40px}.gacha-card-front::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);animation:cardShine 2s infinite}@keyframes cardShine{0%{left:-100%}100%{left:200%}}.gacha-card-back{transform:rotateY(180deg);background:#1a1f2e;border:2px solid #444;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;font-size:11px}.gacha-card-back img{width:90%;height:90px;object-fit:cover;border-radius:8px}.gacha-card-back .rarity{font-size:12px;color:gold;font-weight:bold;margin-bottom:2px}.gacha-card-back.rarity-1{border-color:#888}.gacha-card-back.rarity-2{border-color:#4488ff;box-shadow:0 0 12px #4488ff66}.gacha-card-back.rarity-3{border-color:gold;box-shadow:0 0 20px gold}.gacha-card-back.rarity-4{border-color:cyan;box-shadow:0 0 30px cyan,0 0 60px magenta;animation:ultraCardGlow 1s infinite alternate}@keyframes ultraCardGlow{from{box-shadow:0 0 20px cyan,0 0 40px magenta}to{box-shadow:0 0 40px cyan,0 0 80px magenta,0 0 100px #ff00ff55}}.card.star5{border:3px solid #00ffff;box-shadow:0 0 18px #00ffff88,0 0 30px #00ffff44;animation:star5CardGlow 1.2s infinite alternate}@keyframes star5CardGlow{from{box-shadow:0 0 10px #00ffff88}to{box-shadow:0 0 28px #00ffff,0 0 50px #00ffff66}}.ssr-beam{position:absolute;top:50%;left:50%;width:4px;height:300px;transform-origin:bottom center;background:linear-gradient(to top,rgba(255,215,0,0.8),transparent);pointer-events:none;animation:beamFade 1.5s forwards}@keyframes beamFade{0%{opacity:1}100%{opacity:0}}.ultra-beam{position:absolute;top:50%;left:50%;width:4px;height:400px;transform-origin:bottom center;pointer-events:none;animation:ultraBeamFade 1.8s forwards}@keyframes ultraBeamFade{0%{opacity:1}100%{opacity:0}}.gacha-flash-r2{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle,rgba(68,136,255,0.7),transparent);animation:gachaFlashFade 0.8s forwards;pointer-events:none;z-index:19999}.gacha-flash-r3{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle,rgba(255,215,0,0.85),rgba(255,140,0,0.5),transparent);animation:gachaFlashFade 1.0s forwards;pointer-events:none;z-index:19999}.gacha-flash-r4{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(45deg,rgba(255,0,255,0.7),rgba(0,255,255,0.7),rgba(255,215,0,0.7));animation:gachaFlashFadeR4 1.5s forwards;pointer-events:none;z-index:19999}@keyframes gachaFlashFade{0%{opacity:1}100%{opacity:0}}@keyframes gachaFlashFadeR4{0%{opacity:1;transform:scale(1)}50%{opacity:0.8;transform:scale(1.05)}100%{opacity:0;transform:scale(1.1)}}.gacha-rarity-announce{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:56px;font-weight:900;letter-spacing:6px;pointer-events:none;z-index:20010;text-align:center;white-space:nowrap}.announce-ssr{color:#ffd700;text-shadow:0 0 40px #ffd700,0 0 80px #ff8800,0 0 120px #ff4400;animation:announceSSR 1.8s forwards}.announce-ultra{background:linear-gradient(90deg,#ff0080,#ff8c00,#ffd700,#00ff88,#00ffff,#8000ff);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px rgba(255,255,255,0.8));animation:announceUltra 2.0s forwards,rainbowShift 0.5s infinite linear}@keyframes announceSSR{0%{opacity:0;transform:translate(-50%,-50%) scale(0.3)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.3)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}80%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes announceUltra{0%{opacity:0;transform:translate(-50%,-50%) scale(0.2) rotate(-10deg)}15%{opacity:1;transform:translate(-50%,-50%) scale(1.4) rotate(3deg)}40%{opacity:1;transform:translate(-50%,-50%) scale(1.0) rotate(0deg)}80%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes rainbowShift{from{background-position:0% center}to{background-position:200% center}}#gachaSkipBtn{position:fixed;bottom:30px;right:20px;background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:8px 20px;font-size:13px;cursor:pointer;z-index:20020;backdrop-filter:blur(4px);transition:background 0.2s}#gachaSkipBtn:hover{background:rgba(255,255,255,0.25)}.tap-ripple{position:fixed;border-radius:50%;width:60px;height:60px;background:rgba(255,255,255,0.3);pointer-events:none;z-index:20030;transform:translate(-50%,-50%) scale(0);animation:tapRipple 0.5s forwards}@keyframes tapRipple{to{transform:translate(-50%,-50%) scale(3);opacity:0}}#gachaResultSummary{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:20000;display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:20px;overflow-y:auto}#gachaResultSummary.active{display:flex}.summary-title{font-size:20px;font-weight:bold;color:#ffd700;letter-spacing:4px;margin-bottom:16px;text-shadow:0 0 20px #ffd700aa}.summary-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:500px;padding:0 10px}.summary-card{background:#1a1f2e;border-radius:10px;padding:6px;width:85px;text-align:center;font-size:10px;border:2px solid #333;transition:transform 0.2s;opacity:0;transform:scale(0.5)}.summary-card.show{opacity:1;transform:scale(1);transition:opacity 0.3s,transform 0.3s}.summary-card img{width:100%;height:72px;object-fit:cover;border-radius:7px}.summary-card.r2{border-color:#4488ff;box-shadow:0 0 8px #4488ff44}.summary-card.r3{border-color:gold;box-shadow:0 0 12px gold}.summary-card.r4{border-color:cyan;box-shadow:0 0 20px cyan,0 0 40px magenta;animation:ultraCardGlow 1s infinite alternate}.summary-close-btn{margin-top:16px;margin-bottom:30px;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-weight:bold;font-size:15px;border:none;border-radius:12px;padding:12px 40px;cursor:pointer;letter-spacing:2px}#kakuteiOverlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:21000;pointer-events:none;overflow:hidden}#kakuteiOverlay.active{display:block;pointer-events:all}.kakutei-text{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:64px;font-weight:900;letter-spacing:8px;text-align:center;white-space:nowrap;pointer-events:none;z-index:21010}.kakutei-kakutei{color:#fff;text-shadow:0 0 30px #ffd700,0 0 60px #ff8800,0 0 100px #ff4400;animation:kakuteiAnim 2.2s forwards}.kakutei-shougou{background:linear-gradient(90deg,#ff0080,#ffd700,#00ffff,#8000ff);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px rgba(255,255,255,0.9));animation:shougouAnim 2.5s forwards,rainbowShift 0.4s infinite linear}.kakutei-attr{font-size:52px;animation:attrConfirmAnim 2.0s forwards}.kakutei-dupe{font-size:48px;color:#88ffcc;text-shadow:0 0 20px #44ffaa,0 0 40px #00ff88;animation:dupeAnim 2.0s forwards}@keyframes kakuteiAnim{0%{opacity:0;transform:translate(-50%,-50%) scale(0.2) rotate(-15deg)}15%{opacity:1;transform:translate(-50%,-50%) scale(1.4) rotate(3deg)}35%{opacity:1;transform:translate(-50%,-50%) scale(1.0) rotate(0deg)}80%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes shougouAnim{0%{opacity:0;transform:translate(-50%,-50%) scale(0.1) rotate(20deg)}12%{opacity:1;transform:translate(-50%,-50%) scale(1.5) rotate(-3deg)}30%{opacity:1;transform:translate(-50%,-50%) scale(1.0) rotate(0deg)}80%{opacity:1;transform:translate(-50%,-50%) scale(1.05)}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes attrConfirmAnim{0%{opacity:0;transform:translate(-50%,-50%) scale(0.3)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.2)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes dupeAnim{0%{opacity:0;transform:translate(-50%,-50%) translateY(40px) scale(0.5)}20%{opacity:1;transform:translate(-50%,-50%) translateY(0) scale(1.1)}70%{opacity:1;transform:translate(-50%,-50%) translateY(0) scale(1.0)}100%{opacity:0;transform:translate(-50%,-50%) translateY(-20px) scale(0.9)}}.shougou-lines{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:20900;overflow:hidden}.shougou-line{position:absolute;height:6px;width:120%;opacity:0;animation:shougouLine 1.5s forwards}@keyframes shougouLine{0%{opacity:0;transform:translateX(-110%)}40%{opacity:1}100%{opacity:0;transform:translateX(10%)}}.gacha-bg-glow.attr-glow-fire{background:radial-gradient(circle,rgba(255,80,0,0.4) 0%,rgba(255,140,0,0.2) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-water{background:radial-gradient(circle,rgba(0,140,255,0.4) 0%,rgba(0,200,255,0.2) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-thunder{background:radial-gradient(circle,rgba(255,215,0,0.4) 0%,rgba(255,170,0,0.2) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-wood{background:radial-gradient(circle,rgba(68,200,68,0.4) 0%,rgba(100,255,100,0.2) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-light{background:radial-gradient(circle,rgba(255,255,220,0.5) 0%,rgba(255,220,150,0.25) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-dark{background:radial-gradient(circle,rgba(170,0,255,0.45) 0%,rgba(220,100,255,0.2) 40%,transparent 70%)}.summary-card.attr-fire{border-color:#ff4444;box-shadow:0 0 10px #ff444466}.summary-card.attr-water{border-color:#4488ff;box-shadow:0 0 10px #4488ff66}.summary-card.attr-thunder{border-color:#ffd700;box-shadow:0 0 10px #ffd70066}.summary-card.attr-wood{border-color:#44cc44;box-shadow:0 0 10px #44cc4466}.summary-card.attr-light{border-color:#ffffff;box-shadow:0 0 10px #ffffff55}.summary-card.attr-dark{border-color:#aa00ff;box-shadow:0 0 10px #aa00ff66}.kakutei-border-flash{position:fixed;top:0;left:0;width:100%;height:100%;border:6px solid gold;box-sizing:border-box;pointer-events:none;z-index:20990;animation:borderFlash 0.6s 3 alternate}@keyframes borderFlash{from{opacity:1;border-color:gold}to{opacity:0;border-color:transparent}}.attr-beam-overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:20800;animation:attrBeamFade 1.4s forwards}@keyframes attrBeamFade{0%{opacity:1}60%{opacity:0.6}100%{opacity:0}}.rarity-upgrade-badge{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#1a1000,#2a2000);border:2px solid #ffd700;border-radius:12px;padding:8px 20px;font-size:14px;font-weight:bold;color:#ffd700;letter-spacing:2px;z-index:21005;pointer-events:none;animation:badgePop 0.4s forwards}@keyframes badgePop{0%{opacity:0;transform:translateX(-50%) scale(0.7)}100%{opacity:1;transform:translateX(-50%) scale(1.0)}}.flip{position:relative;width:90px;height:120px;transform-style:preserve-3d;transition:0.6s}.open .flip{transform:rotateY(180deg)}.front,.back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px}.front{background:linear-gradient(135deg,#2a2f55,#1a1f3a);border:2px solid #3a4060}.back{transform:rotateY(180deg);background:#1a1f2e}#battleMain{display:flex;justify-content:space-between;align-items:center;gap:10px;max-width:520px;margin:auto}.teamArea{display:flex;flex-direction:column;gap:8px;width:40%;align-items:center}#enemyArea{width:55%;display:flex;justify-content:center}.unit{background:#1a1f2e;padding:6px;border-radius:12px;font-size:10px;position:relative}.ally{width:140px}.unit img{width:100%;max-height:90px;object-fit:cover;border-radius:8px}.enemy{width:160px}.turn{outline:2px solid yellow;box-shadow:0 0 6px yellow}.bar{background:#333;height:8px;border-radius:5px;margin-top:3px}.hp{background:#4caf50;height:8px}.gauge{background:#ff9800;height:6px}.damage{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(1);font-size:clamp(14px,4.5vw,26px);font-weight:bold;color:#fff;text-shadow:0 0 10px #000,0 0 5px #000;animation:damagePop 0.9s forwards;pointer-events:none;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}@keyframes damagePop{0%{opacity:0;transform:translate(-50%,-50%) scale(0.5)}20%{opacity:1;transform:translate(-50%,-60%) scale(1.2)}100%{opacity:0;transform:translate(-50%,-100%) scale(0.8)}}.weak{color:#ff4444}.resist{color:#44aaff}.rainbowFlash{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(45deg,red,orange,yellow,green,cyan,blue,purple);opacity:0.8;animation:rainbow 0.8s forwards;z-index:999}@keyframes rainbow{0%{opacity:1}100%{opacity:0}}.shake{animation:shake 0.4s}@keyframes shake{0%{transform:translate(0,0)}25%{transform:translate(-5px,5px)}50%{transform:translate(5px,-5px)}75%{transform:translate(-5px,5px)}100%{transform:translate(0,0)}}.ultra{box-shadow:0 0 25px cyan,0 0 40px magenta;animation:glow 1s infinite alternate}@keyframes glow{from{filter:brightness(1)}to{filter:brightness(1.6)}}.eventFlash{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#ff00cc,#3333ff,#00ffff);opacity:0.8;animation:eventFlash 0.8s forwards;z-index:999}@keyframes eventFlash{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.2)}}.banner{animation:bannerGlow 1.5s infinite alternate}@keyframes bannerGlow{from{filter:brightness(1)}to{filter:brightness(1.3)}}#gameTitle{width:350px;height:auto}.status{font-size:12px;margin:4px 0;min-height:14px}.loadingText{font-size:24px;color:#fff;animation:blink 1s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}.hitText{position:absolute;top:20%;left:50%;transform:translateX(-50%);font-size:clamp(11px,3vw,18px);font-weight:bold;color:#ffcc00;text-shadow:0 0 8px #000;animation:hitPop 0.8s forwards;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}.totalDamage{position:absolute;top:30%;left:50%;transform:translateX(-50%);font-size:clamp(14px,4vw,24px);font-weight:bold;color:#ff4444;text-shadow:0 0 10px #000;animation:totalPop 1s forwards;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}@keyframes hitPop{0%{opacity:0;transform:translate(-50%,0) scale(0.5)}30%{opacity:1;transform:translate(-50%,-10px) scale(1.2)}100%{opacity:0;transform:translate(-50%,-30px) scale(1)}}@keyframes totalPop{0%{opacity:0;transform:translate(-50%,0) scale(0.5)}30%{opacity:1;transform:translate(-50%,-10px) scale(1.3)}100%{opacity:0;transform:translate(-50%,-40px) scale(1)}}.dexRow{display:flex;align-items:center;background:#1a1f2e;margin:6px;padding:8px;border-radius:10px;gap:10px}.dexRow img{width:80px;height:80px;object-fit:cover;border-radius:8px}.dexText{text-align:left;font-size:14px}.statusRow{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px;min-height:18px}.sBadge{font-size:10px;padding:1px 4px;border-radius:4px;font-weight:bold}.sBurn{background:#ff4400;color:#fff}.sFreeze{background:#44bbff;color:#fff}.sShock{background:#ffdd00;color:#000}.sPoison{background:#aa44ff;color:#fff}.sShield{background:#44aaff;color:#fff}.sCounter{background:#ff8800;color:#fff}.sBuff{background:#44ff88;color:#000}.sDebuff{background:#8866ff;color:#fff}.sPassive{background:#1a3a1a;color:#88ff88;border:1px solid #44cc44}.roleBadge{display:inline-block;font-size:9px;padding:1px 5px;border-radius:4px;font-weight:bold;margin-bottom:2px}.role-attacker{background:#ff4444;color:#fff}.role-tank{background:#4488ff;color:#fff}.role-support{background:#44cc44;color:#fff}.role-debuffer{background:#aa44ff;color:#fff}.ctWrap{display:flex;align-items:center;gap:3px;margin-top:2px}.ctLabel{font-size:9px;color:#aaa;width:18px}.ctBar{flex:1;height:5px;background:#333;border-radius:3px;overflow:hidden}.ctFill{height:100%;background:linear-gradient(90deg,#ff9800,#ffcc00);border-radius:3px;transition:width 0.2s}.ctFillReady{height:100%;background:#44ff88;border-radius:3px;width:100%}.synergyText{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:clamp(12px,3.8vw,22px);font-weight:bold;color:#fff;text-shadow:0 0 20px #ff0088,0 0 10px #ff0088;animation:synergyPop 1.2s forwards;pointer-events:none;z-index:9998;text-align:center;white-space:normal;word-break:break-word;max-width:90vw;box-sizing:border-box;padding:0 8px;line-height:1.3}@keyframes synergyPop{0%{opacity:0;transform:translate(-50%,-50%) scale(0.5)}20%{opacity:1;transform:translate(-50%,-60%) scale(1.3)}80%{opacity:1;transform:translate(-50%,-65%) scale(1.1)}100%{opacity:0;transform:translate(-50%,-80%) scale(0.9)}}.gimmickRow{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}.gBadge{font-size:9px;padding:2px 5px;border-radius:4px;font-weight:bold;background:#333;color:#ffd700;border:1px solid #ffd700}.dmgBurn{color:#ff6600!important}.dmgFreeze{color:#44ddff!important}.dmgShock{color:#ffee00!important}.dmgSynergy{color:#ff00cc!important;font-size:clamp(16px,5.5vw,30px)!important}#skillModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:10000;justify-content:center;align-items:center}#skillModal.open{display:flex}#skillModalBox{background:#1a1f2e;border:2px solid #ffd700;border-radius:14px;padding:20px 24px;max-width:320px;width:90%;text-align:center;position:relative}#skillModalBox img{width:80px;height:80px;object-fit:cover;border-radius:10px;margin-bottom:8px}#skillModalName{font-size:16px;font-weight:bold;margin-bottom:6px}#skillModalText{font-size:14px;color:#ffd700;margin-bottom:6px;line-height:1.5}#skillModalCT{font-size:12px;color:#aaa;margin-bottom:12px}#skillModalClose{background:#333;color:#fff;border:none;border-radius:8px;padding:6px 20px;cursor:pointer;font-size:14px}.skillBtn{margin-top:4px;background:#2a3a5a;color:#ffd700;border:1px solid #ffd700;border-radius:6px;padding:2px 8px;font-size:11px;cursor:pointer}#skillTreeModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:10001;justify-content:center;align-items:center}#skillTreeModal.open{display:flex}#skillTreeBox{background:#0d1120;border:2px solid #44cc88;border-radius:16px;padding:18px 14px;max-width:340px;width:92%;text-align:center;position:relative;max-height:88vh;overflow-y:auto}.stNode{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:88px;min-height:72px;border-radius:10px;padding:5px 4px;font-size:10px;border:2px solid #444;background:#111;color:#666;margin:3px;transition:0.2s;cursor:not-allowed}.stNode.unlocked{background:#1a3a20;border-color:#ffd700;color:#ffd700;box-shadow:0 0 8px #ffd70066;cursor:default}.stNode.available{border-color:#44cc88;background:#0d2010;color:#88ffaa;cursor:pointer;animation:stPulse 1.6s infinite alternate}.stNode.skipped{background:#0d0d0d;border-color:#333;color:#333;cursor:default;opacity:0.4}@keyframes stPulse{from{box-shadow:0 0 3px #44cc88}to{box-shadow:0 0 12px #44cc88,0 0 20px #44cc8844}}.stNodeLabel{font-weight:bold;font-size:11px;margin-bottom:2px}.stNodeBonus{font-size:9px;color:#aaffcc;line-height:1.3}.stNodeCost{font-size:9px;color:#ffd700;margin-top:3px}.stRow{display:flex;justify-content:center;gap:4px;margin:3px 0;flex-wrap:wrap}.stArrow{text-align:center;color:#44cc88;font-size:13px;line-height:1.2;margin:1px 0}.stNode.locked_sp{border-color:#aa6600;background:#1a1000;color:#aa7700;cursor:pointer}.stStageHeader{font-size:11px;font-weight:bold;color:#ffd700;background:linear-gradient(90deg,#1a1200,#2a2000,#1a1200);border:1px solid #443300;border-radius:6px;padding:3px 10px;margin:4px 0 2px;letter-spacing:1px}.stStageHeader.done{color:#44cc88;border-color:#224422;background:linear-gradient(90deg,#0a1a0a,#112011,#0a1a0a)}.stStageHeader.locked{color:#555;border-color:#333;background:#111}.spBadge{display:inline-block;background:linear-gradient(135deg,#1a3a1a,#0d2010);border:1px solid #44cc88;color:#88ffaa;border-radius:8px;padding:3px 10px;font-size:12px;font-weight:bold;margin:4px 0}#profileModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:15000;justify-content:center;align-items:flex-start;padding-top:10px}#profileModal.open{display:flex}#profileBox{background:linear-gradient(160deg,#0a0d1a,#0d1028);border:2px solid #ffd700;border-radius:18px;padding:16px 14px 16px;max-width:380px;width:96%;text-align:center;position:relative;max-height:94vh;overflow-y:auto;box-shadow:0 0 40px #ffd70033,0 0 80px #ffd70011}.profileHeader{font-size:17px;font-weight:bold;color:#ffd700;letter-spacing:2px;margin-bottom:12px}#profileBanner{background:linear-gradient(135deg,#1a1500,#2a2200,#1a1500);border:1px solid #ffd700;border-radius:12px;padding:10px 12px;margin-bottom:10px;display:flex;align-items:center;gap:10px}#profileBannerOshiIcon{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #ffd700;flex-shrink:0;background:#222}#profileBannerOshiIconEmpty{width:56px;height:56px;border-radius:50%;border:2px dashed #555;background:#111;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}#profileBannerRight{text-align:left;flex:1;min-width:0}#profileBannerName{font-size:16px;font-weight:bold;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#profileBannerTitleImg{margin-top:4px;max-width:100%;height:28px;object-fit:contain;display:block}.profileCard{background:#0f1525;border:1px solid #1e2840;border-radius:12px;padding:10px 12px;margin-bottom:8px;text-align:left}.profileLabel{font-size:9px;color:#556;letter-spacing:1.5px;margin-bottom:6px;text-transform:uppercase;font-weight:bold}.profileValue{font-size:14px;font-weight:bold;color:#fff}.profileValueGold{color:#ffd700}.profileValueGreen{color:#44ff88}.profileValueBlue{color:#44aaff}.profileInputRow{display:flex;align-items:center;gap:6px}.profileInput{flex:1;background:#1a1f2e;color:#fff;border:1px solid #333;border-radius:6px;padding:7px 10px;font-size:14px;outline:none}.profileInput:focus{border-color:#ffd700}.profileSaveBtn{background:linear-gradient(135deg,#ffd700,#ff9800);color:#000;border:none;border-radius:6px;padding:7px 14px;font-size:12px;font-weight:bold;cursor:pointer;white-space:nowrap}#titleSelectGrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;max-height:200px;overflow-y:auto}.titleSelectItem{background:#0d1a30;border:2px solid #1e3050;border-radius:8px;padding:6px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:0.15s}.titleSelectItem:hover{border-color:#ffd70088}.titleSelectItem.selected{border-color:#ffd700;background:#1a2a00;box-shadow:0 0 8px #ffd70066}.titleSelectItem.locked{opacity:0.35;cursor:default;border-color:#222}.titleBadge{width:100%;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold;overflow:hidden}.titleBadgeText{font-size:9px;color:#aaa;text-align:center;line-height:1.2}.titleLockLabel{font-size:9px;color:#555}#oshiGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-height:340px;overflow-y:auto;margin-top:8px;padding:2px 2px 4px}.oshiItem{cursor:pointer;border-radius:10px;border:2px solid #1e2840;background:#0d1120;display:flex;flex-direction:column;align-items:center;overflow:hidden;transition:border-color 0.15s,box-shadow 0.15s}.oshiItem:active{transform:scale(0.95)}.oshiItem.selected{border-color:#ffd700;box-shadow:0 0 12px #ffd700aa;background:#1a1800}.oshiImgWrap{width:100%;aspect-ratio:1;position:relative;overflow:hidden;background:#111}.oshiImgWrap img{width:100%;height:100%;object-fit:cover;display:block}.oshiRarityDot{position:absolute;top:3px;right:4px;font-size:7px;color:#ffd700;text-shadow:0 0 4px #000,0 0 2px #000;font-weight:bold;letter-spacing:-1px;line-height:1}.oshiSelectedBadge{position:absolute;top:3px;left:4px;font-size:10px;line-height:1}.oshiItemName{width:100%;color:#ccc;font-size:9px;padding:4px 4px 5px;text-align:center;line-height:1.3;word-break:break-all;background:#0d1120}.profileTop3Row{display:flex;gap:6px;flex-wrap:nowrap}.profileTop3Card{flex:1;min-width:0;background:#0d1a28;border:1px solid #1a3050;border-radius:8px;padding:6px;text-align:center;overflow:hidden}.profileTop3Card img{width:44px;height:44px;object-fit:cover;border-radius:6px;margin-bottom:2px;display:block;margin:0 auto 3px}.profileTop3Medal{font-size:18px;margin-bottom:2px}.profileDivider{border:none;border-top:1px solid #1a1f2e;margin:6px 0}#missionModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:16000;justify-content:center;align-items:flex-start;padding-top:10px}#missionModal.open{display:flex}#missionBox{background:linear-gradient(160deg,#0a0d1a,#0d1028);border:2px solid #44cc88;border-radius:18px;padding:16px 14px 16px;max-width:400px;width:96%;text-align:center;position:relative;max-height:94vh;overflow-y:auto;box-shadow:0 0 40px #44cc8833,0 0 80px #44cc8811}.missionHeader{font-size:17px;font-weight:bold;color:#44cc88;letter-spacing:2px;margin-bottom:12px}.missionTabs{display:flex;gap:4px;margin-bottom:12px;justify-content:center;flex-wrap:wrap}.missionTab{padding:5px 12px;border-radius:8px;font-size:12px;font-weight:bold;border:1px solid #333;background:#111;color:#666;cursor:pointer;transition:0.15s}.missionTab.active{background:#1a3a20;border-color:#44cc88;color:#88ffaa}.missionCard{background:#0f1525;border:1px solid #1e2840;border-radius:12px;padding:10px 12px;margin-bottom:7px;text-align:left;position:relative}.missionCard.completed{border-color:#44cc8855;opacity:0.6}.missionCard.claimable{border-color:#ffd700;box-shadow:0 0 8px #ffd70044;animation:missionPulse 1.5s infinite alternate}@keyframes missionPulse{from{box-shadow:0 0 5px #ffd70044}to{box-shadow:0 0 14px #ffd700aa}}.missionTitle{font-size:13px;font-weight:bold;color:#fff;margin-bottom:4px}.missionDesc{font-size:11px;color:#8899aa;margin-bottom:6px;line-height:1.4}.missionProgress{display:flex;align-items:center;gap:6px;margin-bottom:6px}.missionProgBar{flex:1;height:6px;background:#222;border-radius:3px;overflow:hidden}.missionProgFill{height:100%;background:linear-gradient(90deg,#44cc88,#88ffaa);border-radius:3px;transition:width 0.4s}.missionProgText{font-size:10px;color:#aaa;white-space:nowrap}.missionReward{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.missionRewardBadge{font-size:11px;padding:2px 8px;border-radius:6px;font-weight:bold}.missionRewardStone{background:#1a1800;color:#ffd700;border:1px solid #ffd700}.missionRewardSP{background:#0d2010;color:#88ffaa;border:1px solid #44cc88}.missionRewardTitle{background:#10001a;color:#bb88ff;border:1px solid #aa44ff}.missionClaimBtn{margin-left:auto;background:linear-gradient(135deg,#ffd700,#ff9800);color:#000;border:none;border-radius:6px;padding:4px 12px;font-size:12px;font-weight:bold;cursor:pointer}.missionDoneLabel{margin-left:auto;font-size:11px;color:#44cc88;font-weight:bold}.missionStatLine{font-size:11px;color:#556;margin:2px 0}#missionStatsBox{background:#0a0d1a;border:1px solid #1a2a1a;border-radius:10px;padding:8px 10px;margin-bottom:10px;text-align:left}</style>
+<style>#loading{position:fixed;top:0;left:0;width:100%;height:100%;background:#0b0f1a;display:flex;justify-content:center;align-items:center;z-index:9999}.loadingBox{text-align:center}.loadingLogo{width:220px;margin-bottom:20px;animation:logoFade 2s infinite}@keyframes logoFade{0%{opacity:0.5}50%{opacity:1}100%{opacity:0.5}}.loadingBar{width:200px;height:10px;background:#333;border-radius:10px;overflow:hidden;margin:0 auto 10px}#loadingFill{height:100%;width:0%;background:linear-gradient(90deg,#ffd700,#ff4444);transition:0.2s}.loadingText{font-size:14px;letter-spacing:2px}body{margin:0;background:#0b0f1a;color:#fff;font-family:sans-serif}.screen{display:none!important;padding:10px;text-align:center;min-height:0!important}.screen.active{display:block!important;min-height:auto}.fire{border:3px solid #ff4444}.water{border:3px solid #4488ff}.thunder{border:3px solid #ffd700}.wood{border:3px solid #44cc44}.light{border:3px solid #ffffff}.dark{border:3px solid #aa00ff}.card{display:inline-block;background:#1a1f2e;padding:6px;margin:5px;border-radius:10px;width:95px}.card img{width:100%;border-radius:8px}.ssr{box-shadow:0 0 20px gold}.rarity{font-size:12px;color:gold;font-weight:bold;margin-bottom:2px}.flash{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle,rgba(255,255,255,0.9),transparent);animation:flash 0.6s forwards;pointer-events:none;z-index:9990}@keyframes flash{0%{opacity:1}100%{opacity:0}}@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}@keyframes toastOut{from{opacity:1;transform:translateX(-50%) translateY(0)}to{opacity:0;transform:translateX(-50%) translateY(10px)}}#gachaOverlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:20000;overflow:hidden;flex-direction:column;align-items:center;justify-content:center}#gachaOverlay.active{display:flex}#gachaCanvas{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}.gacha-bg-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;border-radius:50%;pointer-events:none;opacity:0;transition:opacity 0.4s}.gacha-bg-glow.ssr-glow{background:radial-gradient(circle,rgba(255,215,0,0.3) 0%,rgba(255,140,0,0.15) 40%,transparent 70%)}.gacha-bg-glow.ultra-glow{background:radial-gradient(circle,rgba(0,255,255,0.4) 0%,rgba(255,0,255,0.2) 40%,transparent 70%);animation:ultraBgPulse 0.8s infinite alternate}@keyframes ultraBgPulse{from{transform:translate(-50%,-50%) scale(1)}to{transform:translate(-50%,-50%) scale(1.15)}}#gachaOpeningText{position:absolute;font-size:48px;font-weight:900;color:#fff;letter-spacing:8px;text-align:center;pointer-events:none;z-index:10;text-shadow:0 0 30px rgba(255,215,0,0.8),0 0 60px rgba(255,215,0,0.4);opacity:0}#gachaOpeningText.show{animation:openingTextAnim 1.2s forwards}@keyframes openingTextAnim{0%{opacity:0;transform:scale(0.3) rotate(-10deg)}30%{opacity:1;transform:scale(1.2) rotate(2deg)}60%{opacity:1;transform:scale(1.0) rotate(0deg)}100%{opacity:0;transform:scale(0.8) rotate(0deg)}}#gachaCardArea{position:relative;z-index:5;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;max-width:500px;padding:10px}.gacha-card-wrap{opacity:0;transform:translateY(40px) scale(0.8);transition:opacity 0.4s,transform 0.4s}.gacha-card-wrap.reveal{opacity:1;transform:translateY(0) scale(1)}.gacha-card-big{position:relative;width:100px;height:140px;transform-style:preserve-3d;transition:transform 0.7s cubic-bezier(0.4,0,0.2,1);cursor:pointer}.gacha-card-big.flipped{transform:rotateY(180deg)}.gacha-card-front,.gacha-card-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:12px;overflow:hidden}.gacha-card-front{background:linear-gradient(135deg,#1a1f3a,#2a2f55);border:2px solid #4a5070;display:flex;align-items:center;justify-content:center;font-size:40px}.gacha-card-front::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);animation:cardShine 2s infinite}@keyframes cardShine{0%{left:-100%}100%{left:200%}}.gacha-card-back{transform:rotateY(180deg);background:#1a1f2e;border:2px solid #444;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;font-size:11px}.gacha-card-back img{width:90%;height:90px;object-fit:cover;border-radius:8px}.gacha-card-back .rarity{font-size:12px;color:gold;font-weight:bold;margin-bottom:2px}.gacha-card-back.rarity-1{border-color:#888}.gacha-card-back.rarity-2{border-color:#4488ff;box-shadow:0 0 12px #4488ff66}.gacha-card-back.rarity-3{border-color:gold;box-shadow:0 0 20px gold}.gacha-card-back.rarity-4{border-color:cyan;box-shadow:0 0 30px cyan,0 0 60px magenta;animation:ultraCardGlow 1s infinite alternate}@keyframes ultraCardGlow{from{box-shadow:0 0 20px cyan,0 0 40px magenta}to{box-shadow:0 0 40px cyan,0 0 80px magenta,0 0 100px #ff00ff55}}.card.star5-fire{border:3px solid #ff4444;box-shadow:0 0 18px #ff444488,0 0 30px #ff444444;animation:star5GlowFire 1.2s infinite alternate}@keyframes star5GlowFire{from{box-shadow:0 0 10px #ff444488}to{box-shadow:0 0 28px #ff4444,0 0 50px #ff444466}}.card.star5-water{border:3px solid #4488ff;box-shadow:0 0 18px #4488ff88,0 0 30px #4488ff44;animation:star5GlowWater 1.2s infinite alternate}@keyframes star5GlowWater{from{box-shadow:0 0 10px #4488ff88}to{box-shadow:0 0 28px #4488ff,0 0 50px #4488ff66}}.card.star5-thunder{border:3px solid #ffd700;box-shadow:0 0 18px #ffd70088,0 0 30px #ffd70044;animation:star5GlowThunder 1.2s infinite alternate}@keyframes star5GlowThunder{from{box-shadow:0 0 10px #ffd70088}to{box-shadow:0 0 28px #ffd700,0 0 50px #ffd70066}}.card.star5-wood{border:3px solid #44cc44;box-shadow:0 0 18px #44cc4488,0 0 30px #44cc4444;animation:star5GlowWood 1.2s infinite alternate}@keyframes star5GlowWood{from{box-shadow:0 0 10px #44cc4488}to{box-shadow:0 0 28px #44cc44,0 0 50px #44cc4466}}.card.star5-light{border:3px solid #ffffff;box-shadow:0 0 18px #ffffff88,0 0 30px #ffffff44;animation:star5GlowLight 1.2s infinite alternate}@keyframes star5GlowLight{from{box-shadow:0 0 10px #ffffff88}to{box-shadow:0 0 28px #ffffff,0 0 50px #ffffcc66}}.card.star5-dark{border:3px solid #aa00ff;box-shadow:0 0 18px #aa00ff88,0 0 30px #aa00ff44;animation:star5GlowDark 1.2s infinite alternate}@keyframes star5GlowDark{from{box-shadow:0 0 10px #aa00ff88}to{box-shadow:0 0 28px #aa00ff,0 0 50px #aa00ff66}}.ssr-beam{position:absolute;top:50%;left:50%;width:4px;height:300px;transform-origin:bottom center;background:linear-gradient(to top,rgba(255,215,0,0.8),transparent);pointer-events:none;animation:beamFade 1.5s forwards}@keyframes beamFade{0%{opacity:1}100%{opacity:0}}.ultra-beam{position:absolute;top:50%;left:50%;width:4px;height:400px;transform-origin:bottom center;pointer-events:none;animation:ultraBeamFade 1.8s forwards}@keyframes ultraBeamFade{0%{opacity:1}100%{opacity:0}}.gacha-flash-r2{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle,rgba(68,136,255,0.7),transparent);animation:gachaFlashFade 0.8s forwards;pointer-events:none;z-index:19999}.gacha-flash-r3{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle,rgba(255,215,0,0.85),rgba(255,140,0,0.5),transparent);animation:gachaFlashFade 1.0s forwards;pointer-events:none;z-index:19999}.gacha-flash-r4{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(45deg,rgba(255,0,255,0.7),rgba(0,255,255,0.7),rgba(255,215,0,0.7));animation:gachaFlashFadeR4 1.5s forwards;pointer-events:none;z-index:19999}@keyframes gachaFlashFade{0%{opacity:1}100%{opacity:0}}@keyframes gachaFlashFadeR4{0%{opacity:1;transform:scale(1)}50%{opacity:0.8;transform:scale(1.05)}100%{opacity:0;transform:scale(1.1)}}.gacha-rarity-announce{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:56px;font-weight:900;letter-spacing:6px;pointer-events:none;z-index:20010;text-align:center;white-space:nowrap}.announce-ssr{color:#ffd700;text-shadow:0 0 40px #ffd700,0 0 80px #ff8800,0 0 120px #ff4400;animation:announceSSR 1.8s forwards}.announce-ultra{background:linear-gradient(90deg,#ff0080,#ff8c00,#ffd700,#00ff88,#00ffff,#8000ff);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px rgba(255,255,255,0.8));animation:announceUltra 2.0s forwards,rainbowShift 0.5s infinite linear}@keyframes announceSSR{0%{opacity:0;transform:translate(-50%,-50%) scale(0.3)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.3)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}80%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes announceUltra{0%{opacity:0;transform:translate(-50%,-50%) scale(0.2) rotate(-10deg)}15%{opacity:1;transform:translate(-50%,-50%) scale(1.4) rotate(3deg)}40%{opacity:1;transform:translate(-50%,-50%) scale(1.0) rotate(0deg)}80%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes rainbowShift{from{background-position:0% center}to{background-position:200% center}}#gachaSkipBtn{position:fixed;bottom:30px;right:20px;background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:8px 20px;font-size:13px;cursor:pointer;z-index:20020;backdrop-filter:blur(4px);transition:background 0.2s}#gachaSkipBtn:hover{background:rgba(255,255,255,0.25)}.tap-ripple{position:fixed;border-radius:50%;width:60px;height:60px;background:rgba(255,255,255,0.3);pointer-events:none;z-index:20030;transform:translate(-50%,-50%) scale(0);animation:tapRipple 0.5s forwards}@keyframes tapRipple{to{transform:translate(-50%,-50%) scale(3);opacity:0}}#gachaResultSummary{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:20000;display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:20px;overflow-y:auto}#gachaResultSummary.active{display:flex}.summary-title{font-size:20px;font-weight:bold;color:#ffd700;letter-spacing:4px;margin-bottom:16px;text-shadow:0 0 20px #ffd700aa}.summary-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:500px;padding:0 10px}.summary-card{background:#1a1f2e;border-radius:10px;padding:6px;width:85px;text-align:center;font-size:10px;border:2px solid #333;transition:transform 0.2s;opacity:0;transform:scale(0.5)}.summary-card.show{opacity:1;transform:scale(1);transition:opacity 0.3s,transform 0.3s}.summary-card img{width:100%;height:72px;object-fit:cover;border-radius:7px}.summary-card.r2{border-color:#4488ff;box-shadow:0 0 8px #4488ff44}.summary-card.r3{border-color:gold;box-shadow:0 0 12px gold}.summary-card.r4{border-color:cyan;box-shadow:0 0 20px cyan,0 0 40px magenta;animation:ultraCardGlow 1s infinite alternate}.summary-close-btn{margin-top:16px;margin-bottom:30px;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-weight:bold;font-size:15px;border:none;border-radius:12px;padding:12px 40px;cursor:pointer;letter-spacing:2px}#kakuteiOverlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:21000;pointer-events:none;overflow:hidden}#kakuteiOverlay.active{display:block;pointer-events:all}.kakutei-text{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:64px;font-weight:900;letter-spacing:8px;text-align:center;white-space:nowrap;pointer-events:none;z-index:21010}.kakutei-kakutei{color:#fff;text-shadow:0 0 30px #ffd700,0 0 60px #ff8800,0 0 100px #ff4400;animation:kakuteiAnim 2.2s forwards}.kakutei-shougou{background:linear-gradient(90deg,#ff0080,#ffd700,#00ffff,#8000ff);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px rgba(255,255,255,0.9));animation:shougouAnim 2.5s forwards,rainbowShift 0.4s infinite linear}.kakutei-attr{font-size:52px;animation:attrConfirmAnim 2.0s forwards}.kakutei-dupe{font-size:48px;color:#88ffcc;text-shadow:0 0 20px #44ffaa,0 0 40px #00ff88;animation:dupeAnim 2.0s forwards}@keyframes kakuteiAnim{0%{opacity:0;transform:translate(-50%,-50%) scale(0.2) rotate(-15deg)}15%{opacity:1;transform:translate(-50%,-50%) scale(1.4) rotate(3deg)}35%{opacity:1;transform:translate(-50%,-50%) scale(1.0) rotate(0deg)}80%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes shougouAnim{0%{opacity:0;transform:translate(-50%,-50%) scale(0.1) rotate(20deg)}12%{opacity:1;transform:translate(-50%,-50%) scale(1.5) rotate(-3deg)}30%{opacity:1;transform:translate(-50%,-50%) scale(1.0) rotate(0deg)}80%{opacity:1;transform:translate(-50%,-50%) scale(1.05)}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes attrConfirmAnim{0%{opacity:0;transform:translate(-50%,-50%) scale(0.3)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.2)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes dupeAnim{0%{opacity:0;transform:translate(-50%,-50%) translateY(40px) scale(0.5)}20%{opacity:1;transform:translate(-50%,-50%) translateY(0) scale(1.1)}70%{opacity:1;transform:translate(-50%,-50%) translateY(0) scale(1.0)}100%{opacity:0;transform:translate(-50%,-50%) translateY(-20px) scale(0.9)}}.shougou-lines{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:20900;overflow:hidden}.shougou-line{position:absolute;height:6px;width:120%;opacity:0;animation:shougouLine 1.5s forwards}@keyframes shougouLine{0%{opacity:0;transform:translateX(-110%)}40%{opacity:1}100%{opacity:0;transform:translateX(10%)}}.gacha-bg-glow.attr-glow-fire{background:radial-gradient(circle,rgba(255,80,0,0.4) 0%,rgba(255,140,0,0.2) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-water{background:radial-gradient(circle,rgba(0,140,255,0.4) 0%,rgba(0,200,255,0.2) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-thunder{background:radial-gradient(circle,rgba(255,215,0,0.4) 0%,rgba(255,170,0,0.2) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-wood{background:radial-gradient(circle,rgba(68,200,68,0.4) 0%,rgba(100,255,100,0.2) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-light{background:radial-gradient(circle,rgba(255,255,220,0.5) 0%,rgba(255,220,150,0.25) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-dark{background:radial-gradient(circle,rgba(170,0,255,0.45) 0%,rgba(220,100,255,0.2) 40%,transparent 70%)}.summary-card.attr-fire{border-color:#ff4444;box-shadow:0 0 10px #ff444466}.summary-card.attr-water{border-color:#4488ff;box-shadow:0 0 10px #4488ff66}.summary-card.attr-thunder{border-color:#ffd700;box-shadow:0 0 10px #ffd70066}.summary-card.attr-wood{border-color:#44cc44;box-shadow:0 0 10px #44cc4466}.summary-card.attr-light{border-color:#ffffff;box-shadow:0 0 10px #ffffff55}.summary-card.attr-dark{border-color:#aa00ff;box-shadow:0 0 10px #aa00ff66}.kakutei-border-flash{position:fixed;top:0;left:0;width:100%;height:100%;border:6px solid gold;box-sizing:border-box;pointer-events:none;z-index:20990;animation:borderFlash 0.6s 3 alternate}@keyframes borderFlash{from{opacity:1;border-color:gold}to{opacity:0;border-color:transparent}}.attr-beam-overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:20800;animation:attrBeamFade 1.4s forwards}@keyframes attrBeamFade{0%{opacity:1}60%{opacity:0.6}100%{opacity:0}}.rarity-upgrade-badge{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#1a1000,#2a2000);border:2px solid #ffd700;border-radius:12px;padding:8px 20px;font-size:14px;font-weight:bold;color:#ffd700;letter-spacing:2px;z-index:21005;pointer-events:none;animation:badgePop 0.4s forwards}@keyframes badgePop{0%{opacity:0;transform:translateX(-50%) scale(0.7)}100%{opacity:1;transform:translateX(-50%) scale(1.0)}}.flip{position:relative;width:90px;height:120px;transform-style:preserve-3d;transition:0.6s}.open .flip{transform:rotateY(180deg)}.front,.back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px}.front{background:linear-gradient(135deg,#2a2f55,#1a1f3a);border:2px solid #3a4060}.back{transform:rotateY(180deg);background:#1a1f2e}#battleMain{display:flex;justify-content:space-between;align-items:center;gap:10px;max-width:520px;margin:auto}.teamArea{display:flex;flex-direction:column;gap:8px;width:40%;align-items:center}#enemyArea{width:55%;display:flex;justify-content:center}.unit{background:#1a1f2e;padding:6px;border-radius:12px;font-size:10px;position:relative}.ally{width:140px}.unit img{width:100%;max-height:90px;object-fit:cover;border-radius:8px}.enemy{width:160px}.turn{outline:2px solid yellow;box-shadow:0 0 6px yellow}.bar{background:#333;height:8px;border-radius:5px;margin-top:3px}.hp{background:#4caf50;height:8px}.gauge{background:#ff9800;height:6px}.damage{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(1);font-size:clamp(14px,4.5vw,26px);font-weight:bold;color:#fff;text-shadow:0 0 10px #000,0 0 5px #000;animation:damagePop 0.9s forwards;pointer-events:none;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}@keyframes damagePop{0%{opacity:0;transform:translate(-50%,-50%) scale(0.5)}20%{opacity:1;transform:translate(-50%,-60%) scale(1.2)}100%{opacity:0;transform:translate(-50%,-100%) scale(0.8)}}.weak{color:#ff4444}.resist{color:#44aaff}.rainbowFlash{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(45deg,red,orange,yellow,green,cyan,blue,purple);opacity:0.8;animation:rainbow 0.8s forwards;z-index:999}@keyframes rainbow{0%{opacity:1}100%{opacity:0}}.shake{animation:shake 0.4s}@keyframes shake{0%{transform:translate(0,0)}25%{transform:translate(-5px,5px)}50%{transform:translate(5px,-5px)}75%{transform:translate(-5px,5px)}100%{transform:translate(0,0)}}.ultra{box-shadow:0 0 25px cyan,0 0 40px magenta;animation:glow 1s infinite alternate}@keyframes glow{from{filter:brightness(1)}to{filter:brightness(1.6)}}.eventFlash{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#ff00cc,#3333ff,#00ffff);opacity:0.8;animation:eventFlash 0.8s forwards;z-index:999}@keyframes eventFlash{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.2)}}.banner{animation:bannerGlow 1.5s infinite alternate}@keyframes bannerGlow{from{filter:brightness(1)}to{filter:brightness(1.3)}}#gameTitle{width:200px;height:auto}.status{font-size:12px;margin:4px 0;min-height:14px}.loadingText{font-size:24px;color:#fff;animation:blink 1s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}.hitText{position:absolute;top:20%;left:50%;transform:translateX(-50%);font-size:clamp(11px,3vw,18px);font-weight:bold;color:#ffcc00;text-shadow:0 0 8px #000;animation:hitPop 0.8s forwards;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}.totalDamage{position:absolute;top:30%;left:50%;transform:translateX(-50%);font-size:clamp(14px,4vw,24px);font-weight:bold;color:#ff4444;text-shadow:0 0 10px #000;animation:totalPop 1s forwards;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}@keyframes hitPop{0%{opacity:0;transform:translate(-50%,0) scale(0.5)}30%{opacity:1;transform:translate(-50%,-10px) scale(1.2)}100%{opacity:0;transform:translate(-50%,-30px) scale(1)}}@keyframes totalPop{0%{opacity:0;transform:translate(-50%,0) scale(0.5)}30%{opacity:1;transform:translate(-50%,-10px) scale(1.3)}100%{opacity:0;transform:translate(-50%,-40px) scale(1)}}.dexRow{display:flex;align-items:center;background:#1a1f2e;margin:6px;padding:8px;border-radius:10px;gap:10px}.dexRow img{width:80px;height:80px;object-fit:cover;border-radius:8px}.dexText{text-align:left;font-size:14px}.statusRow{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px;min-height:18px}.sBadge{font-size:10px;padding:1px 4px;border-radius:4px;font-weight:bold}.sBurn{background:#ff4400;color:#fff}.sFreeze{background:#44bbff;color:#fff}.sShock{background:#ffdd00;color:#000}.sPoison{background:#aa44ff;color:#fff}.sShield{background:#44aaff;color:#fff}.sCounter{background:#ff8800;color:#fff}.sBuff{background:#44ff88;color:#000}.sDebuff{background:#8866ff;color:#fff}.sPassive{background:#1a3a1a;color:#88ff88;border:1px solid #44cc44}.roleBadge{display:inline-block;font-size:9px;padding:1px 5px;border-radius:4px;font-weight:bold;margin-bottom:2px}.role-attacker{background:#ff4444;color:#fff}.role-tank{background:#4488ff;color:#fff}.role-support{background:#44cc44;color:#fff}.role-debuffer{background:#aa44ff;color:#fff}.ctWrap{display:flex;align-items:center;gap:3px;margin-top:2px}.ctLabel{font-size:9px;color:#aaa;width:18px}.ctBar{flex:1;height:5px;background:#333;border-radius:3px;overflow:hidden}.ctFill{height:100%;background:linear-gradient(90deg,#ff9800,#ffcc00);border-radius:3px;transition:width 0.2s}.ctFillReady{height:100%;background:#44ff88;border-radius:3px;width:100%}.synergyText{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:clamp(12px,3.8vw,22px);font-weight:bold;color:#fff;text-shadow:0 0 20px #ff0088,0 0 10px #ff0088;animation:synergyPop 1.2s forwards;pointer-events:none;z-index:9998;text-align:center;white-space:normal;word-break:break-word;max-width:90vw;box-sizing:border-box;padding:0 8px;line-height:1.3}@keyframes synergyPop{0%{opacity:0;transform:translate(-50%,-50%) scale(0.5)}20%{opacity:1;transform:translate(-50%,-60%) scale(1.3)}80%{opacity:1;transform:translate(-50%,-65%) scale(1.1)}100%{opacity:0;transform:translate(-50%,-80%) scale(0.9)}}.gimmickRow{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}.gBadge{font-size:9px;padding:2px 5px;border-radius:4px;font-weight:bold;background:#333;color:#ffd700;border:1px solid #ffd700}.dmgBurn{color:#ff6600!important}.dmgFreeze{color:#44ddff!important}.dmgShock{color:#ffee00!important}.dmgSynergy{color:#ff00cc!important;font-size:clamp(16px,5.5vw,30px)!important}#skillModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:10000;justify-content:center;align-items:center}#skillModal.open{display:flex}#skillModalBox{background:#1a1f2e;border:2px solid #ffd700;border-radius:14px;padding:20px 24px;max-width:320px;width:90%;text-align:center;position:relative}#skillModalBox img{width:80px;height:80px;object-fit:cover;border-radius:10px;margin-bottom:8px}#skillModalName{font-size:16px;font-weight:bold;margin-bottom:6px}#skillModalText{font-size:14px;color:#ffd700;margin-bottom:6px;line-height:1.5}#skillModalCT{font-size:12px;color:#aaa;margin-bottom:12px}#skillModalClose{background:#333;color:#fff;border:none;border-radius:8px;padding:6px 20px;cursor:pointer;font-size:14px}.skillBtn{margin-top:4px;background:#2a3a5a;color:#ffd700;border:1px solid #ffd700;border-radius:6px;padding:2px 8px;font-size:11px;cursor:pointer}#skillTreeModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:10001;justify-content:center;align-items:center}#skillTreeModal.open{display:flex}#skillTreeBox{background:#0d1120;border:2px solid #44cc88;border-radius:16px;padding:18px 14px;max-width:340px;width:92%;text-align:center;position:relative;max-height:88vh;overflow-y:auto}.stNode{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:88px;min-height:72px;border-radius:10px;padding:5px 4px;font-size:10px;border:2px solid #444;background:#111;color:#666;margin:3px;transition:0.2s;cursor:not-allowed}.stNode.unlocked{background:#1a3a20;border-color:#ffd700;color:#ffd700;box-shadow:0 0 8px #ffd70066;cursor:default}.stNode.available{border-color:#44cc88;background:#0d2010;color:#88ffaa;cursor:pointer;animation:stPulse 1.6s infinite alternate}.stNode.skipped{background:#0d0d0d;border-color:#333;color:#333;cursor:default;opacity:0.4}@keyframes stPulse{from{box-shadow:0 0 3px #44cc88}to{box-shadow:0 0 12px #44cc88,0 0 20px #44cc8844}}.stNodeLabel{font-weight:bold;font-size:11px;margin-bottom:2px}.stNodeBonus{font-size:9px;color:#aaffcc;line-height:1.3}.stNodeCost{font-size:9px;color:#ffd700;margin-top:3px}.stRow{display:flex;justify-content:center;gap:4px;margin:3px 0;flex-wrap:wrap}.stArrow{text-align:center;color:#44cc88;font-size:13px;line-height:1.2;margin:1px 0}.stNode.locked_sp{border-color:#aa6600;background:#1a1000;color:#aa7700;cursor:pointer}.stStageHeader{font-size:11px;font-weight:bold;color:#ffd700;background:linear-gradient(90deg,#1a1200,#2a2000,#1a1200);border:1px solid #443300;border-radius:6px;padding:3px 10px;margin:4px 0 2px;letter-spacing:1px}.stStageHeader.done{color:#44cc88;border-color:#224422;background:linear-gradient(90deg,#0a1a0a,#112011,#0a1a0a)}.stStageHeader.locked{color:#555;border-color:#333;background:#111}.spBadge{display:inline-block;background:linear-gradient(135deg,#1a3a1a,#0d2010);border:1px solid #44cc88;color:#88ffaa;border-radius:8px;padding:3px 10px;font-size:12px;font-weight:bold;margin:4px 0}#profileModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:15000;justify-content:center;align-items:flex-start;padding-top:10px}#profileModal.open{display:flex}#profileBox{background:linear-gradient(160deg,#0a0d1a,#0d1028);border:2px solid #ffd700;border-radius:18px;padding:16px 14px 16px;max-width:380px;width:96%;text-align:center;position:relative;max-height:94vh;overflow-y:auto;box-shadow:0 0 40px #ffd70033,0 0 80px #ffd70011}.profileHeader{font-size:17px;font-weight:bold;color:#ffd700;letter-spacing:2px;margin-bottom:12px}#profileBanner{background:linear-gradient(135deg,#1a1500,#2a2200,#1a1500);border:1px solid #ffd700;border-radius:12px;padding:10px 12px;margin-bottom:10px;display:flex;align-items:center;gap:10px}#profileBannerOshiIcon{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #ffd700;flex-shrink:0;background:#222}#profileBannerOshiIconEmpty{width:56px;height:56px;border-radius:50%;border:2px dashed #555;background:#111;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}#profileBannerRight{text-align:left;flex:1;min-width:0}#profileBannerName{font-size:16px;font-weight:bold;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#profileBannerTitleImg{margin-top:4px;max-width:100%;height:28px;object-fit:contain;display:block}.profileCard{background:#0f1525;border:1px solid #1e2840;border-radius:12px;padding:10px 12px;margin-bottom:8px;text-align:left}.profileLabel{font-size:9px;color:#556;letter-spacing:1.5px;margin-bottom:6px;text-transform:uppercase;font-weight:bold}.profileValue{font-size:14px;font-weight:bold;color:#fff}.profileValueGold{color:#ffd700}.profileValueGreen{color:#44ff88}.profileValueBlue{color:#44aaff}.profileInputRow{display:flex;align-items:center;gap:6px}.profileInput{flex:1;background:#1a1f2e;color:#fff;border:1px solid #333;border-radius:6px;padding:7px 10px;font-size:14px;outline:none}.profileInput:focus{border-color:#ffd700}.profileSaveBtn{background:linear-gradient(135deg,#ffd700,#ff9800);color:#000;border:none;border-radius:6px;padding:7px 14px;font-size:12px;font-weight:bold;cursor:pointer;white-space:nowrap}#titleSelectGrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;max-height:200px;overflow-y:auto}.titleSelectItem{background:#0d1a30;border:2px solid #1e3050;border-radius:8px;padding:6px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:0.15s}.titleSelectItem:hover{border-color:#ffd70088}.titleSelectItem.selected{border-color:#ffd700;background:#1a2a00;box-shadow:0 0 8px #ffd70066}.titleSelectItem.locked{opacity:0.35;cursor:default;border-color:#222}.titleBadge{width:100%;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold;overflow:hidden}.titleBadgeText{font-size:9px;color:#aaa;text-align:center;line-height:1.2}.titleLockLabel{font-size:9px;color:#555}#oshiGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-height:340px;overflow-y:auto;margin-top:8px;padding:2px 2px 4px}.oshiItem{cursor:pointer;border-radius:10px;border:2px solid #1e2840;background:#0d1120;display:flex;flex-direction:column;align-items:center;overflow:hidden;transition:border-color 0.15s,box-shadow 0.15s}.oshiItem:active{transform:scale(0.95)}.oshiItem.selected{border-color:#ffd700;box-shadow:0 0 12px #ffd700aa;background:#1a1800}.oshiImgWrap{width:100%;aspect-ratio:1;position:relative;overflow:hidden;background:#111}.oshiImgWrap img{width:100%;height:100%;object-fit:cover;display:block}.oshiRarityDot{position:absolute;top:3px;right:4px;font-size:7px;color:#ffd700;text-shadow:0 0 4px #000,0 0 2px #000;font-weight:bold;letter-spacing:-1px;line-height:1}.oshiSelectedBadge{position:absolute;top:3px;left:4px;font-size:10px;line-height:1}.oshiItemName{width:100%;color:#ccc;font-size:9px;padding:4px 4px 5px;text-align:center;line-height:1.3;word-break:break-all;background:#0d1120}.profileTop3Row{display:flex;gap:6px;flex-wrap:nowrap}.profileTop3Card{flex:1;min-width:0;background:#0d1a28;border:1px solid #1a3050;border-radius:8px;padding:6px;text-align:center;overflow:hidden}.profileTop3Card img{width:44px;height:44px;object-fit:cover;border-radius:6px;margin-bottom:2px;display:block;margin:0 auto 3px}.profileTop3Medal{font-size:18px;margin-bottom:2px}.profileDivider{border:none;border-top:1px solid #1a1f2e;margin:6px 0}#missionModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:16000;justify-content:center;align-items:flex-start;padding-top:10px}#missionModal.open{display:flex}#missionBox{background:linear-gradient(160deg,#0a0d1a,#0d1028);border:2px solid #44cc88;border-radius:18px;padding:16px 14px 16px;max-width:400px;width:96%;text-align:center;position:relative;max-height:94vh;overflow-y:auto;box-shadow:0 0 40px #44cc8833,0 0 80px #44cc8811}.missionHeader{font-size:17px;font-weight:bold;color:#44cc88;letter-spacing:2px;margin-bottom:12px}.missionTabs{display:flex;gap:4px;margin-bottom:12px;justify-content:center;flex-wrap:wrap}.missionTab{padding:5px 12px;border-radius:8px;font-size:12px;font-weight:bold;border:1px solid #333;background:#111;color:#666;cursor:pointer;transition:0.15s}.missionTab.active{background:#1a3a20;border-color:#44cc88;color:#88ffaa}.missionCard{background:#0f1525;border:1px solid #1e2840;border-radius:12px;padding:10px 12px;margin-bottom:7px;text-align:left;position:relative}.missionCard.completed{border-color:#44cc8855;opacity:0.6}.missionCard.claimable{border-color:#ffd700;box-shadow:0 0 8px #ffd70044;animation:missionPulse 1.5s infinite alternate}@keyframes missionPulse{from{box-shadow:0 0 5px #ffd70044}to{box-shadow:0 0 14px #ffd700aa}}.missionTitle{font-size:13px;font-weight:bold;color:#fff;margin-bottom:4px}.missionDesc{font-size:11px;color:#8899aa;margin-bottom:6px;line-height:1.4}.missionProgress{display:flex;align-items:center;gap:6px;margin-bottom:6px}.missionProgBar{flex:1;height:6px;background:#222;border-radius:3px;overflow:hidden}.missionProgFill{height:100%;background:linear-gradient(90deg,#44cc88,#88ffaa);border-radius:3px;transition:width 0.4s}.missionProgText{font-size:10px;color:#aaa;white-space:nowrap}.missionReward{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.missionRewardBadge{font-size:11px;padding:2px 8px;border-radius:6px;font-weight:bold}.missionRewardStone{background:#1a1800;color:#ffd700;border:1px solid #ffd700}.missionRewardSP{background:#0d2010;color:#88ffaa;border:1px solid #44cc88}.missionRewardTitle{background:#10001a;color:#bb88ff;border:1px solid #aa44ff}.missionClaimBtn{margin-left:auto;background:linear-gradient(135deg,#ffd700,#ff9800);color:#000;border:none;border-radius:6px;padding:4px 12px;font-size:12px;font-weight:bold;cursor:pointer}.missionDoneLabel{margin-left:auto;font-size:11px;color:#44cc88;font-weight:bold}.missionStatLine{font-size:11px;color:#556;margin:2px 0}#missionStatsBox{background:#0a0d1a;border:1px solid #1a2a1a;border-radius:10px;padding:8px 10px;margin-bottom:10px;text-align:left}</style>
 </head>
 
 <body>
@@ -235,6 +235,7 @@
   </div>
 </div>
 
+<!-- キャラ画像拡大モーダル -->
 <div id="skillModal">
   <div id="skillModalBox">
     <img id="skillModalImg" src="">
@@ -286,13 +287,6 @@
 <div id="missionModal">
   <div id="missionBox">
     <div class="missionHeader">📋 ミッション</div>
-    <div id="missionStatsBox">
-      <div style="font-size:10px;color:#44cc88;font-weight:bold;margin-bottom:5px;letter-spacing:1px;">📊 プレイ統計</div>
-      <div class="missionStatLine" id="statTrialWins">試練クリア: 0回</div>
-      <div class="missionStatLine" id="statEventWins">イベントクリア: 0回</div>
-      <div class="missionStatLine" id="statAilmentCount">状態異常付与: 0回</div>
-      <div class="missionStatLine" id="statThunderWins">雷属性限定勝利: 0回</div>
-    </div>
     <div class="missionTabs" id="missionTabs">
       <div class="missionTab active" onclick="switchMissionTab('active')">受注中</div>
       <div class="missionTab" onclick="switchMissionTab('done')">達成済み</div>
@@ -324,63 +318,57 @@
   <div style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.04) 3px,rgba(0,0,0,0.04) 4px);"></div>
 
   
-  <div style="position:relative;z-index:2;padding-top:40px;text-align:center;">
+  <div style="position:relative;z-index:2;padding-top:12px;text-align:center;">
     <div style="position:relative;display:inline-block;">
-      
-      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:320px;height:120px;border-radius:50%;background:radial-gradient(ellipse,rgba(180,120,255,0.4) 0%,transparent 70%);filter:blur(20px);animation:logoGlowPulse 3s infinite alternate;"></div>
-      <img src="https://imgur.com/5Olw81v.png" id="gameTitle" style="position:relative;z-index:1;">
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:200px;height:70px;border-radius:50%;background:radial-gradient(ellipse,rgba(180,120,255,0.4) 0%,transparent 70%);filter:blur(16px);animation:logoGlowPulse 3s infinite alternate;"></div>
+      <img src="https://imgur.com/5Olw81v.png" id="gameTitle" style="position:relative;z-index:1;width:200px;height:auto;">
     </div>
   </div>
 
   
-  <div style="position:relative;z-index:2;margin:18px auto 0;max-width:340px;display:flex;align-items:center;gap:10px;padding:0 20px;">
+  <div style="position:relative;z-index:2;margin:6px auto 0;max-width:340px;display:flex;align-items:center;gap:10px;padding:0 20px;">
     <div style="flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(180,120,255,0.8),transparent);"></div>
-    <span style="color:rgba(200,170,255,0.7);font-size:11px;letter-spacing:4px;font-family:'Helvetica Neue',sans-serif;">BATTLE RPG</span>
+    <span style="color:rgba(200,170,255,0.7);font-size:10px;letter-spacing:3px;font-family:'Helvetica Neue',sans-serif;">BATTLE RPG</span>
     <div style="flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(180,120,255,0.8),transparent);"></div>
   </div>
 
   
-  <div style="position:relative;z-index:2;margin:24px auto 0;max-width:400px;padding:0 20px;">
-    
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
-      <div style="
-        background:linear-gradient(135deg,rgba(255,100,0,0.15),rgba(180,30,0,0.15));border:1px solid rgba(255,120,60,0.35);border-radius:14px;padding:14px;text-align:center;box-shadow:0 0 20px rgba(255,80,0,0.1);cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;" onclick="go('trial')" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'" ontouchstart="this.style.transform='scale(0.95)'" ontouchend="this.style.transform='scale(1)'">
-        <div style="font-size:28px;margin-bottom:4px;">⚔️</div>
-        <div style="color:#ff8844;font-size:11px;font-weight:bold;letter-spacing:1px;">試練</div>
-        <div style="color:rgba(255,150,100,0.5);font-size:9px;margin-top:2px;">TRIAL</div>
+  <div style="position:relative;z-index:2;margin:10px auto 0;max-width:420px;padding:0 12px;">
+    <!-- 上段：試練・イベント・鍛錬 3列グリッド -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px;">
+      <div style="background:linear-gradient(135deg,rgba(255,100,0,0.15),rgba(180,30,0,0.15));border:1px solid rgba(255,120,60,0.35);border-radius:12px;padding:10px 6px;text-align:center;cursor:pointer;transition:transform 0.15s;" onclick="go('trial')" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'" ontouchstart="this.style.transform='scale(0.95)'" ontouchend="this.style.transform='scale(1)'">
+        <div style="font-size:22px;margin-bottom:3px;">⚔️</div>
+        <div style="color:#ff8844;font-size:10px;font-weight:bold;letter-spacing:1px;">試練</div>
       </div>
-      <div style="
-        background:linear-gradient(135deg,rgba(0,180,255,0.15),rgba(0,80,180,0.15));border:1px solid rgba(60,160,255,0.35);border-radius:14px;padding:14px;text-align:center;box-shadow:0 0 20px rgba(0,150,255,0.1);cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;" onclick="go('event')" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'" ontouchstart="this.style.transform='scale(0.95)'" ontouchend="this.style.transform='scale(1)'">
-        <div style="font-size:28px;margin-bottom:4px;">🌌</div>
-        <div style="color:#44aaff;font-size:11px;font-weight:bold;letter-spacing:1px;">イベント</div>
-        <div style="color:rgba(100,180,255,0.5);font-size:9px;margin-top:2px;">EVENT</div>
+      <div style="background:linear-gradient(135deg,rgba(0,180,255,0.15),rgba(0,80,180,0.15));border:1px solid rgba(60,160,255,0.35);border-radius:12px;padding:10px 6px;text-align:center;cursor:pointer;transition:transform 0.15s;" onclick="go('event')" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'" ontouchstart="this.style.transform='scale(0.95)'" ontouchend="this.style.transform='scale(1)'">
+        <div style="font-size:22px;margin-bottom:3px;">🌌</div>
+        <div style="color:#44aaff;font-size:10px;font-weight:bold;letter-spacing:1px;">イベント</div>
       </div>
-    </div>
-    
-    <div style="margin-bottom:16px;">
-      <div style="
-        background:linear-gradient(135deg,rgba(80,200,120,0.15),rgba(20,100,60,0.15));border:1px solid rgba(80,200,120,0.4);border-radius:14px;padding:14px;text-align:center;box-shadow:0 0 20px rgba(60,180,100,0.12);cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;display:flex;align-items:center;gap:14px;justify-content:center;" onclick="go('training')" onmousedown="this.style.transform='scale(0.97)'" onmouseup="this.style.transform='scale(1)'" ontouchstart="this.style.transform='scale(0.97)'" ontouchend="this.style.transform='scale(1)'">
-        <div style="font-size:28px;">🏋️</div>
-        <div style="text-align:left;">
-          <div style="color:#66dd99;font-size:12px;font-weight:bold;letter-spacing:1.5px;">鍛錬</div>
-          <div style="color:rgba(100,220,150,0.5);font-size:9px;margin-top:2px;">TRAINING — 自由設定バトル</div>
-        </div>
+      <div style="background:linear-gradient(135deg,rgba(80,200,120,0.15),rgba(20,100,60,0.15));border:1px solid rgba(80,200,120,0.4);border-radius:12px;padding:10px 6px;text-align:center;cursor:pointer;transition:transform 0.15s;" onclick="go('training')" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'" ontouchstart="this.style.transform='scale(0.95)'" ontouchend="this.style.transform='scale(1)'">
+        <div style="font-size:22px;margin-bottom:3px;">🏋️</div>
+        <div style="color:#66dd99;font-size:10px;font-weight:bold;letter-spacing:1px;">鍛錬</div>
       </div>
     </div>
-    <div style="margin-bottom:16px;">
-      <div style="
-        background:linear-gradient(135deg,rgba(255,180,30,0.15),rgba(180,80,0,0.15));border:1px solid rgba(255,180,50,0.4);border-radius:14px;padding:14px;text-align:center;box-shadow:0 0 20px rgba(255,150,0,0.1);cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;display:flex;align-items:center;gap:14px;justify-content:center;" onclick="go('itemshop')" onmousedown="this.style.transform='scale(0.97)'" onmouseup="this.style.transform='scale(1)'" ontouchstart="this.style.transform='scale(0.97)'" ontouchend="this.style.transform='scale(1)'">
-        <div style="font-size:28px;">📦</div>
-        <div style="text-align:left;">
-          <div style="color:#ffcc44;font-size:12px;font-weight:bold;letter-spacing:1.5px;">アイテムショップ</div>
-          <div style="color:rgba(255,200,80,0.5);font-size:9px;margin-top:2px;">SHOP — 経験値書・昇星素材</div>
-        </div>
+    <!-- 下段：ショップ・プレゼント・ログボ 3列グリッド -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px;">
+      <div style="background:linear-gradient(135deg,rgba(255,180,30,0.15),rgba(180,80,0,0.15));border:1px solid rgba(255,180,50,0.4);border-radius:12px;padding:10px 6px;text-align:center;cursor:pointer;transition:transform 0.15s;" onclick="go('itemshop')" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'" ontouchstart="this.style.transform='scale(0.95)'" ontouchend="this.style.transform='scale(1)'">
+        <div style="font-size:22px;margin-bottom:3px;">📦</div>
+        <div style="color:#ffcc44;font-size:10px;font-weight:bold;letter-spacing:0.5px;">ショップ</div>
+      </div>
+      <div style="background:linear-gradient(135deg,rgba(255,100,180,0.15),rgba(160,0,100,0.15));border:1px solid rgba(255,130,200,0.4);border-radius:12px;padding:10px 6px;text-align:center;cursor:pointer;transition:transform 0.15s;position:relative;" onclick="openPresentBox()" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'" ontouchstart="this.style.transform='scale(0.95)'" ontouchend="this.style.transform='scale(1)'">
+        <div style="font-size:22px;margin-bottom:3px;">🎁</div>
+        <div style="color:#ff88cc;font-size:10px;font-weight:bold;letter-spacing:0.5px;">プレゼント</div>
+        <span id="presentBadgeHome" style="display:none;position:absolute;top:6px;right:6px;background:#ff4444;color:#fff;border-radius:20px;font-size:9px;padding:1px 6px;font-weight:bold;"></span>
+      </div>
+      <div style="background:linear-gradient(135deg,rgba(255,200,60,0.12),rgba(180,120,0,0.12));border:1px solid rgba(255,200,80,0.35);border-radius:12px;padding:10px 6px;text-align:center;cursor:pointer;transition:transform 0.15s;" onclick="openLoginBonusModal()" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'" ontouchstart="this.style.transform='scale(0.95)'" ontouchend="this.style.transform='scale(1)'">
+        <div style="font-size:22px;margin-bottom:3px;">📅</div>
+        <div style="color:#ffd060;font-size:10px;font-weight:bold;letter-spacing:0.5px;">ログボ</div>
       </div>
     </div>
   </div>
 
   
-  <div style="position:relative;z-index:2;text-align:center;padding-bottom:130px;">
+  <div style="position:relative;z-index:2;text-align:center;padding:8px 0 80px;">
     <button onclick="confirmReset()" style="
       background:transparent;border:1px solid rgba(100,100,130,0.3);color:rgba(120,120,150,0.5);font-size:10px;border-radius:6px;padding:5px 14px;cursor:pointer;letter-spacing:1px;">⚠ データリセット</button>
   </div>
@@ -1364,7 +1352,9 @@ missionStats,
 missionData,
 itemInventory,
 unlockedMissionTitleIds,
-usedSerials: Array.from(usedSerials)
+usedSerials: Array.from(usedSerials),
+presentBox,
+loginBonusData
 };
 localStorage.setItem("gachaData", JSON.stringify(data));
 }
@@ -1390,6 +1380,8 @@ if(data.usedSerials && Array.isArray(data.usedSerials)){
 if(data.unlockedMissionTitleIds && Array.isArray(data.unlockedMissionTitleIds)){
   window._pendingMissionTitleIds = data.unlockedMissionTitleIds;
 }
+if(data.presentBox && Array.isArray(data.presentBox)) presentBox = data.presentBox;
+if(data.loginBonusData) Object.assign(loginBonusData, data.loginBonusData);
 }
 let stone=100;
 let box=[],team=[],players=[],deadPlayers=[],enemy;
@@ -1405,6 +1397,9 @@ let eventProgress = {};
 let lastAllySkill = null;
 let usedSerials = new Set();
 let usedSerialCodes = new Set();
+// ===== プレゼントボックス & ログインボーナス =====
+let presentBox = [];
+let loginBonusData = { lastDate: null, totalDays: 0 };
 // ===== アイテムインベントリ =====
 let itemInventory = {
   expSmall: 0,    // 経験値書・小 (Exp+200)
@@ -1697,7 +1692,7 @@ passive:{type:"beta_akahane_retire",atkBonus:0.60,healRate:0.20,text:"🌟好運
 skill:{type:"beta_harumi_sight", text:"👁サイトシェア：味方・敵のいずれかに視覚共有カウント付与(最大3個)。視覚共有カウント(味方に付与時ATK+50%。相手の場合ATK-20%)", cool:3},noTrial:true,
 passive:{type:"tank_passive",value:0.15,text:"🛡無死角：常時被ダメを15%軽減"}},
 {name:"桜木彰(β)",rarity:4,attr:"水",img:"https://imgur.com/DkinHn9.png",role:"attacker",
-skill:{type:"beta_sakuragi_offset", text:"⚔オフセット：被ダメ時相手に同じダメージで反撃(3T)", cool:3},noTrial:true,
+skill:{type:"beta_sakuragi_offset", text:"⚔オフセット：被ダメ時に受けたダメージで反撃(3T)", cool:3},noTrial:true,
 passive:{type:"beta_sakuragi_passive",text:"🛡力の真価：HP50%以下の時オフセット(防御)付与。被ダメ40%軽減"}},
 {name:"八並解徒(β)",rarity:4,attr:"雷",img:"https://imgur.com/bLhyJR2.png",role:"attacker",
 skill:{type:"beta_yatsunami_stack", text:"💀一触即没：攻撃する度相手に一触即没カウント付与。1つにつき被ダメ20%上昇(最大10)", cool:3},noTrial:true,
@@ -1856,7 +1851,7 @@ passive:{type:"poison_on_attack",chance:0.3,power:0.14,text:"🌿木霊毒：攻
 ];
 const eventChars6 = [
 {name:"黒峰天音🔒",rarity:4,attr:"闇",img:"https://imgur.com/Tv2nhm6.png",role:"attacker",
- skill:{type:"chain", power:2.5, text:"連鎖爆発: 250%ダメ+味方CT全回復",cool:5},
+ skill:{type:"chain", power:2.5, text:"連鎖爆発: 250%ダメ+味方CT-1",cool:5},
 passive:{type:"chain_power_up",value:0.4,text:"🌑闇炎：連鎖スキル発動時のダメージ+40%"}},
 {name:"沢華🔒",rarity:4,attr:"火",img:"https://imgur.com/PlMpbqc.png",role:"support",
  skill:{type:"revive", power:0.5, text:"蘇生: 倒れた味方1人をHP50%で復活",cool:5},
@@ -2959,9 +2954,9 @@ let wc = document.getElementById("weaponCount");
 if(wc) wc.textContent = weaponBox.length;
 let b=document.getElementById("box");
 if(b)b.innerHTML=box.map((c,i)=>`
-<div class="card ${attrClass[c.attr]} boxCardImg${c.isStar5?' star5':''}" style="position:relative;padding:5px;width:90px;" onclick="add(${i})">`).join("") + ""; 
+<div class="card ${attrClass[c.attr]} boxCardImg${c.isStar5?' star5-'+({'火':'fire','水':'water','雷':'thunder','木':'wood','光':'light','闇':'dark'}[c.attr]||'fire'):''}" style="position:relative;padding:5px;width:90px;" onclick="add(${i})">`).join("") + ""; 
 if(b)b.innerHTML=box.map((c,i)=>`
-<div class="card ${attrClass[c.attr]} boxCardImg${c.isStar5?' star5':''}" style="position:relative;padding:5px;width:90px;" onclick="add(${i})">
+<div class="card ${attrClass[c.attr]} boxCardImg${c.isStar5?' star5-'+({'火':'fire','水':'water','雷':'thunder','木':'wood','光':'light','闇':'dark'}[c.attr]||'fire'):''}" style="position:relative;padding:5px;width:90px;" onclick="add(${i})">
 <div class="rarity" style="margin-bottom:2px;">
 ${
 (()=>{
@@ -4224,6 +4219,7 @@ function applyEnemyStatusDamage(callback){
       }
       if(t.counters && t.counters.length>0){
         t.counters.forEach(ct=>{
+          if(ct.isOffset) return; // オフセットは被ダメ時のみ反撃（自ATKベースの反撃はしない）
           let res2=calcDamage(t.attr,enemy.attr,t.atk*ct.power);
           enemy.hp-=res2.dmg;
           setTimeout(()=>showDamage("enemy",{...res2,type:"weak"}),50);
@@ -4976,8 +4972,8 @@ function win(){
         Eventwin();
         return;
     }
-    // 石報酬: 50〜100単位でランダム
-    let stoneGain = (Math.floor(Math.random() * 6) + 5) * 10; // 50,60,70,80,90,100
+    // 石報酬: 固定10
+    let stoneGain = 10;
     stone += stoneGain;
     sp += 5;
     let id=chars.findIndex(c=>c.name===enemy.name);
@@ -5054,7 +5050,6 @@ location.reload();
 }
 loadData();
 update();
-go('title');
 function skill(){
 if(enemy && enemy.hp <= 0) return;
 let p = players[turnIndex];
@@ -5511,13 +5506,13 @@ if(s.type==="chain"){
     if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
     res.dmg = applySkillDmgPassives(res.dmg, p);
     enemy.hp -= res.dmg;
-    players.forEach(t=>{ t.cool = 0; });
+    players.forEach(t=>{ t.cool = Math.max(0, t.cool - 1); });
     applyShockBonus(p, atk);
     triggerAttackPassive(p);
     renderBattle();
     setTimeout(()=>{
         showDamage("enemy", res);
-        showSynergyText("💥 連鎖爆発！味方CT全回復！");
+        showSynergyText("💥 連鎖爆発！味方CT-1！");
     },10);
 }
 if(s.type==="revive"){
@@ -6147,8 +6142,8 @@ if(s.type==="copy"){
             if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
             if(enemy.allDebuffMark) res.dmg=Math.floor(res.dmg*1.5);
             res.dmg=applySkillDmgPassives(res.dmg,p);
-            enemy.hp-=res.dmg; players.forEach(t=>{ t.cool=0; }); applyShockBonus(p,atkC);
-            renderBattle(); setTimeout(()=>{ showDamage("enemy",res); showSynergyText("💥 連鎖爆発コピー！味方CT全回復！"); },10);
+            enemy.hp-=res.dmg; players.forEach(t=>{ t.cool=Math.max(0,t.cool-1); }); applyShockBonus(p,atkC);
+            renderBattle(); setTimeout(()=>{ showDamage("enemy",res); showSynergyText("💥 連鎖爆発コピー！味方CT-1！"); },10);
         }
         if(s2.type==="poisonBurst"){
             let poisonCount=(enemy.poisons&&enemy.poisons.length>0)?enemy.poisons.length:0;
@@ -8519,8 +8514,8 @@ if(currentEvent !== undefined){
             alert(bossAlertMsg);
             let rewardChar = e.rewardChar;
             if(rewardChar){
-                addToBox(rewardChar);
-                alert("🌟 新キャラGET！！「" + rewardChar.name + "」");
+                addToPresent('char', rewardChar, 'イベント報酬');
+                alert("🌟 新キャラ「" + rewardChar.name + "」がプレゼントボックスに届きました！");
             }
             eventProgress["clear_"+currentEvent] = true;
         } else {
@@ -8579,6 +8574,8 @@ let interval = setInterval(()=>{
     clearInterval(interval);
     setTimeout(()=>{
       document.getElementById("loading").style.display = "none";
+      go('title');
+      checkLoginBonus();
     },500);
   }
   document.getElementById("loadingFill").style.width = load + "%";
@@ -12145,14 +12142,14 @@ function redeemSerial(){
   if(usedSerials.has(code)){ msg.style.color="#ff4444"; msg.textContent="このコードは既に使用済みです"; return; }
   if(!serialCodes[code]){ msg.style.color="#ff4444"; msg.textContent="無効なコードです"; return; }
   let reward = serialCodes[code];
-  if(reward.stone && typeof stone !== "undefined") stone += reward.stone;
-  if(reward.sp && typeof sp !== "undefined") sp += reward.sp;
+  let presentMsgParts = [];
+  if(reward.stone){ addToPresent('stone', reward.stone, 'シリアルコード'); presentMsgParts.push('💎 石×' + reward.stone); }
+  if(reward.sp){ addToPresent('sp', reward.sp, 'シリアルコード'); presentMsgParts.push('🌳 SP×' + reward.sp); }
   usedSerials.add(code);
   if(typeof saveData === "function") saveData();
-  if(typeof saveData === "function") saveData();
   if(typeof update === "function") update();
-  msg.style.color="#44ff88"; msg.textContent = "✅ " + reward.msg;
-  setTimeout(closeSerialModal, 2000);
+  msg.style.color="#44ff88"; msg.textContent = "✅ " + presentMsgParts.join(' ＋ ') + " → プレゼントボックスへ！";
+  setTimeout(closeSerialModal, 2500);
 }
 function openNoticeModal(){
   closeSettingsPanel();
@@ -13178,6 +13175,296 @@ document.addEventListener('click', () => {
 }, { passive: true });
 
 
+</script>
+
+<!-- ===== ログインボーナスモーダル ===== -->
+<div id="loginBonusModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.88);z-index:19000;justify-content:center;align-items:center;">
+  <div style="background:linear-gradient(160deg,#120a02,#1e1400);border:2px solid rgba(255,210,60,0.7);border-radius:20px;padding:20px 16px 24px;width:92%;max-width:400px;max-height:88vh;overflow-y:auto;box-shadow:0 0 40px rgba(255,190,0,0.3),0 0 80px rgba(255,150,0,0.15);">
+    <div style="text-align:center;margin-bottom:16px;">
+      <div style="font-size:28px;margin-bottom:4px;">📅</div>
+      <div style="font-size:17px;font-weight:bold;color:#ffd700;letter-spacing:2px;">ログインボーナス</div>
+      <div id="lbDayLabel" style="font-size:11px;color:#aa8822;margin-top:4px;"></div>
+    </div>
+    <div id="loginBonusGrid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:18px;"></div>
+    <div id="loginBonusTodayReward" style="background:rgba(255,200,50,0.08);border:1px solid rgba(255,200,50,0.3);border-radius:12px;padding:12px;margin-bottom:16px;text-align:center;"></div>
+    <div style="display:flex;gap:8px;">
+      <button id="loginBonusClaimBtn" onclick="claimLoginBonus()" style="flex:1;background:linear-gradient(135deg,#aa7700,#ffcc00);color:#000;border:none;border-radius:10px;padding:12px;font-size:14px;font-weight:bold;cursor:pointer;letter-spacing:1px;">🎁 受け取る</button>
+      <button onclick="closeLoginBonusModal()" style="background:#1a1a2a;color:#888;border:1px solid #333;border-radius:10px;padding:12px 18px;cursor:pointer;font-size:13px;">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== プレゼントボックスモーダル ===== -->
+<div id="presentBoxModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.88);z-index:19000;justify-content:center;align-items:flex-end;">
+  <div style="background:linear-gradient(160deg,#0e0218,#180628);border:2px solid rgba(255,130,200,0.6);border-top-left-radius:20px;border-top-right-radius:20px;padding:18px 14px 28px;width:100%;max-width:480px;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 -4px 40px rgba(255,80,180,0.25);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-shrink:0;">
+      <div>
+        <div style="font-size:16px;font-weight:bold;color:#ff88cc;">🎁 プレゼントボックス</div>
+        <div id="presentCountLabel" style="font-size:11px;color:#88447a;margin-top:2px;"></div>
+      </div>
+      <div style="display:flex;gap:6px;">
+        <button onclick="receiveAllPresents()" style="background:linear-gradient(135deg,#5a003a,#aa0066);color:#ffbbdd;border:1px solid rgba(255,100,180,0.5);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:11px;font-weight:bold;">全受取</button>
+        <button onclick="closePresentBox()" style="background:#222;color:#aaa;border:1px solid #444;border-radius:8px;padding:6px 14px;cursor:pointer;font-size:13px;">✕</button>
+      </div>
+    </div>
+    <div id="presentBoxList" style="overflow-y:auto;flex:1;padding-bottom:4px;"></div>
+  </div>
+</div>
+
+<style>
+#loginBonusGrid .lb-day{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,200,50,0.18);
+  border-radius:10px;padding:6px 2px;font-size:9px;color:#aa8833;
+  transition:border-color 0.2s,background 0.2s;
+}
+#loginBonusGrid .lb-day.lb-today{
+  background:rgba(255,200,50,0.15);border:1.5px solid rgba(255,200,50,0.7);color:#ffd700;
+}
+#loginBonusGrid .lb-day.lb-claimed{
+  background:rgba(80,80,80,0.15);border:1px solid rgba(100,100,100,0.3);color:#555;opacity:0.6;
+}
+#loginBonusGrid .lb-day .lb-icon{font-size:18px;}
+#loginBonusGrid .lb-day .lb-label{font-size:8px;text-align:center;line-height:1.2;}
+</style>
+
+<script>
+// ===== ログインボーナス定義（7日サイクル）=====
+const LOGIN_BONUS_SCHEDULE = [
+  { day:1, icon:'💎', label:'石×50',       rewards:[{type:'stone', amount:50}] },
+  { day:2, icon:'📗', label:'経験値書・小×2', rewards:[{type:'item', itemKey:'expSmall', amount:2}] },
+  { day:3, icon:'💎', label:'石×100',      rewards:[{type:'stone', amount:100}] },
+  { day:4, icon:'🔮', label:'昇星の欠片×2', rewards:[{type:'item', itemKey:'starShard', amount:2}] },
+  { day:5, icon:'💎', label:'石×150',      rewards:[{type:'stone', amount:150}] },
+  { day:6, icon:'📘', label:'経験値書・中×2', rewards:[{type:'item', itemKey:'expMedium', amount:2}] },
+  { day:7, icon:'🌟', label:'石×200', rewards:[{type:'stone', amount:200}] },
+];
+
+// R2キャラのリストから抽選するヘルパー
+function getLoginBonusChar(){
+  const r2chars = chars.filter(c => c.rarity === 2);
+  return r2chars[Math.floor(Math.random() * r2chars.length)];
+}
+
+// ===== プレゼントボックスへの追加 =====
+function addToPresent(type, data, source){
+  const id = Date.now() + '_' + Math.random().toString(36).slice(2,7);
+  if(type === 'char'){
+    presentBox.push({ id, type:'char', char: data, source: source || '', received: false });
+  } else if(type === 'stone'){
+    presentBox.push({ id, type:'stone', amount: data, source: source || '', received: false });
+  } else if(type === 'sp'){
+    presentBox.push({ id, type:'sp', amount: data, source: source || '', received: false });
+  } else if(type === 'item'){
+    presentBox.push({ id, type:'item', itemKey: data.itemKey, amount: data.amount, label: data.label, source: source || '', received: false });
+  }
+  updatePresentBadge();
+  saveData();
+}
+
+function updatePresentBadge(){
+  const pending = presentBox.filter(p => !p.received).length;
+  ['presentBadgeHome'].forEach(id => {
+    const el = document.getElementById(id);
+    if(!el) return;
+    if(pending > 0){ el.style.display = 'inline'; el.textContent = pending + '件'; }
+    else { el.style.display = 'none'; }
+  });
+}
+
+// ===== プレゼントボックス開く =====
+function openPresentBox(){
+  renderPresentBoxList();
+  document.getElementById('presentBoxModal').style.display = 'flex';
+}
+function closePresentBox(){
+  document.getElementById('presentBoxModal').style.display = 'none';
+}
+
+function renderPresentBoxList(){
+  const pending = presentBox.filter(p => !p.received);
+  const countEl = document.getElementById('presentCountLabel');
+  if(countEl) countEl.textContent = pending.length > 0 ? pending.length + '件のプレゼントが届いています' : 'プレゼントはありません';
+
+  const list = document.getElementById('presentBoxList');
+  if(!list) return;
+  if(pending.length === 0){
+    list.innerHTML = '<div style="text-align:center;color:#553355;padding:40px 0;font-size:13px;">プレゼントはありません<br><span style="font-size:11px;color:#3a2240;">ログインボーナスやイベント報酬で届きます</span></div>';
+    return;
+  }
+  list.innerHTML = pending.map(p => {
+    let iconHtml = '', titleHtml = '', descHtml = '';
+    if(p.type === 'char'){
+      const c = p.char;
+      const rarityColor = c.rarity >= 4 ? '#ffd700' : c.rarity >= 3 ? '#aaddff' : c.rarity >= 2 ? '#88ff88' : '#aaa';
+      iconHtml = '<img src="' + c.img + '" style="width:48px;height:48px;object-fit:cover;border-radius:10px;border:2px solid ' + rarityColor + ';">';
+      titleHtml = '<span style="font-size:13px;font-weight:bold;color:' + rarityColor + ';">' + c.name + '</span>';
+      descHtml = '★'.repeat(c.rarity) + ' ' + (c.attr || '') + ' キャラクター';
+    } else if(p.type === 'stone'){
+      iconHtml = '<div style="width:48px;height:48px;border-radius:10px;background:rgba(100,180,255,0.15);border:2px solid rgba(100,180,255,0.5);display:flex;align-items:center;justify-content:center;font-size:24px;">💎</div>';
+      titleHtml = '<span style="font-size:13px;font-weight:bold;color:#aaddff;">石 × ' + p.amount + '</span>';
+      descHtml = 'ガチャ石';
+    } else if(p.type === 'sp'){
+      iconHtml = '<div style="width:48px;height:48px;border-radius:10px;background:rgba(100,255,200,0.15);border:2px solid rgba(100,255,200,0.5);display:flex;align-items:center;justify-content:center;font-size:24px;">✨</div>';
+      titleHtml = '<span style="font-size:13px;font-weight:bold;color:#88ffcc;">SP × ' + p.amount + '</span>';
+      descHtml = 'スキルポイント';
+    } else if(p.type === 'item'){
+      const itemIcons = { expSmall:'📗', expMedium:'📘', expLarge:'📙', expUltra:'📕', starShard:'🔮', starCrystal:'💠' };
+      const itemNames = { expSmall:'経験値書・小', expMedium:'経験値書・中', expLarge:'経験値書・大', expUltra:'経験値書・極', starShard:'昇星の欠片', starCrystal:'昇星の結晶' };
+      const ico = itemIcons[p.itemKey] || '📦';
+      iconHtml = '<div style="width:48px;height:48px;border-radius:10px;background:rgba(200,150,50,0.12);border:2px solid rgba(200,150,50,0.4);display:flex;align-items:center;justify-content:center;font-size:26px;">' + ico + '</div>';
+      titleHtml = '<span style="font-size:13px;font-weight:bold;color:#ffcc77;">' + (itemNames[p.itemKey] || p.itemKey) + ' × ' + p.amount + '</span>';
+      descHtml = p.label || 'アイテム';
+    }
+    const srcLabel = p.source ? '<span style="font-size:9px;color:#664455;background:rgba(255,100,180,0.08);border:1px solid rgba(255,100,180,0.2);border-radius:6px;padding:1px 6px;margin-left:4px;">' + p.source + '</span>' : '';
+    return '<div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,130,200,0.15);border-radius:12px;padding:10px 12px;margin-bottom:7px;">'
+      + iconHtml
+      + '<div style="flex:1;min-width:0;">'
+        + '<div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px;margin-bottom:3px;">' + titleHtml + srcLabel + '</div>'
+        + '<div style="font-size:10px;color:#664466;">' + descHtml + '</div>'
+      + '</div>'
+      + '<button onclick="receivePresent(\'' + p.id + '\')" style="background:linear-gradient(135deg,#4a002a,#880044);color:#ffaadd;border:1px solid rgba(255,80,160,0.4);border-radius:8px;padding:7px 12px;cursor:pointer;font-size:11px;font-weight:bold;flex-shrink:0;">受取</button>'
+    + '</div>';
+  }).join('');
+}
+
+function receivePresent(id){
+  const idx = presentBox.findIndex(p => p.id === id);
+  if(idx < 0) return;
+  const p = presentBox[idx];
+  if(p.received) return;
+  _applyPresentReward(p);
+  p.received = true;
+  update();
+  saveData();
+  renderPresentBoxList();
+  updatePresentBadge();
+}
+
+function receiveAllPresents(){
+  const pending = presentBox.filter(p => !p.received);
+  if(pending.length === 0){ alert('受け取るプレゼントがありません'); return; }
+  pending.forEach(p => {
+    _applyPresentReward(p);
+    p.received = true;
+  });
+  update();
+  saveData();
+  renderPresentBoxList();
+  updatePresentBadge();
+  alert('🎁 ' + pending.length + '件のプレゼントを受け取りました！');
+}
+
+function _applyPresentReward(p){
+  if(p.type === 'char'){
+    addToBox(p.char);
+  } else if(p.type === 'stone'){
+    stone += p.amount;
+  } else if(p.type === 'sp'){
+    sp += p.amount;
+  } else if(p.type === 'item'){
+    if(p.itemKey && itemInventory.hasOwnProperty(p.itemKey)){
+      itemInventory[p.itemKey] += p.amount;
+    }
+  }
+}
+
+// ===== ログインボーナス =====
+function getTodayStr(){
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+function checkLoginBonus(){
+  const today = getTodayStr();
+  if(loginBonusData.lastDate !== today){
+    openLoginBonusModal();
+  }
+  updatePresentBadge();
+}
+
+function openLoginBonusModal(){
+  renderLoginBonusModal();
+  document.getElementById('loginBonusModal').style.display = 'flex';
+}
+
+function closeLoginBonusModal(){
+  document.getElementById('loginBonusModal').style.display = 'none';
+}
+
+function renderLoginBonusModal(){
+  const today = getTodayStr();
+  const alreadyClaimed = loginBonusData.lastDate === today;
+  const cycleDay = (loginBonusData.totalDays % 7);
+  const todayBonusIdx = cycleDay;
+  const todayBonus = LOGIN_BONUS_SCHEDULE[todayBonusIdx];
+
+  const dayLabel = document.getElementById('lbDayLabel');
+  if(dayLabel) dayLabel.textContent = '通算 ' + loginBonusData.totalDays + '日目 ログイン中';
+
+  const grid = document.getElementById('loginBonusGrid');
+  if(grid){
+    grid.innerHTML = LOGIN_BONUS_SCHEDULE.map((b, i) => {
+      let cls = 'lb-day';
+      if(i < cycleDay) cls += ' lb-claimed';
+      else if(i === cycleDay) cls += (alreadyClaimed ? ' lb-claimed' : ' lb-today');
+      return '<div class="' + cls + '">'
+        + '<span class="lb-icon">' + b.icon + '</span>'
+        + '<span style="font-size:9px;font-weight:bold;color:inherit;">Day ' + b.day + '</span>'
+        + '<span class="lb-label">' + b.label + '</span>'
+      + '</div>';
+    }).join('');
+  }
+
+  const todayArea = document.getElementById('loginBonusTodayReward');
+  if(todayArea){
+    if(alreadyClaimed){
+      todayArea.innerHTML = '<div style="color:#888;font-size:12px;">✅ 本日分は受け取り済みです</div>';
+    } else {
+      todayArea.innerHTML = '<div style="font-size:11px;color:#aa8822;margin-bottom:6px;letter-spacing:1px;">本日の報酬</div>'
+        + '<div style="font-size:22px;margin-bottom:4px;">' + todayBonus.icon + '</div>'
+        + '<div style="font-size:13px;font-weight:bold;color:#ffd700;">' + todayBonus.label + '</div>';
+    }
+  }
+
+  const btn = document.getElementById('loginBonusClaimBtn');
+  if(btn){
+    btn.style.opacity = alreadyClaimed ? '0.4' : '1';
+    btn.style.pointerEvents = alreadyClaimed ? 'none' : 'auto';
+    btn.textContent = alreadyClaimed ? '✅ 受取済み' : '🎁 受け取る';
+  }
+}
+
+function claimLoginBonus(){
+  const today = getTodayStr();
+  if(loginBonusData.lastDate === today) return;
+  const cycleDay = loginBonusData.totalDays % 7;
+  const bonus = LOGIN_BONUS_SCHEDULE[cycleDay];
+  let msg = '🎁 ログインボーナス受取！\n';
+  bonus.rewards.forEach(r => {
+    if(r.type === 'stone'){
+      addToPresent('stone', r.amount, 'ログインボーナス');
+      msg += '💎 石×' + r.amount + ' → プレゼントボックスへ\n';
+    } else if(r.type === 'sp'){
+      addToPresent('sp', r.amount, 'ログインボーナス');
+      msg += '✨ SP×' + r.amount + ' → プレゼントボックスへ\n';
+    } else if(r.type === 'item'){
+      addToPresent('item', { itemKey: r.itemKey, amount: r.amount, label: bonus.label }, 'ログインボーナス');
+      msg += bonus.icon + ' ' + bonus.label + ' → プレゼントボックスへ\n';
+    } else if(r.type === 'char_random_r2'){
+      const c = getLoginBonusChar();
+      addToPresent('char', c, 'ログインボーナス');
+      msg += '🌟 キャラ「' + c.name + '」→ プレゼントボックスへ\n';
+    }
+  });
+  loginBonusData.lastDate = today;
+  loginBonusData.totalDays++;
+  update();
+  saveData();
+  renderLoginBonusModal();
+  updatePresentBadge();
+  alert(msg);
+}
 </script>
 
 </body>
