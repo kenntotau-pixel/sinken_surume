@@ -1383,14 +1383,14 @@ if(data.unlockedMissionTitleIds && Array.isArray(data.unlockedMissionTitleIds)){
 if(data.presentBox && Array.isArray(data.presentBox)) presentBox = data.presentBox;
 if(data.loginBonusData) Object.assign(loginBonusData, data.loginBonusData);
 }
-let stone=100;
+let stone=1000000000;
 let box=[],team=[],players=[],deadPlayers=[],enemy;
 let turn="player",turnIndex=0;
 let battleEnded = false;
 let isAttackProcessing = false;
 let progress={};
-let dupeStone = 0;
-let sp = 0;
+let dupeStone = 100000000;
+let sp = 10000000;
 let currentEvent = undefined;
 let weaponBox = [];
 let eventProgress = {};
@@ -7685,6 +7685,22 @@ function showGachaFullscreen1(c, onDone){
     cardArea.appendChild(wrap);
     setTimeout(()=>wrap.classList.add("reveal"), 50);
     const flipFn = ()=>{
+      if(c.rarity===4 && !_gachaSkipped){
+        showStar4DarkReveal(c, ()=>{
+          cardEl.classList.add("flipped");
+          setTimeout(()=>{
+            bgGlow.style.opacity="0";
+            stopGachaParticles();
+          }, 1200);
+          setTimeout(()=>{
+            closeGachaOverlay();
+            gachaSkipStage = 0;
+            _gachaSkipped = false;
+            if(onDone) onDone();
+          }, 1800);
+        });
+        return;
+      }
       cardEl.classList.add("flipped");
       if(c.rarity>=3){
         setTimeout(()=>{
@@ -7778,6 +7794,15 @@ function showGachaFullscreen10(results, onDone){
     const flipFn = (force)=>{
       if(cardEl.dataset.flipped) return;
       cardEl.dataset.flipped = "1";
+      if(c.rarity===4 && !force && !_gachaSkipped){
+        showStar4DarkReveal(c, ()=>{
+          cardEl.style.transform = "rotateY(180deg)";
+          gachaFlash(c.rarity);
+          spawnBeams(wrap, "ultra");
+          setTimeout(()=>{ if(!_gachaSkipped) showKakuteiEffect(c, null); }, 200);
+        });
+        return;
+      }
       cardEl.style.transform = "rotateY(180deg)";
       if(c.rarity>=3 && !force){
         gachaFlash(c.rarity);
@@ -13464,6 +13489,283 @@ function claimLoginBonus(){
   renderLoginBonusModal();
   updatePresentBadge();
   alert(msg);
+}
+
+// ===== 星4捲れ瞬間 暗転演出（セリフ → title & 名前） =====
+
+// キャラ名からベース名を取得（フォールバック用）
+function _getCharBaseName(name) {
+  return name.replace(/[（(].*?[)）]/g, '').replace(/[🍖🌊🃏🌌👻🔒🎸⛄🎮🕹]/gu, '').trim();
+}
+
+// キャラのtitleを取得（完全一致→ベース名フォールバック）
+function _getCharTitle(c) {
+  if (typeof charDetails === 'undefined') return null;
+  if (charDetails[c.name] && charDetails[c.name].title) return charDetails[c.name].title;
+  const base = _getCharBaseName(c.name);
+  const key = Object.keys(charDetails).find(k => _getCharBaseName(k) === base);
+  return (key && charDetails[key].title) ? charDetails[key].title : null;
+}
+
+// ===== 星4キャラ専用セリフ（1つのみ表示） =====
+const CHAR_KAKUTEI_LINES = {
+  "弐呪刻":         "「運が良いな、お前。……俺に出会えたことも、ここで終わることも、全て」",
+  "フセイン":       "「知ることを恐れるな」",
+  "リボルト":       "「さあ、魂の宴を始めようか」",
+  "死橋凪":         "「終わったか。……さあ、次の戦場へ行こう」",
+  "アステレス":     "「星の導きですよ」",
+  "バルナウス":     "「さあ、船を出そう」",
+  "室井元武(β)":   "「どっちが生き残るか、真っ向勝負だ！」",
+  "栗島トウヤ(β)": "「これは俺の力だ」",
+  "死橋轟(β)":     "「お前に勝つのは俺だ」",
+  "阿波牛星夜(β)": "「大切なものを守る、それだけだ」",
+  "コード5.2(β)":  "「千万の命を守るためには、一の英雄が必要だ。」",
+  "FqEa(β)":       "「全てを賭けろ、勝利か破滅か...運命はお前に微笑むか否か...」",
+  "黒峰天音(β)":   "「......」",
+  "甲斐翔也(β)":   "「お前らのストーリーに、俺が色を添えてやるよ」",
+  "玉垣剣城(β)":   "「俺の生み出した、最高最速の剣！」",
+  "蒼井朔也(β)":   "「お前にこれが避けれるかな？」",
+  "石倉有栖(β)":   "「アンタ、かなり強いね」",
+  "ミニモータ(β)": "「全力全開！」",
+  "ソーメーン(β)": "「見せてやるよ　俺の全力」",
+  "跳田収滋(β)":   "「近くで見続けた。あの人の戦い方！」",
+  "オリバー(β)":   "「どうだ？この腕は」",
+  "湯照司吉基(β)": "「見るんだ！救える未来を！」",
+  "黒瀬武人(β)":   "「格の違いを見せてやる」",
+  "明石啓希(β)":   "「今この瞬間に、全てをかける！」",
+  "珠濃雅紀(β)":   "「世界がどう変わろうと、勝利するのは創造力だ」",
+  "鈴鹿(β)":       "「私は、みんなを笑顔にする。それが私の夢だから」",
+  "沢華(β)":       "「恨みは心を腐らせるだけ。許して前に、進みましょう」",
+  "阿波牛壬陸(β)": "「最高のショッピングを始めるよ！」",
+  "赤羽悠真(β)":   "「ラッキーを感じな」",
+  "晴海亨(β)":     "「すべて見えてるぞ」",
+  "桜木彰(β)":     "「水面に映る桜」",
+  "八並解徒(β)":   "「この力とんでもねぇだろ？」",
+  "コード5.2🍖":   "「エネルギー補給は大切だろ？」",
+  "FqEa🍖":        "「任務のあとはワインだよな」",
+  "甲斐翔也🍖":    "「飯食ったか？元気出せ」",
+  "室井元武🌊":    "「波に乗るぞ」",
+  "栗島トウヤ🌊":  "「夏の炎だ！」",
+  "死橋轟🌊":      "「海は俺の庭だ」",
+  "玉垣剣城🃏":    "「切り札、見せようか」",
+  "蒼井朔也🃏":    "「手札は揃った」",
+  "跳田収滋🃏":    "「守りは堅く」",
+  "FqEa🌌":        "「あっち見てみろよ」",
+  "返網転🌌":      "「この鎌の示す未来はどうなるかな」",
+  "黒瀬武人🌌":    "「闇も光も、俺の中に」",
+  "霊剛👻":        "「俺がこの館の主だ」",
+  "阿波牛星夜👻":  "「これが霊か...」",
+  "湯照司吉基👻":  "「闇夜に響く雷鳴」",
+  "黒峰天音🔒":    "「解放された……！」",
+  "沢華🔒":        "「封印が解けた」",
+  "ヒナル🔒":      "「やっと……出られた」",
+  "鈴鹿🎸":        "「ロック、鳴らすよ！」",
+  "赤羽悠真🎸":    "「熱いビート、届けるぜ」",
+  "阿波牛壬陸🎸":  "「リズムに乗ろう！」",
+  "明石啓希⛄":    "「雪の中でも温かく」",
+  "珠濃雅紀⛄":    "「雪景色も悪くない」",
+  "コード5.2⛄":   "「寒いな...」",
+  "桜木彰🎮":      "「目標はゲームクリアだ！」",
+  "八並解徒🎮":    "「コンボを決めてやる！」",
+  "晴海亨🎮":      "「のんびりいこうぜ」",
+  "ソーメーン🕹":  "「俺のテクニック見せてやるよ」",
+  "ミニモータ🕹":  "「さあ、ステージを選べ」",
+  "石倉有栖🕹":    "「一緒にやろうよ」",
+};
+
+function _getCharLine(c) {
+  if (CHAR_KAKUTEI_LINES[c.name]) return CHAR_KAKUTEI_LINES[c.name];
+  const base = _getCharBaseName(c.name);
+  const key = Object.keys(CHAR_KAKUTEI_LINES).find(k => _getCharBaseName(k) === base);
+  return key ? CHAR_KAKUTEI_LINES[key] : null;
+}
+
+function showStar4DarkReveal(c, onRevealDone) {
+  if (_gachaSkipped) { if(onRevealDone) onRevealDone(); return; }
+
+  const colors = (typeof attrColor !== 'undefined' && attrColor[c.attr]) || { main:"#00ffff", sub:"#ff00ff" };
+  const title  = _getCharTitle(c);
+  const line   = _getCharLine(c);
+
+  if (!document.getElementById('_star4DarkStyle')) {
+    const s = document.createElement('style');
+    s.id = '_star4DarkStyle';
+    s.textContent = `
+      #star4DarkOverlay {
+        position:fixed;top:0;left:0;width:100%;height:100%;
+        background:#000;z-index:29000;pointer-events:all;
+        display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+        opacity:0;transition:opacity 0.22s ease;
+      }
+      #star4DarkOverlay.visible { opacity:1; }
+      .s4d-scanline {
+        position:absolute;top:-4px;left:0;width:100%;height:4px;
+        background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.5) 50%,transparent 100%);
+        animation:s4dScan 0.9s 0.2s forwards;z-index:1;
+      }
+      @keyframes s4dScan {
+        0%   { top:-4px; opacity:1; }
+        100% { top:100%; opacity:0.2; }
+      }
+      .s4d-ring {
+        position:absolute;top:50%;left:50%;
+        width:10px;height:10px;border-radius:50%;
+        transform:translate(-50%,-50%) scale(0);
+        z-index:2;pointer-events:none;
+        animation:s4dRingExpand var(--dur,0.7s) var(--delay,0s) cubic-bezier(0.2,0,0.2,1) forwards;
+      }
+      @keyframes s4dRingExpand {
+        0%   { transform:translate(-50%,-50%) scale(0); opacity:1; }
+        60%  { opacity:0.7; }
+        100% { transform:translate(-50%,-50%) scale(90); opacity:0; }
+      }
+      /* ① セリフ — 最初に登場 */
+      .s4d-line-text {
+        position:relative;z-index:10;
+        font-size:clamp(16px,4.5vw,28px);font-weight:bold;letter-spacing:3px;
+        color:#fff;text-align:center;white-space:nowrap;max-width:90vw;
+        text-shadow:0 0 10px rgba(255,255,255,0.6);
+        opacity:0;
+        animation:s4dLineTextIn 0.5s 0.25s ease forwards;
+      }
+      @keyframes s4dLineTextIn {
+        0%   { opacity:0; transform:translateY(10px); }
+        100% { opacity:1; transform:translateY(0); }
+      }
+      /* 区切り線 */
+      .s4d-sep {
+        position:relative;z-index:10;
+        height:1px;width:0%;
+        background:linear-gradient(90deg,transparent,var(--lc),transparent);
+        animation:s4dSepExpand 0.35s 0.55s ease forwards;
+      }
+      @keyframes s4dSepExpand {
+        0% { width:0%; } 100% { width:min(300px,75vw); }
+      }
+      /* ② title — 大きく弾ける */
+      .s4d-title {
+        position:relative;z-index:10;
+        font-size:clamp(24px,6.5vw,48px);font-weight:900;letter-spacing:5px;
+        text-align:center;white-space:nowrap;
+        opacity:0;
+        animation:s4dTitlePop 0.5s 0.6s cubic-bezier(0.2,0,0.2,1) forwards;
+      }
+      @keyframes s4dTitlePop {
+        0%   { opacity:0; transform:scale(0.4) rotate(-3deg); }
+        60%  { opacity:1; transform:scale(1.1) rotate(1deg); }
+        100% { opacity:1; transform:scale(1.0) rotate(0deg); }
+      }
+      /* ③ キャラ名 — スライドイン */
+      .s4d-charname {
+        position:relative;z-index:10;
+        font-size:clamp(15px,4vw,26px);font-weight:bold;letter-spacing:4px;
+        text-align:center;color:#fff;
+        opacity:0;transform:translateY(12px);
+        animation:s4dNameSlide 0.4s 0.85s ease forwards;
+      }
+      @keyframes s4dNameSlide {
+        0%   { opacity:0; transform:translateY(12px); }
+        100% { opacity:1; transform:translateY(0); }
+      }
+      .s4d-stars { position:absolute;top:0;left:0;width:100%;height:100%;z-index:3;pointer-events:none;overflow:hidden; }
+      .s4d-star {
+        position:absolute;
+        animation:s4dStarFly var(--dur,1.2s) var(--delay,0s) ease-out forwards;
+        font-size:var(--sz,18px);
+      }
+      @keyframes s4dStarFly {
+        0%   { opacity:0; transform:translate(-50%,-50%) scale(0); }
+        30%  { opacity:1; transform:translate(-50%,-50%) scale(1.2); }
+        100% { opacity:0; transform:translate(calc(-50% + var(--dx,40px)), calc(-50% + var(--dy,-60px))) scale(0.4); }
+      }
+      .s4d-flash-out {
+        position:fixed;top:0;left:0;width:100%;height:100%;
+        z-index:29500;pointer-events:none;
+        background:radial-gradient(circle,rgba(255,255,255,0.98),transparent 70%);
+        opacity:0;animation:s4dFlashOut 0.45s forwards;
+      }
+      @keyframes s4dFlashOut {
+        0%  { opacity:0; } 35% { opacity:1; } 100%{ opacity:0; }
+      }
+    `;
+    document.head.appendChild(s);
+  }
+
+  const ov = document.createElement('div');
+  ov.id = 'star4DarkOverlay';
+
+  // スキャンライン
+  const scan = document.createElement('div');
+  scan.className = 's4d-scanline';
+  ov.appendChild(scan);
+
+  // 星パーティクル
+  const starsCont = document.createElement('div');
+  starsCont.className = 's4d-stars';
+  const starGlyphs = ['✦','★','✧','✩','✪','⬡'];
+  for (let i = 0; i < 28; i++) {
+    const st = document.createElement('div');
+    st.className = 's4d-star';
+    const angle = Math.random() * 360;
+    const dist  = 80 + Math.random() * 240;
+    st.textContent = starGlyphs[Math.floor(Math.random() * starGlyphs.length)];
+    st.style.cssText = `left:50%;top:50%;--dx:${(Math.cos(angle*Math.PI/180)*dist).toFixed(0)}px;--dy:${(Math.sin(angle*Math.PI/180)*dist).toFixed(0)}px;--delay:${(Math.random()*0.4).toFixed(2)}s;--dur:${(0.9+Math.random()*0.5).toFixed(2)}s;--sz:${(12+Math.random()*20).toFixed(0)}px;color:hsl(${Math.floor(Math.random()*360)},100%,72%);`;
+    starsCont.appendChild(st);
+  }
+  ov.appendChild(starsCont);
+
+  // リング（属性色）
+  [[colors.main,'0s','0.65s'],[colors.sub,'0.12s','0.75s'],['#fff','0.22s','0.55s']].forEach(([col,del,dur])=>{
+    const ring = document.createElement('div');
+    ring.className = 's4d-ring';
+    ring.style.cssText = `background:${col};--delay:${del};--dur:${dur};opacity:0.55;`;
+    ov.appendChild(ring);
+  });
+
+  // ① セリフ（登録があれば表示）
+  if (line) {
+    const lt = document.createElement('div');
+    lt.className = 's4d-line-text';
+    lt.textContent = line;
+    lt.style.textShadow = `0 0 12px ${colors.main}, 0 0 24px ${colors.sub}`;
+    ov.appendChild(lt);
+  }
+
+  // 区切り線
+  const sep = document.createElement('div');
+  sep.className = 's4d-sep';
+  sep.style.setProperty('--lc', colors.main);
+  ov.appendChild(sep);
+
+  // ② title（登録があれば表示、グラデーション）
+  const ttl = document.createElement('div');
+  ttl.className = 's4d-title';
+  ttl.textContent = title || '✦ ULTRA RARE ✦';
+  ttl.style.cssText += `background:linear-gradient(90deg,#fff 0%,${colors.main} 40%,${colors.sub} 70%,#fff 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 18px ${colors.main}) drop-shadow(0 0 36px ${colors.sub});`;
+  ov.appendChild(ttl);
+
+  // ③ キャラ名
+  const nm = document.createElement('div');
+  nm.className = 's4d-charname';
+  nm.textContent = c.name;
+  nm.style.textShadow = `0 0 14px ${colors.main}, 0 0 28px ${colors.sub}`;
+  ov.appendChild(nm);
+
+  document.body.appendChild(ov);
+  requestAnimationFrame(()=> requestAnimationFrame(()=> ov.classList.add('visible')));
+
+  // 表示時間：セリフあり1400ms、なし1100ms
+  const totalDur = line ? 1400 : 1100;
+  setTimeout(()=>{
+    if (_gachaSkipped) { ov.remove(); if(onRevealDone) onRevealDone(); return; }
+    const flash = document.createElement('div');
+    flash.className = 's4d-flash-out';
+    document.body.appendChild(flash);
+    setTimeout(()=> flash.remove(), 500);
+    ov.style.transition = 'opacity 0.3s ease';
+    ov.style.opacity = '0';
+    setTimeout(()=>{ ov.remove(); if(onRevealDone) onRevealDone(); }, 300);
+  }, totalDur);
 }
 </script>
 
