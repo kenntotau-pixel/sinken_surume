@@ -199,7 +199,7 @@
       
       <div style="display:flex;flex-direction:column;gap:5px;">
         <button id="ciWeaponBtn" onclick="ciOpenWeapon()" style="background:#1a2a3a;color:#aaddff;border:1px solid #4488cc;border-radius:8px;padding:7px;font-size:12px;cursor:pointer;">⚔ 武器を変更</button>
-        <button id="ciDupeBtn" onclick="ciUseDupe()" style="background:#1a1a2a;color:#ffcc88;border:1px solid #aa8844;border-radius:8px;padding:7px;font-size:12px;cursor:pointer;">🔼 凸する</button>
+        <button onclick="ciUseDupe()" style="background:#1a2a1a;color:#ffd700;border:1px solid #ffd700;border-radius:8px;padding:7px;font-size:12px;cursor:pointer;font-weight:bold;">✦ 凸する</button>
       </div>
     </div>
     
@@ -718,6 +718,19 @@ return {
 
 凸塊:<span id="dupeStone"></span><br>
 
+<!-- 星4確定ガチャチケット表示 -->
+<div id="star4TicketArea" style="margin:8px auto;max-width:480px;display:none;">
+  <div style="background:linear-gradient(135deg,rgba(0,30,60,0.85),rgba(20,0,60,0.85));border:2px solid rgba(0,220,255,0.7);border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;box-shadow:0 0 18px rgba(0,200,255,0.25),0 0 36px rgba(180,0,255,0.12);">
+    <div style="font-size:32px;flex-shrink:0;">🎫</div>
+    <div style="flex:1;">
+      <div style="color:#00ddff;font-size:13px;font-weight:bold;">☆4確定ガチャ <span style="font-size:10px;background:linear-gradient(90deg,#00ccff,#cc00ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900;">GUARANTEED</span></div>
+      <div style="color:#5599bb;font-size:11px;line-height:1.5;">通常ガチャ対象の☆4キャラが必ず1体手に入る特別ガチャ</div>
+      <div style="color:#ffe066;font-size:11px;margin-top:3px;">チケット所持数: <b id="star4TicketCount" style="color:#00eeff;font-size:14px;">0</b> 枚</div>
+    </div>
+    <button onclick="useStar4GachaTicket()" style="background:linear-gradient(135deg,rgba(0,180,255,0.4),rgba(180,0,255,0.4));border:1px solid rgba(0,220,255,0.85);color:#00eeff;border-radius:7px;padding:10px 12px;font-size:12px;cursor:pointer;font-weight:bold;white-space:nowrap;box-shadow:0 0 10px rgba(0,200,255,0.4);letter-spacing:1px;">チケットで<br>引く 🎰</button>
+  </div>
+</div>
+
 <div style="overflow:hidden;width:100%;">
 <div id="bannerSlide" style="display:flex;transition:0.4s;"></div>
 </div>
@@ -886,10 +899,84 @@ return {
         </div>
       </div>
 
+      <!-- ☆4確定ガチャ -->
+      <div style="background:linear-gradient(135deg,rgba(0,30,60,0.7),rgba(20,0,60,0.7));border:2px solid rgba(0,220,255,0.6);border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;box-shadow:0 0 18px rgba(0,200,255,0.2),0 0 36px rgba(180,0,255,0.1);">
+        <div style="font-size:32px;flex-shrink:0;">🎫</div>
+        <div style="flex:1;">
+          <div style="color:#00ddff;font-size:13px;font-weight:bold;">☆4確定ガチャチケット <span style="font-size:10px;background:linear-gradient(90deg,#00ccff,#cc00ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900;">GUARANTEED</span></div>
+          <div style="color:#5599bb;font-size:11px;line-height:1.5;">通常ガチャ対象の☆4キャラが<br>必ず1体手に入る特別ガチャのチケット</div>
+          <div style="color:#ffe066;font-size:10px;margin-top:2px;">凸塊 <b>1000</b>個 / 1枚　所持: <b id="shopStar4Ticket" style="color:#00eeff;">0</b>枚</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <button onclick="buyGachaStar4()" style="background:linear-gradient(135deg,rgba(0,180,255,0.3),rgba(180,0,255,0.3));border:1px solid rgba(0,220,255,0.7);color:#00eeff;border-radius:7px;padding:8px 10px;font-size:11px;cursor:pointer;font-weight:bold;white-space:nowrap;box-shadow:0 0 8px rgba(0,200,255,0.3);">チケット購入</button>
+        </div>
+      </div>
+
+
     </div>
   </div>
 </div>
 <script>
+function buyGachaStar4(){
+  const COST = 1000;
+  if(dupeStone < COST){
+    showToast('⚠ 凸塊が足りません（必要: ' + COST + '個）');
+    return;
+  }
+  dupeStone -= COST;
+  star4GachaTicket++;
+  saveData();
+  update();
+  renderShopInventory();
+  showToast('🎫 ☆4確定ガチャチケット ×1 を購入しました！');
+}
+function useStar4GachaTicket(){
+  if(star4GachaTicket <= 0){
+    showToast('⚠ ☆4確定ガチャチケットを所持していません');
+    return;
+  }
+  const allEventChars = [
+    ...(typeof eventChars  !=='undefined'?eventChars :[]),
+    ...(typeof eventChars2 !=='undefined'?eventChars2:[]),
+    ...(typeof eventChars3 !=='undefined'?eventChars3:[]),
+    ...(typeof eventChars4 !=='undefined'?eventChars4:[]),
+    ...(typeof eventChars5 !=='undefined'?eventChars5:[]),
+    ...(typeof eventChars6 !=='undefined'?eventChars6:[]),
+    ...(typeof eventChars7 !=='undefined'?eventChars7:[]),
+    ...(typeof eventChars8 !=='undefined'?eventChars8:[]),
+    ...(typeof eventChars9 !=='undefined'?eventChars9:[]),
+    ...(typeof eventChars10!=='undefined'?eventChars10:[]),
+  ];
+  const pool4 = [
+    ...chars.filter(c => c.rarity === 4),
+    ...allEventChars.filter(c => c.rarity === 4),
+  ];
+  if(!pool4 || pool4.length === 0){
+    showToast('⚠ ☆4キャラが存在しません');
+    return;
+  }
+  star4GachaTicket--;
+  const c = pool4[Math.floor(Math.random() * pool4.length)];
+  const exist = box.find(b => b.name === c.name);
+  if(exist){
+    if(exist.dupe < maxDupe[exist.rarity]){
+        exist.dupe++;
+        exist.atk+=72; exist.hp+=184;
+    }else{
+        dupeStone += 30;
+    }
+  } else {
+    box.push({...c, dupe:0, atk:20+5*c.rarity, hp:100+20*c.rarity, weapon:null});
+  }
+  saveData();
+  update();
+  renderShopInventory();
+  showGachaFullscreen1(c, ()=>{
+    showToast('🎰 ☆4確定ガチャ → ' + c.name + ' をゲット！');
+    saveData();
+    update();
+  }, true);
+}
 function buyItem(type, qty, cost){
   if(dupeStone < cost){
     showToast('⚠ 凸塊が足りません（必要: ' + cost + '個）');
@@ -898,7 +985,6 @@ function buyItem(type, qty, cost){
   const names = {
     expSmall:'経験値書・小',expMedium:'経験値書・中',expLarge:'経験値書・大',expUltra:'経験値書・極',
     starShard:'昇星の欠片',starCrystal:'昇星の結晶',
-
   };
   dupeStone -= cost;
   itemInventory[type] += qty;
@@ -1354,7 +1440,8 @@ itemInventory,
 unlockedMissionTitleIds,
 usedSerials: Array.from(usedSerials),
 presentBox,
-loginBonusData
+loginBonusData,
+star4GachaTicket
 };
 localStorage.setItem("gachaData", JSON.stringify(data));
 }
@@ -1382,8 +1469,10 @@ if(data.unlockedMissionTitleIds && Array.isArray(data.unlockedMissionTitleIds)){
 }
 if(data.presentBox && Array.isArray(data.presentBox)) presentBox = data.presentBox;
 if(data.loginBonusData) Object.assign(loginBonusData, data.loginBonusData);
+if(typeof data.star4GachaTicket === 'number') star4GachaTicket = data.star4GachaTicket;
 }
 let stone=1000000000;
+let star4GachaTicket = 0;
 let box=[],team=[],players=[],deadPlayers=[],enemy;
 let turn="player",turnIndex=0;
 let battleEnded = false;
@@ -2836,22 +2925,22 @@ gachaResult.innerHTML="";
 let c = getGachaChar();
 let exist=box.find(b=>b.name===c.name);
 if(exist){
-if(exist.dupe < maxDupe[exist.rarity]){
-    exist.dupe++;
-    let atkUp=0,hpUp=0;
-    if(exist.rarity===1){atkUp=12;hpUp=42;}
-    else if(exist.rarity===2){atkUp=17;hpUp=54;}
-    else if(exist.rarity===3){atkUp=24;hpUp=72;}
-    else if(exist.rarity===4){atkUp=72;hpUp=184;}
-    exist.atk+=atkUp;exist.hp+=hpUp;
-}else{
-    let gain=0;
-    if(exist.rarity===1)gain=1;
-    if(exist.rarity===2)gain=3;
-    if(exist.rarity===3)gain=10;
-    if(exist.rarity===4)gain=30;
-    dupeStone+=gain;
-}
+    if(exist.dupe < maxDupe[exist.rarity]){
+        exist.dupe++;
+        let atkUp=0,hpUp=0;
+        if(exist.rarity===1){atkUp=12;hpUp=42;}
+        else if(exist.rarity===2){atkUp=17;hpUp=54;}
+        else if(exist.rarity===3){atkUp=24;hpUp=72;}
+        else if(exist.rarity===4){atkUp=72;hpUp=184;}
+        exist.atk+=atkUp; exist.hp+=hpUp;
+    }else{
+        let gain=0;
+        if(exist.rarity===1)gain=1;
+        if(exist.rarity===2)gain=3;
+        if(exist.rarity===3)gain=10;
+        if(exist.rarity===4)gain=30;
+        dupeStone+=gain;
+    }
 }else{
 box.push({...c,dupe:0,atk:20+5*c.rarity,hp:100+20*c.rarity,weapon:null});
 }
@@ -2879,20 +2968,20 @@ results.forEach((c)=>{
   let exist=box.find(b=>b.name===c.name);
   if(exist){
     if(exist.dupe < maxDupe[exist.rarity]){
-      exist.dupe++;
-      let atkUp=0,hpUp=0;
-      if(exist.rarity===1){atkUp=20;hpUp=50;}
-      else if(exist.rarity===2){atkUp=25;hpUp=62;}
-      else if(exist.rarity===3){atkUp=32;hpUp=80;}
-      else if(exist.rarity===4){atkUp=72;hpUp=184;}
-      exist.atk+=atkUp;exist.hp+=hpUp;
+        exist.dupe++;
+        let atkUp=0,hpUp=0;
+        if(exist.rarity===1){atkUp=12;hpUp=42;}
+        else if(exist.rarity===2){atkUp=17;hpUp=54;}
+        else if(exist.rarity===3){atkUp=24;hpUp=72;}
+        else if(exist.rarity===4){atkUp=72;hpUp=184;}
+        exist.atk+=atkUp; exist.hp+=hpUp;
     }else{
-      let gain=0;
-      if(exist.rarity===1)gain=1;
-      if(exist.rarity===2)gain=3;
-      if(exist.rarity===3)gain=10;
-      if(exist.rarity===4)gain=30;
-      dupeStone+=gain;
+        let gain=0;
+        if(exist.rarity===1)gain=1;
+        if(exist.rarity===2)gain=3;
+        if(exist.rarity===3)gain=10;
+        if(exist.rarity===4)gain=30;
+        dupeStone+=gain;
     }
   }else{
     box.push({...c,dupe:0,atk:20+5*c.rarity,hp:100+20*c.rarity,weapon:null});
@@ -2952,6 +3041,14 @@ let spEl = document.getElementById("spDisplay");
 if(spEl) spEl.textContent = sp;
 let wc = document.getElementById("weaponCount");
 if(wc) wc.textContent = weaponBox.length;
+// チケット表示更新
+let ticketEl = document.getElementById("star4TicketCount");
+if(ticketEl) ticketEl.textContent = star4GachaTicket;
+let shopTicketEl = document.getElementById("shopStar4Ticket");
+if(shopTicketEl) shopTicketEl.textContent = star4GachaTicket;
+// ガチャ画面の確定ガチャエリア：チケット所持時のみ表示
+let ticketArea = document.getElementById("star4TicketArea");
+if(ticketArea) ticketArea.style.display = (star4GachaTicket > 0) ? "block" : "none";
 let b=document.getElementById("box");
 if(b)b.innerHTML=box.map((c,i)=>`
 <div class="card ${attrClass[c.attr]} boxCardImg${c.isStar5?' star5-'+({'火':'fire','水':'water','雷':'thunder','木':'wood','光':'light','闇':'dark'}[c.attr]||'fire'):''}" style="position:relative;padding:5px;width:90px;" onclick="add(${i})">`).join("") + ""; 
@@ -6935,11 +7032,11 @@ if(exist){
   if(exist.dupe < maxDupe[exist.rarity]){
     exist.dupe++;
     let atkUp=0,hpUp=0;
-    if(exist.rarity===1){atkUp=20;hpUp=50;}
-    else if(exist.rarity===2){atkUp=25;hpUp=62;}
-    else if(exist.rarity===3){atkUp=32;hpUp=80;}
+    if(exist.rarity===1){atkUp=12;hpUp=42;}
+    else if(exist.rarity===2){atkUp=17;hpUp=54;}
+    else if(exist.rarity===3){atkUp=24;hpUp=72;}
     else if(exist.rarity===4){atkUp=72;hpUp=184;}
-    exist.atk+=atkUp;exist.hp+=hpUp;
+    exist.atk+=atkUp; exist.hp+=hpUp;
   }else{
     let gain=0;
     if(exist.rarity===1)gain=1;
@@ -6975,20 +7072,20 @@ results.forEach((c)=>{
   let exist=box.find(b=>b.name===c.name);
   if(exist){
     if(exist.dupe < maxDupe[exist.rarity]){
-      exist.dupe++;
-      let atkUp=0,hpUp=0;
-      if(exist.rarity===1){atkUp=20;hpUp=50;}
-      else if(exist.rarity===2){atkUp=25;hpUp=62;}
-      else if(exist.rarity===3){atkUp=32;hpUp=80;}
-      else if(exist.rarity===4){atkUp=72;hpUp=184;}
-      exist.atk+=atkUp;exist.hp+=hpUp;
+        exist.dupe++;
+        let atkUp=0,hpUp=0;
+        if(exist.rarity===1){atkUp=12;hpUp=42;}
+        else if(exist.rarity===2){atkUp=17;hpUp=54;}
+        else if(exist.rarity===3){atkUp=24;hpUp=72;}
+        else if(exist.rarity===4){atkUp=72;hpUp=184;}
+        exist.atk+=atkUp; exist.hp+=hpUp;
     }else{
-      let gain=0;
-      if(exist.rarity===1)gain=1;
-      if(exist.rarity===2)gain=3;
-      if(exist.rarity===3)gain=10;
-      if(exist.rarity===4)gain=30;
-      dupeStone+=gain;
+        let gain=0;
+        if(exist.rarity===1)gain=1;
+        if(exist.rarity===2)gain=3;
+        if(exist.rarity===3)gain=10;
+        if(exist.rarity===4)gain=30;
+        dupeStone+=gain;
     }
   }else{
     box.push({...c,dupe:0,atk:20+5*c.rarity,hp:100+20*c.rarity,weapon:null});
@@ -7221,13 +7318,27 @@ document.addEventListener("click", function(e){
 let gachaFlipQueue = [];
 let gachaSkipStage = 0;
 let _gachaSkipped = false;
+function _clearGachaEffects(){
+  // star4暗転オーバーレイ削除
+  const s4d = document.getElementById('star4DarkOverlay');
+  if(s4d) s4d.remove();
+  // kakuteiOverlay非表示
+  const ko = document.getElementById('kakuteiOverlay');
+  if(ko) ko.classList.remove('active');
+  // 演出要素をすべて削除
+  document.querySelectorAll('.kakutei-text,.shougou-lines,.kakutei-border-flash,.attr-beam-overlay,.rarity-upgrade-badge,.gacha-flash-r2,.gacha-flash-r3,.gacha-flash-r4,.gacha-rarity-announce,.s4d-flash-out').forEach(el=>el.remove());
+}
 function gachaSkipAll(){
   if(gachaSkipStage === 0){
     gachaSkipStage = 1;
     _gachaSkipped = true;
+    // star4キャラ演出オーバーレイを即削除
+    const s4d = document.getElementById('star4DarkOverlay');
+    if(s4d) s4d.remove();
+    // その他の演出要素をすべて削除
+    document.querySelectorAll(".kakutei-text,.shougou-lines,.kakutei-border-flash,.attr-beam-overlay,.rarity-upgrade-badge,.gacha-flash-r2,.gacha-flash-r3,.gacha-flash-r4,.gacha-rarity-announce,.s4d-flash-out").forEach(el=>el.remove());
     gachaFlipQueue.forEach(fn=>fn());
     gachaFlipQueue = [];
-    document.querySelectorAll(".kakutei-text,.shougou-lines,.kakutei-border-flash,.attr-beam-overlay,.rarity-upgrade-badge").forEach(el=>el.remove());
   } else {
     gachaSkipStage = 0;
     _gachaSkipped = false;
@@ -7249,6 +7360,8 @@ function closeGachaOverlay(){
   stopGachaParticles();
   const bg = document.getElementById("gachaBgGlow");
   if(bg) bg.className = "gacha-bg-glow";
+  const skipBtn = document.getElementById("gachaSkipBtn");
+  if(skipBtn) skipBtn.style.display = "";
 }
 function showKakuteiEffect(c, onDone){
   const pattern = Math.floor(Math.random() * 3);
@@ -7634,10 +7747,12 @@ function showDupeEffect(count){
   document.body.appendChild(txt);
   setTimeout(()=>txt.remove(), 2100);
 }
-function showGachaFullscreen1(c, onDone){
+function showGachaFullscreen1(c, onDone, noSkip){
   ensureGachaOverlay();
   _gachaSkipped = false;
   gachaSkipStage = 0;
+  const skipBtn = document.getElementById("gachaSkipBtn");
+  if(skipBtn) skipBtn.style.display = noSkip ? "none" : "";
   const ov = document.getElementById("gachaOverlay");
   const cardArea = document.getElementById("gachaCardArea");
   const bgGlow = document.getElementById("gachaBgGlow");
@@ -7715,17 +7830,19 @@ function showGachaFullscreen1(c, onDone){
         if(onDone) onDone();
       }, 1800);
     };
-    gachaFlipQueue = [()=>{
-      cardEl.classList.add("flipped");
-      bgGlow.style.opacity="0";
-      stopGachaParticles();
-      setTimeout(()=>{
-        closeGachaOverlay();
-        gachaSkipStage = 0;
-        _gachaSkipped = false;
-        if(onDone) onDone();
-      }, 300);
-    }];
+    if(!noSkip){
+      gachaFlipQueue = [()=>{
+        cardEl.classList.add("flipped");
+        bgGlow.style.opacity="0";
+        stopGachaParticles();
+        setTimeout(()=>{
+          closeGachaOverlay();
+          _clearGachaEffects();
+          gachaSkipStage = 0;
+          if(onDone) onDone();
+        }, 300);
+      }];
+    }
     cardEl.addEventListener("click", function once(){
       cardEl.removeEventListener("click", once);
       gachaFlipQueue = gachaFlipQueue.filter(f=>f!==flipFn);
@@ -7821,11 +7938,14 @@ function showGachaFullscreen10(results, onDone){
   gachaFlipQueue = [()=>{
     wraps.forEach((w)=>{ w.classList.add("reveal"); });
     flipFns.forEach(f=>f(true));
+    _clearGachaEffects();
     setTimeout(()=>{
+      _clearGachaEffects();
       closeGachaOverlay();
       showGachaSummary(results);
       if(onDone) onDone();
       gachaSkipStage = 1;
+      _gachaSkipped = false;
     }, 400);
   }];
   let revealIndex = 0;
@@ -7893,27 +8013,21 @@ function addToBox(c){
 let exist = box.find(b=>b.name===c.name);
 if(exist){
     if(exist.dupe < maxDupe[exist.rarity]){
-    exist.dupe++;
-    let atkUp=0,hpUp=0;
-    if(exist.rarity===1){
-        atkUp=20; hpUp=50;
-    }else if(exist.rarity===2){
-        atkUp=25; hpUp=62;
-    }else if(exist.rarity===3){
-        atkUp=32; hpUp=80;
-    }else if(exist.rarity===4){
-        atkUp=72; hpUp=184;
+        exist.dupe++;
+        let atkUp=0,hpUp=0;
+        if(exist.rarity===1){atkUp=12;hpUp=42;}
+        else if(exist.rarity===2){atkUp=17;hpUp=54;}
+        else if(exist.rarity===3){atkUp=24;hpUp=72;}
+        else if(exist.rarity===4){atkUp=72;hpUp=184;}
+        exist.atk+=atkUp; exist.hp+=hpUp;
+    }else{
+        let gain=0;
+        if(exist.rarity===1)gain=1;
+        if(exist.rarity===2)gain=3;
+        if(exist.rarity===3)gain=10;
+        if(exist.rarity===4)gain=30;
+        dupeStone+=gain;
     }
-    exist.atk += atkUp;
-    exist.hp += hpUp;
-}else{
-    let gain = 0;
-    if(exist.rarity === 1) gain = 1;
-    if(exist.rarity === 2) gain = 3;
-    if(exist.rarity === 3) gain = 10;
-    if(exist.rarity === 4) gain = 30;
-    dupeStone += gain;
-}
 }else{
     box.push({
         ...c,
@@ -8315,9 +8429,9 @@ function useDupe(i){
         return;
     }
     let cost = 0;
-    if(c.rarity === 1) cost = 5;
-    if(c.rarity === 2) cost = 10;
-    if(c.rarity === 3) cost = 30;
+    if(c.rarity === 1) cost = 20;
+    if(c.rarity === 2) cost = 50;
+    if(c.rarity === 3) cost = 70;
     if(c.rarity === 4) cost = 100;
     if(dupeStone < cost){
         alert("凸塊が足りない");
@@ -13622,8 +13736,9 @@ function showStar4DarkReveal(c, onRevealDone) {
       /* ① セリフ — 最初に登場 */
       .s4d-line-text {
         position:relative;z-index:10;
-        font-size:clamp(16px,4.5vw,28px);font-weight:bold;letter-spacing:3px;
-        color:#fff;text-align:center;white-space:nowrap;max-width:90vw;
+        font-size:clamp(13px,3.8vw,24px);font-weight:bold;letter-spacing:2px;
+        color:#fff;text-align:center;white-space:normal;max-width:88vw;
+        word-break:break-all;line-height:1.5;padding:0 8px;box-sizing:border-box;
         text-shadow:0 0 10px rgba(255,255,255,0.6);
         opacity:0;
         animation:s4dLineTextIn 0.5s 0.25s ease forwards;
@@ -13655,17 +13770,17 @@ function showStar4DarkReveal(c, onRevealDone) {
         60%  { opacity:1; transform:scale(1.1) rotate(1deg); }
         100% { opacity:1; transform:scale(1.0) rotate(0deg); }
       }
-      /* ③ キャラ名 — スライドイン */
+      /* ③ キャラ名 — フェードイン */
       .s4d-charname {
         position:relative;z-index:10;
         font-size:clamp(15px,4vw,26px);font-weight:bold;letter-spacing:4px;
         text-align:center;color:#fff;
-        opacity:0;transform:translateY(12px);
-        animation:s4dNameSlide 0.4s 0.85s ease forwards;
+        opacity:0;
+        animation:s4dNameFade 0.4s 0.85s ease forwards;
       }
-      @keyframes s4dNameSlide {
-        0%   { opacity:0; transform:translateY(12px); }
-        100% { opacity:1; transform:translateY(0); }
+      @keyframes s4dNameFade {
+        0%   { opacity:0; }
+        100% { opacity:1; }
       }
       .s4d-stars { position:absolute;top:0;left:0;width:100%;height:100%;z-index:3;pointer-events:none;overflow:hidden; }
       .s4d-star {
@@ -13754,9 +13869,25 @@ function showStar4DarkReveal(c, onRevealDone) {
   document.body.appendChild(ov);
   requestAnimationFrame(()=> requestAnimationFrame(()=> ov.classList.add('visible')));
 
+  // スキップ監視：_gachaSkipped が true になったら即座にオーバーレイを消す
+  let _s4dDone = false;
+  const _s4dSkipWatcher = setInterval(()=>{
+    if(_s4dDone) { clearInterval(_s4dSkipWatcher); return; }
+    if(_gachaSkipped){
+      clearInterval(_s4dSkipWatcher);
+      _s4dDone = true;
+      ov.remove();
+      document.querySelectorAll('.s4d-flash-out').forEach(el=>el.remove());
+      if(onRevealDone) onRevealDone();
+    }
+  }, 16);
+
   // 表示時間：セリフあり1400ms、なし1100ms
   const totalDur = line ? 1400 : 1100;
   setTimeout(()=>{
+    if(_s4dDone) return;
+    _s4dDone = true;
+    clearInterval(_s4dSkipWatcher);
     if (_gachaSkipped) { ov.remove(); if(onRevealDone) onRevealDone(); return; }
     const flash = document.createElement('div');
     flash.className = 's4d-flash-out';
