@@ -8918,9 +8918,9 @@ Lv.${lv}
 }).join("");
 trialList.innerHTML += `
 <div style="margin-top:10px;">
-<button onclick="changeTrialPage(-1)">＜</button>
+<button onclick="changePage(-1)">＜</button>
 ${trialPage+1}
-<button onclick="changeTrialPage(1)">＞</button>
+<button onclick="changePage(1)">＞</button>
 </div>
 `;
 }
@@ -8943,6 +8943,14 @@ function renderUltimate(){
   let bossFloor = (i % 10 === 0 || i === 100);
   let stage = ultimate.stages[i-1];
 
+  // 実際の戦闘開始時(startUltimateBattle)と同じ補正をプレビューにも反映
+  let displayHp = stage ? stage.hp : 0;
+  let displayAtk = stage ? stage.atk : 0;
+  if(stage && stage.bossBuff){
+    displayHp = Math.floor(displayHp * stage.bossBuff.hp);
+    displayAtk = Math.floor(displayAtk * stage.bossBuff.atk);
+  }
+
   let gimmickTxt = "";
   if(stage && stage.gimmick){
     let g = stage.gimmick;
@@ -8963,7 +8971,7 @@ function renderUltimate(){
       <div style="font-size:20px;font-weight:bold;color:#eee;">${i}F ${bossFloor ? '（ボス階層）' : ''}</div>
       ${isCleared ? '<div style="color:#44ff44;font-size:13px;font-weight:bold;">✓ クリア済み</div>' : ''}
       ${!isUnlocked ? '<div style="color:#ff8888;font-size:13px;">🔒 未開放（'+maxFloor+'Fまで挑戦可能）</div>' : ''}
-      ${stage ? `<div style="font-size:11px;color:#aaccff;">敵HP:${stage.hp?.toLocaleString?.()||stage.hp} ／ 敵ATK:${stage.atk}</div>` : ''}
+      ${stage ? `<div style="font-size:11px;color:#aaccff;">敵HP:${displayHp?.toLocaleString?.()||displayHp} ／ 敵ATK:${displayAtk}</div>` : ''}
       ${gimmickTxt ? `<div style="font-size:11px;color:#ffcc88;">${gimmickTxt}</div>` : ''}
       <button onclick="startUltimateBattle(${i})" ${isUnlocked?'':'disabled'}
         style="margin-top:6px;padding:10px 28px;border-radius:10px;border:none;font-size:14px;font-weight:bold;cursor:${isUnlocked?'pointer':'not-allowed'};background:${isUnlocked?(bossFloor?'#ff6699':'#5577ff'):'#444455'};color:#fff;">
