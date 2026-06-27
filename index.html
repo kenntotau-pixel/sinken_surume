@@ -6,7 +6,7 @@
 <title>真剣のスルーメ</title>
 <meta name="theme-color" content="#0b0f1a">
 
-<style>#loading{position:fixed;top:0;left:0;width:100%;height:100%;background:#0b0f1a;display:flex;justify-content:center;align-items:center;z-index:9999}.loadingBox{text-align:center}.loadingLogo{width:220px;margin-bottom:20px;animation:logoFade 2s infinite}@keyframes logoFade{0%{opacity:0.5}50%{opacity:1}100%{opacity:0.5}}.loadingBar{width:200px;height:10px;background:#333;border-radius:10px;overflow:hidden;margin:0 auto 10px}#loadingFill{height:100%;width:0%;background:linear-gradient(90deg,#ffd700,#ff4444);transition:0.2s}.loadingText{font-size:14px;letter-spacing:2px}body{margin:0;background:#0b0f1a;color:#fff;font-family:sans-serif}.screen{display:none!important;padding:10px;text-align:center;min-height:0!important}.screen.active{display:block!important;min-height:auto}.fire{border:3px solid #ff4444}.water{border:3px solid #4488ff}.thunder{border:3px solid #ffd700}.wood{border:3px solid #44cc44}.light{border:3px solid #ffffff}.dark{border:3px solid #aa00ff}.card{display:inline-block;background:#1a1f2e;padding:6px;margin:5px;border-radius:10px;width:95px}.card img{width:100%;border-radius:8px}.ssr{box-shadow:0 0 20px gold}.rarity{font-size:12px;color:gold;font-weight:bold;margin-bottom:2px}.flash{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle,rgba(255,255,255,0.9),transparent);animation:flash 0.6s forwards;pointer-events:none;z-index:9990}@keyframes flash{0%{opacity:1}100%{opacity:0}}@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}@keyframes toastOut{from{opacity:1;transform:translateX(-50%) translateY(0)}to{opacity:0;transform:translateX(-50%) translateY(10px)}}#gachaOverlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:20000;overflow:hidden;flex-direction:column;align-items:center;justify-content:center}#gachaOverlay.active{display:flex}#gachaCanvas{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}.gacha-bg-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;border-radius:50%;pointer-events:none;opacity:0;transition:opacity 0.4s}.gacha-bg-glow.ssr-glow{background:radial-gradient(circle,rgba(255,215,0,0.3) 0%,rgba(255,140,0,0.15) 40%,transparent 70%)}.gacha-bg-glow.ultra-glow{background:radial-gradient(circle,rgba(0,255,255,0.4) 0%,rgba(255,0,255,0.2) 40%,transparent 70%);animation:ultraBgPulse 0.8s infinite alternate}@keyframes ultraBgPulse{from{transform:translate(-50%,-50%) scale(1)}to{transform:translate(-50%,-50%) scale(1.15)}}#gachaOpeningText{position:absolute;font-size:48px;font-weight:900;color:#fff;letter-spacing:8px;text-align:center;pointer-events:none;z-index:10;text-shadow:0 0 30px rgba(255,215,0,0.8),0 0 60px rgba(255,215,0,0.4);opacity:0}#gachaOpeningText.show{animation:openingTextAnim 1.2s forwards}@keyframes openingTextAnim{0%{opacity:0;transform:scale(0.3) rotate(-10deg)}30%{opacity:1;transform:scale(1.2) rotate(2deg)}60%{opacity:1;transform:scale(1.0) rotate(0deg)}100%{opacity:0;transform:scale(0.8) rotate(0deg)}}#gachaCardArea{position:relative;z-index:5;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;max-width:500px;padding:10px}.gacha-card-wrap{opacity:0;transform:translateY(40px) scale(0.8);transition:opacity 0.4s,transform 0.4s}.gacha-card-wrap.reveal{opacity:1;transform:translateY(0) scale(1)}.gacha-card-big{position:relative;width:100px;height:140px;transform-style:preserve-3d;transition:transform 0.7s cubic-bezier(0.4,0,0.2,1);cursor:pointer}.gacha-card-big.flipped{transform:rotateY(180deg)}.gacha-card-front,.gacha-card-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:12px;overflow:hidden}.gacha-card-front{background:linear-gradient(135deg,#1a1f3a,#2a2f55);border:2px solid #4a5070;display:flex;align-items:center;justify-content:center;font-size:40px}.gacha-card-front::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);animation:cardShine 2s infinite}@keyframes cardShine{0%{left:-100%}100%{left:200%}}.gacha-card-back{transform:rotateY(180deg);background:#1a1f2e;border:2px solid #444;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;font-size:11px}.gacha-card-back img{width:90%;height:90px;object-fit:cover;border-radius:8px}.gacha-card-back .rarity{font-size:12px;color:gold;font-weight:bold;margin-bottom:2px}.gacha-card-back.rarity-1{border-color:#888}.gacha-card-back.rarity-2{border-color:#4488ff;box-shadow:0 0 12px #4488ff66}.gacha-card-back.rarity-3{border-color:gold;box-shadow:0 0 20px gold}.gacha-card-back.rarity-4{border-color:cyan;box-shadow:0 0 30px cyan,0 0 60px magenta;animation:ultraCardGlow 1s infinite alternate}@keyframes ultraCardGlow{from{box-shadow:0 0 20px cyan,0 0 40px magenta}to{box-shadow:0 0 40px cyan,0 0 80px magenta,0 0 100px #ff00ff55}}.card.star5-fire{border:3px solid #ff4444;box-shadow:0 0 18px #ff444488,0 0 30px #ff444444;animation:star5GlowFire 1.2s infinite alternate}@keyframes star5GlowFire{from{box-shadow:0 0 10px #ff444488}to{box-shadow:0 0 28px #ff4444,0 0 50px #ff444466}}.card.star5-water{border:3px solid #4488ff;box-shadow:0 0 18px #4488ff88,0 0 30px #4488ff44;animation:star5GlowWater 1.2s infinite alternate}@keyframes star5GlowWater{from{box-shadow:0 0 10px #4488ff88}to{box-shadow:0 0 28px #4488ff,0 0 50px #4488ff66}}.card.star5-thunder{border:3px solid #ffd700;box-shadow:0 0 18px #ffd70088,0 0 30px #ffd70044;animation:star5GlowThunder 1.2s infinite alternate}@keyframes star5GlowThunder{from{box-shadow:0 0 10px #ffd70088}to{box-shadow:0 0 28px #ffd700,0 0 50px #ffd70066}}.card.star5-wood{border:3px solid #44cc44;box-shadow:0 0 18px #44cc4488,0 0 30px #44cc4444;animation:star5GlowWood 1.2s infinite alternate}@keyframes star5GlowWood{from{box-shadow:0 0 10px #44cc4488}to{box-shadow:0 0 28px #44cc44,0 0 50px #44cc4466}}.card.star5-light{border:3px solid #ffffff;box-shadow:0 0 18px #ffffff88,0 0 30px #ffffff44;animation:star5GlowLight 1.2s infinite alternate}@keyframes star5GlowLight{from{box-shadow:0 0 10px #ffffff88}to{box-shadow:0 0 28px #ffffff,0 0 50px #ffffcc66}}.card.star5-dark{border:3px solid #aa00ff;box-shadow:0 0 18px #aa00ff88,0 0 30px #aa00ff44;animation:star5GlowDark 1.2s infinite alternate}@keyframes star5GlowDark{from{box-shadow:0 0 10px #aa00ff88}to{box-shadow:0 0 28px #aa00ff,0 0 50px #aa00ff66}}.ssr-beam{position:absolute;top:50%;left:50%;width:4px;height:300px;transform-origin:bottom center;background:linear-gradient(to top,rgba(255,215,0,0.8),transparent);pointer-events:none;animation:beamFade 1.5s forwards}@keyframes beamFade{0%{opacity:1}100%{opacity:0}}.ultra-beam{position:absolute;top:50%;left:50%;width:4px;height:400px;transform-origin:bottom center;pointer-events:none;animation:ultraBeamFade 1.8s forwards}@keyframes ultraBeamFade{0%{opacity:1}100%{opacity:0}}.gacha-flash-r2{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle,rgba(68,136,255,0.7),transparent);animation:gachaFlashFade 0.8s forwards;pointer-events:none;z-index:19999}.gacha-flash-r3{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle,rgba(255,215,0,0.85),rgba(255,140,0,0.5),transparent);animation:gachaFlashFade 1.0s forwards;pointer-events:none;z-index:19999}.gacha-flash-r4{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(45deg,rgba(255,0,255,0.7),rgba(0,255,255,0.7),rgba(255,215,0,0.7));animation:gachaFlashFadeR4 1.5s forwards;pointer-events:none;z-index:19999}@keyframes gachaFlashFade{0%{opacity:1}100%{opacity:0}}@keyframes gachaFlashFadeR4{0%{opacity:1;transform:scale(1)}50%{opacity:0.8;transform:scale(1.05)}100%{opacity:0;transform:scale(1.1)}}.gacha-rarity-announce{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:56px;font-weight:900;letter-spacing:6px;pointer-events:none;z-index:20010;text-align:center;white-space:nowrap}.announce-ssr{color:#ffd700;text-shadow:0 0 40px #ffd700,0 0 80px #ff8800,0 0 120px #ff4400;animation:announceSSR 1.8s forwards}.announce-ultra{background:linear-gradient(90deg,#ff0080,#ff8c00,#ffd700,#00ff88,#00ffff,#8000ff);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px rgba(255,255,255,0.8));animation:announceUltra 2.0s forwards,rainbowShift 0.5s infinite linear}@keyframes announceSSR{0%{opacity:0;transform:translate(-50%,-50%) scale(0.3)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.3)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}80%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes announceUltra{0%{opacity:0;transform:translate(-50%,-50%) scale(0.2) rotate(-10deg)}15%{opacity:1;transform:translate(-50%,-50%) scale(1.4) rotate(3deg)}40%{opacity:1;transform:translate(-50%,-50%) scale(1.0) rotate(0deg)}80%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes rainbowShift{from{background-position:0% center}to{background-position:200% center}}#gachaSkipBtn{position:fixed;bottom:30px;right:20px;background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:8px 20px;font-size:13px;cursor:pointer;z-index:20020;backdrop-filter:blur(4px);transition:background 0.2s}#gachaSkipBtn:hover{background:rgba(255,255,255,0.25)}.tap-ripple{position:fixed;border-radius:50%;width:60px;height:60px;background:rgba(255,255,255,0.3);pointer-events:none;z-index:20030;transform:translate(-50%,-50%) scale(0);animation:tapRipple 0.5s forwards}@keyframes tapRipple{to{transform:translate(-50%,-50%) scale(3);opacity:0}}#gachaResultSummary{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:20000;display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:20px;overflow-y:auto}#gachaResultSummary.active{display:flex}.summary-title{font-size:20px;font-weight:bold;color:#ffd700;letter-spacing:4px;margin-bottom:16px;text-shadow:0 0 20px #ffd700aa}.summary-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:500px;padding:0 10px}.summary-card{background:#1a1f2e;border-radius:10px;padding:6px;width:85px;text-align:center;font-size:10px;border:2px solid #333;transition:transform 0.2s;opacity:0;transform:scale(0.5)}.summary-card.show{opacity:1;transform:scale(1);transition:opacity 0.3s,transform 0.3s}.summary-card img{width:100%;height:72px;object-fit:cover;border-radius:7px}.summary-card.r2{border-color:#4488ff;box-shadow:0 0 8px #4488ff44}.summary-card.r3{border-color:gold;box-shadow:0 0 12px gold}.summary-card.r4{border-color:cyan;box-shadow:0 0 20px cyan,0 0 40px magenta;animation:ultraCardGlow 1s infinite alternate}.summary-close-btn{margin-top:16px;margin-bottom:30px;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-weight:bold;font-size:15px;border:none;border-radius:12px;padding:12px 40px;cursor:pointer;letter-spacing:2px}#kakuteiOverlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:21000;pointer-events:none;overflow:hidden}#kakuteiOverlay.active{display:block;pointer-events:all}.kakutei-text{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:64px;font-weight:900;letter-spacing:8px;text-align:center;white-space:nowrap;pointer-events:none;z-index:21010}.kakutei-kakutei{color:#fff;text-shadow:0 0 30px #ffd700,0 0 60px #ff8800,0 0 100px #ff4400;animation:kakuteiAnim 2.2s forwards}.kakutei-shougou{background:linear-gradient(90deg,#ff0080,#ffd700,#00ffff,#8000ff);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px rgba(255,255,255,0.9));animation:shougouAnim 2.5s forwards,rainbowShift 0.4s infinite linear}.kakutei-attr{font-size:52px;animation:attrConfirmAnim 2.0s forwards}.kakutei-dupe{font-size:48px;color:#88ffcc;text-shadow:0 0 20px #44ffaa,0 0 40px #00ff88;animation:dupeAnim 2.0s forwards}@keyframes kakuteiAnim{0%{opacity:0;transform:translate(-50%,-50%) scale(0.2) rotate(-15deg)}15%{opacity:1;transform:translate(-50%,-50%) scale(1.4) rotate(3deg)}35%{opacity:1;transform:translate(-50%,-50%) scale(1.0) rotate(0deg)}80%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes shougouAnim{0%{opacity:0;transform:translate(-50%,-50%) scale(0.1) rotate(20deg)}12%{opacity:1;transform:translate(-50%,-50%) scale(1.5) rotate(-3deg)}30%{opacity:1;transform:translate(-50%,-50%) scale(1.0) rotate(0deg)}80%{opacity:1;transform:translate(-50%,-50%) scale(1.05)}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes attrConfirmAnim{0%{opacity:0;transform:translate(-50%,-50%) scale(0.3)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.2)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes dupeAnim{0%{opacity:0;transform:translate(-50%,-50%) translateY(40px) scale(0.5)}20%{opacity:1;transform:translate(-50%,-50%) translateY(0) scale(1.1)}70%{opacity:1;transform:translate(-50%,-50%) translateY(0) scale(1.0)}100%{opacity:0;transform:translate(-50%,-50%) translateY(-20px) scale(0.9)}}.shougou-lines{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:20900;overflow:hidden}.shougou-line{position:absolute;height:6px;width:120%;opacity:0;animation:shougouLine 1.5s forwards}@keyframes shougouLine{0%{opacity:0;transform:translateX(-110%)}40%{opacity:1}100%{opacity:0;transform:translateX(10%)}}.gacha-bg-glow.attr-glow-fire{background:radial-gradient(circle,rgba(255,80,0,0.4) 0%,rgba(255,140,0,0.2) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-water{background:radial-gradient(circle,rgba(0,140,255,0.4) 0%,rgba(0,200,255,0.2) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-thunder{background:radial-gradient(circle,rgba(255,215,0,0.4) 0%,rgba(255,170,0,0.2) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-wood{background:radial-gradient(circle,rgba(68,200,68,0.4) 0%,rgba(100,255,100,0.2) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-light{background:radial-gradient(circle,rgba(255,255,220,0.5) 0%,rgba(255,220,150,0.25) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-dark{background:radial-gradient(circle,rgba(170,0,255,0.45) 0%,rgba(220,100,255,0.2) 40%,transparent 70%)}.summary-card.attr-fire{border-color:#ff4444;box-shadow:0 0 10px #ff444466}.summary-card.attr-water{border-color:#4488ff;box-shadow:0 0 10px #4488ff66}.summary-card.attr-thunder{border-color:#ffd700;box-shadow:0 0 10px #ffd70066}.summary-card.attr-wood{border-color:#44cc44;box-shadow:0 0 10px #44cc4466}.summary-card.attr-light{border-color:#ffffff;box-shadow:0 0 10px #ffffff55}.summary-card.attr-dark{border-color:#aa00ff;box-shadow:0 0 10px #aa00ff66}.kakutei-border-flash{position:fixed;top:0;left:0;width:100%;height:100%;border:6px solid gold;box-sizing:border-box;pointer-events:none;z-index:20990;animation:borderFlash 0.6s 3 alternate}@keyframes borderFlash{from{opacity:1;border-color:gold}to{opacity:0;border-color:transparent}}.attr-beam-overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:20800;animation:attrBeamFade 1.4s forwards}@keyframes attrBeamFade{0%{opacity:1}60%{opacity:0.6}100%{opacity:0}}.rarity-upgrade-badge{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#1a1000,#2a2000);border:2px solid #ffd700;border-radius:12px;padding:8px 20px;font-size:14px;font-weight:bold;color:#ffd700;letter-spacing:2px;z-index:21005;pointer-events:none;animation:badgePop 0.4s forwards}@keyframes badgePop{0%{opacity:0;transform:translateX(-50%) scale(0.7)}100%{opacity:1;transform:translateX(-50%) scale(1.0)}}.flip{position:relative;width:90px;height:120px;transform-style:preserve-3d;transition:0.6s}.open .flip{transform:rotateY(180deg)}.front,.back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px}.front{background:linear-gradient(135deg,#2a2f55,#1a1f3a);border:2px solid #3a4060}.back{transform:rotateY(180deg);background:#1a1f2e}#battleMain{display:flex;justify-content:space-between;align-items:center;gap:10px;max-width:520px;margin:auto}.teamArea{display:flex;flex-direction:column;gap:8px;width:40%;align-items:center}#enemyArea{width:55%;display:flex;justify-content:center}.unit{background:#1a1f2e;padding:6px;border-radius:12px;font-size:10px;position:relative}.ally{width:140px}.unit img{width:100%;max-height:90px;object-fit:cover;border-radius:8px}.enemy{width:160px}.turn{outline:2px solid yellow;box-shadow:0 0 6px yellow}.bar{background:#333;height:8px;border-radius:5px;margin-top:3px}.hp{background:#4caf50;height:8px}.gauge{background:#ff9800;height:6px}.damage{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(1);font-size:clamp(14px,4.5vw,26px);font-weight:bold;color:#fff;text-shadow:0 0 10px #000,0 0 5px #000;animation:damagePop 0.9s forwards;pointer-events:none;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}@keyframes damagePop{0%{opacity:0;transform:translate(-50%,-50%) scale(0.5)}20%{opacity:1;transform:translate(-50%,-60%) scale(1.2)}100%{opacity:0;transform:translate(-50%,-100%) scale(0.8)}}.weak{color:#ff4444}.resist{color:#44aaff}.rainbowFlash{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(45deg,red,orange,yellow,green,cyan,blue,purple);opacity:0.8;animation:rainbow 0.8s forwards;z-index:999}@keyframes rainbow{0%{opacity:1}100%{opacity:0}}.shake{animation:shake 0.4s}@keyframes shake{0%{transform:translate(0,0)}25%{transform:translate(-5px,5px)}50%{transform:translate(5px,-5px)}75%{transform:translate(-5px,5px)}100%{transform:translate(0,0)}}.ultra{box-shadow:0 0 25px cyan,0 0 40px magenta;animation:glow 1s infinite alternate}@keyframes glow{from{filter:brightness(1)}to{filter:brightness(1.6)}}.eventFlash{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#ff00cc,#3333ff,#00ffff);opacity:0.8;animation:eventFlash 0.8s forwards;z-index:999}@keyframes eventFlash{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.2)}}.banner{animation:bannerGlow 1.5s infinite alternate}@keyframes bannerGlow{from{filter:brightness(1)}to{filter:brightness(1.3)}}#gameTitle{width:200px;height:auto}.status{font-size:12px;margin:4px 0;min-height:14px}.loadingText{font-size:24px;color:#fff;animation:blink 1s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}.hitText{position:absolute;top:20%;left:50%;transform:translateX(-50%);font-size:clamp(11px,3vw,18px);font-weight:bold;color:#ffcc00;text-shadow:0 0 8px #000;animation:hitPop 0.8s forwards;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}.totalDamage{position:absolute;top:30%;left:50%;transform:translateX(-50%);font-size:clamp(14px,4vw,24px);font-weight:bold;color:#ff4444;text-shadow:0 0 10px #000;animation:totalPop 1s forwards;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}@keyframes hitPop{0%{opacity:0;transform:translate(-50%,0) scale(0.5)}30%{opacity:1;transform:translate(-50%,-10px) scale(1.2)}100%{opacity:0;transform:translate(-50%,-30px) scale(1)}}@keyframes totalPop{0%{opacity:0;transform:translate(-50%,0) scale(0.5)}30%{opacity:1;transform:translate(-50%,-10px) scale(1.3)}100%{opacity:0;transform:translate(-50%,-40px) scale(1)}}.dexRow{display:flex;align-items:center;background:#1a1f2e;margin:6px;padding:8px;border-radius:10px;gap:10px}.dexRow img{width:80px;height:80px;object-fit:cover;border-radius:8px}.dexText{text-align:left;font-size:14px}.statusRow{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px;min-height:18px}.sBadge{font-size:10px;padding:1px 4px;border-radius:4px;font-weight:bold}.sBurn{background:#ff4400;color:#fff}.sFreeze{background:#44bbff;color:#fff}.sShock{background:#ffdd00;color:#000}.sPoison{background:#aa44ff;color:#fff}.sShield{background:#44aaff;color:#fff}.sCounter{background:#ff8800;color:#fff}.sBuff{background:#44ff88;color:#000}.sDebuff{background:#8866ff;color:#fff}.sPassive{background:#1a3a1a;color:#88ff88;border:1px solid #44cc44}.roleBadge{display:inline-block;font-size:9px;padding:1px 5px;border-radius:4px;font-weight:bold;margin-bottom:2px}.role-attacker{background:#ff4444;color:#fff}.role-tank{background:#4488ff;color:#fff}.role-support{background:#44cc44;color:#fff}.role-debuffer{background:#aa44ff;color:#fff}.ctWrap{display:flex;align-items:center;gap:3px;margin-top:2px}.ctLabel{font-size:9px;color:#aaa;width:18px}.ctBar{flex:1;height:5px;background:#333;border-radius:3px;overflow:hidden}.ctFill{height:100%;background:linear-gradient(90deg,#ff9800,#ffcc00);border-radius:3px;transition:width 0.2s}.ctFillReady{height:100%;background:#44ff88;border-radius:3px;width:100%}.synergyText{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:clamp(12px,3.8vw,22px);font-weight:bold;color:#fff;text-shadow:0 0 20px #ff0088,0 0 10px #ff0088;animation:synergyPop 1.2s forwards;pointer-events:none;z-index:9998;text-align:center;white-space:normal;word-break:break-word;max-width:90vw;box-sizing:border-box;padding:0 8px;line-height:1.3}@keyframes synergyPop{0%{opacity:0;transform:translate(-50%,-50%) scale(0.5)}20%{opacity:1;transform:translate(-50%,-60%) scale(1.3)}80%{opacity:1;transform:translate(-50%,-65%) scale(1.1)}100%{opacity:0;transform:translate(-50%,-80%) scale(0.9)}}.gimmickRow{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}.gBadge{font-size:9px;padding:2px 5px;border-radius:4px;font-weight:bold;background:#333;color:#ffd700;border:1px solid #ffd700}.dmgBurn{color:#ff6600!important}.dmgFreeze{color:#44ddff!important}.dmgShock{color:#ffee00!important}.dmgSynergy{color:#ff00cc!important;font-size:clamp(16px,5.5vw,30px)!important}#skillModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:10000;justify-content:center;align-items:center}#skillModal.open{display:flex}#skillModalBox{background:#1a1f2e;border:2px solid #ffd700;border-radius:14px;padding:20px 24px;max-width:320px;width:90%;text-align:center;position:relative}#skillModalBox img{width:80px;height:80px;object-fit:cover;border-radius:10px;margin-bottom:8px}#skillModalName{font-size:16px;font-weight:bold;margin-bottom:6px}#skillModalText{font-size:14px;color:#ffd700;margin-bottom:6px;line-height:1.5}#skillModalCT{font-size:12px;color:#aaa;margin-bottom:12px}#skillModalClose{background:#333;color:#fff;border:none;border-radius:8px;padding:6px 20px;cursor:pointer;font-size:14px}.skillBtn{margin-top:4px;background:#2a3a5a;color:#ffd700;border:1px solid #ffd700;border-radius:6px;padding:2px 8px;font-size:11px;cursor:pointer}#skillTreeModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:10001;justify-content:center;align-items:center}#skillTreeModal.open{display:flex}#skillTreeBox{background:#0d1120;border:2px solid #44cc88;border-radius:16px;padding:18px 14px;max-width:340px;width:92%;text-align:center;position:relative;max-height:88vh;overflow-y:auto}.stNode{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:88px;min-height:72px;border-radius:10px;padding:5px 4px;font-size:10px;border:2px solid #444;background:#111;color:#666;margin:3px;transition:0.2s;cursor:not-allowed}.stNode.unlocked{background:#1a3a20;border-color:#ffd700;color:#ffd700;box-shadow:0 0 8px #ffd70066;cursor:default}.stNode.available{border-color:#44cc88;background:#0d2010;color:#88ffaa;cursor:pointer;animation:stPulse 1.6s infinite alternate}.stNode.skipped{background:#0d0d0d;border-color:#333;color:#333;cursor:default;opacity:0.4}@keyframes stPulse{from{box-shadow:0 0 3px #44cc88}to{box-shadow:0 0 12px #44cc88,0 0 20px #44cc8844}}.stNodeLabel{font-weight:bold;font-size:11px;margin-bottom:2px}.stNodeBonus{font-size:9px;color:#aaffcc;line-height:1.3}.stNodeCost{font-size:9px;color:#ffd700;margin-top:3px}.stRow{display:flex;justify-content:center;gap:4px;margin:3px 0;flex-wrap:wrap}.stArrow{text-align:center;color:#44cc88;font-size:13px;line-height:1.2;margin:1px 0}.stNode.locked_sp{border-color:#aa6600;background:#1a1000;color:#aa7700;cursor:pointer}.stStageHeader{font-size:11px;font-weight:bold;color:#ffd700;background:linear-gradient(90deg,#1a1200,#2a2000,#1a1200);border:1px solid #443300;border-radius:6px;padding:3px 10px;margin:4px 0 2px;letter-spacing:1px}.stStageHeader.done{color:#44cc88;border-color:#224422;background:linear-gradient(90deg,#0a1a0a,#112011,#0a1a0a)}.stStageHeader.locked{color:#555;border-color:#333;background:#111}.spBadge{display:inline-block;background:linear-gradient(135deg,#1a3a1a,#0d2010);border:1px solid #44cc88;color:#88ffaa;border-radius:8px;padding:3px 10px;font-size:12px;font-weight:bold;margin:4px 0}#profileModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:15000;justify-content:center;align-items:flex-start;padding-top:10px}#profileModal.open{display:flex}#profileBox{background:linear-gradient(160deg,#0a0d1a,#0d1028);border:2px solid #ffd700;border-radius:18px;padding:16px 14px 16px;max-width:380px;width:96%;text-align:center;position:relative;max-height:94vh;overflow-y:auto;box-shadow:0 0 40px #ffd70033,0 0 80px #ffd70011}.profileHeader{font-size:17px;font-weight:bold;color:#ffd700;letter-spacing:2px;margin-bottom:12px}#profileBanner{background:linear-gradient(135deg,#1a1500,#2a2200,#1a1500);border:1px solid #ffd700;border-radius:12px;padding:10px 12px;margin-bottom:10px;display:flex;align-items:center;gap:10px}#profileBannerOshiIcon{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #ffd700;flex-shrink:0;background:#222}#profileBannerOshiIconEmpty{width:56px;height:56px;border-radius:50%;border:2px dashed #555;background:#111;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}#profileBannerRight{text-align:left;flex:1;min-width:0}#profileBannerName{font-size:16px;font-weight:bold;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#profileBannerTitleImg{margin-top:4px;max-width:100%;height:28px;object-fit:contain;display:block}.profileCard{background:#0f1525;border:1px solid #1e2840;border-radius:12px;padding:10px 12px;margin-bottom:8px;text-align:left}.profileLabel{font-size:9px;color:#556;letter-spacing:1.5px;margin-bottom:6px;text-transform:uppercase;font-weight:bold}.profileValue{font-size:14px;font-weight:bold;color:#fff}.profileValueGold{color:#ffd700}.profileValueGreen{color:#44ff88}.profileValueBlue{color:#44aaff}.profileInputRow{display:flex;align-items:center;gap:6px}.profileInput{flex:1;background:#1a1f2e;color:#fff;border:1px solid #333;border-radius:6px;padding:7px 10px;font-size:14px;outline:none}.profileInput:focus{border-color:#ffd700}.profileSaveBtn{background:linear-gradient(135deg,#ffd700,#ff9800);color:#000;border:none;border-radius:6px;padding:7px 14px;font-size:12px;font-weight:bold;cursor:pointer;white-space:nowrap}#titleSelectGrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;max-height:200px;overflow-y:auto}.titleSelectItem{background:#0d1a30;border:2px solid #1e3050;border-radius:8px;padding:6px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:0.15s}.titleSelectItem:hover{border-color:#ffd70088}.titleSelectItem.selected{border-color:#ffd700;background:#1a2a00;box-shadow:0 0 8px #ffd70066}.titleSelectItem.locked{opacity:0.35;cursor:default;border-color:#222}.titleBadge{width:100%;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold;overflow:hidden}.titleBadgeText{font-size:9px;color:#aaa;text-align:center;line-height:1.2}.titleLockLabel{font-size:9px;color:#555}#oshiGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-height:340px;overflow-y:auto;margin-top:8px;padding:2px 2px 4px}.oshiItem{cursor:pointer;border-radius:10px;border:2px solid #1e2840;background:#0d1120;display:flex;flex-direction:column;align-items:center;overflow:hidden;transition:border-color 0.15s,box-shadow 0.15s}.oshiItem:active{transform:scale(0.95)}.oshiItem.selected{border-color:#ffd700;box-shadow:0 0 12px #ffd700aa;background:#1a1800}.oshiImgWrap{width:100%;aspect-ratio:1;position:relative;overflow:hidden;background:#111}.oshiImgWrap img{width:100%;height:100%;object-fit:cover;display:block}.oshiRarityDot{position:absolute;top:3px;right:4px;font-size:7px;color:#ffd700;text-shadow:0 0 4px #000,0 0 2px #000;font-weight:bold;letter-spacing:-1px;line-height:1}.oshiSelectedBadge{position:absolute;top:3px;left:4px;font-size:10px;line-height:1}.oshiItemName{width:100%;color:#ccc;font-size:9px;padding:4px 4px 5px;text-align:center;line-height:1.3;word-break:break-all;background:#0d1120}.profileTop3Row{display:flex;gap:6px;flex-wrap:nowrap}.profileTop3Card{flex:1;min-width:0;background:#0d1a28;border:1px solid #1a3050;border-radius:8px;padding:6px;text-align:center;overflow:hidden}.profileTop3Card img{width:44px;height:44px;object-fit:cover;border-radius:6px;margin-bottom:2px;display:block;margin:0 auto 3px}.profileTop3Medal{font-size:18px;margin-bottom:2px}.profileDivider{border:none;border-top:1px solid #1a1f2e;margin:6px 0}#missionModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:16000;justify-content:center;align-items:flex-start;padding-top:10px}#missionModal.open{display:flex}#missionBox{background:linear-gradient(160deg,#0a0d1a,#0d1028);border:2px solid #44cc88;border-radius:18px;padding:16px 14px 16px;max-width:400px;width:96%;text-align:center;position:relative;max-height:94vh;overflow-y:auto;box-shadow:0 0 40px #44cc8833,0 0 80px #44cc8811}.missionHeader{font-size:17px;font-weight:bold;color:#44cc88;letter-spacing:2px;margin-bottom:12px}.missionTabs{display:flex;gap:4px;margin-bottom:12px;justify-content:center;flex-wrap:wrap}.missionTab{padding:5px 12px;border-radius:8px;font-size:12px;font-weight:bold;border:1px solid #333;background:#111;color:#666;cursor:pointer;transition:0.15s}.missionTab.active{background:#1a3a20;border-color:#44cc88;color:#88ffaa}.missionCard{background:#0f1525;border:1px solid #1e2840;border-radius:12px;padding:10px 12px;margin-bottom:7px;text-align:left;position:relative}.missionCard.completed{border-color:#44cc8855;opacity:0.6}.missionCard.claimable{border-color:#ffd700;box-shadow:0 0 8px #ffd70044;animation:missionPulse 1.5s infinite alternate}@keyframes missionPulse{from{box-shadow:0 0 5px #ffd70044}to{box-shadow:0 0 14px #ffd700aa}}.missionTitle{font-size:13px;font-weight:bold;color:#fff;margin-bottom:4px}.missionDesc{font-size:11px;color:#8899aa;margin-bottom:6px;line-height:1.4}.missionProgress{display:flex;align-items:center;gap:6px;margin-bottom:6px}.missionProgBar{flex:1;height:6px;background:#222;border-radius:3px;overflow:hidden}.missionProgFill{height:100%;background:linear-gradient(90deg,#44cc88,#88ffaa);border-radius:3px;transition:width 0.4s}.missionProgText{font-size:10px;color:#aaa;white-space:nowrap}.missionReward{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.missionRewardBadge{font-size:11px;padding:2px 8px;border-radius:6px;font-weight:bold}.missionRewardStone{background:#1a1800;color:#ffd700;border:1px solid #ffd700}.missionRewardSP{background:#0d2010;color:#88ffaa;border:1px solid #44cc88}.missionRewardTitle{background:#10001a;color:#bb88ff;border:1px solid #aa44ff}.missionClaimBtn{margin-left:auto;background:linear-gradient(135deg,#ffd700,#ff9800);color:#000;border:none;border-radius:6px;padding:4px 12px;font-size:12px;font-weight:bold;cursor:pointer}.missionDoneLabel{margin-left:auto;font-size:11px;color:#44cc88;font-weight:bold}.missionStatLine{font-size:11px;color:#556;margin:2px 0}#missionStatsBox{background:#0a0d1a;border:1px solid #1a2a1a;border-radius:10px;padding:8px 10px;margin-bottom:10px;text-align:left}</style>
+<style>#loading{position:fixed;top:0;left:0;width:100%;height:100%;background:#0b0f1a;display:flex;justify-content:center;align-items:center;z-index:9999}.loadingBox{text-align:center}.loadingLogo{width:220px;margin-bottom:20px;animation:logoFade 2s infinite}@keyframes logoFade{0%{opacity:0.5}50%{opacity:1}100%{opacity:0.5}}.loadingBar{width:200px;height:10px;background:#333;border-radius:10px;overflow:hidden;margin:0 auto 10px}#loadingFill{height:100%;width:0%;background:linear-gradient(90deg,#ffd700,#ff4444);transition:0.2s}.loadingText{font-size:14px;letter-spacing:2px}body{margin:0;background:#0b0f1a;color:#fff;font-family:sans-serif}.screen{display:none!important;padding:10px;text-align:center;min-height:0!important}.screen.active{display:block!important;min-height:auto}.fire{border:3px solid #ff4444}.water{border:3px solid #4488ff}.thunder{border:3px solid #ffd700}.wood{border:3px solid #44cc44}.light{border:3px solid #ffffff}.dark{border:3px solid #aa00ff}.card{display:inline-block;background:#1a1f2e;padding:6px;margin:5px;border-radius:10px;width:95px}.card img{width:100%;border-radius:8px}.ssr{box-shadow:0 0 20px gold}.rarity{font-size:12px;color:gold;font-weight:bold;margin-bottom:2px}.flash{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle,rgba(255,255,255,0.9),transparent);animation:flash 0.6s forwards;pointer-events:none;z-index:9990}@keyframes flash{0%{opacity:1}100%{opacity:0}}@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}@keyframes toastOut{from{opacity:1;transform:translateX(-50%) translateY(0)}to{opacity:0;transform:translateX(-50%) translateY(10px)}}#gachaOverlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:20000;overflow:hidden;flex-direction:column;align-items:center;justify-content:center}#gachaOverlay.active{display:flex}#gachaCanvas{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}.gacha-bg-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;border-radius:50%;pointer-events:none;opacity:0;transition:opacity 0.4s}.gacha-bg-glow.ssr-glow{background:radial-gradient(circle,rgba(255,215,0,0.3) 0%,rgba(255,140,0,0.15) 40%,transparent 70%)}.gacha-bg-glow.ultra-glow{background:radial-gradient(circle,rgba(0,255,255,0.4) 0%,rgba(255,0,255,0.2) 40%,transparent 70%);animation:ultraBgPulse 0.8s infinite alternate}@keyframes ultraBgPulse{from{transform:translate(-50%,-50%) scale(1)}to{transform:translate(-50%,-50%) scale(1.15)}}#gachaOpeningText{position:absolute;font-size:48px;font-weight:900;color:#fff;letter-spacing:8px;text-align:center;pointer-events:none;z-index:10;text-shadow:0 0 30px rgba(255,215,0,0.8),0 0 60px rgba(255,215,0,0.4);opacity:0}#gachaOpeningText.show{animation:openingTextAnim 1.2s forwards}@keyframes openingTextAnim{0%{opacity:0;transform:scale(0.3) rotate(-10deg)}30%{opacity:1;transform:scale(1.2) rotate(2deg)}60%{opacity:1;transform:scale(1.0) rotate(0deg)}100%{opacity:0;transform:scale(0.8) rotate(0deg)}}#gachaCardArea{position:relative;z-index:5;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;max-width:500px;padding:10px}.gacha-card-wrap{opacity:0;transform:translateY(40px) scale(0.8);transition:opacity 0.4s,transform 0.4s}.gacha-card-wrap.reveal{opacity:1;transform:translateY(0) scale(1)}.gacha-card-big{position:relative;width:100px;height:140px;transform-style:preserve-3d;transition:transform 0.7s cubic-bezier(0.4,0,0.2,1);cursor:pointer}.gacha-card-big.flipped{transform:rotateY(180deg)}.gacha-card-front,.gacha-card-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:12px;overflow:hidden}.gacha-card-front{background:linear-gradient(135deg,#1a1f3a,#2a2f55);border:2px solid #4a5070;display:flex;align-items:center;justify-content:center;font-size:40px}.gacha-card-front::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);animation:cardShine 2s infinite}@keyframes cardShine{0%{left:-100%}100%{left:200%}}.gacha-card-back{transform:rotateY(180deg);background:#1a1f2e;border:2px solid #444;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;font-size:11px}.gacha-card-back img{width:90%;height:90px;object-fit:cover;border-radius:8px}.gacha-card-back .rarity{font-size:12px;color:gold;font-weight:bold;margin-bottom:2px}.gacha-card-back.rarity-1{border-color:#888}.gacha-card-back.rarity-2{border-color:#4488ff;box-shadow:0 0 12px #4488ff66}.gacha-card-back.rarity-3{border-color:gold;box-shadow:0 0 20px gold}.gacha-card-back.rarity-4{border-color:cyan;box-shadow:0 0 30px cyan,0 0 60px magenta;animation:ultraCardGlow 1s infinite alternate}@keyframes ultraCardGlow{from{box-shadow:0 0 20px cyan,0 0 40px magenta}to{box-shadow:0 0 40px cyan,0 0 80px magenta,0 0 100px #ff00ff55}}.card.star5-fire{border:3px solid #ff4444;box-shadow:0 0 18px #ff444488,0 0 30px #ff444444;animation:star5GlowFire 1.2s infinite alternate}@keyframes star5GlowFire{from{box-shadow:0 0 10px #ff444488}to{box-shadow:0 0 28px #ff4444,0 0 50px #ff444466}}.card.star5-water{border:3px solid #4488ff;box-shadow:0 0 18px #4488ff88,0 0 30px #4488ff44;animation:star5GlowWater 1.2s infinite alternate}@keyframes star5GlowWater{from{box-shadow:0 0 10px #4488ff88}to{box-shadow:0 0 28px #4488ff,0 0 50px #4488ff66}}.card.star5-thunder{border:3px solid #ffd700;box-shadow:0 0 18px #ffd70088,0 0 30px #ffd70044;animation:star5GlowThunder 1.2s infinite alternate}@keyframes star5GlowThunder{from{box-shadow:0 0 10px #ffd70088}to{box-shadow:0 0 28px #ffd700,0 0 50px #ffd70066}}.card.star5-wood{border:3px solid #44cc44;box-shadow:0 0 18px #44cc4488,0 0 30px #44cc4444;animation:star5GlowWood 1.2s infinite alternate}@keyframes star5GlowWood{from{box-shadow:0 0 10px #44cc4488}to{box-shadow:0 0 28px #44cc44,0 0 50px #44cc4466}}.card.star5-light{border:3px solid #ffffff;box-shadow:0 0 18px #ffffff88,0 0 30px #ffffff44;animation:star5GlowLight 1.2s infinite alternate}@keyframes star5GlowLight{from{box-shadow:0 0 10px #ffffff88}to{box-shadow:0 0 28px #ffffff,0 0 50px #ffffcc66}}.card.star5-dark{border:3px solid #aa00ff;box-shadow:0 0 18px #aa00ff88,0 0 30px #aa00ff44;animation:star5GlowDark 1.2s infinite alternate}@keyframes star5GlowDark{from{box-shadow:0 0 10px #aa00ff88}to{box-shadow:0 0 28px #aa00ff,0 0 50px #aa00ff66}}.ssr-beam{position:absolute;top:50%;left:50%;width:4px;height:300px;transform-origin:bottom center;background:linear-gradient(to top,rgba(255,215,0,0.8),transparent);pointer-events:none;animation:beamFade 1.5s forwards}@keyframes beamFade{0%{opacity:1}100%{opacity:0}}.ultra-beam{position:absolute;top:50%;left:50%;width:4px;height:400px;transform-origin:bottom center;pointer-events:none;animation:ultraBeamFade 1.8s forwards}@keyframes ultraBeamFade{0%{opacity:1}100%{opacity:0}}.gacha-flash-r2{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle,rgba(68,136,255,0.7),transparent);animation:gachaFlashFade 0.8s forwards;pointer-events:none;z-index:19999}.gacha-flash-r3{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle,rgba(255,215,0,0.85),rgba(255,140,0,0.5),transparent);animation:gachaFlashFade 1.0s forwards;pointer-events:none;z-index:19999}.gacha-flash-r4{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(45deg,rgba(255,0,255,0.7),rgba(0,255,255,0.7),rgba(255,215,0,0.7));animation:gachaFlashFadeR4 1.5s forwards;pointer-events:none;z-index:19999}@keyframes gachaFlashFade{0%{opacity:1}100%{opacity:0}}@keyframes gachaFlashFadeR4{0%{opacity:1;transform:scale(1)}50%{opacity:0.8;transform:scale(1.05)}100%{opacity:0;transform:scale(1.1)}}.gacha-rarity-announce{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:56px;font-weight:900;letter-spacing:6px;pointer-events:none;z-index:20010;text-align:center;white-space:nowrap}.announce-ssr{color:#ffd700;text-shadow:0 0 40px #ffd700,0 0 80px #ff8800,0 0 120px #ff4400;animation:announceSSR 1.8s forwards}.announce-ultra{background:linear-gradient(90deg,#ff0080,#ff8c00,#ffd700,#00ff88,#00ffff,#8000ff);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px rgba(255,255,255,0.8));animation:announceUltra 2.0s forwards,rainbowShift 0.5s infinite linear}@keyframes announceSSR{0%{opacity:0;transform:translate(-50%,-50%) scale(0.3)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.3)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}80%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes announceUltra{0%{opacity:0;transform:translate(-50%,-50%) scale(0.2) rotate(-10deg)}15%{opacity:1;transform:translate(-50%,-50%) scale(1.4) rotate(3deg)}40%{opacity:1;transform:translate(-50%,-50%) scale(1.0) rotate(0deg)}80%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes rainbowShift{from{background-position:0% center}to{background-position:200% center}}#gachaSkipBtn{position:fixed;bottom:30px;right:20px;background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:8px 20px;font-size:13px;cursor:pointer;z-index:20020;backdrop-filter:blur(4px);transition:background 0.2s}#gachaSkipBtn:hover{background:rgba(255,255,255,0.25)}.tap-ripple{position:fixed;border-radius:50%;width:60px;height:60px;background:rgba(255,255,255,0.3);pointer-events:none;z-index:20030;transform:translate(-50%,-50%) scale(0);animation:tapRipple 0.5s forwards}@keyframes tapRipple{to{transform:translate(-50%,-50%) scale(3);opacity:0}}#gachaResultSummary{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:20000;display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:20px;overflow-y:auto}#gachaResultSummary.active{display:flex}.summary-title{font-size:20px;font-weight:bold;color:#ffd700;letter-spacing:4px;margin-bottom:16px;text-shadow:0 0 20px #ffd700aa}.summary-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:500px;padding:0 10px}.summary-card{background:#1a1f2e;border-radius:10px;padding:6px;width:85px;text-align:center;font-size:10px;border:2px solid #333;transition:transform 0.2s;opacity:0;transform:scale(0.5)}.summary-card.show{opacity:1;transform:scale(1);transition:opacity 0.3s,transform 0.3s}.summary-card img{width:100%;height:72px;object-fit:cover;border-radius:7px}.summary-card.r2{border-color:#4488ff;box-shadow:0 0 8px #4488ff44}.summary-card.r3{border-color:gold;box-shadow:0 0 12px gold}.summary-card.r4{border-color:cyan;box-shadow:0 0 20px cyan,0 0 40px magenta;animation:ultraCardGlow 1s infinite alternate}.summary-close-btn{margin-top:16px;margin-bottom:30px;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-weight:bold;font-size:15px;border:none;border-radius:12px;padding:12px 40px;cursor:pointer;letter-spacing:2px}#kakuteiOverlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:21000;pointer-events:none;overflow:hidden}#kakuteiOverlay.active{display:block;pointer-events:all}.kakutei-text{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:64px;font-weight:900;letter-spacing:8px;text-align:center;white-space:nowrap;pointer-events:none;z-index:21010}.kakutei-kakutei{color:#fff;text-shadow:0 0 30px #ffd700,0 0 60px #ff8800,0 0 100px #ff4400;animation:kakuteiAnim 2.2s forwards}.kakutei-shougou{background:linear-gradient(90deg,#ff0080,#ffd700,#00ffff,#8000ff);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px rgba(255,255,255,0.9));animation:shougouAnim 2.5s forwards,rainbowShift 0.4s infinite linear}.kakutei-attr{font-size:52px;animation:attrConfirmAnim 2.0s forwards}.kakutei-dupe{font-size:48px;color:#88ffcc;text-shadow:0 0 20px #44ffaa,0 0 40px #00ff88;animation:dupeAnim 2.0s forwards}@keyframes kakuteiAnim{0%{opacity:0;transform:translate(-50%,-50%) scale(0.2) rotate(-15deg)}15%{opacity:1;transform:translate(-50%,-50%) scale(1.4) rotate(3deg)}35%{opacity:1;transform:translate(-50%,-50%) scale(1.0) rotate(0deg)}80%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes shougouAnim{0%{opacity:0;transform:translate(-50%,-50%) scale(0.1) rotate(20deg)}12%{opacity:1;transform:translate(-50%,-50%) scale(1.5) rotate(-3deg)}30%{opacity:1;transform:translate(-50%,-50%) scale(1.0) rotate(0deg)}80%{opacity:1;transform:translate(-50%,-50%) scale(1.05)}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes attrConfirmAnim{0%{opacity:0;transform:translate(-50%,-50%) scale(0.3)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.2)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes dupeAnim{0%{opacity:0;transform:translate(-50%,-50%) translateY(40px) scale(0.5)}20%{opacity:1;transform:translate(-50%,-50%) translateY(0) scale(1.1)}70%{opacity:1;transform:translate(-50%,-50%) translateY(0) scale(1.0)}100%{opacity:0;transform:translate(-50%,-50%) translateY(-20px) scale(0.9)}}.shougou-lines{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:20900;overflow:hidden}.shougou-line{position:absolute;height:6px;width:120%;opacity:0;animation:shougouLine 1.5s forwards}@keyframes shougouLine{0%{opacity:0;transform:translateX(-110%)}40%{opacity:1}100%{opacity:0;transform:translateX(10%)}}.gacha-bg-glow.attr-glow-fire{background:radial-gradient(circle,rgba(255,80,0,0.4) 0%,rgba(255,140,0,0.2) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-water{background:radial-gradient(circle,rgba(0,140,255,0.4) 0%,rgba(0,200,255,0.2) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-thunder{background:radial-gradient(circle,rgba(255,215,0,0.4) 0%,rgba(255,170,0,0.2) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-wood{background:radial-gradient(circle,rgba(68,200,68,0.4) 0%,rgba(100,255,100,0.2) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-light{background:radial-gradient(circle,rgba(255,255,220,0.5) 0%,rgba(255,220,150,0.25) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-dark{background:radial-gradient(circle,rgba(170,0,255,0.45) 0%,rgba(220,100,255,0.2) 40%,transparent 70%)}.summary-card.attr-fire{border-color:#ff4444;box-shadow:0 0 10px #ff444466}.summary-card.attr-water{border-color:#4488ff;box-shadow:0 0 10px #4488ff66}.summary-card.attr-thunder{border-color:#ffd700;box-shadow:0 0 10px #ffd70066}.summary-card.attr-wood{border-color:#44cc44;box-shadow:0 0 10px #44cc4466}.summary-card.attr-light{border-color:#ffffff;box-shadow:0 0 10px #ffffff55}.summary-card.attr-dark{border-color:#aa00ff;box-shadow:0 0 10px #aa00ff66}.kakutei-border-flash{position:fixed;top:0;left:0;width:100%;height:100%;border:6px solid gold;box-sizing:border-box;pointer-events:none;z-index:20990;animation:borderFlash 0.6s 3 alternate}@keyframes borderFlash{from{opacity:1;border-color:gold}to{opacity:0;border-color:transparent}}.attr-beam-overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:20800;animation:attrBeamFade 1.4s forwards}@keyframes attrBeamFade{0%{opacity:1}60%{opacity:0.6}100%{opacity:0}}.rarity-upgrade-badge{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#1a1000,#2a2000);border:2px solid #ffd700;border-radius:12px;padding:8px 20px;font-size:14px;font-weight:bold;color:#ffd700;letter-spacing:2px;z-index:21005;pointer-events:none;animation:badgePop 0.4s forwards}@keyframes badgePop{0%{opacity:0;transform:translateX(-50%) scale(0.7)}100%{opacity:1;transform:translateX(-50%) scale(1.0)}}.flip{position:relative;width:90px;height:120px;transform-style:preserve-3d;transition:0.6s}.open .flip{transform:rotateY(180deg)}.front,.back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px}.front{background:linear-gradient(135deg,#2a2f55,#1a1f3a);border:2px solid #3a4060}.back{transform:rotateY(180deg);background:#1a1f2e}#battleMain{display:flex;justify-content:space-between;align-items:center;gap:10px;max-width:520px;margin:auto}.teamArea{display:flex;flex-direction:column;gap:8px;width:40%;align-items:center}#enemyArea{width:55%;display:flex;justify-content:center}.unit{background:#1a1f2e;padding:6px;border-radius:12px;font-size:10px;position:relative}.ally{width:140px}.unit img{width:100%;max-height:90px;object-fit:cover;border-radius:8px}.enemy{width:160px}.turn{outline:2px solid yellow;box-shadow:0 0 6px yellow}.bar{background:#333;height:8px;border-radius:5px;margin-top:3px}.hp{background:#4caf50;height:8px}.gauge{background:#ff9800;height:6px}.damage{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(1);font-size:clamp(14px,4.5vw,26px);font-weight:bold;color:#fff;text-shadow:0 0 10px #000,0 0 5px #000;animation:damagePop 0.9s cubic-bezier(0.22,0.61,0.36,1) forwards;pointer-events:none;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}.damageFast{animation:damagePopFast 0.5s ease-out forwards!important}@keyframes damagePopFast{0%{opacity:0;transform:translate(-50%,-50%) scale(0.5)}25%{opacity:1;transform:translate(-50%,-58%) scale(1.15)}100%{opacity:0;transform:translate(-50%,-72%) scale(0.9)}}@keyframes damagePop{0%{opacity:0;transform:translate(-50%,-45%) scale(0.6)}15%{opacity:1;transform:translate(-50%,-60%) scale(1.15)}30%{transform:translate(-50%,-65%) scale(1.0)}100%{opacity:0;transform:translate(-50%,-100%) scale(0.85)}}.weak{color:#ff4444}.resist{color:#44aaff}.rainbowFlash{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(45deg,red,orange,yellow,green,cyan,blue,purple);opacity:0.8;animation:rainbow 0.8s forwards;z-index:999}@keyframes rainbow{0%{opacity:1}100%{opacity:0}}.shake{animation:shake 0.4s}@keyframes shake{0%{transform:translate(0,0)}25%{transform:translate(-5px,5px)}50%{transform:translate(5px,-5px)}75%{transform:translate(-5px,5px)}100%{transform:translate(0,0)}}.ultra{box-shadow:0 0 25px cyan,0 0 40px magenta;animation:glow 1s infinite alternate}@keyframes glow{from{filter:brightness(1)}to{filter:brightness(1.6)}}.eventFlash{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#ff00cc,#3333ff,#00ffff);opacity:0.8;animation:eventFlash 0.8s forwards;z-index:999}@keyframes eventFlash{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.2)}}.banner{animation:bannerGlow 1.5s infinite alternate}@keyframes bannerGlow{from{filter:brightness(1)}to{filter:brightness(1.3)}}#gameTitle{width:200px;height:auto}.status{font-size:12px;margin:4px 0;min-height:14px}.loadingText{font-size:24px;color:#fff;animation:blink 1s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}.hitText{position:absolute;top:20%;left:50%;transform:translateX(-50%);font-size:clamp(11px,3vw,18px);font-weight:bold;color:#ffcc00;text-shadow:0 0 8px #000;animation:hitPop 0.8s forwards;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}.totalDamage{position:absolute;top:30%;left:50%;transform:translateX(-50%);font-size:clamp(14px,4vw,24px);font-weight:bold;color:#ff4444;text-shadow:0 0 10px #000;animation:totalPop 1s forwards;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}@keyframes hitPop{0%{opacity:0;transform:translate(-50%,0) scale(0.5)}30%{opacity:1;transform:translate(-50%,-10px) scale(1.2)}100%{opacity:0;transform:translate(-50%,-30px) scale(1)}}@keyframes totalPop{0%{opacity:0;transform:translate(-50%,0) scale(0.5)}30%{opacity:1;transform:translate(-50%,-10px) scale(1.3)}100%{opacity:0;transform:translate(-50%,-40px) scale(1)}}.dexRow{display:flex;align-items:center;background:#1a1f2e;margin:6px;padding:8px;border-radius:10px;gap:10px}.dexRow img{width:80px;height:80px;object-fit:cover;border-radius:8px}.dexText{text-align:left;font-size:14px}.statusRow{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px;min-height:18px}.sBadge{font-size:10px;padding:1px 4px;border-radius:4px;font-weight:bold}.sBurn{background:#ff4400;color:#fff}.sFreeze{background:#44bbff;color:#fff}.sShock{background:#ffdd00;color:#000}.sPoison{background:#aa44ff;color:#fff}.sShield{background:#44aaff;color:#fff}.sCounter{background:#ff8800;color:#fff}.sBuff{background:#44ff88;color:#000}.sDebuff{background:#8866ff;color:#fff}.sPassive{background:#1a3a1a;color:#88ff88;border:1px solid #44cc44}.roleBadge{display:inline-block;font-size:9px;padding:1px 5px;border-radius:4px;font-weight:bold;margin-bottom:2px}.role-attacker{background:#ff4444;color:#fff}.role-tank{background:#4488ff;color:#fff}.role-support{background:#44cc44;color:#fff}.role-debuffer{background:#aa44ff;color:#fff}.ctWrap{display:flex;align-items:center;gap:3px;margin-top:2px}.ctLabel{font-size:9px;color:#aaa;width:18px}.ctBar{flex:1;height:5px;background:#333;border-radius:3px;overflow:hidden}.ctFill{height:100%;background:linear-gradient(90deg,#ff9800,#ffcc00);border-radius:3px;transition:width 0.2s}.ctFillReady{height:100%;background:#44ff88;border-radius:3px;width:100%}.synergyText{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:clamp(12px,3.8vw,22px);font-weight:bold;color:#fff;text-shadow:0 0 20px #ff0088,0 0 10px #ff0088;animation:synergyPop 1.2s forwards;pointer-events:none;z-index:9998;text-align:center;white-space:normal;word-break:break-word;max-width:90vw;box-sizing:border-box;padding:0 8px;line-height:1.3}@keyframes synergyPop{0%{opacity:0;transform:translate(-50%,-50%) scale(0.5)}20%{opacity:1;transform:translate(-50%,-60%) scale(1.3)}80%{opacity:1;transform:translate(-50%,-65%) scale(1.1)}100%{opacity:0;transform:translate(-50%,-80%) scale(0.9)}}.gimmickRow{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}.gBadge{font-size:9px;padding:2px 5px;border-radius:4px;font-weight:bold;background:#333;color:#ffd700;border:1px solid #ffd700}.dmgBurn{color:#ff6600!important}.dmgFreeze{color:#44ddff!important}.dmgShock{color:#ffee00!important}.dmgSynergy{color:#ff00cc!important;font-size:clamp(16px,5.5vw,30px)!important}#skillModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:10000;justify-content:center;align-items:center}#skillModal.open{display:flex}#skillModalBox{background:#1a1f2e;border:2px solid #ffd700;border-radius:14px;padding:20px 24px;max-width:320px;width:90%;text-align:center;position:relative}#skillModalBox img{width:80px;height:80px;object-fit:cover;border-radius:10px;margin-bottom:8px}#skillModalName{font-size:16px;font-weight:bold;margin-bottom:6px}#skillModalText{font-size:14px;color:#ffd700;margin-bottom:6px;line-height:1.5}#skillModalCT{font-size:12px;color:#aaa;margin-bottom:12px}#skillModalClose{background:#333;color:#fff;border:none;border-radius:8px;padding:6px 20px;cursor:pointer;font-size:14px}.skillBtn{margin-top:4px;background:#2a3a5a;color:#ffd700;border:1px solid #ffd700;border-radius:6px;padding:2px 8px;font-size:11px;cursor:pointer}#skillTreeModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:10001;justify-content:center;align-items:center}#skillTreeModal.open{display:flex}#skillTreeBox{background:#0d1120;border:2px solid #44cc88;border-radius:16px;padding:18px 14px;max-width:340px;width:92%;text-align:center;position:relative;max-height:88vh;overflow-y:auto}.stNode{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:88px;min-height:72px;border-radius:10px;padding:5px 4px;font-size:10px;border:2px solid #444;background:#111;color:#666;margin:3px;transition:0.2s;cursor:not-allowed}.stNode.unlocked{background:#1a3a20;border-color:#ffd700;color:#ffd700;box-shadow:0 0 8px #ffd70066;cursor:default}.stNode.available{border-color:#44cc88;background:#0d2010;color:#88ffaa;cursor:pointer;animation:stPulse 1.6s infinite alternate}.stNode.skipped{background:#0d0d0d;border-color:#333;color:#333;cursor:default;opacity:0.4}@keyframes stPulse{from{box-shadow:0 0 3px #44cc88}to{box-shadow:0 0 12px #44cc88,0 0 20px #44cc8844}}.stNodeLabel{font-weight:bold;font-size:11px;margin-bottom:2px}.stNodeBonus{font-size:9px;color:#aaffcc;line-height:1.3}.stNodeCost{font-size:9px;color:#ffd700;margin-top:3px}.stRow{display:flex;justify-content:center;gap:4px;margin:3px 0;flex-wrap:wrap}.stArrow{text-align:center;color:#44cc88;font-size:13px;line-height:1.2;margin:1px 0}.stNode.locked_sp{border-color:#aa6600;background:#1a1000;color:#aa7700;cursor:pointer}.stStageHeader{font-size:11px;font-weight:bold;color:#ffd700;background:linear-gradient(90deg,#1a1200,#2a2000,#1a1200);border:1px solid #443300;border-radius:6px;padding:3px 10px;margin:4px 0 2px;letter-spacing:1px}.stStageHeader.done{color:#44cc88;border-color:#224422;background:linear-gradient(90deg,#0a1a0a,#112011,#0a1a0a)}.stStageHeader.locked{color:#555;border-color:#333;background:#111}.spBadge{display:inline-block;background:linear-gradient(135deg,#1a3a1a,#0d2010);border:1px solid #44cc88;color:#88ffaa;border-radius:8px;padding:3px 10px;font-size:12px;font-weight:bold;margin:4px 0}#profileModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:15000;justify-content:center;align-items:flex-start;padding-top:10px}#profileModal.open{display:flex}#profileBox{background:linear-gradient(160deg,#0a0d1a,#0d1028);border:2px solid #ffd700;border-radius:18px;padding:16px 14px 16px;max-width:380px;width:96%;text-align:center;position:relative;max-height:94vh;overflow-y:auto;box-shadow:0 0 40px #ffd70033,0 0 80px #ffd70011}.profileHeader{font-size:17px;font-weight:bold;color:#ffd700;letter-spacing:2px;margin-bottom:12px}#profileBanner{background:linear-gradient(135deg,#1a1500,#2a2200,#1a1500);border:1px solid #ffd700;border-radius:12px;padding:10px 12px;margin-bottom:10px;display:flex;align-items:center;gap:10px}#profileBannerOshiIcon{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #ffd700;flex-shrink:0;background:#222}#profileBannerOshiIconEmpty{width:56px;height:56px;border-radius:50%;border:2px dashed #555;background:#111;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}#profileBannerRight{text-align:left;flex:1;min-width:0}#profileBannerName{font-size:16px;font-weight:bold;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#profileBannerTitleImg{margin-top:4px;max-width:100%;height:28px;object-fit:contain;display:block}.profileCard{background:#0f1525;border:1px solid #1e2840;border-radius:12px;padding:10px 12px;margin-bottom:8px;text-align:left}.profileLabel{font-size:9px;color:#556;letter-spacing:1.5px;margin-bottom:6px;text-transform:uppercase;font-weight:bold}.profileValue{font-size:14px;font-weight:bold;color:#fff}.profileValueGold{color:#ffd700}.profileValueGreen{color:#44ff88}.profileValueBlue{color:#44aaff}.profileInputRow{display:flex;align-items:center;gap:6px}.profileInput{flex:1;background:#1a1f2e;color:#fff;border:1px solid #333;border-radius:6px;padding:7px 10px;font-size:14px;outline:none}.profileInput:focus{border-color:#ffd700}.profileSaveBtn{background:linear-gradient(135deg,#ffd700,#ff9800);color:#000;border:none;border-radius:6px;padding:7px 14px;font-size:12px;font-weight:bold;cursor:pointer;white-space:nowrap}#titleSelectGrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;max-height:200px;overflow-y:auto}.titleSelectItem{background:#0d1a30;border:2px solid #1e3050;border-radius:8px;padding:6px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:0.15s}.titleSelectItem:hover{border-color:#ffd70088}.titleSelectItem.selected{border-color:#ffd700;background:#1a2a00;box-shadow:0 0 8px #ffd70066}.titleSelectItem.locked{opacity:0.35;cursor:default;border-color:#222}.titleBadge{width:100%;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold;overflow:hidden}.titleBadgeText{font-size:9px;color:#aaa;text-align:center;line-height:1.2}.titleLockLabel{font-size:9px;color:#555}#oshiGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-height:340px;overflow-y:auto;margin-top:8px;padding:2px 2px 4px}.oshiItem{cursor:pointer;border-radius:10px;border:2px solid #1e2840;background:#0d1120;display:flex;flex-direction:column;align-items:center;overflow:hidden;transition:border-color 0.15s,box-shadow 0.15s}.oshiItem:active{transform:scale(0.95)}.oshiItem.selected{border-color:#ffd700;box-shadow:0 0 12px #ffd700aa;background:#1a1800}.oshiImgWrap{width:100%;aspect-ratio:1;position:relative;overflow:hidden;background:#111}.oshiImgWrap img{width:100%;height:100%;object-fit:cover;display:block}.oshiRarityDot{position:absolute;top:3px;right:4px;font-size:7px;color:#ffd700;text-shadow:0 0 4px #000,0 0 2px #000;font-weight:bold;letter-spacing:-1px;line-height:1}.oshiSelectedBadge{position:absolute;top:3px;left:4px;font-size:10px;line-height:1}.oshiItemName{width:100%;color:#ccc;font-size:9px;padding:4px 4px 5px;text-align:center;line-height:1.3;word-break:break-all;background:#0d1120}.profileTop3Row{display:flex;gap:6px;flex-wrap:nowrap}.profileTop3Card{flex:1;min-width:0;background:#0d1a28;border:1px solid #1a3050;border-radius:8px;padding:6px;text-align:center;overflow:hidden}.profileTop3Card img{width:44px;height:44px;object-fit:cover;border-radius:6px;margin-bottom:2px;display:block;margin:0 auto 3px}.profileTop3Medal{font-size:18px;margin-bottom:2px}.profileDivider{border:none;border-top:1px solid #1a1f2e;margin:6px 0}#missionModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:16000;justify-content:center;align-items:flex-start;padding-top:10px}#missionModal.open{display:flex}#missionBox{background:linear-gradient(160deg,#0a0d1a,#0d1028);border:2px solid #44cc88;border-radius:18px;padding:16px 14px 16px;max-width:400px;width:96%;text-align:center;position:relative;max-height:94vh;overflow-y:auto;box-shadow:0 0 40px #44cc8833,0 0 80px #44cc8811}.missionHeader{font-size:17px;font-weight:bold;color:#44cc88;letter-spacing:2px;margin-bottom:12px}.missionTabs{display:flex;gap:4px;margin-bottom:12px;justify-content:center;flex-wrap:wrap}.missionTab{padding:5px 12px;border-radius:8px;font-size:12px;font-weight:bold;border:1px solid #333;background:#111;color:#666;cursor:pointer;transition:0.15s}.missionTab.active{background:#1a3a20;border-color:#44cc88;color:#88ffaa}.missionCard{background:#0f1525;border:1px solid #1e2840;border-radius:12px;padding:10px 12px;margin-bottom:7px;text-align:left;position:relative}.missionCard.completed{border-color:#44cc8855;opacity:0.6}.missionCard.claimable{border-color:#ffd700;box-shadow:0 0 8px #ffd70044;animation:missionPulse 1.5s infinite alternate}@keyframes missionPulse{from{box-shadow:0 0 5px #ffd70044}to{box-shadow:0 0 14px #ffd700aa}}.missionTitle{font-size:13px;font-weight:bold;color:#fff;margin-bottom:4px}.missionDesc{font-size:11px;color:#8899aa;margin-bottom:6px;line-height:1.4}.missionProgress{display:flex;align-items:center;gap:6px;margin-bottom:6px}.missionProgBar{flex:1;height:6px;background:#222;border-radius:3px;overflow:hidden}.missionProgFill{height:100%;background:linear-gradient(90deg,#44cc88,#88ffaa);border-radius:3px;transition:width 0.4s}.missionProgText{font-size:10px;color:#aaa;white-space:nowrap}.missionReward{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.missionRewardBadge{font-size:11px;padding:2px 8px;border-radius:6px;font-weight:bold}.missionRewardStone{background:#1a1800;color:#ffd700;border:1px solid #ffd700}.missionRewardSP{background:#0d2010;color:#88ffaa;border:1px solid #44cc88}.missionRewardTitle{background:#10001a;color:#bb88ff;border:1px solid #aa44ff}.missionClaimBtn{margin-left:auto;background:linear-gradient(135deg,#ffd700,#ff9800);color:#000;border:none;border-radius:6px;padding:4px 12px;font-size:12px;font-weight:bold;cursor:pointer}.missionDoneLabel{margin-left:auto;font-size:11px;color:#44cc88;font-weight:bold}.missionStatLine{font-size:11px;color:#556;margin:2px 0}#missionStatsBox{background:#0a0d1a;border:1px solid #1a2a1a;border-radius:10px;padding:8px 10px;margin-bottom:10px;text-align:left}</style>
 </head>
 
 <body>
@@ -349,6 +349,14 @@
         <div style="color:#66dd99;font-size:10px;font-weight:bold;letter-spacing:1px;">鍛錬</div>
       </div>
     </div>
+    <!-- 究極試練 -->
+    <div style="display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:8px;">
+      <div style="background:linear-gradient(135deg,rgba(200,50,255,0.2),rgba(100,20,180,0.2));border:2px solid rgba(200,100,255,0.5);border-radius:12px;padding:12px 8px;text-align:center;cursor:pointer;transition:transform 0.15s;box-shadow:0 0 15px rgba(200,100,255,0.4);" onclick="go('ultimate')" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'" ontouchstart="this.style.transform='scale(0.95)'" ontouchend="this.style.transform='scale(1)'">
+        <div style="font-size:26px;margin-bottom:3px;">⚡🏰</div>
+        <div style="color:#dd88ff;font-size:11px;font-weight:bold;letter-spacing:2px;">究極試練 -無限の塔-</div>
+        <div style="color:#bb66ff;font-size:9px;margin-top:2px;">全100階層 最高難易度</div>
+      </div>
+    </div>
     <!-- 下段：ショップ・プレゼント・ログボ 3列グリッド -->
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px;">
       <div style="background:linear-gradient(135deg,rgba(255,180,30,0.15),rgba(180,80,0,0.15));border:1px solid rgba(255,180,50,0.4);border-radius:12px;padding:10px 6px;text-align:center;cursor:pointer;transition:transform 0.15s;" onclick="go('itemshop')" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'" ontouchstart="this.style.transform='scale(0.95)'" ontouchend="this.style.transform='scale(1)'">
@@ -492,6 +500,7 @@
   { members:["甲斐翔也","ログフ"],       emoji:"🦅🔩", name:"フリーエリア",       desc:"ATK+18% HP+12%",   atk:18, hp:12 },
   { members:["桜木彰","八並解徒"],         emoji:"🌸🎮", name:"桜と紐",           desc:"ATK+18% HP+12%",   atk:18, hp:12 },
   { members:["桜木彰","赤羽悠真"],         emoji:"🌸💙", name:"流れる桜",           desc:"ATK+22%",          atk:22, hp:0  },
+  { members:["八並解徒","フセイン"],      emoji:"🎮🧠", name:"虚構と真実",       desc:"ATK+10% HP+14%",    atk:10, hp:14  },
   { members:["晴海亨","八並解徒"],         emoji:"🌅🎮", name:"力を求めて",           desc:"ATK+20% HP+10%",   atk:20, hp:10 },
   { members:["玉垣剣城","蒼井朔也"],     emoji:"⚔🌀", name:"剣と銃",         desc:"ATK+20%",          atk:20, hp:0  },
   { members:["玉垣剣城","ミニモータ"],     emoji:"⚔🕹", name:"君の希望",         desc:"ATK+22%",          atk:22, hp:0  },
@@ -503,13 +512,16 @@
   { members:["石倉有栖","跳田収滋"],       emoji:"⚡💨", name:"連撃乱舞",         desc:"ATK+25%",          atk:25, hp:0  },
   { members:["石倉有栖","オリバー"],       emoji:"⚡🌿", name:"閃光と緑",         desc:"ATK+18% HP+10%",   atk:18, hp:10 },
   { members:["ミニモータ","ソーメーン"],   emoji:"🕹🌀", name:"機械と渦",         desc:"ATK+20% HP+10%",   atk:20, hp:10 },
+  { members:["ミニモータ","フセイン"],      emoji:"🕹🧠", name:"生み出された魔術",       desc:"ATK+10% HP+14%",    atk:10, hp:14  },
   { members:["オリバー","ソーメーン"],   emoji:"🌿🌀", name:"雷と生",         desc:"ATK+10% HP+20%",   atk:10, hp:20 },
   { members:["オリバー","跳田収滋"],   emoji:"🌿💨", name:"静と生",         desc:"ATK+10% HP+15%",   atk:10, hp:15 },
   { members:["弐呪刻","死橋凪"],           emoji:"🃏🌬", name:"略奪と凪",         desc:"ATK+18% HP+15%",   atk:18, hp:15 },
+  { members:["弐呪刻","赤羽悠真"],           emoji:"🃏💙", name:"今日の運勢",         desc:"ATK+22% HP+5%",    atk:22, hp:5  },
   { members:["リボルト","黒瀬武人"],       emoji:"🌿🌑", name:"久神と武人",         desc:"ATK+20% HP+15%",   atk:20, hp:15 },
   { members:["アステレス","バルナウス"],   emoji:"🌟🌀", name:"神聖旋風",         desc:"ATK+22% HP+10%",   atk:22, hp:10 },
   { members:["ホーレン","ボムブ"],         emoji:"🌸💣", name:"花火爆発",         desc:"ATK+25% HP+5%",    atk:25, hp:5  },
-  { members:["ヒナル","マタイ"],           emoji:"🌸🌟", name:"暗殺の炎",         desc:"ATK+18% HP+18%",   atk:18, hp:18 },
+  { members:["ヒナル","マタイ"],           emoji:"🌸🌟", name:"暗殺の炎",         desc:"ATK+22%",          atk:22, hp:0  },
+  { members:["ヒナル","黒峰天音"],           emoji:"🌸🎵", name:"双炎",         desc:"ATK+18% HP+18%",   atk:18, hp:18 },
   { members:["和辺重治","和辺重信"],           emoji:"🌊🗡", name:"双子の絆",         desc:"ATK+18% HP+18%",   atk:18, hp:18 },
   { members:["室井元武","栗島トウヤ","ゲガント"],          emoji:"🔥💧🗡", name:"初勝利",       desc:"ATK+30% HP+20%",  atk:30, hp:20 },
   { members:["室井元武","明石啓希","珠濃雅紀"],            emoji:"🔥✨🌸", name:"熱き誓いの三位一体",desc:"ATK+20% HP+30%",  atk:20, hp:30 },
@@ -530,16 +542,18 @@ const WEAPON_SYNERGY_DEFS = [
   { weapon:"草睲術【詮覆】",chars:["ミニモータ"],                      emoji:"🌿🕹", name:"詮覆の機械",       desc:"ATK+8% HP+2%",   atk:8,  hp:2 },
   { weapon:"in my life【運命の紐】", chars:["八並解徒"],               emoji:"⚡🎮", name:"運命の繋がり",     desc:"ATK+2% HP+8%",   atk:2, hp:8  },
   { weapon:"紅雷双鎌",    chars:["返網転"],                            emoji:"⚡🔄", name:"紅雷の舞",         desc:"ATK+15%",         atk:15, hp:0  },
-  { weapon:"ジャック・ナイフ", chars:["弐呪刻"],                       emoji:"🔪🃏", name:"呪われた刃",       desc:"ATK+18%",         atk:12, hp:0  },
-  { weapon:"前人未踏の共闘", chars:["室井元武","阿波牛星夜"],           emoji:"🛡🔥", name:"未踏の共闘者",     desc:"ATK+8% HP+10%",   atk:8,  hp:12 },
-  { weapon:"楽園の主従",  chars:["黒瀬武人","リボルト"],               emoji:"🌑🌿", name:"楽園の絆",         desc:"ATK+9% HP+9%",  atk:10, hp:10 },
+  { weapon:"ジャック・ナイフ", chars:["弐呪刻"],                       emoji:"🔪🃏", name:"呪われた刃",       desc:"ATK+18%",         atk:18, hp:0  },
+  { weapon:"前人未踏の共闘", chars:["室井元武","阿波牛星夜"],           emoji:"🛡🔥", name:"未踏の共闘者",     desc:"ATK+8% HP+10%",   atk:8,  hp:10 },
+  { weapon:"楽園の主従",  chars:["黒瀬武人","リボルト"],               emoji:"🌑🌿", name:"楽園の絆",         desc:"ATK+9% HP+9%",  atk:9, hp:9 },
   { weapon:"神に届く力",  chars:["FqEa","弐呪刻"],                     emoji:"✨⚡", name:"神域への道",       desc:"ATK+12% HP+6%",         atk:12, hp:6  },
   { weapon:"英雄の記録",  chars:["甲斐翔也","赤羽悠真"],                     emoji:"🦅💙", name:"双雄",       desc:"ATK+10% HP+8%",         atk:10, hp:8  },
+  { weapon:"海辺の二人の神",  chars:["アステレス","バルナウス"],                     emoji:"🌟🌀", name:"出港準備",       desc:"ATK+5% HP+13%",         atk:5, hp:13  },
 ];
 
 function getActiveWeaponSynergies(team){
   if(!team || team.length === 0) return [];
   let result = [];
+  let teamBaseNames = new Set(team.map(c => getBaseName(c.name)));
   WEAPON_SYNERGY_DEFS.forEach(ws => {
     // チーム内でこの武器を装備しているキャラを検索
     let equipped = team.find(c => {
@@ -550,6 +564,7 @@ function getActiveWeaponSynergies(team){
     if(!equipped) return;
     // 装備者のベース名がシナジー対象かチェック
     let baseName = getBaseName(equipped.name);
+    // 装備者がcharsに含まれていれば発動（複数キャラ対応武器はどちらか一人が装備でOK）
     if(ws.chars.includes(baseName)){
       result.push({ ...ws, equippedBy: equipped.name });
     }
@@ -1050,6 +1065,7 @@ function renderShopInventory(){
 <div id="team"></div>
 
 <button onclick="go('title')">戻る</button> <button onclick="go('dex')">キャラ図鑑</button> <button onclick="openSynergyListModal()" style="background:linear-gradient(135deg,#1a0a2e,#2a1055);border:1px solid rgba(255,180,50,0.5);color:#ffd700;border-radius:8px;padding:7px 14px;cursor:pointer;font-size:13px;font-weight:bold;letter-spacing:1px;">✨ シナジー一覧</button>
+<button onclick="openRandomTeamModal()" style="background:linear-gradient(135deg,#0a2a1a,#1a4a2a);border:1px solid rgba(80,255,160,0.5);color:#44ffaa;border-radius:8px;padding:7px 14px;cursor:pointer;font-size:13px;font-weight:bold;letter-spacing:1px;margin-top:6px;display:inline-block;">🎲 ランダム編成</button>
 </div>
 
 <div id="synergyListModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.88);z-index:50000;align-items:flex-start;justify-content:center;overflow-y:auto;">
@@ -1267,6 +1283,24 @@ function renderSynergyListModal(){
 <button onclick="go('title')">戻る</button>
 </div>
 
+<div id="ultimate" class="screen">
+<h2>究極試練 -無限の塔-</h2>
+<p style="font-size:12px;color:#999;margin:10px 0;">全100階層。各10階層ごとにボスが登場。1階層から順番に挑戦して塔を登ろう（クリア済みの階層は後からでも再挑戦可能）。</p>
+<div id="ultimateSlideWrap" style="position:relative;max-width:420px;margin:0 auto;">
+  <div id="ultimateSlideTrack" style="overflow:hidden;touch-action:pan-y;">
+    <div id="ultimateSlideCard"></div>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;gap:8px;">
+    <button onclick="changeUltimateSlide(-1)" style="flex:0 0 auto;padding:10px 16px;border-radius:8px;border:1px solid #666699;background:#1a1a3a;color:#eee;cursor:pointer;font-size:16px;">＜</button>
+    <div id="ultimateSlideIndicator" style="flex:1;text-align:center;font-size:12px;color:#aaa;"></div>
+    <button onclick="changeUltimateSlide(1)" style="flex:0 0 auto;padding:10px 16px;border-radius:8px;border:1px solid #666699;background:#1a1a3a;color:#eee;cursor:pointer;font-size:16px;">＞</button>
+  </div>
+  <div id="ultimateFloorDots" style="display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:12px;max-height:80px;overflow-y:auto;"></div>
+</div>
+<button onclick="go('title')">戻る</button>
+</div>
+
+
 <div id="event" class="screen">
 <h2>イベントの間</h2>
 <div id="eventList"></div>
@@ -1471,16 +1505,19 @@ if(data.presentBox && Array.isArray(data.presentBox)) presentBox = data.presentB
 if(data.loginBonusData) Object.assign(loginBonusData, data.loginBonusData);
 if(typeof data.star4GachaTicket === 'number') star4GachaTicket = data.star4GachaTicket;
 }
-let stone=1000000000;
+let stone=100;
 let star4GachaTicket = 0;
 let box=[],team=[],players=[],deadPlayers=[],enemy;
 let turn="player",turnIndex=0;
 let battleEnded = false;
 let isAttackProcessing = false;
 let progress={};
-let dupeStone = 100000000;
-let sp = 10000000;
+let dupeStone = 0;
+let sp = 0;
 let currentEvent = undefined;
+let currentTrial = undefined;
+let currentEventType = undefined;
+let currentStage = undefined;
 let weaponBox = [];
 let eventProgress = {};
 let lastAllySkill = null;
@@ -1596,6 +1633,7 @@ let missionStats = {
   mixedAttrWins:0, soloWins:0, poisonCount:0, burnCount:0, shockCount:0, freezeCount:0,
   totalGachaDraws:0, ssr4Count:0,
   trialHighLvWin:{}, trialSpecialWin:{},
+  ultimateCleared:{},
   _currentBattleAilments:0, _currentBattleAttrs:[]
 };
 let missionData = { claimed:{} };
@@ -1727,11 +1765,11 @@ passive:{type:"burn_on_attack",chance:0.5,power:0.35,turn:2,text:"✨光炎：�
 skill:{type:"timeCrash", turn:2, text:"時間崩壊: 2T被ダメ30%軽減→解除時に2T間の与ダメ(通常+スキル)×50%を敵に", cool:2},noTrial:true,
 passive:{type:"dmg_boost_low_hp",threshold:0.4,value:0.6,text:"🌑闇の狂気：HP40%以下でATK+60%"}},
 {name:"黒峰天音(β)",rarity:4,attr:"雷",img:"https://imgur.com/oq9li7C.png",role:"attacker",
-skill:{type:"runawayBurn", text:"暴走燃焼: 3T間HP10%減少ATK+150%、攻撃時に全体燃焼付与。HP50%以下で効果2倍", cool:4},noTrial:true,
+skill:{type:"runawayBurn", text:"暴走燃焼: HP10%減少(永続・毎ターン)・ATK+150%(永続)、攻撃時に全体燃焼付与。HP50%以下で効果2倍", cool:4},noTrial:true,
 passive:{type:"burn_on_attack",chance:0.6,power:0.4,turn:3,text:"🔥爆炎鎧：攻撃時60%で強燃焼付与(3T)"}},
 {name:"甲斐翔也(β)",rarity:4,attr:"木",img:"https://imgur.com/27i3Cjc.png",role:"attacker",
 skill:{type:"copy", power:1.0, text:"直前の味方スキルをコピー", cool:6},noTrial:true,
-passive:{type:"poison_on_attack",chance:0.4,power:0.2,text:"🌿毒奇術：攻撃時40%で毒付与(20%)"}},
+passive:{type:"copy_crit_power_up",power:0.10,turn:3,text:"🦅フリーエリア：会心発生時コピーしたスキルの威力+10%(3T)(会心重複時ターン数増加)"}},
 {name:"玉垣剣城(β)",rarity:4,attr:"火",img:"https://imgur.com/BMat100.png",role:"attacker",
 skill:{type:"kenSword", power:0.3, buffPower:0.3, buffTurn:3, text:"神速の剣術: 剣カウント+3付与。3Tの間追撃ATK+30%強化。(攻撃/被攻撃で剣カウント+1(永続)。剣カウント1つにつき攻撃後にATK30%追撃)", cool:4},noTrial:true,
 passive:{type:"burn_on_attack",chance:0.45,power:0.3,turn:2,text:"🔥剣炎：攻撃時45%で燃焼付与(2T)"}},
@@ -1775,7 +1813,7 @@ passive:{type:"taketogeGarden", stackValue:0.05, text:"🎋竹棘の庭園：タ
 skill:{type:"hp_ratio_atk_buff", text:"奢れるものも久からず：敵最大HPと自分の最大HPの割合分ATK上昇/低下(上限あり)(3T)", cool:3},noTrial:true,
 passive:{type:"on_retire_buff_allies",atkBonus:0.35,healRate:0.20,text:"🌊盛者必衰：戦線離脱時、他キャラATK+35%(永続)＆HP20%回復"}},
 {name:"赤羽悠真(β)",rarity:4,attr:"火",img:"https://imgur.com/8LcmVK5.png",role:"support",
-skill:{type:"beta_akahane_lucky", text:"🍀幸運：味方全体に幸運状態付与(5T)　幸運状態：味方全体に、与ダメ+25%＆毎ターンHP8%回復", cool:4},noTrial:true,
+skill:{type:"beta_akahane_lucky", text:"🍀幸運：味方全体に幸運状態付与(5T)　幸運状態：味方全体に、与ダメ+25%＆毎ターンHP8%回復＆クリティカル率+12%", cool:4, critBonus:0.12},noTrial:true,
 passive:{type:"beta_akahane_retire",atkBonus:0.60,healRate:0.20,text:"🌟好運：このキャラの戦線離脱時、他のキャラのHP20%回復＆ATK+60%(永続)"}},
 {name:"晴海亨(β)",rarity:4,attr:"木",img:"https://imgur.com/f8xZj2h.png",role:"debuffer",
 skill:{type:"beta_harumi_sight", text:"👁サイトシェア：味方・敵のいずれかに視覚共有カウント付与(最大3個)。視覚共有カウント(味方に付与時ATK+50%。相手の場合ATK-20%)", cool:3},noTrial:true,
@@ -2213,6 +2251,16 @@ rarity:3,
 effect:"poison",
 skill:{type:"damage", power:3.0, text:"英雄の一撃: 300%ダメージ",weaponCool:4},
 passive:{type:"atk_up_on_attack",value:0.05,text:"📜英雄の軌跡：攻撃時ATK+5%(最大+25%)"}
+},
+{
+name:"海辺の二人の神",
+img:"https://imgur.com/k26Ff3j.png",
+atk:80,
+hp:70,
+rarity:3,
+effect:"poison",
+skill:{type:"dual", power:1.6, healRate:0.15, shockChance:0.40, text:"双神の凪波: ATK160%ダメ＋全体HP15%回復＋40%感電付与", cool:3},
+passive:{type:"dual_guardian", hpThreshold:0.6, atkBoost:0.20, healRate:0.05, text:"🌊潮鏡の加護：HP60%以上→与ダメ+20%、HP60%未満→毎T味方全体HP5%回復"}
 }
 ];
 const rewardChar = [
@@ -2561,6 +2609,95 @@ rewardChar:{
         passive:{type:"spirit_passive",value:0.15,text:"👻霊気：攻撃後25%でATK+15%バフ(2T)自動発動"}
     }
 },
+{
+    name:"究極試練 -無限の塔-",
+    isUltimate:true,
+    description:"100階層にわたる究極の試練。階層を上るごとに複数のギミックが組み合わさる。",
+    stages:(() => {
+      const gimmicks = [
+        {shield:2000, shieldLabel:"シールド2000"},
+        {turnBuff:true, turnBuffLabel:"毎T ATK+5%"},
+        {attrOnly:"火", attrOnlyLabel:"火属性特効"},
+        {counter:true, counterLabel:"カウンター持ち"},
+        {poison:true, poisonLabel:"毒付与"},
+        {turnBuff:true, turnBuffLabel:"毎T ATK+7%"},
+        {shield:3000, shieldLabel:"シールド3000"},
+        {stun:0.3, stunLabel:"30%スタン"},
+        {attrOnly:"水", attrOnlyLabel:"水属性特効"},
+        {turnBuff:true, turnBuffLabel:"毎T ATK+8%"},
+        {attrOnly:"雷", attrOnlyLabel:"雷属性特効"},
+        {freezeTurn:2, freezeLabel:"冷凍状態付与(2T)"},
+        {burnTurn:3, burnLabel:"燃焼付与(3T 10%)"},
+        {defDebuff:0.1, defDebuffLabel:"DEF-10%デバフ"},
+        {shield:5000, shieldLabel:"シールド5000"},
+        {attrOnly:"木", attrOnlyLabel:"木属性特効"},
+        {attrOnly:"光", attrOnlyLabel:"光属性特効"},
+        {attrOnly:"闇", attrOnlyLabel:"闇属性特効"},
+        {turnBuff:true, turnBuffLabel:"毎T ATK+10%"},
+        {erosion:true, erosionLabel:"侵蝕付与"}
+      ];
+      
+      const bosses = [
+        {name:"究極の守護者I", attr:"火"},
+        {name:"究極の守護者II", attr:"水"},
+        {name:"究極の守護者III", attr:"雷"},
+        {name:"究極の守護者IV", attr:"木"},
+        {name:"究極の守護者V", attr:"光"},
+        {name:"究極の守護者VI", attr:"闇"},
+        {name:"究極の守護者VII", attr:"火"},
+        {name:"究極の守護者VIII", attr:"水"},
+        {name:"究極の守護者IX", attr:"雷"},
+        {name:"究極の支配者", attr:"闇"}
+      ];
+      
+      let stages = [];
+      for(let i=1; i<=100; i++){
+        let hp = Math.floor((1200 * Math.pow(i, 1.18) + i*1800) * 3);
+        let atk = Math.floor((120 * Math.pow(i, 1.12) + i*60) * 3);
+        let stage = {lv:i, hp:hp, atk:atk};
+        
+        let gimmickCount = 0;
+        if(i <= 20) gimmickCount = 1;
+        else if(i <= 40) gimmickCount = 2;
+        else if(i <= 70) gimmickCount = 3;
+        else gimmickCount = 4;
+        
+        stage.gimmick = {};
+        for(let j=0; j<gimmickCount; j++){
+          let g = gimmicks[(i*7+j*13) % gimmicks.length];
+          Object.assign(stage.gimmick, g);
+        }
+        
+        if(i % 10 === 0 || i === 100){
+          stage.boss = true;
+          stage.bossBuff = {atk: 1.4 + i*0.012, hp: 1.3 + i*0.012};
+          stage.gimmick.shield = Math.floor(1500 + i*100);
+          stage.gimmick.shieldLabel = "シールド"+Math.floor(1500+i*100);
+          stage.gimmick.phaseRage = true;
+          stage.gimmick.phaseRageLabel = "HP30%以下で【究極形態】全能力+50%";
+        }
+        
+        stages.push(stage);
+      }
+      return stages;
+    })(),
+    enemy:{
+        name:"究極の支配者",
+        attr:"闇",
+        img:"https://imgur.com/kXY8G3P.png"
+    },
+    reward:100,
+    bossReward:300,
+    rewardChar:{
+        name:"究極の絆",
+        rarity:5,
+        attr:"光",
+        img:"https://imgur.com/kXY8G3P.png",
+        role:"attacker",
+        skill:{type:"ultimate", power:5.0, text:"究極スキル：全能力+100% ダメージ500%", cool:3},
+        passive:{type:"ultimate_passive", text:"🌟究極の力：毎ターンHP5%回復＆全能力+10%"}
+    }
+}
 ];
 const maxDupe = {
   1: 30,
@@ -2911,6 +3048,7 @@ let missionBtn = document.getElementById("missionBtn");
 if(missionBtn) missionBtn.style.display = (id === "battle") ? "none" : "";
 update();
 if(id==="trial")renderTrials();
+if(id==="ultimate"){ ultimateSlideIndex = getUltimateMaxFloor(); renderUltimate(); }
 if(id==="event") renderEvent();
 if(id==="dex") renderDex();
 if(id==="exchange") renderExchange();
@@ -2942,7 +3080,7 @@ if(exist){
         dupeStone+=gain;
     }
 }else{
-box.push({...c,dupe:0,atk:20+5*c.rarity,hp:100+20*c.rarity,weapon:null});
+box.push({...c, role: c.role||"attacker", skill: c.skill?{...c.skill}:{type:"none"}, dupe:0, atk:20+5*c.rarity, hp:100+20*c.rarity, weapon:null, skillTreeData:{chosen:[],skipped:[]}});
 }
 showGachaFullscreen1(c, ()=>{
   let div=document.createElement("div");
@@ -2953,6 +3091,7 @@ showGachaFullscreen1(c, ()=>{
   saveData();
 });
 update();
+saveData();
 }
 function draw10(){
 if(stone<100)return;
@@ -2984,7 +3123,7 @@ results.forEach((c)=>{
         dupeStone+=gain;
     }
   }else{
-    box.push({...c,dupe:0,atk:20+5*c.rarity,hp:100+20*c.rarity,weapon:null});
+    box.push({...c, role: c.role||"attacker", skill: c.skill?{...c.skill}:{type:"none"}, dupe:0, atk:20+5*c.rarity, hp:100+20*c.rarity, weapon:null, skillTreeData:{chosen:[],skipped:[]}});
   }
 });
 showGachaFullscreen10(results, ()=>{
@@ -3274,6 +3413,43 @@ if(advantage[a]===d)return {dmg:base*1.5,type:"weak"};
 if(advantage[d]===a)return {dmg:base*0.5,type:"resist"};
 return {dmg:base,type:""};
 }
+// ===== クリティカルシステム =====
+const BASE_CRIT_RATE = 0.05; // 基礎クリティカル率5%
+const CRIT_MULTIPLIER = 1.5;
+function getCritRate(attacker){
+  let rate = BASE_CRIT_RATE;
+  // スキルのクリティカルボーナス（クールダウン中でなければ適用しない → 発動後に付与する形にするため、
+  // ここではプレイヤーの critBonusActive フラグを参照）
+  if(attacker.critBonusActive) rate += attacker.critBonusActive;
+  // 赤羽悠真(β)幸運状態：効果が残っている間のみクリティカル率+12%
+  if(attacker.betaLuckyTurn && attacker.betaLuckyTurn > 0 && attacker.betaLuckyCritBonus){
+    rate += attacker.betaLuckyCritBonus;
+  }
+  // boxから対応キャラのスキルツリー等による追加率（将来拡張用）
+  let bc = box.find(b=>b.name===attacker.name);
+  if(bc && bc.treeCritRate) rate += bc.treeCritRate;
+  return Math.min(rate, 1.0);
+}
+function applyCrit(res, attacker){
+  let rate = getCritRate(attacker);
+  if(Math.random() < rate){
+    res.dmg = Math.floor(res.dmg * CRIT_MULTIPLIER);
+    res.crit = true;
+    // フリーエリア：会心発生時コピーしたスキルの威力+10%(3T)(重複時ターン数増加)
+    if(attacker && attacker.passive && attacker.passive.type === "copy_crit_power_up"){
+      let pw = attacker.passive.power || 0.10;
+      let tk = attacker.passive.turn || 3;
+      if(attacker.copySkillPowerBuff && attacker.copySkillPowerBuff.turn > 0){
+        attacker.copySkillPowerBuff.power += pw;
+        attacker.copySkillPowerBuff.turn += tk;
+      } else {
+        attacker.copySkillPowerBuff = { power: pw, turn: tk };
+      }
+      showSynergyText("🦅 "+attacker.name+"のフリーエリア！コピースキル威力+"+(Math.floor(attacker.copySkillPowerBuff.power*100))+"%("+attacker.copySkillPowerBuff.turn+"T)！");
+    }
+  }
+  return res;
+}
 function applyErosionBoost(res){
   if(!enemy.erosions || enemy.erosions.length === 0) return res;
   let boost = 1 + 0.25 * enemy.erosions.length;
@@ -3292,7 +3468,7 @@ function triggerKokuShoku(count){
     }
   });
 }
-function showDamage(id,res){
+function showDamage(id,res,opts){
 let el=document.getElementById(id);
 if(!el){
     renderBattle();
@@ -3307,8 +3483,9 @@ if(isTrainingBattle && id === "enemy" && res.type !== "heal" && res.dmg > 0){
     }
     addTrainingDamage(res.dmg);
 }
+opts = opts || {};
 let div=document.createElement("div");
-div.className="damage";
+div.className = "damage" + (opts.fast ? " damageFast" : "");
 let color="#fff";
 if(res.type==="weak") color="#ff4444";
 if(res.type==="resist") color="#44aaff";
@@ -3318,15 +3495,25 @@ if(res.type==="heal") color="#44ff88";
 if(res.type==="burn") color="#ff6600";
 if(res.type==="shock") color="#ffee00";
 if(res.type==="synergy") color="#ff00cc";
-div.textContent = Math.floor(res.dmg);
+if(res.crit) color="#ffd700";
+div.textContent = (res.crit ? "💥CRIT! " : "") + Math.floor(res.dmg);
 div.style.color = color;
-{
+if(res.crit){ div.style.fontSize="clamp(16px,5.5vw,32px)"; div.style.fontWeight="900"; div.style.textShadow="0 0 10px #ffd700, 0 0 20px #ff8800"; }
+if(opts.random){
+  // 多段ヒット用：敵アイコン上のランダムな位置にバラけて表示
+  const rx = (Math.random()*64 - 32);
+  const ry = (Math.random()*40 - 20);
+  div.style.left = "50%";
+  div.style.top = "50%";
+  div.style.marginLeft = rx + "px";
+  div.style.marginTop = ry + "px";
+} else {
   const existing = el.querySelectorAll(".damage");
   const offsetY = existing.length * -22;
   div.style.marginTop = offsetY + "px";
 }
 el.appendChild(div);
-setTimeout(()=>div.remove(),900);
+setTimeout(()=>div.remove(), opts.fast ? 500 : 900);
 }
 function showHitText(id, hits){
     let el = document.getElementById(id);
@@ -3401,6 +3588,10 @@ function getPlayerStatusHTML(p){
   if(p.sakuraDrainTurn > 0){
     h += `<span class="sBadge" style="background:#6600cc;color:#fff;">⚡回収${p.sakuraDrainTurn}T</span>`;
   }
+  if(p.critBonusActive && p.critBonusActive > 0){
+    let totalCrit = Math.round((BASE_CRIT_RATE + p.critBonusActive) * 100);
+    h += `<span class="sBadge" style="background:#1a0a00;color:#ffd700;border:1px solid #ffd700;">💥CRIT ${totalCrit}%</span>`;
+  }
   if(p.burns && p.burns.length > 0){
     let maxT = Math.max(...p.burns.map(b=>b.turn||0));
     h+=`<span class="sBadge sBurn">🔥燃焼×${p.burns.length}(${maxT}T)</span>`;
@@ -3460,7 +3651,7 @@ function getPlayerStatusHTML(p){
   if(p.isBunshin) h+=`<span class="sBadge" style="background:#00ccff;color:#000;">👥分身(${p.bunshinTurn}T)</span>`;
   // β版 赤羽悠真：幸運状態バッジ
   if(p.betaLuckyTurn && p.betaLuckyTurn > 0){
-    h+=`<span class="sBadge" style="background:#ffe000;color:#333;border:1px solid #ffaa00;">🍀幸運(与+25%/HP+8%/ターン×${p.betaLuckyTurn}T)</span>`;
+    h+=`<span class="sBadge" style="background:#ffe000;color:#333;border:1px solid #ffaa00;">🍀幸運(与+25%/HP+8%/CRIT+12%/ターン×${p.betaLuckyTurn}T)</span>`;
   }
   // β版 晴海亨：視覚共有バッジ（味方）
   if(p.betaSightCount && p.betaSightCount > 0){
@@ -3491,9 +3682,9 @@ function getPlayerStatusHTML(p){
       h+=`<span class="sBadge" style="background:#330066;color:#aaa;">⏳崩壊待機(蓄:${Math.floor(p.timeCrash.stored||0)})</span>`;
     }
   }
-  if(p.runawayBurn && p.runawayBurn.turn > 0){
-    let mult = p.runawayBurn.doubled ? "×2" : "";
-    h+=`<span class="sBadge" style="background:#ff2200;color:#fff;">🔥暴走燃焼(${p.runawayBurn.turn}T${mult})</span>`;
+  if(p.runawayBurn){
+    let mult = (p.currentHp / p.hp) <= 0.5 ? "×2" : "";
+    h+=`<span class="sBadge" style="background:#ff2200;color:#fff;">🔥暴走燃焼(永続${mult})</span>`;
   }
   if(p.growthStacks && p.growthStacks > 0){
     h+=`<span class="sBadge" style="background:#44cc44;color:#000;">🌱成長×${p.growthStacks}/5(ATK+${p.growthStacks*40}% HP+${p.growthStacks*5}%回復)</span>`;
@@ -3524,6 +3715,9 @@ function getPlayerStatusHTML(p){
   }
   if(p.saikouchiBuff && p.saikouchiBuff > 0){
     h+=`<span class="sBadge" style="background:#003300;color:#88ff88;border:1px solid #44cc44;">🌿再構築(${p.saikouchiBuff}T・HP1耐え)</span>`;
+  }
+  if(p.copySkillPowerBuff && p.copySkillPowerBuff.turn > 0){
+    h+=`<span class="sBadge" style="background:#0a2a10;color:#88ffaa;border:1px solid #44cc66;">🦅コピー威力+${Math.floor(p.copySkillPowerBuff.power*100)}%(${p.copySkillPowerBuff.turn}T)</span>`;
   }
   return h;
 }
@@ -3648,6 +3842,7 @@ if(p.freezeTurn && p.freezeTurn > 0){
   return;
 }
 let atk = p.atk;
+if(p.runawayBurn) updateRunawayBurnBuff(p);
 if(p.buffs){
     p.buffs.forEach(b=>{
         atk *= b.power;
@@ -3678,6 +3873,7 @@ if(enemy.betaIssokuCount && enemy.betaIssokuCount > 0){
     res.dmg = Math.floor(res.dmg * issokuBoost);
 }
 res = applyErosionBoost(res);
+res = applyCrit(res, p);
 if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly){
   if(enemy.shield>0){
   } else {
@@ -3748,15 +3944,15 @@ if(p.skill && p.skill.type==="kenSword"){
     let totalFollowRate = (p.skill.power || 0.3) + followBonus;
     let followAtk = p.atk; if(p.buffs) p.buffs.forEach(b=>{ followAtk*=b.power; });
     for(let fi=0; fi<sc; fi++){
-        let fdmg = Math.floor(followAtk * totalFollowRate);
-        if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly) fdmg=Math.floor(fdmg*0.05);
-        enemy.hp -= fdmg;
-        let _fd = fdmg;
-        setTimeout(()=>{ showDamage("enemy",{dmg:_fd,type:""}); }, 200 + fi*120);
+        let fres = calcDamage(p.attr, enemy.attr, followAtk * totalFollowRate);
+        if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly) fres.dmg=Math.floor(fres.dmg*0.05);
+        fres = applySkillCrit(fres, p);
+        enemy.hp -= fres.dmg;
+        setTimeout(()=>{ showDamage("enemy", fres, {fast:true, random:true}); }, 200 + fi*70);
     }
     if(sc>0){ showSynergyText("⚔ 神速の剣術！剣×"+sc+"追撃！"+(followBonus>0?"(強化中)":"")); renderBattle(); }
 }
-if(p.runawayBurn && p.runawayBurn.turn > 0){
+if(p.runawayBurn){
     let burnPow = p.runawayBurn.doubled ? 1.2 : 0.6;
     if(!enemy.burns) enemy.burns = [];
     players.forEach(pl => {
@@ -3868,10 +4064,10 @@ if(p.skill && p.skill.type==="kenSword"){
     let totalFollowRate = (p.skill.power || 0.3) + followBonus;
     let followAtk = p.atk; if(p.buffs) p.buffs.forEach(b=>{ followAtk*=b.power; });
     for(let fi=0; fi<sc; fi++){
-        let fdmg = Math.floor(followAtk * totalFollowRate);
-        enemy.hp -= fdmg;
-        let _fd = fdmg;
-        setTimeout(()=>{ showDamage("enemy",{dmg:_fd,type:""}); }, 700 + fi*120);
+        let fres = calcDamage(p.attr, enemy.attr, followAtk * totalFollowRate);
+        fres = applySkillCrit(fres, p);
+        enemy.hp -= fres.dmg;
+        setTimeout(()=>{ showDamage("enemy", fres, {fast:true, random:true}); }, 200 + fi*70);
     }
     if(sc>0){ showSynergyText("⚔ 神速の剣術！剣×"+sc+"追撃！"+(followBonus>0?"(強化中)":"")); renderBattle(); }
 }
@@ -3924,9 +4120,15 @@ function checkSynergy(p, atk){
 function applyShockBonus(p, atk){
   if(enemy.shockTurn>0){
     let bonusDmg = atk * 0.5;
+    players.forEach(pl=>{
+      if(pl.passive && pl.passive.type==="shock_power_up") bonusDmg *= (1 + pl.passive.value);
+      if(pl.weaponPassive && pl.weaponPassive.type==="shock_power_up") bonusDmg *= (1 + pl.weaponPassive.value);
+    });
+    bonusDmg *= getAilmentTreeBonus();
     if(enemy.allDebuffMark){
       bonusDmg = Math.floor(bonusDmg * 1.5);
     }
+    bonusDmg = Math.floor(bonusDmg);
     enemy.hp -= bonusDmg;
     enemy.shockTurn--;
     setTimeout(()=>showDamage("enemy",{dmg:bonusDmg,type:"shock"}),150);
@@ -3971,8 +4173,15 @@ if(enemy.gimmick?.phaseRage && enemy.hp <= enemy.maxHp * 0.5 && !enemy.phaseRage
     showSynergyText("暴走！ATK2倍！全属性解放！");
 }
 if(enemy.gimmick?.turnBuff){
-  enemy.turnBuffStacks = Math.min((enemy.turnBuffStacks||0) + 1, 10);
-  let buffRate = 1 + enemy.turnBuffStacks * 0.08;
+  // turnBuffLabelから毎ターンのバフ率と上限スタック数を取得
+  let _tbLabel = enemy.gimmick.turnBuffLabel || "毎T ATK+8%(上限+80%)";
+  let _tbRateMatch = _tbLabel.match(/ATK\+(\d+)%/);
+  let _tbRate = _tbRateMatch ? parseInt(_tbRateMatch[1]) / 100 : 0.08;
+  let _tbMaxMatch = _tbLabel.match(/上限\+(\d+)%/);
+  let _tbMaxPct = _tbMaxMatch ? parseInt(_tbMaxMatch[1]) / 100 : 0.80;
+  let _tbMaxStacks = Math.round(_tbMaxPct / _tbRate);
+  enemy.turnBuffStacks = Math.min((enemy.turnBuffStacks||0) + 1, _tbMaxStacks);
+  let buffRate = 1 + enemy.turnBuffStacks * _tbRate;
   atk = enemy.baseAtk * buffRate * enemy.debuffPower;
 }
 if(enemy.gimmick?.counter){
@@ -4209,11 +4418,31 @@ setTimeout(()=>{
         if(pl.betaLuckyTurn <= 0){
           pl.betaLuckyTurn = 0;
           pl.betaLuckyDmgBuff = false;
+          pl.betaLuckyCritBonus = 0;
           if(pl.buffs) pl.buffs = pl.buffs.filter(b=>!b.isBetaLucky);
           showSynergyText("🍀 "+pl.name+"の幸運状態が切れた…");
         }
       }
       // β版 八並解徒パッシブ：一触即没カウントのターン減少なし（永続）
+      // 潮鏡の加護：HP60%未満のとき毎ターン味方全体HP5%回復
+      {
+        let passives2 = [];
+        if(pl.passive) passives2.push(pl.passive);
+        if(pl.weaponPassive) passives2.push(pl.weaponPassive);
+        passives2.forEach(ps=>{
+          if(ps.type === "dual_guardian"){
+            let hpRatio = (pl.hp > 0) ? pl.currentHp / pl.hp : 0;
+            if(hpRatio < (ps.hpThreshold || 0.6)){
+              players.forEach((t, ti)=>{
+                let heal = Math.floor(t.hp * (ps.healRate || 0.05));
+                t.currentHp = Math.min(t.hp, t.currentHp + heal);
+                setTimeout(()=>showDamage("p"+ti, {dmg:heal, type:"heal"}), 250 + ti*80);
+              });
+              showSynergyText("🌊 "+pl.name+"の潮鏡の加護！HP低下→味方全体HP5%回復！");
+            }
+          }
+        });
+      }
     });
     turn = "player";
     turnIndex = 0;
@@ -4259,6 +4488,7 @@ function applyEnemyStatusDamage(callback){
       let dmg = atk2 * poison.power;
       players.forEach(pl=>{
         if(pl.passive && pl.passive.type==="poison_power_up") dmg *= (1 + pl.passive.value);
+        if(pl.weaponPassive && pl.weaponPassive.type==="poison_power_up") dmg *= (1 + pl.weaponPassive.value);
       });
       dmg *= getAilmentTreeBonus();
       enemy.hp -= dmg;
@@ -4269,9 +4499,11 @@ function applyEnemyStatusDamage(callback){
     });
   }
   if(enemy.burns && enemy.burns.length > 0){
+    let ailBurn = getAilmentTreeBonus();
     enemy.burns = enemy.burns.filter(b => {
-        enemy.hp -= b.power;
-        setTimeout(()=>showDamage("enemy",{dmg:b.power,type:"burn"}), delay);
+        let bDmg = Math.floor(b.power * ailBurn);
+        enemy.hp -= bDmg;
+        setTimeout(()=>showDamage("enemy",{dmg:bDmg,type:"burn"}), delay);
         delay += 80;
         b.turn--;
         return b.turn > 0;
@@ -4279,7 +4511,7 @@ function applyEnemyStatusDamage(callback){
     enemy.burnPower = enemy.burns.reduce((acc, b) => acc + b.power, 0);
     enemy.burnTurn = enemy.burns.length > 0 ? Math.max(...enemy.burns.map(b=>b.turn)) : 0;
   } else if(enemy.burnTurn > 0){
-    let bDmg = enemy.burnPower;
+    let bDmg = Math.floor(enemy.burnPower * getAilmentTreeBonus());
     enemy.hp -= bDmg;
     setTimeout(()=>showDamage("enemy",{dmg:bDmg,type:"burn"}), delay);
     delay+=100;
@@ -4492,7 +4724,7 @@ function triggerTurnStartPassive(){
     if(ps.type === "revive_passive"){
       players.forEach((target, ti)=>{
         if(target.currentHp > 0 && target.currentHp < target.hp && (target.currentHp / target.hp) <= ps.threshold){
-          let healAmt = Math.floor(target.hp * 0.15);
+          let healAmt = Math.floor(target.hp * ps.threshold);
           target.currentHp = Math.min(target.hp, target.currentHp + healAmt);
           setTimeout(()=>{
             showDamage("p"+ti,{dmg:healAmt,type:"heal"});
@@ -4629,6 +4861,12 @@ function applyPassiveAtk(p){
     if(ps.type === "shock_on_attack" && ps.text && ps.text.includes("与ダメ")){
       if(enemy.shockTurn > 0) bonus *= 1.25;
     }
+    if(ps.type === "dual_guardian"){
+      let hpRatio = (p.hp > 0) ? p.currentHp / p.hp : 0;
+      if(hpRatio >= (ps.hpThreshold || 0.6)){
+        bonus *= (1 + (ps.atkBoost || 0.20));
+      }
+    }
   });
   if(p.happyStacks && p.happyStacks.length > 0) bonus *= Math.pow(1.20, p.happyStacks.length);
   bonus *= applyTreePassiveAtk(p);
@@ -4690,6 +4928,12 @@ function applySkillDmgPassives(dmg, attacker){
       if(ps.type === "shock_on_attack" && ps.text && ps.text.includes("与ダメ")){
         if(enemy.shockTurn > 0) mult *= 1.25;
       }
+      if(ps.type === "dual_guardian" && ally === attacker){
+        let hpRatio = (ally.hp > 0) ? ally.currentHp / ally.hp : 0;
+        if(hpRatio >= (ps.hpThreshold || 0.6)){
+          mult *= (1 + (ps.atkBoost || 0.20));
+        }
+      }
     });
   });
   let ac = box.find(b=>b.name===attacker.name);
@@ -4697,6 +4941,10 @@ function applySkillDmgPassives(dmg, attacker){
   if(attacker.happyStacks && attacker.happyStacks.length > 0) mult *= Math.pow(1.20, attacker.happyStacks.length);
   mult *= applyTreePassiveAtk(attacker);
   return Math.floor(dmg * mult);
+}
+// スキルダメージにクリティカルを適用するラッパー（resオブジェクト用）
+function applySkillCrit(res, attacker){
+  return applyCrit(res, attacker);
 }
 function endTurn(){
 if(turn === "enemy"){
@@ -4731,6 +4979,10 @@ if(p.weaponCool > 0) p.weaponCool--;
 if(p.taunt && p.taunt.turn > 0){ p.taunt.turn--; if(p.taunt.turn<=0) p.taunt=null; }
 if(p.sakuraDrainTurn && p.sakuraDrainTurn > 0){ p.sakuraDrainTurn--; }
 if(p.saikouchiBuff && p.saikouchiBuff > 0){ p.saikouchiBuff--; }
+if(p.copySkillPowerBuff && p.copySkillPowerBuff.turn > 0){
+    p.copySkillPowerBuff.turn--;
+    if(p.copySkillPowerBuff.turn <= 0){ p.copySkillPowerBuff = null; }
+}
 if(p.repairRevTurn && p.repairRevTurn > 0){
     p.repairRevTurn--;
     if(p.repairRevTurn <= 0 && p.repairRevBonusHp){
@@ -4741,18 +4993,14 @@ if(p.repairRevTurn && p.repairRevTurn > 0){
         showSynergyText("🌿 修復革命 終了！最大HP元に戻る");
     }
 }
-if(p.runawayBurn && p.runawayBurn.turn > 0){
-    let dmgRate = p.runawayBurn.doubled ? 0.2 : 0.1;
+if(p.runawayBurn){
+    let dmgRate = (p.currentHp / p.hp) <= 0.5 ? 0.2 : 0.1;
     let selfDmg = Math.floor(p.hp * dmgRate);
     p.currentHp -= selfDmg;
     if(p.currentHp < 1) p.currentHp = 1;
     let selfIdx = players.indexOf(p);
     setTimeout(()=>showDamage("p"+(selfIdx >= 0 ? selfIdx : turnIndex), {dmg:selfDmg, type:"burn"}), 10);
-    p.runawayBurn.turn--;
-    if(p.runawayBurn.turn <= 0){
-        p.buffs = p.buffs ? p.buffs.filter(b => !b.isRunawayBurn) : [];
-        p.runawayBurn = null;
-    }
+    updateRunawayBurnBuff(p);
 }
 if(p.berserkCount && p.berserkCount > 0){
     p.berserkCount--;
@@ -5069,6 +5317,67 @@ function win(){
         Eventwin();
         return;
     }
+    // 究極試練用処理
+    if(currentEventType === "ultimate"){
+        if(!missionStats.ultimateCleared) missionStats.ultimateCleared = {};
+        missionStats.ultimateCleared[enemy.floor] = true;
+        if(!missionStats.ultimateMaxFloor || missionStats.ultimateMaxFloor < enemy.floor + 1){
+          missionStats.ultimateMaxFloor = Math.min(enemy.floor + 1, 100);
+        }
+        
+        let reward = currentTrial.reward;
+        let rewardBonus = Math.floor(enemy.floor / 10) * 50;
+        
+        stone += reward + rewardBonus;
+        sp += 10;
+        
+        let msg = `⚡🏰 究極試練 ${enemy.floor}F 撃破！\n\n石×${reward + rewardBonus}獲得`;
+        
+        if(enemy.isBoss){
+            let bossReward = currentTrial.bossReward + rewardBonus;
+            stone += bossReward;
+            msg = `👑 究極の守護者撃破！${enemy.floor}F\n\n石×${bossReward}獲得`;
+            
+            if(enemy.floor === 100){
+                msg = `⚡✨ 究極の支配者撃破！\n\n究極試練 完全制覇！\n\n石×${bossReward + 5000}＆ランダムキャラ+究極の絆をゲット！`;
+                stone += 5000;
+                
+                // 究極の絆を獲得
+                if(currentTrial.rewardChar && !box.find(c => c.name === currentTrial.rewardChar.name)){
+                    let newChar = {...currentTrial.rewardChar, dupe:0, atk: (currentTrial.rewardChar.atk || 100), hp: (currentTrial.rewardChar.hp || 300)};
+                    box.push(newChar);
+                }
+                
+                // ランダムキャラを100体から選んで獲得
+                let availableChars = chars.filter(c => !c.noTrial && c.rarity <= 4);
+                if(availableChars.length > 0){
+                  let randomChar = availableChars[Math.floor(Math.random() * availableChars.length)];
+                  let newChar = {
+                    name: randomChar.name,
+                    rarity: randomChar.rarity,
+                    attr: randomChar.attr,
+                    img: randomChar.img,
+                    role: randomChar.role,
+                    skill: randomChar.skill,
+                    passive: randomChar.passive,
+                    dupe: 0,
+                    atk: randomChar.atk || 100,
+                    hp: randomChar.hp || 300
+                  };
+                  if(!box.find(c => c.name === newChar.name && c.rarity === newChar.rarity)){
+                    box.push(newChar);
+                  }
+                }
+            }
+        }
+        
+        alert(msg);
+        currentEventType = undefined;
+        currentTrial = undefined;
+        saveData();
+        go("ultimate");
+        return;
+    }
     // 石報酬: 固定10
     let stoneGain = 10;
     stone += stoneGain;
@@ -5168,7 +5477,7 @@ if(s.type==="damage"){
     if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
     if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
     let _ks = p.kokuShoku||0; if(_ks>0) res.dmg=Math.floor(res.dmg*(1+0.12*_ks));
-    res.dmg = applySkillDmgPassives(res.dmg, p);
+    res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
     res = applyErosionBoost(res);
     enemy.hp -= res.dmg;
     applyShockBonus(p, atk);
@@ -5185,22 +5494,27 @@ if(s.type==="multi"){
   showSynergyText("多段攻撃！");
     for(let i=0;i<s.hits;i++){
         let res = calcDamage(p.attr, enemy.attr, atk * s.power * hitMult);
-        res.dmg = applySkillDmgPassives(res.dmg, p);
+        res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
         enemy.hp -= res.dmg;
         if(!enemy.debuffUsed){
             enemy.atk *= 0.95;
         }
         setTimeout(()=>{
-            showDamage("enemy", res);
+            showDamage("enemy", res, {fast:true, random:true});
             if(i === s.hits - 1){
                 enemy.debuffUsed = true;
                 renderBattle();
             }
-        }, i * 120);
+        }, i * 70);
     }
     triggerAttackPassive(p);
 }
 if(s.type==="heal"){
+// スキルに critBonus があれば使用者にクリティカル率ボーナスを付与
+if(s.critBonus){
+    p.critBonusActive = (p.critBonusActive || 0) + s.critBonus;
+    showSynergyText("⚡ " + p.name + " クリティカル率+" + Math.round(s.critBonus*100) + "%！");
+}
 players.forEach((t,i)=>{
     let heal = t.hp * s.power;
     players.forEach(pl=>{
@@ -5315,6 +5629,31 @@ if(s.type==="shock"){
   trackAilment(1, "shock");
   checkSynergy(p, atk);
 }
+if(s.type==="dual"){
+  let res = calcDamage(p.attr, enemy.attr, atk * (s.power || 1.6));
+  if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
+  if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+  if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
+  res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
+  enemy.hp -= res.dmg;
+  let dualHealRate = s.healRate || 0.15;
+  players.forEach((t,i)=>{
+    let heal = Math.floor(t.hp * dualHealRate);
+    t.currentHp = Math.min(t.hp, t.currentHp + heal);
+    setTimeout(()=>showDamage("p"+i, {dmg:heal, type:"heal"}), 200 + i*80);
+  });
+  if(Math.random() < (s.shockChance || 0.40)){
+    enemy.shockTurn = Math.max(enemy.shockTurn||0, 2);
+    triggerKokuShoku(1);
+    trackAilment(1, "shock");
+    showSynergyText("🌊⚡ 双神の凪波！160%ダメ＋全体HP15%回復＋感電付与！");
+  } else {
+    showSynergyText("🌊 双神の凪波！160%ダメ＋全体HP15%回復！（感電失敗）");
+  }
+  triggerAttackPassive(p);
+  renderBattle();
+  setTimeout(()=>showDamage("enemy", res), 10);
+}
 if(s.type==="happyAura"){
     let turns = s.turn || 5;
     players.forEach(t=>{
@@ -5364,14 +5703,13 @@ if(s.type === "rage"){
     });
     let dmg = Math.floor(atk * (1 + ratio * (s.power - 1) * 3) * rageMult);
     dmg = applySkillDmgPassives(dmg, p);
+    let _rageRes = applyCrit({dmg, type:"ultimate"}, p);
+    dmg = _rageRes.dmg;
   showSynergyText("狂化発動！");
     enemy.hp -= dmg;
     renderBattle();
     setTimeout(()=>{
-        showDamage("enemy", {
-            dmg: dmg,
-            type: "ultimate"
-        });
+        showDamage("enemy", _rageRes);
     },10);
 }
 if(s.type==="iceArmada"){
@@ -5523,7 +5861,7 @@ if(s.type==="drain"){
     let idx = turnIndex;
     let res = calcDamage(p.attr, enemy.attr, atk * s.power);
     if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
-    res.dmg = applySkillDmgPassives(res.dmg, p);
+    res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
     enemy.hp -= res.dmg;
     let heal = res.dmg * 0.5;
     players.forEach(ally=>{
@@ -5575,15 +5913,15 @@ if(s.type==="double"){
     });
     let res = calcDamage(p.attr, enemy.attr, atk * s.power * hitMult);
     let res2 = calcDamage(p.attr, enemy.attr, atk * 0.5 * hitMult);
-    res.dmg = applySkillDmgPassives(res.dmg, p);
-    res2.dmg = applySkillDmgPassives(res2.dmg, p);
+    res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
+    res2.dmg = applySkillDmgPassives(res2.dmg, p); res2 = applySkillCrit(res2, p);
   showSynergyText("連撃！");
     enemy.hp -= res.dmg;
     enemy.hp -= res2.dmg;
     triggerAttackPassive(p);
     renderBattle();
-    setTimeout(()=>showDamage("enemy", res),10);
-    setTimeout(()=>showDamage("enemy", res2),160);
+    setTimeout(()=>showDamage("enemy", res, {fast:true, random:true}),10);
+    setTimeout(()=>showDamage("enemy", res2, {fast:true, random:true}),90);
 }
 if(s.type==="shield"){
     if(!p.shields) p.shields = [];
@@ -5601,7 +5939,7 @@ if(s.type==="chain"){
     let res = calcDamage(p.attr, enemy.attr, atk * s.power * chainMult);
     if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
     if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
-    res.dmg = applySkillDmgPassives(res.dmg, p);
+    res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
     enemy.hp -= res.dmg;
     players.forEach(t=>{ t.cool = Math.max(0, t.cool - 1); });
     applyShockBonus(p, atk);
@@ -5655,7 +5993,7 @@ if(s.type==="chinkoPo"){    let count = p.chinkoPoCount || 0;
     let res = calcDamage(p.attr, enemy.attr, atk * s.power * multiplier);
     if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
     if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
-    res.dmg = applySkillDmgPassives(res.dmg, p);
+    res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
     enemy.hp -= res.dmg;
     applyShockBonus(p, atk);
     triggerAttackPassive(p);
@@ -5699,7 +6037,7 @@ if(s.type==="tenGeki"){
     if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
     if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
     if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
-    res.dmg = applySkillDmgPassives(res.dmg, p);
+    res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
     enemy.hp -= res.dmg;
     applyShockBonus(p, atk);
     triggerAttackPassive(p);
@@ -5715,7 +6053,7 @@ if(s.type==="poisonBurst"){
         if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
         if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
         if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
-        res.dmg = applySkillDmgPassives(res.dmg, p);
+        res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
         enemy.hp -= res.dmg;
         applyShockBonus(p, atk);
         triggerAttackPassive(p);
@@ -5728,7 +6066,7 @@ if(s.type==="poisonBurst"){
         if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
         if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
         if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
-        res.dmg = applySkillDmgPassives(res.dmg, p);
+        res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
         enemy.hp -= res.dmg;
         applyShockBonus(p, atk);
         triggerAttackPassive(p);
@@ -5809,14 +6147,10 @@ if(s.type==="bunshin"){
     renderBattle();
 }
 if(s.type==="runawayBurn"){
-    let isLow = p.currentHp / p.hp <= 0.5;
-    let doubled = isLow;
-    p.runawayBurn = { turn: 3, doubled: doubled };
-    let atkBonus = doubled ? 4.0 : 2.5;
-    if(!p.buffs) p.buffs = [];
-    p.buffs = p.buffs.filter(b => !b.isRunawayBurn);
-    p.buffs.push({ power: atkBonus, turn: 3, isRunawayBurn: true });
-    let msg = doubled ? "🔥 暴走燃焼 発動！ATK+300%・HP10%減少(2倍効果！)" : "🔥 暴走燃焼 発動！ATK+150%・HP10%減少";
+    p.runawayBurn = { doubled: false };
+    updateRunawayBurnBuff(p);
+    let doubled = p.runawayBurn.doubled;
+    let msg = doubled ? "🔥 暴走燃焼 発動！ATK+300%・HP10%減少(永続・2倍効果！)" : "🔥 暴走燃焼 発動！ATK+150%・HP10%減少(永続)";
     showSynergyText(msg);
     renderBattle();
 }
@@ -5838,15 +6172,14 @@ if(s.type==="sniper"){
             if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) sres.dmg=Math.floor(sres.dmg*0.05);
             if(enemy.allDebuffMark) sres.dmg=Math.floor(sres.dmg*1.5);
             if(enemy.shield>0){ let ab=Math.min(enemy.shield,sres.dmg); enemy.shield-=ab; sres.dmg-=ab; }
-            sres.dmg = applySkillDmgPassives(sres.dmg, p);
+            sres.dmg = applySkillDmgPassives(sres.dmg, p); sres = applySkillCrit(sres, p);
             enemy.hp -= sres.dmg;
             totalDmg += sres.dmg;
-            let _sd = sres.dmg;
-            setTimeout(()=>{ showDamage("enemy",{dmg:_sd,type:""}); }, si*130);
+            setTimeout(()=>{ showDamage("enemy", sres, {fast:true, random:true}); }, si*70);
         }
         p.sniperAmmo = 0;
         showSynergyText("🔫 狙撃！"+ammo+"連射！合計"+Math.floor(totalDmg));
-        setTimeout(()=>{ showHitText("enemy", ammo); showTotalDamage("enemy", totalDmg); }, ammo*130+100);
+        setTimeout(()=>{ showHitText("enemy", ammo); showTotalDamage("enemy", totalDmg); }, ammo*70+100);
         applyShockBonus(p, atk);
         triggerAttackPassive(p);
         renderBattle();
@@ -6046,7 +6379,7 @@ if(s.type==="erosion"){
     if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
     if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
     if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
-    res.dmg = applySkillDmgPassives(res.dmg, p);
+    res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
     enemy.hp -= res.dmg;
     triggerAttackPassive(p);
     renderBattle();
@@ -6092,10 +6425,12 @@ if(s.type==="himoCounter"){
     if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) dmg=Math.floor(dmg*0.05);
     if(enemy.shield>0){ let ab=Math.min(enemy.shield,dmg); enemy.shield-=ab; dmg-=ab; }
     dmg = applySkillDmgPassives(dmg, p);
+    let _himoRes = applyCrit({dmg, type:"weak"}, p);
+    dmg = _himoRes.dmg;
     enemy.hp -= dmg;
     triggerAttackPassive(p);
     renderBattle();
-    setTimeout(()=>showDamage("enemy",{dmg,type:"weak"}),10);
+    setTimeout(()=>showDamage("enemy",_himoRes),10);
     showSynergyText("🔗 一触即没！紐カウント→"+p.himoCount+"！ダメ: "+Math.floor(dmg));
     if(enemy.hp<=0){ p.cool=s.cool; lastAllySkill=s; setTimeout(()=>win(),500); return; }
 }
@@ -6123,16 +6458,21 @@ if(s.type==="beta_akahane_lucky"){
         if(!t.buffs) t.buffs=[];
         t.buffs = t.buffs.filter(b=>!b.isBetaLucky);
         t.buffs.push({ power: 1.25, turn: 5, isBetaLucky: true });
+        // 幸運状態：効果が続く間のみクリティカル率+12%
+        if(s.critBonus){
+            t.betaLuckyCritBonus = s.critBonus;
+        }
         let _hpi = players.indexOf(t);
         setTimeout(()=>showDamage("p"+_hpi, {dmg:Math.floor(t.hp*0.08), type:"heal"}), 200 + ti*80);
     });
-    showSynergyText("🍀 幸運発動！味方全体に幸運状態付与(5T)！与ダメ+25%＆毎ターンHP8%回復！");
+    showSynergyText("🍀 幸運発動！味方全体に幸運状態付与(5T)！与ダメ+25%＆毎ターンHP8%回復＆クリティカル率+12%！");
     renderBattle();
 }
 // 晴海亨(β)スキル：サイトシェア - 味方か敵を選んで視覚共有カウント付与(最大3個)
 // 味方: ATK+50%/個、敵: ATK-20%/個
 if(s.type==="beta_harumi_sight"){
     openSightShareModal(p);
+    lastAllySkill = s;
     return; // モーダル選択後にendTurnを呼ぶ
 }
 // 桜木彰(β)スキル：オフセット - 被ダメ時に相手へ同じダメージで反撃(3T)
@@ -6150,7 +6490,7 @@ if(s.type==="beta_yatsunami_stack"){
     if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
     if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
     if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
-    res.dmg = applySkillDmgPassives(res.dmg, p);
+    res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
     enemy.hp -= res.dmg;
     applyShockBonus(p, atk);
     triggerAttackPassive(p);
@@ -6186,22 +6526,26 @@ if(s.type==="copy"){
         let atkC = p.atk;
         if(p.buffs){ p.buffs.forEach(b=>{ atkC *= b.power; }); }
         let pw = s.power || 1;
+        // フリーエリアパッシブ：コピースキル威力バフ適用
+        if(p.copySkillPowerBuff && p.copySkillPowerBuff.turn > 0){
+            pw = pw * (1 + p.copySkillPowerBuff.power);
+        }
         if(s2.type==="damage"){
             let res = calcDamage(p.attr, enemy.attr, atkC*(s2.power||1)*pw);
             if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
             if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
             if(enemy.allDebuffMark) res.dmg=Math.floor(res.dmg*1.5);
-            res.dmg=applySkillDmgPassives(res.dmg,p);
+            res.dmg=applySkillDmgPassives(res.dmg,p); res=applySkillCrit(res,p);
             enemy.hp-=res.dmg; applyShockBonus(p,atkC);
             renderBattle(); setTimeout(()=>showDamage("enemy",res),10);
         }
         if(s2.type==="multi"){
             for(let i=0;i<(s2.hits||1);i++){
                 let res=calcDamage(p.attr,enemy.attr,atkC*(s2.power||1)*pw);
-                res.dmg=applySkillDmgPassives(res.dmg,p);
+                res.dmg=applySkillDmgPassives(res.dmg,p); res=applySkillCrit(res,p);
                 enemy.hp-=res.dmg;
                 if(!enemy.debuffUsed){ enemy.atk*=0.95; }
-                setTimeout(()=>{ showDamage("enemy",res); if(i===(s2.hits||1)-1){ enemy.debuffUsed=true; renderBattle(); } },i*120);
+                setTimeout(()=>{ showDamage("enemy",res,{fast:true,random:true}); if(i===(s2.hits||1)-1){ enemy.debuffUsed=true; renderBattle(); } },i*70);
             }
         }
         if(s2.type==="double"){
@@ -6209,15 +6553,15 @@ if(s.type==="copy"){
             let res2=calcDamage(p.attr,enemy.attr,atkC*0.5*pw);
             if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
             if(enemy.allDebuffMark){ res.dmg=Math.floor(res.dmg*1.5); res2.dmg=Math.floor(res2.dmg*1.5); }
-            res.dmg=applySkillDmgPassives(res.dmg,p); res2.dmg=applySkillDmgPassives(res2.dmg,p);
+            res.dmg=applySkillDmgPassives(res.dmg,p); res=applySkillCrit(res,p); res2.dmg=applySkillDmgPassives(res2.dmg,p); res2=applySkillCrit(res2,p);
             enemy.hp-=res.dmg; enemy.hp-=res2.dmg;
-            renderBattle(); setTimeout(()=>showDamage("enemy",res),10); setTimeout(()=>showDamage("enemy",res2),160);
+            renderBattle(); setTimeout(()=>showDamage("enemy",res,{fast:true,random:true}),10); setTimeout(()=>showDamage("enemy",res2,{fast:true,random:true}),90);
         }
         if(s2.type==="drain"){
             let idx=turnIndex;
             let res=calcDamage(p.attr,enemy.attr,atkC*(s2.power||2)*pw);
             if(enemy.allDebuffMark) res.dmg=Math.floor(res.dmg*1.5);
-            res.dmg=applySkillDmgPassives(res.dmg,p);
+            res.dmg=applySkillDmgPassives(res.dmg,p); res=applySkillCrit(res,p);
             enemy.hp-=res.dmg;
             let heal=res.dmg*0.5; p.currentHp+=heal; if(p.currentHp>p.hp) p.currentHp=p.hp;
             renderBattle(); setTimeout(()=>showDamage("enemy",res),10); setTimeout(()=>showDamage("p"+idx,{dmg:heal,type:"heal"}),120);
@@ -6230,15 +6574,16 @@ if(s.type==="copy"){
             let ratio=1-(p.currentHp/p.hp);
             let dmg=Math.floor(atkC*(1+ratio*((s2.power||7)-1)*3)*pw);
             dmg=applySkillDmgPassives(dmg,p);
+            let _rcRes=applyCrit({dmg,type:"ultimate"},p); dmg=_rcRes.dmg;
             enemy.hp-=dmg;
-            renderBattle(); setTimeout(()=>showDamage("enemy",{dmg,type:"ultimate"}),10);
+            renderBattle(); setTimeout(()=>showDamage("enemy",_rcRes),10);
         }
         if(s2.type==="chain"){
             let res=calcDamage(p.attr,enemy.attr,atkC*(s2.power||2)*pw);
             if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
             if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
             if(enemy.allDebuffMark) res.dmg=Math.floor(res.dmg*1.5);
-            res.dmg=applySkillDmgPassives(res.dmg,p);
+            res.dmg=applySkillDmgPassives(res.dmg,p); res=applySkillCrit(res,p);
             enemy.hp-=res.dmg; players.forEach(t=>{ t.cool=Math.max(0,t.cool-1); }); applyShockBonus(p,atkC);
             renderBattle(); setTimeout(()=>{ showDamage("enemy",res); showSynergyText("💥 連鎖爆発コピー！味方CT-1！"); },10);
         }
@@ -6249,7 +6594,7 @@ if(s.type==="copy"){
             if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
             if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
             if(enemy.allDebuffMark) res.dmg=Math.floor(res.dmg*1.5);
-            res.dmg=applySkillDmgPassives(res.dmg,p);
+            res.dmg=applySkillDmgPassives(res.dmg,p); res=applySkillCrit(res,p);
             enemy.hp-=res.dmg; applyShockBonus(p,atkC);
             showSynergyText("☠💥 毒爆発コピー！毒×"+poisonCount+"！"); renderBattle(); setTimeout(()=>showDamage("enemy",{dmg:res.dmg,type:"poison"}),10);
         }
@@ -6259,7 +6604,7 @@ if(s.type==="copy"){
             let res=calcDamage(p.attr,enemy.attr,atkC*multiplier);
             if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
             if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
-            res.dmg=applySkillDmgPassives(res.dmg,p);
+            res.dmg=applySkillDmgPassives(res.dmg,p); res=applySkillCrit(res,p);
             enemy.hp-=res.dmg; applyShockBonus(p,atkC);
             showSynergyText("💢 珍古砲コピー！カウント"+count+"！"); renderBattle(); setTimeout(()=>showDamage("enemy",res),10);
         }
@@ -6296,12 +6641,15 @@ if(s.type==="copy"){
         }
         if(s2.type==="debuff"){
             if(!enemy.debuffs) enemy.debuffs=[];
-            enemy.debuffs.push({ power:s2.power||0.8, turn:3 });
+            // pw適用：debuff powerは1より小さいほど強いので逆方向に補正
+            let _dPow = Math.max(0.1, (s2.power||0.8) - (pw - 1) * 0.1);
+            enemy.debuffs.push({ power:_dPow, turn:3 });
             enemy.debuffPower=enemy.debuffs.reduce((acc,d)=>acc*d.power,1);
             enemy.debuffTurn=Math.max(...enemy.debuffs.map(d=>d.turn));
         }
         if(s2.type==="allDebuff"){
-            enemy.debuffTurn=4; enemy.debuffPower=s2.power||0.7;
+            let _adPow = Math.max(0.1, (s2.power||0.7) - (pw - 1) * 0.1);
+            enemy.debuffTurn=4; enemy.debuffPower=_adPow;
             enemy.allDebuffMark=true; enemy.allDebuffTurn=3;
             showSynergyText("⬇ 全弱体コピー！ATK低下＆被ダメ増！"); renderBattle();
         }
@@ -6386,13 +6734,10 @@ if(s.type==="copy"){
             }
         }
         if(s2.type==="runawayBurn"){
-            let isLow=p.currentHp/p.hp<=0.5;
-            let atkBonus=isLow?4.0:2.5;
-            if(!p.buffs) p.buffs=[];
-            p.buffs=p.buffs.filter(b=>!b.isRunawayBurn);
-            p.buffs.push({ power:atkBonus, turn:3, isRunawayBurn:true });
-            p.runawayBurn={ turn:3, doubled:isLow };
-            showSynergyText("🔥 暴走燃焼コピー！"+(isLow?"ATK+300%(2倍効果！)":"ATK+150%")); renderBattle();
+            p.runawayBurn={ doubled:false };
+            updateRunawayBurnBuff(p);
+            let isLow=p.runawayBurn.doubled;
+            showSynergyText("🔥 暴走燃焼コピー！"+(isLow?"ATK+300%(2倍効果！)":"ATK+150%")+"(永続)"); renderBattle();
         }
         if(s2.type==="heatUp"){
             let elapsedTurns=enemy.turnCount||0;
@@ -6446,8 +6791,9 @@ if(s.type==="copy"){
                 let sres=calcDamage(p.attr,enemy.attr,followAtk*(s2.power||0.75));
                 if(enemy.allDebuffMark) sres.dmg=Math.floor(sres.dmg*1.5);
                 if(enemy.shield>0){let ab=Math.min(enemy.shield,sres.dmg);enemy.shield-=ab;sres.dmg-=ab;}
+                sres = applySkillCrit(sres, p);
                 enemy.hp-=sres.dmg; totalDmg+=sres.dmg;
-                let _sd=sres.dmg; setTimeout(()=>showDamage("enemy",{dmg:_sd,type:""}),si*130);
+                setTimeout(()=>showDamage("enemy", sres, {fast:true, random:true}), si*70);
             }
             showSynergyText("🔫 狙撃コピー！"+ammo+"連射！合計"+Math.floor(totalDmg)); renderBattle();
         }
@@ -6582,7 +6928,7 @@ if(s.type==="copy"){
             if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
             if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
             if(enemy.allDebuffMark) res.dmg=Math.floor(res.dmg*1.5);
-            res.dmg=applySkillDmgPassives(res.dmg,p);
+            res.dmg=applySkillDmgPassives(res.dmg,p); res=applySkillCrit(res,p);
             enemy.hp-=res.dmg;
             renderBattle();
             setTimeout(()=>showDamage("enemy",res),10);
@@ -6621,7 +6967,7 @@ if(s.type==="copy"){
             if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
             if(enemy.shield>0){let ab=Math.min(enemy.shield,res.dmg);enemy.shield-=ab;res.dmg-=ab;}
             if(enemy.allDebuffMark) res.dmg=Math.floor(res.dmg*1.5);
-            res.dmg=applySkillDmgPassives(res.dmg,p);
+            res.dmg=applySkillDmgPassives(res.dmg,p); res=applySkillCrit(res,p);
             enemy.hp-=res.dmg;
             showSynergyText("⚡ 天撃コピー！カウント+"+addCount+"→"+totalCount+"！ATK+"+(totalCount*25)+"%で200%の一撃！"); renderBattle(); setTimeout(()=>showDamage("enemy",res),10);
         }
@@ -6649,8 +6995,9 @@ if(s.type==="copy"){
             if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) dmg=Math.floor(dmg*0.05);
             if(enemy.shield>0){let ab=Math.min(enemy.shield,dmg);enemy.shield-=ab;dmg-=ab;}
             dmg=applySkillDmgPassives(dmg,p);
+            let _hcRes=applyCrit({dmg,type:"weak"},p); dmg=_hcRes.dmg;
             enemy.hp-=dmg;
-            showSynergyText("🔗 一触即没コピー！紐カウント→"+p.himoCount+"！"); renderBattle(); setTimeout(()=>showDamage("enemy",{dmg,type:"weak"}),10);
+            showSynergyText("🔗 一触即没コピー！紐カウント→"+p.himoCount+"！"); renderBattle(); setTimeout(()=>showDamage("enemy",_hcRes),10);
         }
         if(s2.type==="harumiBuff"){
             players.forEach(t=>{
@@ -6671,7 +7018,7 @@ if(s.type==="copy"){
             let res=calcDamage(p.attr,enemy.attr,atkC*2.0*comboAtkBonus*pw);
             if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
             if(enemy.shield>0){let ab=Math.min(enemy.shield,res.dmg);enemy.shield-=ab;res.dmg-=ab;}
-            res.dmg=applySkillDmgPassives(res.dmg,p);
+            res.dmg=applySkillDmgPassives(res.dmg,p); res=applySkillCrit(res,p);
             enemy.hp-=res.dmg;
             renderBattle(); setTimeout(()=>{ showDamage("enemy",res); showSynergyText("🎯 正確無比コピー！ATK200%ダメ！(コンボボーナス+"+Math.floor(comboCount*20)+"%)！"); },10);
         }
@@ -6685,7 +7032,7 @@ if(s.type==="copy"){
             let res=calcDamage(p.attr,enemy.attr,atkC*2.5*pw);
             if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
             if(enemy.shield>0){let ab=Math.min(enemy.shield,res.dmg);enemy.shield-=ab;res.dmg-=ab;}
-            res.dmg=applySkillDmgPassives(res.dmg,p);
+            res.dmg=applySkillDmgPassives(res.dmg,p); res=applySkillCrit(res,p);
             enemy.hp-=res.dmg;
             showSynergyText("⚡ 最大出力コピー！連撃カウント→"+p.rengekiCount+"！ATK+"+(Math.floor(rengekiBonus*100))+"%！"); renderBattle(); setTimeout(()=>showDamage("enemy",res),10);
         }
@@ -6695,14 +7042,151 @@ if(s.type==="copy"){
             showSynergyText("💛 幸福のオーラコピー！味方全体に幸福状態付与("+turns+"T)！"); renderBattle();
         }
         if(s2.type==="jokaku"){
-            let target2 = players.find(t=>t.currentHp>0);
-            if(target2){
-                target2.jokakuCount = (target2.jokakuCount||0)+1;
-                if(!target2.buffs) target2.buffs=[];
-                target2.buffs=target2.buffs.filter(b=>!b.isJokaku);
-                target2.buffs.push({ power:1+target2.jokakuCount*0.25, turn:999999, permanent:true, isJokaku:true });
-                showSynergyText("🔓 解錠コピー！"+target2.name+"に解錠カウント+1（×"+(target2.jokakuCount)+"）！"); renderBattle();
+            _copyJokakuCaster = p;
+            _copiedJokakuSkill = s2;
+            let modal = document.getElementById("jokakuTargetModal");
+            let list = document.getElementById("jokakuTargetList");
+            if(modal && list){
+                list.innerHTML = "";
+                players.forEach((pl, i) => {
+                    let btn = document.createElement("button");
+                    btn.style.cssText = [
+                        "display:block","width:100%","margin:6px 0","padding:11px 14px",
+                        "background:#0d1f00","color:#aaff44","border:2px solid #66aa00",
+                        "border-radius:10px","font-size:14px","font-weight:bold","cursor:pointer",
+                        "text-align:left","transition:background 0.15s"
+                    ].join(";");
+                    btn.innerHTML = `🔓 ${pl.name} &nbsp;<span style="color:#88cc44;font-size:12px;">現在: 解錠カウント×${pl.jokakuCount||0} (ATK+${(pl.jokakuCount||0)*25}%)</span>`;
+                    btn.onmouseover = function(){ this.style.background="#1a3a00"; };
+                    btn.onmouseout  = function(){ this.style.background="#0d1f00"; };
+                    btn.onclick = function(){
+                        modal.style.display = "none";
+                        execJokakuCopySkill(i);
+                    };
+                    list.appendChild(btn);
+                });
+                modal.style.display = "flex";
             }
+            return;
+        }
+        if(s2.type==="beta_harumi_sight"){
+            _copySightShareCaster = p;
+            _copySightShareSkill = s2;
+            let totalAlly = players.reduce((sum, pl) => sum + (pl.betaSightCount || 0), 0);
+            if(totalAlly >= 3){
+                showSynergyText("👁 サイトシェアコピー失敗…味方の視覚共有は合計3個が上限です！");
+                renderBattle();
+            } else {
+                let modal = document.getElementById("sightShareModal");
+                if(modal){
+                    _sightShareCaster = p;
+                    _renderSightShareTop();
+                    modal.style.display = "flex";
+                    _isSightShareCopyMode = true;
+                }
+            }
+            return;
+        }
+        if(s2.type==="dual"){
+            let res = calcDamage(p.attr, enemy.attr, atkC * (s2.power || 1.6) * pw);
+            if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
+            if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+            if(enemy.allDebuffMark) res.dmg=Math.floor(res.dmg*1.5);
+            res.dmg=applySkillDmgPassives(res.dmg,p); res=applySkillCrit(res,p);
+            enemy.hp-=res.dmg;
+            let dualHealRate = s2.healRate || 0.15;
+            players.forEach((t,i)=>{
+                let heal=Math.floor(t.hp*dualHealRate*pw);
+                t.currentHp=Math.min(t.hp,t.currentHp+heal);
+                setTimeout(()=>showDamage("p"+i,{dmg:heal,type:"heal"}),200+i*80);
+            });
+            if(Math.random() < (s2.shockChance || 0.40)){
+                enemy.shockTurn=Math.max(enemy.shockTurn||0,2);
+                showSynergyText("🌊⚡ 双神の凪波コピー！160%ダメ＋全体HP15%回復＋感電付与！");
+            } else {
+                showSynergyText("🌊 双神の凪波コピー！160%ダメ＋全体HP15%回復！（感電失敗）");
+            }
+            renderBattle(); setTimeout(()=>showDamage("enemy",res),10);
+        }
+        if(s2.type==="mimicry"){
+            let ratio=1-(p.currentHp/p.hp);
+            let bonus=Math.min(0.7, 0.1+ratio*0.6) * pw;
+            if(!p.buffs) p.buffs=[];
+            p.buffs=p.buffs.filter(b=>!b.isMimicry);
+            p.buffs.push({ power:1+bonus, turn:999999, permanent:true, isMimicry:true });
+            p.mimicryActive=true;
+            showSynergyText("🎭 模倣者コピー！HP残"+Math.floor((1-ratio)*100)+"% → ATK&DEF+"+Math.floor(bonus*100)+"%(永続)！"); renderBattle();
+        }
+        if(s2.type==="repairRevolution"){
+            players.forEach((t,i)=>{
+                let hpBonus=Math.floor(t.hp*(0.15*pw));
+                if(!t.repairRevBonusHp) t.repairRevBonusHp=0;
+                t.repairRevBonusHp+=hpBonus;
+                t.hp+=hpBonus;
+                t.currentHp=Math.min(t.hp,t.currentHp+hpBonus);
+                if(!t.repairRevTurn) t.repairRevTurn=0;
+                t.repairRevTurn=3;
+                setTimeout(()=>showDamage("p"+i,{dmg:hpBonus,type:"heal"}),i*80);
+            });
+            showSynergyText("🌿 修復革命コピー！全体最大HP+15%(3T)！"); renderBattle();
+        }
+        if(s2.type==="taketogeGrant"){
+            if(!enemy.taketogeStacks) enemy.taketogeStacks=[];
+            let addStacks=s2.stacks||2;
+            for(let i=0;i<addStacks;i++){ enemy.taketogeStacks.push({turn:3}); }
+            let healAmt=Math.floor(p.hp*(s2.healRate||0.12)*pw);
+            let pi2=players.indexOf(p);
+            p.currentHp=Math.min(p.hp,p.currentHp+healAmt);
+            let totalStacks=enemy.taketogeStacks.length;
+            showSynergyText("🎋 竹取の翁コピー！竹棘×"+totalStacks+"スタック(ATK-"+(totalStacks*5)+"%)＋HP回復！"); renderBattle();
+            setTimeout(()=>showDamage("p"+pi2,{dmg:healAmt,type:"heal"}),100);
+        }
+        if(s2.type==="hp_ratio_atk_buff"){
+            let myMaxHp=p.hp;
+            let enemyMaxHp=enemy.maxHp||enemy.hp;
+            let ratio=enemyMaxHp/myMaxHp;
+            if(!p.buffs) p.buffs=[];
+            p.buffs=p.buffs.filter(b=>!b.isHpRatioBuff);
+            if(ratio>1){
+                let buffPower=Math.min(11.0,1+(ratio-1)*pw);
+                p.buffs.push({power:buffPower,turn:3,isHpRatioBuff:true});
+                showSynergyText("👑 奢れるものも久からずコピー！敵HP比率×"+ratio.toFixed(2)+" → ATK+"+Math.floor((buffPower-1)*100)+"%(3T)！");
+            } else {
+                let debuffPower=Math.max(0.1,ratio*pw);
+                p.buffs.push({power:debuffPower,turn:3,isHpRatioBuff:true});
+                showSynergyText("👑 奢れるものも久からずコピー…敵HP比率×"+ratio.toFixed(2)+" → ATK"+Math.floor((debuffPower-1)*100)+"%(3T)");
+            }
+            renderBattle();
+        }
+        if(s2.type==="beta_akahane_lucky"){
+            players.forEach((t,ti)=>{
+                t.betaLuckyTurn=5;
+                t.betaLuckyDmgBuff=true;
+                if(!t.buffs) t.buffs=[];
+                t.buffs=t.buffs.filter(b=>!b.isBetaLucky);
+                t.buffs.push({power:1.25*pw,turn:5,isBetaLucky:true});
+                if(s2.critBonus){ t.betaLuckyCritBonus=s2.critBonus; }
+                let _hpi=players.indexOf(t);
+                setTimeout(()=>showDamage("p"+_hpi,{dmg:Math.floor(t.hp*0.08),type:"heal"}),200+ti*80);
+            });
+            showSynergyText("🍀 幸運コピー！味方全体に幸運状態付与(5T)！与ダメ+25%＆毎ターンHP8%回復＆クリティカル率+12%！"); renderBattle();
+        }
+        if(s2.type==="beta_sakuragi_offset"){
+            if(!p.counters) p.counters=[];
+            p.counters.push({turn:3,power:1.0*pw,isOffset:true});
+            showSynergyText("⚔ オフセットコピー！被ダメ時に相手へ同ダメ反撃(3T)！"); renderBattle();
+        }
+        if(s2.type==="beta_yatsunami_stack"){
+            if(!enemy.betaIssokuCount) enemy.betaIssokuCount=0;
+            enemy.betaIssokuCount=Math.min(10,enemy.betaIssokuCount+3);
+            let atkUpRate=enemy.betaIssokuCount*20;
+            let res=calcDamage(p.attr,enemy.attr,atkC*2.0*pw);
+            if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
+            if(enemy.shield>0){let ab=Math.min(enemy.shield,res.dmg);enemy.shield-=ab;res.dmg-=ab;}
+            if(enemy.allDebuffMark) res.dmg=Math.floor(res.dmg*1.5);
+            res.dmg=applySkillDmgPassives(res.dmg,p); res=applySkillCrit(res,p);
+            enemy.hp-=res.dmg;
+            showSynergyText("💀 一触即没コピー！200%攻撃！敵に一触即没×"+enemy.betaIssokuCount+"付与！（被ダメ+"+atkUpRate+"%）"); renderBattle(); setTimeout(()=>showDamage("enemy",res),10);
         }
         renderBattle();
     }
@@ -6740,7 +7224,7 @@ if(s.type==="comboAccurate"){
     let res = calcDamage(p.attr, enemy.attr, atk * 2.0 * comboAtkBonus);
     if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
     if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
-    res.dmg = applySkillDmgPassives(res.dmg, p);
+    res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
     enemy.hp -= res.dmg;
     applyShockBonus(p, atk);
     triggerAttackPassive(p);
@@ -6763,7 +7247,7 @@ if(s.type==="maxOutput"){
     let res = calcDamage(p.attr, enemy.attr, atk * 2.5);
     if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
     if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
-    res.dmg = applySkillDmgPassives(res.dmg, p);
+    res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
     enemy.hp -= res.dmg;
     applyShockBonus(p, atk);
     triggerAttackPassive(p);
@@ -6780,7 +7264,7 @@ if(s.type==="spiritStrike"){
     let res = calcDamage(p.attr, enemy.attr, atk * 2.8 * spiritMult);
     if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
     if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
-    res.dmg = applySkillDmgPassives(res.dmg, p);
+    res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
     enemy.hp -= res.dmg;
     applyShockBonus(p, atk);
     triggerAttackPassive(p);
@@ -6790,6 +7274,7 @@ if(s.type==="spiritStrike"){
 }
 if(s.type === "jokaku"){
     showJokakuTargetSelect(p, s);
+    lastAllySkill = s;
     return;
 }
 if(s.type !== "heatUp" && s.type !== "sniper") p.cool = p.skill.cool;
@@ -6821,7 +7306,7 @@ if(s.type==="damage"){
     if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
     let _ks2 = p.kokuShoku||0; if(_ks2>0) res.dmg=Math.floor(res.dmg*(1+0.12*_ks2));
     res = applyErosionBoost(res);
-    res.dmg = applySkillDmgPassives(res.dmg, p);
+    res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
     enemy.hp -= res.dmg;
     applyShockBonus(p, atk);
     renderBattle();
@@ -6832,13 +7317,13 @@ if(s.type==="multi"){
     showSynergyText("多段攻撃！");
     for(let i=0;i<s.hits;i++){
         let res = calcDamage(p.attr, enemy.attr, atk * s.power);
-        res.dmg = applySkillDmgPassives(res.dmg, p);
+        res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
         enemy.hp -= res.dmg;
         if(!enemy.debuffUsed){ enemy.atk *= 0.95; }
         setTimeout(()=>{
-            showDamage("enemy", res);
+            showDamage("enemy", res, {fast:true, random:true});
             if(i === s.hits - 1){ enemy.debuffUsed = true; renderBattle(); }
-        }, i * 120);
+        }, i * 70);
     }
 }
 if(s.type==="heal"){
@@ -6910,7 +7395,7 @@ if(s.type==="drain"){
     let idx = turnIndex;
     let res = calcDamage(p.attr, enemy.attr, atk * s.power);
     if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
-    res.dmg = applySkillDmgPassives(res.dmg, p);
+    res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
     enemy.hp -= res.dmg;
     let heal = res.dmg * 0.5;
     p.currentHp += heal;
@@ -6942,8 +7427,8 @@ if(s.type==="taketogeGrant"){
 if(s.type==="double"){
     let res = calcDamage(p.attr, enemy.attr, atk * s.power);
     let res2 = calcDamage(p.attr, enemy.attr, atk * 0.5);
-    res.dmg = applySkillDmgPassives(res.dmg, p);
-    res2.dmg = applySkillDmgPassives(res2.dmg, p);
+    res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
+    res2.dmg = applySkillDmgPassives(res2.dmg, p); res2 = applySkillCrit(res2, p);
     showSynergyText("連撃！");
     enemy.hp -= res.dmg;
     enemy.hp -= res2.dmg;
@@ -6965,17 +7450,18 @@ if(s.type==="rage"){
     let ratio = 1 - (p.currentHp / p.hp);
     let dmg = Math.floor(atk * (1 + ratio * (s.power - 1) * 3));
     dmg = applySkillDmgPassives(dmg, p);
+    let _rageRes2 = applyCrit({dmg, type:"ultimate"}, p); dmg = _rageRes2.dmg;
     showSynergyText("狂化発動！");
     enemy.hp -= dmg;
     renderBattle();
-    setTimeout(()=>showDamage("enemy", {dmg, type:"ultimate"}),10);
+    setTimeout(()=>showDamage("enemy", _rageRes2),10);
 }
 if(s.type==="poisonBurst"){
     let poisonCount = (enemy.poisons && enemy.poisons.length > 0) ? enemy.poisons.length : 0;
     if(poisonCount === 0){
         let res = calcDamage(p.attr, enemy.attr, atk * s.power);
         if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
-        res.dmg = applySkillDmgPassives(res.dmg, p);
+        res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
         enemy.hp -= res.dmg;
         showSynergyText("☠ 毒爆発！（毒なし）");
         renderBattle();
@@ -6984,7 +7470,7 @@ if(s.type==="poisonBurst"){
         let multiplier = poisonCount * s.power;
         let res = calcDamage(p.attr, enemy.attr, atk * multiplier);
         if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
-        res.dmg = applySkillDmgPassives(res.dmg, p);
+        res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
         enemy.hp -= res.dmg;
         showSynergyText("☠💥 毒爆発！毒×" + poisonCount + "=" + Math.floor(multiplier*100) + "% ダメージ！");
         renderBattle();
@@ -7046,7 +7532,7 @@ if(exist){
     dupeStone+=gain;
   }
 }else{
-  box.push({...c,dupe:0,atk:20+5*c.rarity,hp:100+20*c.rarity,weapon:null});
+  box.push({...c, role: c.role||"attacker", skill: c.skill?{...c.skill}:{type:"none"}, dupe:0, atk:20+5*c.rarity, hp:100+20*c.rarity, weapon:null, skillTreeData:{chosen:[],skipped:[]}});
 }
 showGachaFullscreen1(c, ()=>{
   let div=document.createElement("div");
@@ -7088,7 +7574,7 @@ results.forEach((c)=>{
         dupeStone+=gain;
     }
   }else{
-    box.push({...c,dupe:0,atk:20+5*c.rarity,hp:100+20*c.rarity,weapon:null});
+    box.push({...c, role: c.role||"attacker", skill: c.skill?{...c.skill}:{type:"none"}, dupe:0, atk:20+5*c.rarity, hp:100+20*c.rarity, weapon:null, skillTreeData:{chosen:[],skipped:[]}});
   }
 });
 showGachaFullscreen10(results, ()=>{
@@ -7335,10 +7821,15 @@ function gachaSkipAll(){
     // star4キャラ演出オーバーレイを即削除
     const s4d = document.getElementById('star4DarkOverlay');
     if(s4d) s4d.remove();
+    // kakuteiOverlay を確実に非表示
+    const ko = document.getElementById('kakuteiOverlay');
+    if(ko) ko.classList.remove('active');
     // その他の演出要素をすべて削除
     document.querySelectorAll(".kakutei-text,.shougou-lines,.kakutei-border-flash,.attr-beam-overlay,.rarity-upgrade-badge,.gacha-flash-r2,.gacha-flash-r3,.gacha-flash-r4,.gacha-rarity-announce,.s4d-flash-out").forEach(el=>el.remove());
-    gachaFlipQueue.forEach(fn=>fn());
+    const queue = gachaFlipQueue.slice();
     gachaFlipQueue = [];
+    queue.forEach(fn=>fn());
+    // _gachaSkipped のリセットは各 fn() 内の onDone 呼び出し前に行う
   } else {
     gachaSkipStage = 0;
     _gachaSkipped = false;
@@ -7751,6 +8242,8 @@ function showGachaFullscreen1(c, onDone, noSkip){
   ensureGachaOverlay();
   _gachaSkipped = false;
   gachaSkipStage = 0;
+  gachaFlipQueue = [];
+  _clearGachaEffects();
   const skipBtn = document.getElementById("gachaSkipBtn");
   if(skipBtn) skipBtn.style.display = noSkip ? "none" : "";
   const ov = document.getElementById("gachaOverlay");
@@ -7800,8 +8293,19 @@ function showGachaFullscreen1(c, onDone, noSkip){
     cardArea.appendChild(wrap);
     setTimeout(()=>wrap.classList.add("reveal"), 50);
     const flipFn = ()=>{
+      if(cardEl.dataset.flipped) return;
+      cardEl.dataset.flipped = "1";
       if(c.rarity===4 && !_gachaSkipped){
         showStar4DarkReveal(c, ()=>{
+          if(_gachaSkipped){
+            // スキップされた場合はオーバーレイを閉じて終了
+            closeGachaOverlay();
+            _clearGachaEffects();
+            gachaSkipStage = 0;
+            _gachaSkipped = false;
+            if(onDone) onDone();
+            return;
+          }
           cardEl.classList.add("flipped");
           setTimeout(()=>{
             bgGlow.style.opacity="0";
@@ -7832,6 +8336,7 @@ function showGachaFullscreen1(c, onDone, noSkip){
     };
     if(!noSkip){
       gachaFlipQueue = [()=>{
+        if(!cardEl.dataset.flipped){ cardEl.dataset.flipped = "1"; }
         cardEl.classList.add("flipped");
         bgGlow.style.opacity="0";
         stopGachaParticles();
@@ -7839,13 +8344,14 @@ function showGachaFullscreen1(c, onDone, noSkip){
           closeGachaOverlay();
           _clearGachaEffects();
           gachaSkipStage = 0;
+          _gachaSkipped = false;
           if(onDone) onDone();
         }, 300);
       }];
     }
     cardEl.addEventListener("click", function once(){
       cardEl.removeEventListener("click", once);
-      gachaFlipQueue = gachaFlipQueue.filter(f=>f!==flipFn);
+      gachaFlipQueue = [];
       flipFn();
     });
     const delay = c.rarity===4 ? 1600 : c.rarity===3 ? 1200 : 800;
@@ -7856,6 +8362,8 @@ function showGachaFullscreen10(results, onDone){
   ensureGachaOverlay();
   _gachaSkipped = false;
   gachaSkipStage = 0;
+  gachaFlipQueue = [];
+  _clearGachaEffects();
   const ov = document.getElementById("gachaOverlay");
   const cardArea = document.getElementById("gachaCardArea");
   const bgGlow = document.getElementById("gachaBgGlow");
@@ -7913,6 +8421,7 @@ function showGachaFullscreen10(results, onDone){
       cardEl.dataset.flipped = "1";
       if(c.rarity===4 && !force && !_gachaSkipped){
         showStar4DarkReveal(c, ()=>{
+          if(_gachaSkipped) return;
           cardEl.style.transform = "rotateY(180deg)";
           gachaFlash(c.rarity);
           spawnBeams(wrap, "ultra");
@@ -7943,9 +8452,9 @@ function showGachaFullscreen10(results, onDone){
       _clearGachaEffects();
       closeGachaOverlay();
       showGachaSummary(results);
-      if(onDone) onDone();
       gachaSkipStage = 1;
       _gachaSkipped = false;
+      if(onDone) onDone();
     }, 400);
   }];
   let revealIndex = 0;
@@ -7957,8 +8466,9 @@ function showGachaFullscreen10(results, onDone){
         setTimeout(()=>{
           closeGachaOverlay();
           showGachaSummary(results);
-          if(onDone) onDone();
           gachaSkipStage = 1;
+          _gachaSkipped = false;
+          if(onDone) onDone();
         }, 2000);
         return;
       }
@@ -8414,7 +8924,251 @@ ${trialPage+1}
 </div>
 `;
 }
-function changePage(dir){
+let ultimateSlideIndex = 1;
+
+function renderUltimate(){
+  let ultimate = eventStages[eventStages.length - 1];
+  if(!ultimate || !ultimate.isUltimate) return;
+
+  let maxFloor = getUltimateMaxFloor();
+  let cleared = missionStats.ultimateCleared || {};
+
+  // 初期表示は「次に挑戦すべき階層」（最大開放階層）に合わせる
+  if(!ultimateSlideIndex || ultimateSlideIndex < 1) ultimateSlideIndex = 1;
+  if(ultimateSlideIndex > 100) ultimateSlideIndex = 100;
+
+  let i = ultimateSlideIndex;
+  let isCleared = cleared[i] ? true : false;
+  let isUnlocked = (i <= maxFloor) || isCleared;
+  let bossFloor = (i % 10 === 0 || i === 100);
+  let stage = ultimate.stages[i-1];
+
+  let gimmickTxt = "";
+  if(stage && stage.gimmick){
+    let g = stage.gimmick;
+    let parts = [];
+    if(g.shield) parts.push("🛡シールド "+g.shield);
+    if(g.attrOnly) parts.push("🔮属性制限:"+g.attrOnly);
+    if(g.turnBuff) parts.push("📈毎ターンATKバフ");
+    if(g.phaseRage) parts.push("💀HP50%狂化");
+    gimmickTxt = parts.join(" / ");
+  }
+
+  let cardBg = bossFloor ? "linear-gradient(135deg,#2a0a3a,#1a0a2a)" : "linear-gradient(135deg,#1a1a3a,#0a0a2a)";
+  let borderColor = isCleared ? "#44ff44" : (bossFloor ? "#ff6699" : "#666699");
+
+  let html = `
+    <div style="background:${cardBg};border:2px solid ${borderColor};border-radius:16px;padding:22px 16px;text-align:center;min-height:220px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:8px;${isCleared?'box-shadow:0 0 16px rgba(68,255,68,0.4);':''}${!isUnlocked?'opacity:0.45;':''}">
+      <div style="font-size:30px;">${bossFloor ? '👑' : '📍'}</div>
+      <div style="font-size:20px;font-weight:bold;color:#eee;">${i}F ${bossFloor ? '（ボス階層）' : ''}</div>
+      ${isCleared ? '<div style="color:#44ff44;font-size:13px;font-weight:bold;">✓ クリア済み</div>' : ''}
+      ${!isUnlocked ? '<div style="color:#ff8888;font-size:13px;">🔒 未開放（'+maxFloor+'Fまで挑戦可能）</div>' : ''}
+      ${stage ? `<div style="font-size:11px;color:#aaccff;">敵HP:${stage.hp?.toLocaleString?.()||stage.hp} ／ 敵ATK:${stage.atk}</div>` : ''}
+      ${gimmickTxt ? `<div style="font-size:11px;color:#ffcc88;">${gimmickTxt}</div>` : ''}
+      <button onclick="startUltimateBattle(${i})" ${isUnlocked?'':'disabled'}
+        style="margin-top:6px;padding:10px 28px;border-radius:10px;border:none;font-size:14px;font-weight:bold;cursor:${isUnlocked?'pointer':'not-allowed'};background:${isUnlocked?(bossFloor?'#ff6699':'#5577ff'):'#444455'};color:#fff;">
+        ${isUnlocked ? (isCleared ? '再挑戦' : '挑戦') : 'ロック中'}
+      </button>
+    </div>
+  `;
+
+  document.getElementById('ultimateSlideCard').innerHTML = html;
+  document.getElementById('ultimateSlideIndicator').textContent = i + " / 100";
+
+  // ドットナビ（開放済み or クリア済みのみ表示、見やすいよう簡略化）
+  let dotsHtml = "";
+  for(let f=1; f<=100; f++){
+    let fCleared = cleared[f] ? true : false;
+    let fUnlocked = (f <= maxFloor) || fCleared;
+    let fBoss = (f % 10 === 0 || f === 100);
+    let active = (f === i);
+    dotsHtml += `<div onclick="goToUltimateSlide(${f})" title="${f}F" style="width:10px;height:10px;border-radius:50%;cursor:pointer;border:1px solid ${fCleared?'#44ff44':(fBoss?'#ff6699':'#666699')};background:${active?'#fff':(fCleared?'#44ff44':(fUnlocked?'transparent':'#222'))};opacity:${fUnlocked?1:0.4};"></div>`;
+  }
+  document.getElementById('ultimateFloorDots').innerHTML = dotsHtml;
+}
+
+function goToUltimateSlide(floor){
+  ultimateSlideIndex = Math.max(1, Math.min(100, floor));
+  renderUltimate();
+}
+
+function changeUltimateSlide(dir){
+  goToUltimateSlide(ultimateSlideIndex + dir);
+}
+
+// スワイプ操作対応
+(function(){
+  let touchStartX = null;
+  document.addEventListener('DOMContentLoaded', function(){
+    let track = document.getElementById('ultimateSlideTrack');
+    if(!track) return;
+    track.addEventListener('touchstart', function(e){
+      touchStartX = e.touches[0].clientX;
+    }, {passive:true});
+    track.addEventListener('touchend', function(e){
+      if(touchStartX === null) return;
+      let dx = e.changedTouches[0].clientX - touchStartX;
+      if(Math.abs(dx) > 40){
+        changeUltimateSlide(dx < 0 ? 1 : -1);
+      }
+      touchStartX = null;
+    }, {passive:true});
+  });
+})();
+
+function getUltimateMaxFloor(){
+  // クリア済みの最大フロア+1まで挑戦可能（最低1）
+  let cleared = missionStats.ultimateCleared || {};
+  let maxFloor = missionStats.ultimateMaxFloor || 1;
+  for(let i=1;i<=100;i++){
+    if(cleared[i] && maxFloor < i+1) maxFloor = i+1;
+  }
+  if(maxFloor > 100) maxFloor = 100;
+  missionStats.ultimateMaxFloor = maxFloor;
+  return maxFloor;
+}
+
+function startUltimateBattle(floor){
+  let ultimate = eventStages[eventStages.length - 1];
+  if(!ultimate || !ultimate.isUltimate || !ultimate.stages[floor-1]) return;
+
+  let cleared = missionStats.ultimateCleared || {};
+  let maxFloor = getUltimateMaxFloor();
+  if(floor > maxFloor && !cleared[floor]){
+    showToast("⚠️ まだこの階層には挑戦できません。1階層から順番に進めてください。");
+    return;
+  }
+
+  if(team.length === 0){
+    showToast("⚠️ パーティを編成してください！");
+    return;
+  }
+
+  battleEnded = false;
+  isAttackProcessing = false;
+  go("battle");
+  onBattleStart();
+
+  let stage = ultimate.stages[floor-1];
+  currentTrial = ultimate;
+  currentStage = floor - 1;
+  currentEventType = "ultimate";
+
+  players = applyTeamBuff(team.map(c=>{
+    let base =
+        chars.find(ch => ch.name === c.name) ||
+        eventChars.find(ch => ch.name === c.name) ||
+        eventChars2.find(ch => ch.name === c.name) ||
+        eventChars3.find(ch => ch.name === c.name) ||
+        eventChars4.find(ch => ch.name === c.name) ||
+        eventChars5.find(ch => ch.name === c.name) ||
+        eventChars6.find(ch => ch.name === c.name) ||
+        eventChars7.find(ch => ch.name === c.name) ||
+        eventChars8.find(ch => ch.name === c.name) ||
+        eventChars9.find(ch => ch.name === c.name) ||
+        eventChars10.find(ch => ch.name === c.name) ||
+        rewardChar.find(ch => ch.name === c.name);
+    let weapon = c.weapon;
+    let finalAtk = getEffectiveAtk(c) + (weapon?.atk || 0);
+    let finalHp = getEffectiveHp(c) + (weapon?.hp || 0);
+    let initSkill = base?.skill || c.skill;
+    return {
+        ...c,
+        atk: finalAtk,
+        hp: finalHp,
+        currentHp: finalHp,
+        skill: initSkill,
+        skill2: base?.skill2 || c.skill2 || null,
+        cool2: 0,
+        weapon: c.weapon ? {...c.weapon} : null,
+        weaponCool: 0,
+        sniperAmmo: initSkill?.type === "sniper" ? (initSkill.maxAmmo || 6) : undefined,
+        swordCount: initSkill?.type === "kenSword" ? 0 : undefined,
+        swordBuff: initSkill?.type === "kenSword" ? 0 : undefined,
+        passive: base?.passive || c.passive || null,
+        passiveAtkBonus: 0,
+        kokuShoku: 0,
+        weaponPassive: c.weapon?.passive || null,
+        betaLuckyTurn: 0,
+        betaLuckyDmgBuff: false,
+        betaSightCount: 0,
+        betaHimoCount: 0,
+        betaSakuragiDefActive: false,
+    };
+  }));
+
+  // 既存charsからフロア番号に基づいて決定論的にキャラを選ぶ
+  let seed = floor * 7 + 13;
+  let enemyChar = chars[seed % chars.length];
+  let enemyName = stage.boss
+    ? "【究極】" + enemyChar.name + " " + floor + "F"
+    : "【試練】" + enemyChar.name + " " + floor + "F";
+
+  enemy = {
+    name: enemyName,
+    attr: enemyChar.attr,
+    img: enemyChar.img,
+    hp: stage.hp,
+    maxHp: stage.hp,
+    atk: stage.atk,
+    baseAtk: stage.atk,
+    poison:0,
+    poisons:[],
+    burnTurn:0, burnPower:0,
+    burns:[],
+    freezeTurn:0,
+    shockTurn:0, shockPower:0,
+    shield: stage.gimmick?.shield || 0,
+    debuffUsed:false,
+    debuffPower: 1,
+    debuffTurn: 0,
+    debuffs:[],
+    erosions:[],
+    taketogeStacks:[],
+    gimmick: stage.gimmick || {},
+    isBoss: stage.boss || false,
+    floor: floor,
+    turnCount: 0,
+    turnBuffStacks: 0,
+    betaIssokuCount: 0,
+    betaSightDebuff: 0
+  };
+
+  if(stage.bossBuff){
+    enemy.hp = Math.floor(enemy.hp * stage.bossBuff.hp);
+    enemy.maxHp = enemy.hp;
+    enemy.atk = Math.floor(enemy.atk * stage.bossBuff.atk);
+    enemy.baseAtk = enemy.atk;
+  }
+
+  if(stage.boss){
+    alert("⚠️究極の守護者出現！！");
+  }
+
+  turn = "player";
+  turnIndex = 0;
+  deadPlayers = [];
+  players.forEach(p => { charUseCount[p.name] = (charUseCount[p.name]||0) + 1; });
+  players.forEach(p => {
+    let passives = [];
+    if(p.passive) passives.push(p.passive);
+    if(p.weaponPassive) passives.push(p.weaponPassive);
+    passives.forEach(ps => {
+      if(ps.type === "fated_backup"){
+        players.forEach(ally => {
+          let bonus = Math.floor(ally.hp * ps.value);
+          ally.hp += bonus;
+          ally.currentHp += bonus;
+        });
+        setTimeout(()=>showSynergyText("🌿 "+p.name+"の運命のバックアップ！全体HP上限+15%！"), 300);
+      }
+    });
+  });
+
+  renderBattle();
+}
+
+function changeTrialPage(dir){
 let trialChars = chars.filter(c=>!c.noTrial);
 let maxPage = Math.ceil(trialChars.length / perPage);
 trialPage += dir;
@@ -8491,7 +9245,7 @@ showGachaFullscreen10(results, ()=>{
 update();saveData();
 }
 function renderEvent(){
-eventList.innerHTML = eventStages.map((e,i)=>{
+eventList.innerHTML = eventStages.filter(e=>!e.isUltimate).map((e,i)=>{
 let prog = eventProgress[i] || 1;
 let stage = e.stages[prog-1];
 let gimmickHTML="";
@@ -8792,8 +9546,53 @@ function renderDex(){
     ...eventChars10,
     ...rewardChar
   ];
-  list.innerHTML = allChars.map(c=>{
+  let nameSet = new Set(allChars.map(c=>c.name));
+  function findDexBaseName(name){
+    let best = null;
+    nameSet.forEach(other=>{
+      if(other!==name && name.startsWith(other) && name.length>other.length){
+        if(!best || other.length>best.length) best = other;
+      }
+    });
+    return best;
+  }
+  let baseChars = [];
+  let variantMap = {};
+  allChars.forEach(c=>{
+    let baseName = findDexBaseName(c.name);
+    if(baseName){
+      if(!variantMap[baseName]) variantMap[baseName] = [];
+      variantMap[baseName].push(c);
+    } else {
+      baseChars.push(c);
+    }
+  });
+  list.innerHTML = baseChars.map(c=>{
     const d = charDetails[c.name] || {};
+    const variants = variantMap[c.name] || [];
+    const variantHtml = variants.length === 0 ? "" : `
+      <details style="margin-top:8px;">
+        <summary style="cursor:pointer;color:#ffd700;font-weight:bold;font-size:13px;">🎭 イベント限定キャラ (${variants.length})</summary>
+        ${variants.map(v=>{
+          const vd = charDetails[v.name] || {};
+          return `
+            <div style="display:flex;align-items:flex-start;gap:8px;margin-top:8px;padding-top:8px;border-top:1px solid #333;">
+              <img src="${v.img}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;flex-shrink:0;">
+              <div>
+                <b>【${vd.title || ""}】</b>${v.name}『${v.skill?.text || "なし"}』<br>
+                <div>
+                  <b>■キャラ説明</b><br>
+                  ${vd.story || "なし"}
+                </div>
+                <div style="font-size:12px;opacity:0.8;">
+                  ${vd.lore || ""}
+                </div>
+              </div>
+            </div>
+          `;
+        }).join("")}
+      </details>
+    `;
     return `
       <div class="dexRow">
         <img src="${c.img}">
@@ -8806,6 +9605,7 @@ function renderDex(){
           <div style="font-size:12px;opacity:0.8;">
             ${d.lore || ""}
           </div>
+          ${variantHtml}
         </div>
       </div>
     `;
@@ -8881,13 +9681,17 @@ if(s.type==="buff"){
 }
     if(s.type === "damage"){
         let res = calcDamage(p.attr, enemy.attr, atk * s.power);
+        res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
         enemy.hp -= res.dmg;
         setTimeout(()=>showDamage("enemy", res),10);
     }
     if(s.type === "poison"){
         enemy.poisons = enemy.poisons || [];
+        let _wpow = s.power;
+        let _wpc = box.find(b=>b.name===p.name);
+        if(_wpc && _wpc.treeSkillPower) _wpow *= (1 + _wpc.treeSkillPower);
         enemy.poisons.push({
-            power: s.power,
+            power: _wpow,
             turn:3,
             user:p
         });
@@ -8895,13 +9699,12 @@ if(s.type==="buff"){
 if(s.type === "rage"){
     let ratio = 1 - (p.currentHp / p.hp);
     let dmg = Math.floor(atk * (1 + ratio * (s.power - 1) * 3));
+    dmg = applySkillDmgPassives(dmg, p);
+    let _wrageRes = applyCrit({dmg, type:"ultimate"}, p); dmg = _wrageRes.dmg;
     enemy.hp -= dmg;
     renderBattle();
     setTimeout(()=>{
-        showDamage("enemy", {
-            dmg: dmg,
-            type: "ultimate"
-        });
+        showDamage("enemy", _wrageRes);
     },10);
 }
 if(s.type==="shock"){
@@ -8917,17 +9720,18 @@ if(s.type==="shock"){
 if(s.type==="multi"){
     for(let i=0;i<s.hits;i++){
         let res = calcDamage(p.attr, enemy.attr, atk * s.power);
+        res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
         enemy.hp -= res.dmg;
         if(!enemy.debuffUsed){
             enemy.atk *= 0.95;
         }
         setTimeout(()=>{
-            showDamage("enemy", res);
+            showDamage("enemy", res, {fast:true, random:true});
             if(i === s.hits - 1){
                 enemy.debuffUsed = true;
                 renderBattle();
             }
-        }, i * 120);
+        }, i * 70);
     }
 }
 if(s.type==="heal"){
@@ -8954,6 +9758,31 @@ if(s.type==="taunt"){
     p.shields.push({ turn: s.turn, power: 0.25 });
     showSynergyText("🎯 挑発発動！" + s.turn + "T間、攻撃を引き受ける！");
     renderBattle();
+}
+if(s.type==="dual"){
+    let res = calcDamage(p.attr, enemy.attr, atk * (s.power || 1.6));
+    if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
+    if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+    if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
+    res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
+    enemy.hp -= res.dmg;
+    let dualHealRate = s.healRate || 0.15;
+    players.forEach((t,i)=>{
+        let heal = Math.floor(t.hp * dualHealRate);
+        t.currentHp = Math.min(t.hp, t.currentHp + heal);
+        setTimeout(()=>showDamage("p"+i, {dmg:heal, type:"heal"}), 200 + i*80);
+    });
+    if(Math.random() < (s.shockChance || 0.40)){
+        enemy.shockTurn = Math.max(enemy.shockTurn||0, 2);
+        triggerKokuShoku(1);
+        trackAilment(1, "shock");
+        showSynergyText("🌊⚡ 双神の凪波！160%ダメ＋全体HP15%回復＋感電付与！");
+    } else {
+        showSynergyText("🌊 双神の凪波！160%ダメ＋全体HP15%回復！（感電失敗）");
+    }
+    triggerAttackPassive(p);
+    renderBattle();
+    setTimeout(()=>showDamage("enemy", res), 10);
 }
     p.weaponCool = s.weaponCool || 3
     renderBattle();
@@ -9720,6 +10549,18 @@ const SKILL_TREE_TOTAL_CHOICES = Object.keys(stNodeMap).length;
     if(atkRate > 0) c.treeAtkRate = atkRate;
     if(hpRate  > 0) c.treeHpRate  = hpRate;
   });
+  box.forEach(c => {
+    if(!c.skillTreeData || !c.skillTreeData.chosen.length) return;
+    if(c.treeAilmentPower !== undefined) return;
+    let ailmentPower = 0;
+    c.skillTreeData.chosen.forEach(id => {
+      let ch = stNodeMap[id];
+      if(ch && ch.type === "passive_add" && ch.passiveData?.type === "ailment_power_up"){
+        ailmentPower += ch.passiveData.value;
+      }
+    });
+    if(ailmentPower > 0) c.treeAilmentPower = ailmentPower;
+  });
 })();
 function getEffectiveAtk(c){
   return Math.round((c.atk + getLevelBonusAtk(c)) * (1 + (c.treeAtkRate || 0)));
@@ -9901,6 +10742,10 @@ function unlockSkillNode(charIdx, stageId, choiceId){
     }
   } else if(ch.type === "passive_add"){
     detail.push("パッシブ追加: "+ch.passiveData.text);
+    if(ch.passiveData?.type === "ailment_power_up"){
+      if(!c.treeAilmentPower) c.treeAilmentPower = 0;
+      c.treeAilmentPower += ch.passiveData.value;
+    }
   }
   msg.style.color="#88ffaa";
   msg.textContent="✅ "+ch.label+" 選択！ "+detail.join(" / ");
@@ -9931,6 +10776,8 @@ function resetSkillTree(){
       if(ch.bonus.healUp && c.treeHealUp){ c.treeHealUp -= ch.bonus.healUp; if(c.treeHealUp<=0) delete c.treeHealUp; }
     } else if(ch.type === "skill_up"){
       if(ch.skillBonus?.powerUp && c.treeSkillPower){ c.treeSkillPower -= ch.skillBonus.powerUp; if(c.treeSkillPower<=0) delete c.treeSkillPower; }
+    } else if(ch.type === "passive_add"){
+      if(ch.passiveData?.type === "ailment_power_up" && c.treeAilmentPower){ c.treeAilmentPower -= ch.passiveData.value; if(c.treeAilmentPower<=0) delete c.treeAilmentPower; }
     }
   });
   sp -= totalCost;
@@ -10039,11 +10886,7 @@ function triggerTreePassiveOnTurnStart(){
 function getAilmentTreeBonus(){
   let mult=1.0;
   players.forEach(pl=>{
-    let c2=box.find(b=>b.name===pl.name);
-    if(!c2) return;
-    getAddedPassives(c2).forEach(ps=>{
-      if(ps.type==="ailment_power_up") mult*=(1+ps.value);
-    });
+    if(pl.treeAilmentPower) mult*=(1+pl.treeAilmentPower);
   });
   return mult;
 }
@@ -11462,6 +12305,14 @@ function updateBerserkBuff(target){
     target.buffs.push({ power: 1 + target.berserkCount * 0.70, turn: 999999, permanent: true, isBerserk: true });
   }
 }
+function updateRunawayBurnBuff(target){
+  if(!target.runawayBurn) return;
+  let doubled = (target.currentHp / target.hp) <= 0.5;
+  target.runawayBurn.doubled = doubled;
+  if(!target.buffs) target.buffs = [];
+  target.buffs = target.buffs.filter(b => !b.isRunawayBurn);
+  target.buffs.push({ power: doubled ? 4.0 : 2.5, turn: 999999, permanent: true, isRunawayBurn: true });
+}
 function showJokakuTargetSelect(caster, s){
   let modal = document.getElementById("jokakuTargetModal");
   if(!modal) return;
@@ -11517,6 +12368,7 @@ function _renderSightShareTop(){
   let allyFull = totalAlly >= 3;
   let enemyCount = enemy.betaSightDebuff || 0;
   let enemyFull = enemyCount >= 3;
+  let enemyFuncName = _isSightShareCopyMode ? 'execSightShareEnemyCopy' : 'execSightShareEnemy';
   body.innerHTML = `
     <div style="font-size:12px;color:#88ddaa;margin-bottom:4px;">視覚共有カウントを付与する対象を選択</div>
     <div style="font-size:11px;color:#55aa77;margin-bottom:14px;">味方合計 <b style="color:${allyFull?'#ff4444':'#44ffaa'}">${totalAlly}/3</b>個　敵 <b style="color:${enemyFull?'#ff4444':'#ffaa44'}">${enemyCount}/3</b>個</div>
@@ -11525,7 +12377,7 @@ function _renderSightShareTop(){
         style="flex:1;background:${allyFull?'#111':'#0a2a18'};color:${allyFull?'#444':'#44ffaa'};border:2px solid ${allyFull?'#222':'#00cc66'};border-radius:10px;padding:14px 8px;cursor:${allyFull?'not-allowed':'pointer'};font-size:14px;font-weight:bold;opacity:${allyFull?'0.4':'1'};">
         👥 味方<br><span style="font-size:11px;color:${allyFull?'#555':'#88ddaa'};">ATK+50%/個${allyFull?' (上限到達)':''}</span>
       </button>
-      <button onclick="${enemyFull?'':'execSightShareEnemy()'}"
+      <button onclick="${enemyFull?'':enemyFuncName+'()'}"
         style="flex:1;background:${enemyFull?'#111':'#2a0a0a'};color:${enemyFull?'#444':'#ff6644'};border:2px solid ${enemyFull?'#221100':'#cc3300'};border-radius:10px;padding:14px 8px;cursor:${enemyFull?'not-allowed':'pointer'};font-size:14px;font-weight:bold;opacity:${enemyFull?'0.4':'1'};">
         👹 敵<br><span style="font-size:11px;color:#ffaa88;">ATK-20%/個 (${enemyCount}/3)${enemyFull?' (上限)':''}</span>
       </button>
@@ -11546,7 +12398,8 @@ function _renderSightShareAllyList(){
     // 合計が上限に達していたら全員disabled
     let disabled = totalFull;
     let hpPct = pl.hp > 0 ? Math.floor(pl.currentHp / pl.hp * 100) : 0;
-    html += `<button onclick="${disabled?'':'execSightShareAllyTarget('+i+')'}"
+    let funcName = _isSightShareCopyMode ? 'execSightShareAllyTargetCopy' : 'execSightShareAllyTarget';
+    html += `<button onclick="${disabled?'':funcName+'('+i+')'}"
       style="display:block;width:100%;margin:5px 0;padding:10px 14px;
         background:${disabled?'#111':'#0a2018'};
         color:${disabled?'#444':'#44ffaa'};
@@ -11602,6 +12455,63 @@ function execSightShareEnemy(){
   renderBattle();
   lastAllySkill = p.skill;
   endTurn();
+}
+
+// グローバル変数：コピースキル用
+let _copyJokakuCaster = null;
+let _copiedJokakuSkill = null;
+let _copySightShareCaster = null;
+let _copySightShareSkill = null;
+let _isSightShareCopyMode = false;
+
+// コピースキル用：jokaku対象選択後の処理
+function execJokakuCopySkill(targetIndex){
+  let target = players[targetIndex];
+  if(!target || target.currentHp <= 0) return;
+  target.jokakuCount = (target.jokakuCount || 0) + 1;
+  if(!target.buffs) target.buffs = [];
+  target.buffs = target.buffs.filter(b => !b.isJokaku);
+  target.buffs.push({ power: 1 + target.jokakuCount * 0.25, turn: 999999, permanent: true, isJokaku: true });
+  showSynergyText("🔓 解錠コピー！" + target.name + "に解錠カウント+1（×" + target.jokakuCount + "）！");
+  renderBattle();
+  lastAllySkill = _copiedJokakuSkill;
+  endTurn();
+}
+
+// コピースキル用：beta_harumi_sight対象選択後の処理（修正版）
+function execSightShareAllyTargetCopy(index){
+  let modal = document.getElementById("sightShareModal");
+  if(modal) modal.style.display = "none";
+  let target = players[index];
+  if(!target || target.currentHp <= 0) return;
+  let total = _getTotalAllySightCount();
+  if(total >= 3){ showSynergyText("👁 味方の視覚共有は合計3個が上限です！"); return; }
+  target.betaSightCount = (target.betaSightCount || 0) + 1;
+  if(!target.buffs) target.buffs = [];
+  target.buffs = target.buffs.filter(b => !b.isBetaHarumiSight);
+  target.buffs.push({ power: 1 + target.betaSightCount * 0.50, turn: 999999, permanent: true, isBetaHarumiSight: true });
+  let newTotal = _getTotalAllySightCount();
+  showSynergyText("👁 サイトシェアコピー！" + target.name + "に視覚共有×" + target.betaSightCount + "付与！ATK+" + (target.betaSightCount*50) + "%（味方合計"+newTotal+"/3）！");
+  renderBattle();
+  lastAllySkill = _copySightShareSkill;
+  endTurn();
+}
+
+function execSightShareEnemyCopy(){
+  let modal = document.getElementById("sightShareModal");
+  if(modal) modal.style.display = "none";
+  if((enemy.betaSightDebuff||0) >= 3){ showSynergyText("👁 敵の視覚共有は既に最大(3個)です！"); return; }
+  enemy.betaSightDebuff = Math.min(3, (enemy.betaSightDebuff||0) + 1);
+  let reduction = enemy.betaSightDebuff * 0.20;
+  if(!enemy.debuffs) enemy.debuffs = [];
+  enemy.debuffs = enemy.debuffs.filter(d => !d.isBetaSight);
+  enemy.debuffs.push({ power: 1 - reduction, turn: 999999, permanent: true, isBetaSight: true });
+  enemy.debuffPower = enemy.debuffs.reduce((acc,d)=>acc*d.power,1);
+  enemy.debuffTurn = Math.max(...enemy.debuffs.map(d=>d.turn));
+  showSynergyText("👁 サイトシェアコピー！敵に視覚共有×"+enemy.betaSightDebuff+"付与！敵ATK-"+(enemy.betaSightDebuff*20)+"%！");
+  renderBattle();
+  lastAllySkill = _copySightShareSkill;
+  endTurn();
 }</script>
 
 <div id="jokakuTargetModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.80);z-index:25000;justify-content:center;align-items:center;">
@@ -11609,7 +12519,7 @@ function execSightShareEnemy(){
     <div style="font-size:18px;font-weight:bold;color:#aaff44;margin-bottom:6px;">🔓 解錠</div>
     <div style="font-size:12px;color:#88cc44;margin-bottom:14px;">解錠カウントを付与する味方を選択</div>
     <div id="jokakuTargetList"></div>
-    <button onclick="document.getElementById('jokakuTargetModal').style.display='none';" style="margin-top:10px;background:#111;color:#666;border:1px solid #333;border-radius:8px;padding:7px 28px;cursor:pointer;font-size:13px;">キャンセル</button>
+    <button onclick="document.getElementById('jokakuTargetModal').style.display='none'; _copyJokakuCaster=null; _copiedJokakuSkill=null;" style="margin-top:10px;background:#111;color:#666;border:1px solid #333;border-radius:8px;padding:7px 28px;cursor:pointer;font-size:13px;">キャンセル</button>
   </div>
 </div>
 
@@ -11617,7 +12527,7 @@ function execSightShareEnemy(){
   <div style="background:#081a0f;border:2px solid #00cc66;border-radius:16px;padding:22px 24px;max-width:320px;width:90%;box-shadow:0 0 30px #00aa4488;text-align:center;max-height:80vh;overflow-y:auto;">
     <div style="font-size:18px;font-weight:bold;color:#44ffaa;margin-bottom:6px;">👁 サイトシェア</div>
     <div id="sightShareBody"></div>
-    <button onclick="document.getElementById('sightShareModal').style.display='none';" style="margin-top:12px;background:#111;color:#666;border:1px solid #333;border-radius:8px;padding:7px 28px;cursor:pointer;font-size:13px;">キャンセル</button>
+    <button onclick="document.getElementById('sightShareModal').style.display='none'; _isSightShareCopyMode=false; _copySightShareCaster=null; _copySightShareSkill=null;" style="margin-top:12px;background:#111;color:#666;border:1px solid #333;border-radius:8px;padding:7px 28px;cursor:pointer;font-size:13px;">キャンセル</button>
   </div>
 </div>
 
@@ -13670,7 +14580,7 @@ const CHAR_KAKUTEI_LINES = {
   "霊剛👻":        "「俺がこの館の主だ」",
   "阿波牛星夜👻":  "「これが霊か...」",
   "湯照司吉基👻":  "「闇夜に響く雷鳴」",
-  "黒峰天音🔒":    "「解放された……！」",
+  "黒峰天音🔒":    "「解放された……」",
   "沢華🔒":        "「封印が解けた」",
   "ヒナル🔒":      "「やっと……出られた」",
   "鈴鹿🎸":        "「ロック、鳴らすよ！」",
@@ -13897,6 +14807,167 @@ function showStar4DarkReveal(c, onRevealDone) {
     ov.style.opacity = '0';
     setTimeout(()=>{ ov.remove(); if(onRevealDone) onRevealDone(); }, 300);
   }, totalDur);
+}
+
+// ===== ランダム編成 =====
+function openRandomTeamModal(){
+  if(box.length === 0){
+    showToast("キャラを所持していません");
+    return;
+  }
+  // 現在のweaponチェック状態を保持
+  let modal = document.getElementById("randomTeamModal");
+  if(!modal){
+    // 初回のみ作成
+    modal = document.createElement("div");
+    modal.id = "randomTeamModal";
+    modal.style.cssText = "display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.88);z-index:55000;justify-content:center;align-items:center;";
+    modal.innerHTML = `
+      <div style="background:linear-gradient(160deg,#0a0d1a,#0d1028);border:2px solid #44ffaa;border-radius:18px;padding:18px 16px;max-width:360px;width:92%;text-align:center;box-shadow:0 0 40px #44ffaa33;">
+        <div style="font-size:17px;font-weight:bold;color:#44ffaa;letter-spacing:2px;margin-bottom:14px;">🎲 ランダム編成</div>
+        
+        <div style="background:#0f1525;border:1px solid #1e2840;border-radius:12px;padding:12px 14px;margin-bottom:14px;text-align:left;">
+          <div style="font-size:11px;color:#556;letter-spacing:1px;margin-bottom:10px;font-weight:bold;">オプション</div>
+          
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;margin-bottom:8px;">
+            <div style="position:relative;width:44px;height:24px;flex-shrink:0;">
+              <input type="checkbox" id="randomWeaponToggle" checked style="opacity:0;width:0;height:0;position:absolute;">
+              <div id="randomWeaponToggleTrack" onclick="toggleRandomWeapon()" style="position:absolute;inset:0;background:#44ffaa;border-radius:12px;cursor:pointer;transition:background 0.2s;">
+                <div id="randomWeaponToggleThumb" style="position:absolute;top:2px;left:22px;width:20px;height:20px;background:#fff;border-radius:50%;transition:left 0.2s;box-shadow:0 1px 3px rgba(0,0,0,0.4);"></div>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:13px;color:#aaddff;font-weight:bold;">武器をランダムに装備</div>
+              <div style="font-size:10px;color:#556;margin-top:2px;">所持武器の中からランダムに割り当てます</div>
+            </div>
+          </label>
+        </div>
+
+        <div id="randomTeamPreview" style="margin-bottom:14px;"></div>
+
+        <div style="display:flex;gap:8px;">
+          <button onclick="rollRandomTeam()" style="flex:1;background:linear-gradient(135deg,#0a2a1a,#1a4a2a);color:#44ffaa;border:1px solid #44ffaa;border-radius:10px;padding:10px;font-size:14px;font-weight:bold;cursor:pointer;letter-spacing:1px;">🎲 ふりなおす</button>
+          <button onclick="applyRandomTeam()" style="flex:1;background:linear-gradient(135deg,#1a3a1a,#2a5a2a);color:#88ff88;border:1px solid #44cc44;border-radius:10px;padding:10px;font-size:14px;font-weight:bold;cursor:pointer;letter-spacing:1px;">✅ この編成にする</button>
+        </div>
+        <button onclick="closeRandomTeamModal()" style="margin-top:10px;width:100%;background:#111;color:#666;border:1px solid #333;border-radius:8px;padding:8px;font-size:13px;cursor:pointer;">閉じる</button>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  }
+  modal.style.display = "flex";
+  rollRandomTeam();
+}
+
+let _randomTeamResult = [];
+let _randomWeaponOn = true;
+
+function toggleRandomWeapon(){
+  _randomWeaponOn = !_randomWeaponOn;
+  let track = document.getElementById("randomWeaponToggleTrack");
+  let thumb = document.getElementById("randomWeaponToggleThumb");
+  if(_randomWeaponOn){
+    track.style.background = "#44ffaa";
+    thumb.style.left = "22px";
+  } else {
+    track.style.background = "#333";
+    thumb.style.left = "2px";
+  }
+  rollRandomTeam();
+}
+
+function rollRandomTeam(){
+  // boxからランダムに最大3体選ぶ（重複なし、同じbaseName不可）
+  let available = [...box];
+  // シャッフル
+  for(let i = available.length-1; i > 0; i--){
+    let j = Math.floor(Math.random()*(i+1));
+    [available[i], available[j]] = [available[j], available[i]];
+  }
+  // baseName重複排除しながら3体選ぶ
+  let picked = [];
+  let pickedBaseNames = new Set();
+  for(let c of available){
+    if(picked.length >= 3) break;
+    let bn = getBaseName(c.name);
+    if(!pickedBaseNames.has(bn)){
+      picked.push(c);
+      pickedBaseNames.add(bn);
+    }
+  }
+
+  // 武器をランダムに割り当てる
+  if(_randomWeaponOn && weaponBox.length > 0){
+    let shuffledWeapons = [...weaponBox];
+    for(let i = shuffledWeapons.length-1; i > 0; i--){
+      let j = Math.floor(Math.random()*(i+1));
+      [shuffledWeapons[i], shuffledWeapons[j]] = [shuffledWeapons[j], shuffledWeapons[i]];
+    }
+    // 重複武器なしで割り当て
+    let usedWeaponNames = new Set();
+    picked = picked.map((c, idx) => {
+      let w = shuffledWeapons.find(sw => !usedWeaponNames.has(sw.name));
+      if(w) usedWeaponNames.add(w.name);
+      return { ...c, _randomWeapon: w || null };
+    });
+  } else {
+    picked = picked.map(c => ({ ...c, _randomWeapon: null }));
+  }
+
+  _randomTeamResult = picked;
+  renderRandomTeamPreview(picked);
+}
+
+function renderRandomTeamPreview(picked){
+  let preview = document.getElementById("randomTeamPreview");
+  if(!preview) return;
+  if(picked.length === 0){
+    preview.innerHTML = '<div style="color:#666;font-size:13px;padding:10px;">キャラがいません</div>';
+    return;
+  }
+  preview.innerHTML = picked.map((c, i) => {
+    let attrColor = {fire:"#ff4444",water:"#4488ff",thunder:"#ffd700",wood:"#44cc44",light:"#ffffff",dark:"#aa00ff"}[c.attr] || "#aaa";
+    let weapon = c._randomWeapon;
+    return `
+      <div style="display:flex;align-items:center;gap:10px;background:#0f1525;border:1px solid ${attrColor}44;border-radius:10px;padding:8px 10px;margin-bottom:6px;">
+        <img src="${c.img || ''}" onerror="this.style.display='none'" style="width:48px;height:48px;object-fit:cover;border-radius:8px;border:2px solid ${attrColor};flex-shrink:0;">
+        <div style="text-align:left;flex:1;min-width:0;">
+          <div style="font-size:13px;font-weight:bold;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.name}</div>
+          <div style="font-size:10px;color:#888;margin-top:1px;">ATK ${c.atk} / HP ${c.hp}</div>
+          ${weapon ? `<div style="font-size:10px;color:#aaddff;margin-top:2px;">⚔ ${weapon.name}</div>` : (_randomWeaponOn && weaponBox.length > 0 ? '<div style="font-size:10px;color:#555;margin-top:2px;">武器なし</div>' : '')}
+        </div>
+        <div style="font-size:18px;color:${attrColor};">${{fire:"🔥",water:"💧",thunder:"⚡",wood:"🌿",light:"✨",dark:"🌑"}[c.attr]||"⬜"}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function applyRandomTeam(){
+  if(_randomTeamResult.length === 0){
+    showToast("キャラがありません");
+    return;
+  }
+  // チームをリセットして適用
+  team = [];
+  _randomTeamResult.forEach(c => {
+    // boxから該当キャラのインデックスを探す
+    let bi = box.findIndex(b => b.name === c.name);
+    if(bi >= 0){
+      // 武器を設定
+      if(_randomWeaponOn && c._randomWeapon){
+        box[bi].weapon = { ...c._randomWeapon, weaponCool: 0 };
+      }
+      team.push(box[bi]);
+    }
+  });
+  update();
+  saveData();
+  closeRandomTeamModal();
+  showToast("🎲 ランダム編成を適用しました！");
+}
+
+function closeRandomTeamModal(){
+  let modal = document.getElementById("randomTeamModal");
+  if(modal) modal.style.display = "none";
 }
 </script>
 
