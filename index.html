@@ -3301,6 +3301,8 @@ update();
 function startBattle(i){
 battleEnded = false;
 isAttackProcessing = false;
+currentEventType = undefined;
+currentTrial = undefined;
 go("battle");
 onBattleStart();
 let lv = progress[i] || 1;
