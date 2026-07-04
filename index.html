@@ -6,7 +6,24 @@
 <title>真剣のスルーメ</title>
 <meta name="theme-color" content="#0b0f1a">
 
-<style>#loading{position:fixed;top:0;left:0;width:100%;height:100%;background:#0b0f1a;display:flex;justify-content:center;align-items:center;z-index:9999}.loadingBox{text-align:center}.loadingLogo{width:220px;margin-bottom:20px;animation:logoFade 2s infinite}@keyframes logoFade{0%{opacity:0.5}50%{opacity:1}100%{opacity:0.5}}.loadingBar{width:200px;height:10px;background:#333;border-radius:10px;overflow:hidden;margin:0 auto 10px}#loadingFill{height:100%;width:0%;background:linear-gradient(90deg,#ffd700,#ff4444);transition:0.2s}.loadingText{font-size:14px;letter-spacing:2px}body{margin:0;background:#0b0f1a;color:#fff;font-family:sans-serif}.screen{display:none!important;padding:10px;text-align:center;min-height:0!important}.screen.active{display:block!important;min-height:auto}.fire{border:3px solid #ff4444}.water{border:3px solid #4488ff}.thunder{border:3px solid #ffd700}.wood{border:3px solid #44cc44}.light{border:3px solid #ffffff}.dark{border:3px solid #aa00ff}.card{display:inline-block;background:#1a1f2e;padding:6px;margin:5px;border-radius:10px;width:95px}.card img{width:100%;border-radius:8px}.ssr{box-shadow:0 0 20px gold}.rarity{font-size:12px;color:gold;font-weight:bold;margin-bottom:2px}.flash{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle,rgba(255,255,255,0.9),transparent);animation:flash 0.6s forwards;pointer-events:none;z-index:9990}@keyframes flash{0%{opacity:1}100%{opacity:0}}@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}@keyframes toastOut{from{opacity:1;transform:translateX(-50%) translateY(0)}to{opacity:0;transform:translateX(-50%) translateY(10px)}}#gachaOverlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:20000;overflow:hidden;flex-direction:column;align-items:center;justify-content:center}#gachaOverlay.active{display:flex}#gachaCanvas{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}.gacha-bg-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;border-radius:50%;pointer-events:none;opacity:0;transition:opacity 0.4s}.gacha-bg-glow.ssr-glow{background:radial-gradient(circle,rgba(255,215,0,0.3) 0%,rgba(255,140,0,0.15) 40%,transparent 70%)}.gacha-bg-glow.ultra-glow{background:radial-gradient(circle,rgba(0,255,255,0.4) 0%,rgba(255,0,255,0.2) 40%,transparent 70%);animation:ultraBgPulse 0.8s infinite alternate}@keyframes ultraBgPulse{from{transform:translate(-50%,-50%) scale(1)}to{transform:translate(-50%,-50%) scale(1.15)}}#gachaOpeningText{position:absolute;font-size:48px;font-weight:900;color:#fff;letter-spacing:8px;text-align:center;pointer-events:none;z-index:10;text-shadow:0 0 30px rgba(255,215,0,0.8),0 0 60px rgba(255,215,0,0.4);opacity:0}#gachaOpeningText.show{animation:openingTextAnim 1.2s forwards}@keyframes openingTextAnim{0%{opacity:0;transform:scale(0.3) rotate(-10deg)}30%{opacity:1;transform:scale(1.2) rotate(2deg)}60%{opacity:1;transform:scale(1.0) rotate(0deg)}100%{opacity:0;transform:scale(0.8) rotate(0deg)}}#gachaCardArea{position:relative;z-index:5;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;max-width:500px;padding:10px}.gacha-card-wrap{opacity:0;transform:translateY(40px) scale(0.8);transition:opacity 0.4s,transform 0.4s}.gacha-card-wrap.reveal{opacity:1;transform:translateY(0) scale(1)}.gacha-card-big{position:relative;width:100px;height:140px;transform-style:preserve-3d;transition:transform 0.7s cubic-bezier(0.4,0,0.2,1);cursor:pointer}.gacha-card-big.flipped{transform:rotateY(180deg)}.gacha-card-front,.gacha-card-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:12px;overflow:hidden}.gacha-card-front{background:linear-gradient(135deg,#1a1f3a,#2a2f55);border:2px solid #4a5070;display:flex;align-items:center;justify-content:center;font-size:40px}.gacha-card-front::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);animation:cardShine 2s infinite}@keyframes cardShine{0%{left:-100%}100%{left:200%}}.gacha-card-back{transform:rotateY(180deg);background:#1a1f2e;border:2px solid #444;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;font-size:11px}.gacha-card-back img{width:90%;height:90px;object-fit:cover;border-radius:8px}.gacha-card-back .rarity{font-size:12px;color:gold;font-weight:bold;margin-bottom:2px}.gacha-card-back.rarity-1{border-color:#888}.gacha-card-back.rarity-2{border-color:#4488ff;box-shadow:0 0 12px #4488ff66}.gacha-card-back.rarity-3{border-color:gold;box-shadow:0 0 20px gold}.gacha-card-back.rarity-4{border-color:cyan;box-shadow:0 0 30px cyan,0 0 60px magenta;animation:ultraCardGlow 1s infinite alternate}@keyframes ultraCardGlow{from{box-shadow:0 0 20px cyan,0 0 40px magenta}to{box-shadow:0 0 40px cyan,0 0 80px magenta,0 0 100px #ff00ff55}}.card.star5-fire{border:3px solid #ff4444;box-shadow:0 0 18px #ff444488,0 0 30px #ff444444;animation:star5GlowFire 1.2s infinite alternate}@keyframes star5GlowFire{from{box-shadow:0 0 10px #ff444488}to{box-shadow:0 0 28px #ff4444,0 0 50px #ff444466}}.card.star5-water{border:3px solid #4488ff;box-shadow:0 0 18px #4488ff88,0 0 30px #4488ff44;animation:star5GlowWater 1.2s infinite alternate}@keyframes star5GlowWater{from{box-shadow:0 0 10px #4488ff88}to{box-shadow:0 0 28px #4488ff,0 0 50px #4488ff66}}.card.star5-thunder{border:3px solid #ffd700;box-shadow:0 0 18px #ffd70088,0 0 30px #ffd70044;animation:star5GlowThunder 1.2s infinite alternate}@keyframes star5GlowThunder{from{box-shadow:0 0 10px #ffd70088}to{box-shadow:0 0 28px #ffd700,0 0 50px #ffd70066}}.card.star5-wood{border:3px solid #44cc44;box-shadow:0 0 18px #44cc4488,0 0 30px #44cc4444;animation:star5GlowWood 1.2s infinite alternate}@keyframes star5GlowWood{from{box-shadow:0 0 10px #44cc4488}to{box-shadow:0 0 28px #44cc44,0 0 50px #44cc4466}}.card.star5-light{border:3px solid #ffffff;box-shadow:0 0 18px #ffffff88,0 0 30px #ffffff44;animation:star5GlowLight 1.2s infinite alternate}@keyframes star5GlowLight{from{box-shadow:0 0 10px #ffffff88}to{box-shadow:0 0 28px #ffffff,0 0 50px #ffffcc66}}.card.star5-dark{border:3px solid #aa00ff;box-shadow:0 0 18px #aa00ff88,0 0 30px #aa00ff44;animation:star5GlowDark 1.2s infinite alternate}@keyframes star5GlowDark{from{box-shadow:0 0 10px #aa00ff88}to{box-shadow:0 0 28px #aa00ff,0 0 50px #aa00ff66}}.ssr-beam{position:absolute;top:50%;left:50%;width:4px;height:300px;transform-origin:bottom center;background:linear-gradient(to top,rgba(255,215,0,0.8),transparent);pointer-events:none;animation:beamFade 1.5s forwards}@keyframes beamFade{0%{opacity:1}100%{opacity:0}}.ultra-beam{position:absolute;top:50%;left:50%;width:4px;height:400px;transform-origin:bottom center;pointer-events:none;animation:ultraBeamFade 1.8s forwards}@keyframes ultraBeamFade{0%{opacity:1}100%{opacity:0}}.gacha-flash-r2{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle,rgba(68,136,255,0.7),transparent);animation:gachaFlashFade 0.8s forwards;pointer-events:none;z-index:19999}.gacha-flash-r3{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle,rgba(255,215,0,0.85),rgba(255,140,0,0.5),transparent);animation:gachaFlashFade 1.0s forwards;pointer-events:none;z-index:19999}.gacha-flash-r4{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(45deg,rgba(255,0,255,0.7),rgba(0,255,255,0.7),rgba(255,215,0,0.7));animation:gachaFlashFadeR4 1.5s forwards;pointer-events:none;z-index:19999}@keyframes gachaFlashFade{0%{opacity:1}100%{opacity:0}}@keyframes gachaFlashFadeR4{0%{opacity:1;transform:scale(1)}50%{opacity:0.8;transform:scale(1.05)}100%{opacity:0;transform:scale(1.1)}}.gacha-rarity-announce{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:56px;font-weight:900;letter-spacing:6px;pointer-events:none;z-index:20010;text-align:center;white-space:nowrap}.announce-ssr{color:#ffd700;text-shadow:0 0 40px #ffd700,0 0 80px #ff8800,0 0 120px #ff4400;animation:announceSSR 1.8s forwards}.announce-ultra{background:linear-gradient(90deg,#ff0080,#ff8c00,#ffd700,#00ff88,#00ffff,#8000ff);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px rgba(255,255,255,0.8));animation:announceUltra 2.0s forwards,rainbowShift 0.5s infinite linear}@keyframes announceSSR{0%{opacity:0;transform:translate(-50%,-50%) scale(0.3)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.3)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}80%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes announceUltra{0%{opacity:0;transform:translate(-50%,-50%) scale(0.2) rotate(-10deg)}15%{opacity:1;transform:translate(-50%,-50%) scale(1.4) rotate(3deg)}40%{opacity:1;transform:translate(-50%,-50%) scale(1.0) rotate(0deg)}80%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes rainbowShift{from{background-position:0% center}to{background-position:200% center}}#gachaSkipBtn{position:fixed;bottom:30px;right:20px;background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:8px 20px;font-size:13px;cursor:pointer;z-index:20020;backdrop-filter:blur(4px);transition:background 0.2s}#gachaSkipBtn:hover{background:rgba(255,255,255,0.25)}.tap-ripple{position:fixed;border-radius:50%;width:60px;height:60px;background:rgba(255,255,255,0.3);pointer-events:none;z-index:20030;transform:translate(-50%,-50%) scale(0);animation:tapRipple 0.5s forwards}@keyframes tapRipple{to{transform:translate(-50%,-50%) scale(3);opacity:0}}#gachaResultSummary{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:20000;display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:20px;overflow-y:auto}#gachaResultSummary.active{display:flex}.summary-title{font-size:20px;font-weight:bold;color:#ffd700;letter-spacing:4px;margin-bottom:16px;text-shadow:0 0 20px #ffd700aa}.summary-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:500px;padding:0 10px}.summary-card{background:#1a1f2e;border-radius:10px;padding:6px;width:85px;text-align:center;font-size:10px;border:2px solid #333;transition:transform 0.2s;opacity:0;transform:scale(0.5)}.summary-card.show{opacity:1;transform:scale(1);transition:opacity 0.3s,transform 0.3s}.summary-card img{width:100%;height:72px;object-fit:cover;border-radius:7px}.summary-card.r2{border-color:#4488ff;box-shadow:0 0 8px #4488ff44}.summary-card.r3{border-color:gold;box-shadow:0 0 12px gold}.summary-card.r4{border-color:cyan;box-shadow:0 0 20px cyan,0 0 40px magenta;animation:ultraCardGlow 1s infinite alternate}.summary-close-btn{margin-top:16px;margin-bottom:30px;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-weight:bold;font-size:15px;border:none;border-radius:12px;padding:12px 40px;cursor:pointer;letter-spacing:2px}#kakuteiOverlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:21000;pointer-events:none;overflow:hidden}#kakuteiOverlay.active{display:block;pointer-events:all}.kakutei-text{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:64px;font-weight:900;letter-spacing:8px;text-align:center;white-space:nowrap;pointer-events:none;z-index:21010}.kakutei-kakutei{color:#fff;text-shadow:0 0 30px #ffd700,0 0 60px #ff8800,0 0 100px #ff4400;animation:kakuteiAnim 2.2s forwards}.kakutei-shougou{background:linear-gradient(90deg,#ff0080,#ffd700,#00ffff,#8000ff);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px rgba(255,255,255,0.9));animation:shougouAnim 2.5s forwards,rainbowShift 0.4s infinite linear}.kakutei-attr{font-size:52px;animation:attrConfirmAnim 2.0s forwards}.kakutei-dupe{font-size:48px;color:#88ffcc;text-shadow:0 0 20px #44ffaa,0 0 40px #00ff88;animation:dupeAnim 2.0s forwards}@keyframes kakuteiAnim{0%{opacity:0;transform:translate(-50%,-50%) scale(0.2) rotate(-15deg)}15%{opacity:1;transform:translate(-50%,-50%) scale(1.4) rotate(3deg)}35%{opacity:1;transform:translate(-50%,-50%) scale(1.0) rotate(0deg)}80%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes shougouAnim{0%{opacity:0;transform:translate(-50%,-50%) scale(0.1) rotate(20deg)}12%{opacity:1;transform:translate(-50%,-50%) scale(1.5) rotate(-3deg)}30%{opacity:1;transform:translate(-50%,-50%) scale(1.0) rotate(0deg)}80%{opacity:1;transform:translate(-50%,-50%) scale(1.05)}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes attrConfirmAnim{0%{opacity:0;transform:translate(-50%,-50%) scale(0.3)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.2)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes dupeAnim{0%{opacity:0;transform:translate(-50%,-50%) translateY(40px) scale(0.5)}20%{opacity:1;transform:translate(-50%,-50%) translateY(0) scale(1.1)}70%{opacity:1;transform:translate(-50%,-50%) translateY(0) scale(1.0)}100%{opacity:0;transform:translate(-50%,-50%) translateY(-20px) scale(0.9)}}.shougou-lines{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:20900;overflow:hidden}.shougou-line{position:absolute;height:6px;width:120%;opacity:0;animation:shougouLine 1.5s forwards}@keyframes shougouLine{0%{opacity:0;transform:translateX(-110%)}40%{opacity:1}100%{opacity:0;transform:translateX(10%)}}.gacha-bg-glow.attr-glow-fire{background:radial-gradient(circle,rgba(255,80,0,0.4) 0%,rgba(255,140,0,0.2) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-water{background:radial-gradient(circle,rgba(0,140,255,0.4) 0%,rgba(0,200,255,0.2) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-thunder{background:radial-gradient(circle,rgba(255,215,0,0.4) 0%,rgba(255,170,0,0.2) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-wood{background:radial-gradient(circle,rgba(68,200,68,0.4) 0%,rgba(100,255,100,0.2) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-light{background:radial-gradient(circle,rgba(255,255,220,0.5) 0%,rgba(255,220,150,0.25) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-dark{background:radial-gradient(circle,rgba(170,0,255,0.45) 0%,rgba(220,100,255,0.2) 40%,transparent 70%)}.summary-card.attr-fire{border-color:#ff4444;box-shadow:0 0 10px #ff444466}.summary-card.attr-water{border-color:#4488ff;box-shadow:0 0 10px #4488ff66}.summary-card.attr-thunder{border-color:#ffd700;box-shadow:0 0 10px #ffd70066}.summary-card.attr-wood{border-color:#44cc44;box-shadow:0 0 10px #44cc4466}.summary-card.attr-light{border-color:#ffffff;box-shadow:0 0 10px #ffffff55}.summary-card.attr-dark{border-color:#aa00ff;box-shadow:0 0 10px #aa00ff66}.kakutei-border-flash{position:fixed;top:0;left:0;width:100%;height:100%;border:6px solid gold;box-sizing:border-box;pointer-events:none;z-index:20990;animation:borderFlash 0.6s 3 alternate}@keyframes borderFlash{from{opacity:1;border-color:gold}to{opacity:0;border-color:transparent}}.attr-beam-overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:20800;animation:attrBeamFade 1.4s forwards}@keyframes attrBeamFade{0%{opacity:1}60%{opacity:0.6}100%{opacity:0}}.rarity-upgrade-badge{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#1a1000,#2a2000);border:2px solid #ffd700;border-radius:12px;padding:8px 20px;font-size:14px;font-weight:bold;color:#ffd700;letter-spacing:2px;z-index:21005;pointer-events:none;animation:badgePop 0.4s forwards}@keyframes badgePop{0%{opacity:0;transform:translateX(-50%) scale(0.7)}100%{opacity:1;transform:translateX(-50%) scale(1.0)}}.flip{position:relative;width:90px;height:120px;transform-style:preserve-3d;transition:0.6s}.open .flip{transform:rotateY(180deg)}.front,.back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px}.front{background:linear-gradient(135deg,#2a2f55,#1a1f3a);border:2px solid #3a4060}.back{transform:rotateY(180deg);background:#1a1f2e}#battleMain{display:flex;justify-content:space-between;align-items:center;gap:10px;max-width:520px;margin:auto}.teamArea{display:flex;flex-direction:column;gap:8px;width:40%;align-items:center}#enemyArea{width:55%;display:flex;justify-content:center}.unit{background:#1a1f2e;padding:6px;border-radius:12px;font-size:10px;position:relative}.ally{width:140px}.unit img{width:100%;max-height:90px;object-fit:cover;border-radius:8px}.enemy{width:160px}.turn{outline:2px solid yellow;box-shadow:0 0 6px yellow}.bar{background:#333;height:8px;border-radius:5px;margin-top:3px}.hp{background:#4caf50;height:8px}.gauge{background:#ff9800;height:6px}.damage{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(1);font-size:clamp(14px,4.5vw,26px);font-weight:bold;color:#fff;text-shadow:0 0 10px #000,0 0 5px #000;animation:damagePop 0.9s cubic-bezier(0.22,0.61,0.36,1) forwards;pointer-events:none;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}.damageFast{animation:damagePopFast 0.5s ease-out forwards!important}@keyframes damagePopFast{0%{opacity:0;transform:translate(-50%,-50%) scale(0.5)}25%{opacity:1;transform:translate(-50%,-58%) scale(1.15)}100%{opacity:0;transform:translate(-50%,-72%) scale(0.9)}}@keyframes damagePop{0%{opacity:0;transform:translate(-50%,-45%) scale(0.6)}15%{opacity:1;transform:translate(-50%,-60%) scale(1.15)}30%{transform:translate(-50%,-65%) scale(1.0)}100%{opacity:0;transform:translate(-50%,-100%) scale(0.85)}}.weak{color:#ff4444}.resist{color:#44aaff}.rainbowFlash{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(45deg,red,orange,yellow,green,cyan,blue,purple);opacity:0.8;animation:rainbow 0.8s forwards;z-index:999}@keyframes rainbow{0%{opacity:1}100%{opacity:0}}.shake{animation:shake 0.4s}@keyframes shake{0%{transform:translate(0,0)}25%{transform:translate(-5px,5px)}50%{transform:translate(5px,-5px)}75%{transform:translate(-5px,5px)}100%{transform:translate(0,0)}}.ultra{box-shadow:0 0 25px cyan,0 0 40px magenta;animation:glow 1s infinite alternate}@keyframes glow{from{filter:brightness(1)}to{filter:brightness(1.6)}}.eventFlash{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#ff00cc,#3333ff,#00ffff);opacity:0.8;animation:eventFlash 0.8s forwards;z-index:999}@keyframes eventFlash{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.2)}}.banner{animation:bannerGlow 1.5s infinite alternate}@keyframes bannerGlow{from{filter:brightness(1)}to{filter:brightness(1.3)}}#gameTitle{width:200px;height:auto}.status{font-size:12px;margin:4px 0;min-height:14px}.loadingText{font-size:24px;color:#fff;animation:blink 1s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}.hitText{position:absolute;top:20%;left:50%;transform:translateX(-50%);font-size:clamp(11px,3vw,18px);font-weight:bold;color:#ffcc00;text-shadow:0 0 8px #000;animation:hitPop 0.8s forwards;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}.totalDamage{position:absolute;top:30%;left:50%;transform:translateX(-50%);font-size:clamp(14px,4vw,24px);font-weight:bold;color:#ff4444;text-shadow:0 0 10px #000;animation:totalPop 1s forwards;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}@keyframes hitPop{0%{opacity:0;transform:translate(-50%,0) scale(0.5)}30%{opacity:1;transform:translate(-50%,-10px) scale(1.2)}100%{opacity:0;transform:translate(-50%,-30px) scale(1)}}@keyframes totalPop{0%{opacity:0;transform:translate(-50%,0) scale(0.5)}30%{opacity:1;transform:translate(-50%,-10px) scale(1.3)}100%{opacity:0;transform:translate(-50%,-40px) scale(1)}}.dexRow{display:flex;align-items:center;background:#1a1f2e;margin:6px;padding:8px;border-radius:10px;gap:10px}.dexRow img{width:80px;height:80px;object-fit:cover;border-radius:8px}.dexText{text-align:left;font-size:14px}.statusRow{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px;min-height:18px}.sBadge{font-size:10px;padding:1px 4px;border-radius:4px;font-weight:bold}.sBurn{background:#ff4400;color:#fff}.sFreeze{background:#44bbff;color:#fff}.sShock{background:#ffdd00;color:#000}.sPoison{background:#aa44ff;color:#fff}.sShield{background:#44aaff;color:#fff}.sCounter{background:#ff8800;color:#fff}.sBuff{background:#44ff88;color:#000}.sDebuff{background:#8866ff;color:#fff}.sPassive{background:#1a3a1a;color:#88ff88;border:1px solid #44cc44}.roleBadge{display:inline-block;font-size:9px;padding:1px 5px;border-radius:4px;font-weight:bold;margin-bottom:2px}.role-attacker{background:#ff4444;color:#fff}.role-tank{background:#4488ff;color:#fff}.role-support{background:#44cc44;color:#fff}.role-debuffer{background:#aa44ff;color:#fff}.ctWrap{display:flex;align-items:center;gap:3px;margin-top:2px}.ctLabel{font-size:9px;color:#aaa;width:18px}.ctBar{flex:1;height:5px;background:#333;border-radius:3px;overflow:hidden}.ctFill{height:100%;background:linear-gradient(90deg,#ff9800,#ffcc00);border-radius:3px;transition:width 0.2s}.ctFillReady{height:100%;background:#44ff88;border-radius:3px;width:100%}.synergyText{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:clamp(12px,3.8vw,22px);font-weight:bold;color:#fff;text-shadow:0 0 20px #ff0088,0 0 10px #ff0088;animation:synergyPop 1.2s forwards;pointer-events:none;z-index:9998;text-align:center;white-space:normal;word-break:break-word;max-width:90vw;box-sizing:border-box;padding:0 8px;line-height:1.3}@keyframes synergyPop{0%{opacity:0;transform:translate(-50%,-50%) scale(0.5)}20%{opacity:1;transform:translate(-50%,-60%) scale(1.3)}80%{opacity:1;transform:translate(-50%,-65%) scale(1.1)}100%{opacity:0;transform:translate(-50%,-80%) scale(0.9)}}.gimmickRow{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}.gBadge{font-size:9px;padding:2px 5px;border-radius:4px;font-weight:bold;background:#333;color:#ffd700;border:1px solid #ffd700}.dmgBurn{color:#ff6600!important}.dmgFreeze{color:#44ddff!important}.dmgShock{color:#ffee00!important}.dmgSynergy{color:#ff00cc!important;font-size:clamp(16px,5.5vw,30px)!important}#skillModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:10000;justify-content:center;align-items:center}#skillModal.open{display:flex}#skillModalBox{background:#1a1f2e;border:2px solid #ffd700;border-radius:14px;padding:20px 24px;max-width:320px;width:90%;text-align:center;position:relative}#skillModalBox img{width:80px;height:80px;object-fit:cover;border-radius:10px;margin-bottom:8px}#skillModalName{font-size:16px;font-weight:bold;margin-bottom:6px}#skillModalText{font-size:14px;color:#ffd700;margin-bottom:6px;line-height:1.5}#skillModalCT{font-size:12px;color:#aaa;margin-bottom:12px}#skillModalClose{background:#333;color:#fff;border:none;border-radius:8px;padding:6px 20px;cursor:pointer;font-size:14px}.skillBtn{margin-top:4px;background:#2a3a5a;color:#ffd700;border:1px solid #ffd700;border-radius:6px;padding:2px 8px;font-size:11px;cursor:pointer}#skillTreeModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:10001;justify-content:center;align-items:center}#skillTreeModal.open{display:flex}#skillTreeBox{background:#0d1120;border:2px solid #44cc88;border-radius:16px;padding:18px 14px;max-width:340px;width:92%;text-align:center;position:relative;max-height:88vh;overflow-y:auto}.stNode{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:88px;min-height:72px;border-radius:10px;padding:5px 4px;font-size:10px;border:2px solid #444;background:#111;color:#666;margin:3px;transition:0.2s;cursor:not-allowed}.stNode.unlocked{background:#1a3a20;border-color:#ffd700;color:#ffd700;box-shadow:0 0 8px #ffd70066;cursor:default}.stNode.available{border-color:#44cc88;background:#0d2010;color:#88ffaa;cursor:pointer;animation:stPulse 1.6s infinite alternate}.stNode.skipped{background:#0d0d0d;border-color:#333;color:#333;cursor:default;opacity:0.4}@keyframes stPulse{from{box-shadow:0 0 3px #44cc88}to{box-shadow:0 0 12px #44cc88,0 0 20px #44cc8844}}.stNodeLabel{font-weight:bold;font-size:11px;margin-bottom:2px}.stNodeBonus{font-size:9px;color:#aaffcc;line-height:1.3}.stNodeCost{font-size:9px;color:#ffd700;margin-top:3px}.stRow{display:flex;justify-content:center;gap:4px;margin:3px 0;flex-wrap:wrap}.stArrow{text-align:center;color:#44cc88;font-size:13px;line-height:1.2;margin:1px 0}.stNode.locked_sp{border-color:#aa6600;background:#1a1000;color:#aa7700;cursor:pointer}.stStageHeader{font-size:11px;font-weight:bold;color:#ffd700;background:linear-gradient(90deg,#1a1200,#2a2000,#1a1200);border:1px solid #443300;border-radius:6px;padding:3px 10px;margin:4px 0 2px;letter-spacing:1px}.stStageHeader.done{color:#44cc88;border-color:#224422;background:linear-gradient(90deg,#0a1a0a,#112011,#0a1a0a)}.stStageHeader.locked{color:#555;border-color:#333;background:#111}.spBadge{display:inline-block;background:linear-gradient(135deg,#1a3a1a,#0d2010);border:1px solid #44cc88;color:#88ffaa;border-radius:8px;padding:3px 10px;font-size:12px;font-weight:bold;margin:4px 0}#profileModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:15000;justify-content:center;align-items:flex-start;padding-top:10px}#profileModal.open{display:flex}#profileBox{background:linear-gradient(160deg,#0a0d1a,#0d1028);border:2px solid #ffd700;border-radius:18px;padding:16px 14px 16px;max-width:380px;width:96%;text-align:center;position:relative;max-height:94vh;overflow-y:auto;box-shadow:0 0 40px #ffd70033,0 0 80px #ffd70011}.profileHeader{font-size:17px;font-weight:bold;color:#ffd700;letter-spacing:2px;margin-bottom:12px}#profileBanner{background:linear-gradient(135deg,#1a1500,#2a2200,#1a1500);border:1px solid #ffd700;border-radius:12px;padding:10px 12px;margin-bottom:10px;display:flex;align-items:center;gap:10px}#profileBannerOshiIcon{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #ffd700;flex-shrink:0;background:#222}#profileBannerOshiIconEmpty{width:56px;height:56px;border-radius:50%;border:2px dashed #555;background:#111;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}#profileBannerRight{text-align:left;flex:1;min-width:0}#profileBannerName{font-size:16px;font-weight:bold;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#profileBannerTitleImg{margin-top:4px;max-width:100%;height:28px;object-fit:contain;display:block}.profileCard{background:#0f1525;border:1px solid #1e2840;border-radius:12px;padding:10px 12px;margin-bottom:8px;text-align:left}.profileLabel{font-size:9px;color:#556;letter-spacing:1.5px;margin-bottom:6px;text-transform:uppercase;font-weight:bold}.profileValue{font-size:14px;font-weight:bold;color:#fff}.profileValueGold{color:#ffd700}.profileValueGreen{color:#44ff88}.profileValueBlue{color:#44aaff}.profileInputRow{display:flex;align-items:center;gap:6px}.profileInput{flex:1;background:#1a1f2e;color:#fff;border:1px solid #333;border-radius:6px;padding:7px 10px;font-size:14px;outline:none}.profileInput:focus{border-color:#ffd700}.profileSaveBtn{background:linear-gradient(135deg,#ffd700,#ff9800);color:#000;border:none;border-radius:6px;padding:7px 14px;font-size:12px;font-weight:bold;cursor:pointer;white-space:nowrap}#titleSelectGrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;max-height:200px;overflow-y:auto}.titleSelectItem{background:#0d1a30;border:2px solid #1e3050;border-radius:8px;padding:6px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:0.15s}.titleSelectItem:hover{border-color:#ffd70088}.titleSelectItem.selected{border-color:#ffd700;background:#1a2a00;box-shadow:0 0 8px #ffd70066}.titleSelectItem.locked{opacity:0.35;cursor:default;border-color:#222}.titleBadge{width:100%;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold;overflow:hidden}.titleBadgeText{font-size:9px;color:#aaa;text-align:center;line-height:1.2}.titleLockLabel{font-size:9px;color:#555}#oshiGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-height:340px;overflow-y:auto;margin-top:8px;padding:2px 2px 4px}.oshiItem{cursor:pointer;border-radius:10px;border:2px solid #1e2840;background:#0d1120;display:flex;flex-direction:column;align-items:center;overflow:hidden;transition:border-color 0.15s,box-shadow 0.15s}.oshiItem:active{transform:scale(0.95)}.oshiItem.selected{border-color:#ffd700;box-shadow:0 0 12px #ffd700aa;background:#1a1800}.oshiImgWrap{width:100%;aspect-ratio:1;position:relative;overflow:hidden;background:#111}.oshiImgWrap img{width:100%;height:100%;object-fit:cover;display:block}.oshiRarityDot{position:absolute;top:3px;right:4px;font-size:7px;color:#ffd700;text-shadow:0 0 4px #000,0 0 2px #000;font-weight:bold;letter-spacing:-1px;line-height:1}.oshiSelectedBadge{position:absolute;top:3px;left:4px;font-size:10px;line-height:1}.oshiItemName{width:100%;color:#ccc;font-size:9px;padding:4px 4px 5px;text-align:center;line-height:1.3;word-break:break-all;background:#0d1120}.profileTop3Row{display:flex;gap:6px;flex-wrap:nowrap}.profileTop3Card{flex:1;min-width:0;background:#0d1a28;border:1px solid #1a3050;border-radius:8px;padding:6px;text-align:center;overflow:hidden}.profileTop3Card img{width:44px;height:44px;object-fit:cover;border-radius:6px;margin-bottom:2px;display:block;margin:0 auto 3px}.profileTop3Medal{font-size:18px;margin-bottom:2px}.profileDivider{border:none;border-top:1px solid #1a1f2e;margin:6px 0}#missionModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:16000;justify-content:center;align-items:flex-start;padding-top:10px}#missionModal.open{display:flex}#missionBox{background:linear-gradient(160deg,#0a0d1a,#0d1028);border:2px solid #44cc88;border-radius:18px;padding:16px 14px 16px;max-width:400px;width:96%;text-align:center;position:relative;max-height:94vh;overflow-y:auto;box-shadow:0 0 40px #44cc8833,0 0 80px #44cc8811}.missionHeader{font-size:17px;font-weight:bold;color:#44cc88;letter-spacing:2px;margin-bottom:12px}.missionTabs{display:flex;gap:4px;margin-bottom:12px;justify-content:center;flex-wrap:wrap}.missionTab{padding:5px 12px;border-radius:8px;font-size:12px;font-weight:bold;border:1px solid #333;background:#111;color:#666;cursor:pointer;transition:0.15s}.missionTab.active{background:#1a3a20;border-color:#44cc88;color:#88ffaa}.missionCard{background:#0f1525;border:1px solid #1e2840;border-radius:12px;padding:10px 12px;margin-bottom:7px;text-align:left;position:relative}.missionCard.completed{border-color:#44cc8855;opacity:0.6}.missionCard.claimable{border-color:#ffd700;box-shadow:0 0 8px #ffd70044;animation:missionPulse 1.5s infinite alternate}@keyframes missionPulse{from{box-shadow:0 0 5px #ffd70044}to{box-shadow:0 0 14px #ffd700aa}}.missionTitle{font-size:13px;font-weight:bold;color:#fff;margin-bottom:4px}.missionDesc{font-size:11px;color:#8899aa;margin-bottom:6px;line-height:1.4}.missionProgress{display:flex;align-items:center;gap:6px;margin-bottom:6px}.missionProgBar{flex:1;height:6px;background:#222;border-radius:3px;overflow:hidden}.missionProgFill{height:100%;background:linear-gradient(90deg,#44cc88,#88ffaa);border-radius:3px;transition:width 0.4s}.missionProgText{font-size:10px;color:#aaa;white-space:nowrap}.missionReward{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.missionRewardBadge{font-size:11px;padding:2px 8px;border-radius:6px;font-weight:bold}.missionRewardStone{background:#1a1800;color:#ffd700;border:1px solid #ffd700}.missionRewardSP{background:#0d2010;color:#88ffaa;border:1px solid #44cc88}.missionRewardTitle{background:#10001a;color:#bb88ff;border:1px solid #aa44ff}.missionClaimBtn{margin-left:auto;background:linear-gradient(135deg,#ffd700,#ff9800);color:#000;border:none;border-radius:6px;padding:4px 12px;font-size:12px;font-weight:bold;cursor:pointer}.missionDoneLabel{margin-left:auto;font-size:11px;color:#44cc88;font-weight:bold}.missionStatLine{font-size:11px;color:#556;margin:2px 0}#missionStatsBox{background:#0a0d1a;border:1px solid #1a2a1a;border-radius:10px;padding:8px 10px;margin-bottom:10px;text-align:left}</style>
+<style>#loading{position:fixed;top:0;left:0;width:100%;height:100%;background:#0b0f1a;display:flex;justify-content:center;align-items:center;z-index:9999}.loadingBox{text-align:center}.loadingLogo{width:220px;margin-bottom:20px;animation:logoFade 2s infinite}@keyframes logoFade{0%{opacity:0.5}50%{opacity:1}100%{opacity:0.5}}.loadingBar{width:200px;height:10px;background:#333;border-radius:10px;overflow:hidden;margin:0 auto 10px}#loadingFill{height:100%;width:0%;background:linear-gradient(90deg,#ffd700,#ff4444);transition:0.2s}.loadingText{font-size:14px;letter-spacing:2px}body{margin:0;background:#0b0f1a;color:#fff;font-family:sans-serif}.screen{display:none!important;padding:10px;text-align:center;min-height:0!important}.screen.active{display:block!important;min-height:auto}.fire{border:3px solid #ff4444}.water{border:3px solid #4488ff}.thunder{border:3px solid #ffd700}.wood{border:3px solid #44cc44}.light{border:3px solid #ffffff}.dark{border:3px solid #aa00ff}.card{display:inline-block;background:#1a1f2e;padding:6px;margin:5px;border-radius:10px;width:95px}.card img{width:100%;border-radius:8px}.ssr{box-shadow:0 0 20px gold}.rarity{font-size:12px;color:gold;font-weight:bold;margin-bottom:2px}.flash{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle,rgba(255,255,255,0.9),transparent);animation:flash 0.6s forwards;pointer-events:none;z-index:9990}@keyframes flash{0%{opacity:1}100%{opacity:0}}@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}@keyframes toastOut{from{opacity:1;transform:translateX(-50%) translateY(0)}to{opacity:0;transform:translateX(-50%) translateY(10px)}}#gachaOverlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:20000;overflow:hidden;flex-direction:column;align-items:center;justify-content:center}#gachaOverlay.active{display:flex}#gachaCanvas{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}.gacha-bg-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;border-radius:50%;pointer-events:none;opacity:0;transition:opacity 0.4s}.gacha-bg-glow.ssr-glow{background:radial-gradient(circle,rgba(255,215,0,0.3) 0%,rgba(255,140,0,0.15) 40%,transparent 70%)}.gacha-bg-glow.ultra-glow{background:radial-gradient(circle,rgba(0,255,255,0.4) 0%,rgba(255,0,255,0.2) 40%,transparent 70%);animation:ultraBgPulse 0.8s infinite alternate}@keyframes ultraBgPulse{from{transform:translate(-50%,-50%) scale(1)}to{transform:translate(-50%,-50%) scale(1.15)}}#gachaOpeningText{position:absolute;font-size:48px;font-weight:900;color:#fff;letter-spacing:8px;text-align:center;pointer-events:none;z-index:10;text-shadow:0 0 30px rgba(255,215,0,0.8),0 0 60px rgba(255,215,0,0.4);opacity:0}#gachaOpeningText.show{animation:openingTextAnim 1.2s forwards}@keyframes openingTextAnim{0%{opacity:0;transform:scale(0.3) rotate(-10deg)}30%{opacity:1;transform:scale(1.2) rotate(2deg)}60%{opacity:1;transform:scale(1.0) rotate(0deg)}100%{opacity:0;transform:scale(0.8) rotate(0deg)}}#gachaCardArea{position:relative;z-index:5;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;max-width:500px;padding:10px}.gacha-card-wrap{opacity:0;transform:translateY(40px) scale(0.8);transition:opacity 0.4s,transform 0.4s}.gacha-card-wrap.reveal{opacity:1;transform:translateY(0) scale(1)}.gacha-card-big{position:relative;width:100px;height:140px;transform-style:preserve-3d;transition:transform 0.7s cubic-bezier(0.4,0,0.2,1);cursor:pointer}.gacha-card-big.flipped{transform:rotateY(180deg)}.gacha-card-front,.gacha-card-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:12px;overflow:hidden}.gacha-card-front{background:linear-gradient(135deg,#1a1f3a,#2a2f55);border:2px solid #4a5070;display:flex;align-items:center;justify-content:center;font-size:40px}.gacha-card-front::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);animation:cardShine 2s infinite}@keyframes cardShine{0%{left:-100%}100%{left:200%}}.gacha-card-back{transform:rotateY(180deg);background:#1a1f2e;border:2px solid #444;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;font-size:11px}.gacha-card-back img{width:90%;height:90px;object-fit:cover;border-radius:8px}.gacha-card-back .rarity{font-size:12px;color:gold;font-weight:bold;margin-bottom:2px}.gacha-card-back.rarity-1{border-color:#888}.gacha-card-back.rarity-2{border-color:#4488ff;box-shadow:0 0 12px #4488ff66}.gacha-card-back.rarity-3{border-color:gold;box-shadow:0 0 20px gold}.gacha-card-back.rarity-4{border-color:cyan;box-shadow:0 0 30px cyan,0 0 60px magenta;animation:ultraCardGlow 1s infinite alternate}@keyframes ultraCardGlow{from{box-shadow:0 0 20px cyan,0 0 40px magenta}to{box-shadow:0 0 40px cyan,0 0 80px magenta,0 0 100px #ff00ff55}}.card.star5-fire{border:3px solid #ff4444;box-shadow:0 0 18px #ff444488,0 0 30px #ff444444;animation:star5GlowFire 1.2s infinite alternate}@keyframes star5GlowFire{from{box-shadow:0 0 10px #ff444488}to{box-shadow:0 0 28px #ff4444,0 0 50px #ff444466}}.card.star5-water{border:3px solid #4488ff;box-shadow:0 0 18px #4488ff88,0 0 30px #4488ff44;animation:star5GlowWater 1.2s infinite alternate}@keyframes star5GlowWater{from{box-shadow:0 0 10px #4488ff88}to{box-shadow:0 0 28px #4488ff,0 0 50px #4488ff66}}.card.star5-thunder{border:3px solid #ffd700;box-shadow:0 0 18px #ffd70088,0 0 30px #ffd70044;animation:star5GlowThunder 1.2s infinite alternate}@keyframes star5GlowThunder{from{box-shadow:0 0 10px #ffd70088}to{box-shadow:0 0 28px #ffd700,0 0 50px #ffd70066}}.card.star5-wood{border:3px solid #44cc44;box-shadow:0 0 18px #44cc4488,0 0 30px #44cc4444;animation:star5GlowWood 1.2s infinite alternate}@keyframes star5GlowWood{from{box-shadow:0 0 10px #44cc4488}to{box-shadow:0 0 28px #44cc44,0 0 50px #44cc4466}}.card.star5-light{border:3px solid #ffffff;box-shadow:0 0 18px #ffffff88,0 0 30px #ffffff44;animation:star5GlowLight 1.2s infinite alternate}@keyframes star5GlowLight{from{box-shadow:0 0 10px #ffffff88}to{box-shadow:0 0 28px #ffffff,0 0 50px #ffffcc66}}.card.star5-dark{border:3px solid #aa00ff;box-shadow:0 0 18px #aa00ff88,0 0 30px #aa00ff44;animation:star5GlowDark 1.2s infinite alternate}@keyframes star5GlowDark{from{box-shadow:0 0 10px #aa00ff88}to{box-shadow:0 0 28px #aa00ff,0 0 50px #aa00ff66}}.ssr-beam{position:absolute;top:50%;left:50%;width:4px;height:300px;transform-origin:bottom center;background:linear-gradient(to top,rgba(255,215,0,0.8),transparent);pointer-events:none;animation:beamFade 1.5s forwards}@keyframes beamFade{0%{opacity:1}100%{opacity:0}}.ultra-beam{position:absolute;top:50%;left:50%;width:4px;height:400px;transform-origin:bottom center;pointer-events:none;animation:ultraBeamFade 1.8s forwards}@keyframes ultraBeamFade{0%{opacity:1}100%{opacity:0}}.gacha-flash-r2{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle,rgba(68,136,255,0.7),transparent);animation:gachaFlashFade 0.8s forwards;pointer-events:none;z-index:19999}.gacha-flash-r3{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle,rgba(255,215,0,0.85),rgba(255,140,0,0.5),transparent);animation:gachaFlashFade 1.0s forwards;pointer-events:none;z-index:19999}.gacha-flash-r4{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(45deg,rgba(255,0,255,0.7),rgba(0,255,255,0.7),rgba(255,215,0,0.7));animation:gachaFlashFadeR4 1.5s forwards;pointer-events:none;z-index:19999}@keyframes gachaFlashFade{0%{opacity:1}100%{opacity:0}}@keyframes gachaFlashFadeR4{0%{opacity:1;transform:scale(1)}50%{opacity:0.8;transform:scale(1.05)}100%{opacity:0;transform:scale(1.1)}}.gacha-rarity-announce{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:56px;font-weight:900;letter-spacing:6px;pointer-events:none;z-index:20010;text-align:center;white-space:nowrap}.announce-ssr{color:#ffd700;text-shadow:0 0 40px #ffd700,0 0 80px #ff8800,0 0 120px #ff4400;animation:announceSSR 1.8s forwards}.announce-ultra{background:linear-gradient(90deg,#ff0080,#ff8c00,#ffd700,#00ff88,#00ffff,#8000ff);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px rgba(255,255,255,0.8));animation:announceUltra 2.0s forwards,rainbowShift 0.5s infinite linear}@keyframes announceSSR{0%{opacity:0;transform:translate(-50%,-50%) scale(0.3)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.3)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}80%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes announceUltra{0%{opacity:0;transform:translate(-50%,-50%) scale(0.2) rotate(-10deg)}15%{opacity:1;transform:translate(-50%,-50%) scale(1.4) rotate(3deg)}40%{opacity:1;transform:translate(-50%,-50%) scale(1.0) rotate(0deg)}80%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes rainbowShift{from{background-position:0% center}to{background-position:200% center}}#gachaSkipBtn{position:fixed;bottom:30px;right:20px;background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:8px 20px;font-size:13px;cursor:pointer;z-index:20020;backdrop-filter:blur(4px);transition:background 0.2s}#gachaSkipBtn:hover{background:rgba(255,255,255,0.25)}.tap-ripple{position:fixed;border-radius:50%;width:60px;height:60px;background:rgba(255,255,255,0.3);pointer-events:none;z-index:20030;transform:translate(-50%,-50%) scale(0);animation:tapRipple 0.5s forwards}@keyframes tapRipple{to{transform:translate(-50%,-50%) scale(3);opacity:0}}#gachaResultSummary{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:20000;display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:20px;overflow-y:auto}#gachaResultSummary.active{display:flex}.summary-title{font-size:20px;font-weight:bold;color:#ffd700;letter-spacing:4px;margin-bottom:16px;text-shadow:0 0 20px #ffd700aa}.summary-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:500px;padding:0 10px}.summary-card{background:#1a1f2e;border-radius:10px;padding:6px;width:85px;text-align:center;font-size:10px;border:2px solid #333;transition:transform 0.2s;opacity:0;transform:scale(0.5)}.summary-card.show{opacity:1;transform:scale(1);transition:opacity 0.3s,transform 0.3s}.summary-card img{width:100%;height:72px;object-fit:cover;border-radius:7px}.summary-card.r2{border-color:#4488ff;box-shadow:0 0 8px #4488ff44}.summary-card.r3{border-color:gold;box-shadow:0 0 12px gold}.summary-card.r4{border-color:cyan;box-shadow:0 0 20px cyan,0 0 40px magenta;animation:ultraCardGlow 1s infinite alternate}.summary-close-btn{margin-top:16px;margin-bottom:30px;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-weight:bold;font-size:15px;border:none;border-radius:12px;padding:12px 40px;cursor:pointer;letter-spacing:2px}#kakuteiOverlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:21000;pointer-events:none;overflow:hidden}#kakuteiOverlay.active{display:block;pointer-events:all}.kakutei-text{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:64px;font-weight:900;letter-spacing:8px;text-align:center;white-space:nowrap;pointer-events:none;z-index:21010}.kakutei-kakutei{color:#fff;text-shadow:0 0 30px #ffd700,0 0 60px #ff8800,0 0 100px #ff4400;animation:kakuteiAnim 2.2s forwards}.kakutei-shougou{background:linear-gradient(90deg,#ff0080,#ffd700,#00ffff,#8000ff);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px rgba(255,255,255,0.9));animation:shougouAnim 2.5s forwards,rainbowShift 0.4s infinite linear}.kakutei-attr{font-size:52px;animation:attrConfirmAnim 2.0s forwards}.kakutei-dupe{font-size:48px;color:#88ffcc;text-shadow:0 0 20px #44ffaa,0 0 40px #00ff88;animation:dupeAnim 2.0s forwards}@keyframes kakuteiAnim{0%{opacity:0;transform:translate(-50%,-50%) scale(0.2) rotate(-15deg)}15%{opacity:1;transform:translate(-50%,-50%) scale(1.4) rotate(3deg)}35%{opacity:1;transform:translate(-50%,-50%) scale(1.0) rotate(0deg)}80%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes shougouAnim{0%{opacity:0;transform:translate(-50%,-50%) scale(0.1) rotate(20deg)}12%{opacity:1;transform:translate(-50%,-50%) scale(1.5) rotate(-3deg)}30%{opacity:1;transform:translate(-50%,-50%) scale(1.0) rotate(0deg)}80%{opacity:1;transform:translate(-50%,-50%) scale(1.05)}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes attrConfirmAnim{0%{opacity:0;transform:translate(-50%,-50%) scale(0.3)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.2)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.0)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(0.9)}}@keyframes dupeAnim{0%{opacity:0;transform:translate(-50%,-50%) translateY(40px) scale(0.5)}20%{opacity:1;transform:translate(-50%,-50%) translateY(0) scale(1.1)}70%{opacity:1;transform:translate(-50%,-50%) translateY(0) scale(1.0)}100%{opacity:0;transform:translate(-50%,-50%) translateY(-20px) scale(0.9)}}.shougou-lines{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:20900;overflow:hidden}.shougou-line{position:absolute;height:6px;width:120%;opacity:0;animation:shougouLine 1.5s forwards}@keyframes shougouLine{0%{opacity:0;transform:translateX(-110%)}40%{opacity:1}100%{opacity:0;transform:translateX(10%)}}.gacha-bg-glow.attr-glow-fire{background:radial-gradient(circle,rgba(255,80,0,0.4) 0%,rgba(255,140,0,0.2) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-water{background:radial-gradient(circle,rgba(0,140,255,0.4) 0%,rgba(0,200,255,0.2) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-thunder{background:radial-gradient(circle,rgba(255,215,0,0.4) 0%,rgba(255,170,0,0.2) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-wood{background:radial-gradient(circle,rgba(68,200,68,0.4) 0%,rgba(100,255,100,0.2) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-light{background:radial-gradient(circle,rgba(255,255,220,0.5) 0%,rgba(255,220,150,0.25) 40%,transparent 70%)}.gacha-bg-glow.attr-glow-dark{background:radial-gradient(circle,rgba(170,0,255,0.45) 0%,rgba(220,100,255,0.2) 40%,transparent 70%)}.summary-card.attr-fire{border-color:#ff4444;box-shadow:0 0 10px #ff444466}.summary-card.attr-water{border-color:#4488ff;box-shadow:0 0 10px #4488ff66}.summary-card.attr-thunder{border-color:#ffd700;box-shadow:0 0 10px #ffd70066}.summary-card.attr-wood{border-color:#44cc44;box-shadow:0 0 10px #44cc4466}.summary-card.attr-light{border-color:#ffffff;box-shadow:0 0 10px #ffffff55}.summary-card.attr-dark{border-color:#aa00ff;box-shadow:0 0 10px #aa00ff66}.kakutei-border-flash{position:fixed;top:0;left:0;width:100%;height:100%;border:6px solid gold;box-sizing:border-box;pointer-events:none;z-index:20990;animation:borderFlash 0.6s 3 alternate}@keyframes borderFlash{from{opacity:1;border-color:gold}to{opacity:0;border-color:transparent}}.attr-beam-overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:20800;animation:attrBeamFade 1.4s forwards}@keyframes attrBeamFade{0%{opacity:1}60%{opacity:0.6}100%{opacity:0}}.rarity-upgrade-badge{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#1a1000,#2a2000);border:2px solid #ffd700;border-radius:12px;padding:8px 20px;font-size:14px;font-weight:bold;color:#ffd700;letter-spacing:2px;z-index:21005;pointer-events:none;animation:badgePop 0.4s forwards}@keyframes badgePop{0%{opacity:0;transform:translateX(-50%) scale(0.7)}100%{opacity:1;transform:translateX(-50%) scale(1.0)}}.flip{position:relative;width:90px;height:120px;transform-style:preserve-3d;transition:0.6s}.open .flip{transform:rotateY(180deg)}.front,.back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px}.front{background:linear-gradient(135deg,#2a2f55,#1a1f3a);border:2px solid #3a4060}.back{transform:rotateY(180deg);background:#1a1f2e}#battleMain{display:flex;justify-content:space-between;align-items:center;gap:10px;max-width:520px;margin:auto}.teamArea{display:flex;flex-direction:column;gap:8px;width:40%;align-items:center}#enemyArea{width:55%;display:flex;justify-content:center}.unit{background:#1a1f2e;padding:6px;border-radius:12px;font-size:10px;position:relative}.ally{width:140px}.unit img{width:100%;max-height:90px;object-fit:cover;border-radius:8px}.enemy{width:160px}.turn{outline:2px solid yellow;box-shadow:0 0 6px yellow}.bar{background:#333;height:8px;border-radius:5px;margin-top:3px}.hp{background:#4caf50;height:8px}.gauge{background:#ff9800;height:6px}.damage{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(1);font-size:clamp(14px,4.5vw,26px);font-weight:bold;color:#fff;text-shadow:0 0 10px #000,0 0 5px #000;animation:damagePop 0.9s cubic-bezier(0.22,0.61,0.36,1) forwards;pointer-events:none;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}.damageFast{animation:damagePopFast 0.5s ease-out forwards!important}@keyframes damagePopFast{0%{opacity:0;transform:translate(-50%,-50%) scale(0.5)}25%{opacity:1;transform:translate(-50%,-58%) scale(1.15)}100%{opacity:0;transform:translate(-50%,-72%) scale(0.9)}}@keyframes damagePop{0%{opacity:0;transform:translate(-50%,-45%) scale(0.6)}15%{opacity:1;transform:translate(-50%,-60%) scale(1.15)}30%{transform:translate(-50%,-65%) scale(1.0)}100%{opacity:0;transform:translate(-50%,-100%) scale(0.85)}}.weak{color:#ff4444}.resist{color:#44aaff}.rainbowFlash{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(45deg,red,orange,yellow,green,cyan,blue,purple);opacity:0.8;animation:rainbow 0.8s forwards;z-index:999}@keyframes rainbow{0%{opacity:1}100%{opacity:0}}.shake{animation:shake 0.4s}@keyframes shake{0%{transform:translate(0,0)}25%{transform:translate(-5px,5px)}50%{transform:translate(5px,-5px)}75%{transform:translate(-5px,5px)}100%{transform:translate(0,0)}}
+.unit{transition:filter 0.15s}
+.atkLungeAlly{animation:atkLungeAlly 0.45s cubic-bezier(0.3,0,0.2,1);z-index:5}
+@keyframes atkLungeAlly{0%{transform:translateX(0) rotate(0)}35%{transform:translateX(34px) rotate(-3deg) scale(1.07)}55%{transform:translateX(40px) rotate(2deg) scale(1.1)}100%{transform:translateX(0) rotate(0)}}
+.atkLungeEnemy{animation:atkLungeEnemy 0.45s cubic-bezier(0.3,0,0.2,1);z-index:5}
+@keyframes atkLungeEnemy{0%{transform:translateX(0) rotate(0)}35%{transform:translateX(-34px) rotate(3deg) scale(1.07)}55%{transform:translateX(-40px) rotate(-2deg) scale(1.1)}100%{transform:translateX(0) rotate(0)}}
+.hitFlash{animation:hitFlash 0.4s ease-in-out}
+@keyframes hitFlash{0%{filter:brightness(1)}15%{filter:brightness(2.5) saturate(0.2);transform:translate(4px,-2px)}30%{filter:brightness(1.4);transform:translate(-4px,2px)}50%{filter:brightness(2.2);transform:translate(3px,-2px)}70%{filter:brightness(1.3);transform:translate(-2px,1px)}100%{filter:brightness(1);transform:translate(0,0)}}
+.slashFx{position:absolute;top:50%;left:50%;width:120%;height:6px;background:linear-gradient(90deg,transparent,#fff,#fff,transparent);transform:translate(-50%,-50%) rotate(-28deg) scaleX(0);opacity:0;pointer-events:none;z-index:6;box-shadow:0 0 12px #fff,0 0 22px #fff}
+.castPulse{animation:castPulse 0.5s ease-out;z-index:5}
+@keyframes castPulse{0%{transform:scale(1) translateY(0);filter:brightness(1)}30%{transform:scale(1.14) translateY(-6px);filter:brightness(1.6) drop-shadow(0 0 10px #88ffcc)}100%{transform:scale(1) translateY(0);filter:brightness(1)}}
+.allyBuffGlow{animation:allyBuffGlow 0.6s ease-out}
+@keyframes allyBuffGlow{0%{box-shadow:0 0 0px transparent;filter:brightness(1) saturate(1)}40%{box-shadow:0 0 18px #88ffcc,0 0 30px #44ff88;filter:brightness(1.5) saturate(1.3)}100%{box-shadow:0 0 0px transparent;filter:brightness(1) saturate(1)}}
+.enemyDebuffGlow{animation:enemyDebuffGlow 0.6s ease-out}
+@keyframes enemyDebuffGlow{0%{box-shadow:0 0 0px transparent;filter:brightness(1)}40%{box-shadow:0 0 18px #aa44ff,0 0 30px #660099;filter:brightness(1.3) hue-rotate(20deg)}100%{box-shadow:0 0 0px transparent;filter:brightness(1)}}
+.supportFx{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:6;overflow:visible}
+.supportSpark{position:absolute;bottom:0;width:6px;height:6px;border-radius:50%;background:#aaffcc;box-shadow:0 0 8px #88ffcc;opacity:0;animation:supportSparkUp 0.7s ease-out forwards}
+@keyframes supportSparkUp{0%{opacity:0;transform:translateY(0) scale(0.6)}25%{opacity:1}100%{opacity:0;transform:translateY(-60px) scale(1.1)}}.ultra{box-shadow:0 0 25px cyan,0 0 40px magenta;animation:glow 1s infinite alternate}@keyframes glow{from{filter:brightness(1)}to{filter:brightness(1.6)}}.eventFlash{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#ff00cc,#3333ff,#00ffff);opacity:0.8;animation:eventFlash 0.8s forwards;z-index:999}@keyframes eventFlash{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.2)}}.banner{animation:bannerGlow 1.5s infinite alternate}@keyframes bannerGlow{from{filter:brightness(1)}to{filter:brightness(1.3)}}#gameTitle{width:200px;height:auto}.status{font-size:12px;margin:4px 0;min-height:14px}.loadingText{font-size:24px;color:#fff;animation:blink 1s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}.hitText{position:absolute;top:20%;left:50%;transform:translateX(-50%);font-size:clamp(11px,3vw,18px);font-weight:bold;color:#ffcc00;text-shadow:0 0 8px #000;animation:hitPop 0.8s forwards;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}.totalDamage{position:absolute;top:30%;left:50%;transform:translateX(-50%);font-size:clamp(14px,4vw,24px);font-weight:bold;color:#ff4444;text-shadow:0 0 10px #000;animation:totalPop 1s forwards;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}@keyframes hitPop{0%{opacity:0;transform:translate(-50%,0) scale(0.5)}30%{opacity:1;transform:translate(-50%,-10px) scale(1.2)}100%{opacity:0;transform:translate(-50%,-30px) scale(1)}}@keyframes totalPop{0%{opacity:0;transform:translate(-50%,0) scale(0.5)}30%{opacity:1;transform:translate(-50%,-10px) scale(1.3)}100%{opacity:0;transform:translate(-50%,-40px) scale(1)}}.dexRow{display:flex;align-items:center;background:#1a1f2e;margin:6px;padding:8px;border-radius:10px;gap:10px}.dexRow img{width:80px;height:80px;object-fit:cover;border-radius:8px}.dexText{text-align:left;font-size:14px}.statusRow{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px;min-height:18px}.sBadge{font-size:10px;padding:1px 4px;border-radius:4px;font-weight:bold}.sBurn{background:#ff4400;color:#fff}.sFreeze{background:#44bbff;color:#fff}.sShock{background:#ffdd00;color:#000}.sPoison{background:#aa44ff;color:#fff}.sShield{background:#44aaff;color:#fff}.sCounter{background:#ff8800;color:#fff}.sBuff{background:#44ff88;color:#000}.sDebuff{background:#8866ff;color:#fff}.sPassive{background:#1a3a1a;color:#88ff88;border:1px solid #44cc44}.roleBadge{display:inline-block;font-size:9px;padding:1px 5px;border-radius:4px;font-weight:bold;margin-bottom:2px}.role-attacker{background:#ff4444;color:#fff}.role-tank{background:#4488ff;color:#fff}.role-support{background:#44cc44;color:#fff}.role-debuffer{background:#aa44ff;color:#fff}.ctWrap{display:flex;align-items:center;gap:3px;margin-top:2px}.ctLabel{font-size:9px;color:#aaa;width:18px}.ctBar{flex:1;height:5px;background:#333;border-radius:3px;overflow:hidden}.ctFill{height:100%;background:linear-gradient(90deg,#ff9800,#ffcc00);border-radius:3px;transition:width 0.2s}.ctFillReady{height:100%;background:#44ff88;border-radius:3px;width:100%}.synergyText{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:clamp(12px,3.8vw,22px);font-weight:bold;color:#fff;text-shadow:0 0 20px #ff0088,0 0 10px #ff0088;animation:synergyPop 1.2s forwards;pointer-events:none;z-index:9998;text-align:center;white-space:normal;word-break:break-word;max-width:90vw;box-sizing:border-box;padding:0 8px;line-height:1.3}@keyframes synergyPop{0%{opacity:0;transform:translate(-50%,-50%) scale(0.5)}20%{opacity:1;transform:translate(-50%,-60%) scale(1.3)}80%{opacity:1;transform:translate(-50%,-65%) scale(1.1)}100%{opacity:0;transform:translate(-50%,-80%) scale(0.9)}}.gimmickRow{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}.gBadge{font-size:9px;padding:2px 5px;border-radius:4px;font-weight:bold;background:#333;color:#ffd700;border:1px solid #ffd700}.dmgBurn{color:#ff6600!important}.dmgFreeze{color:#44ddff!important}.dmgShock{color:#ffee00!important}.dmgSynergy{color:#ff00cc!important;font-size:clamp(16px,5.5vw,30px)!important}#skillModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:10000;justify-content:center;align-items:center}#skillModal.open{display:flex}#skillModalBox{background:#1a1f2e;border:2px solid #ffd700;border-radius:14px;padding:20px 24px;max-width:320px;width:90%;text-align:center;position:relative}#skillModalBox img{width:80px;height:80px;object-fit:cover;border-radius:10px;margin-bottom:8px}#skillModalName{font-size:16px;font-weight:bold;margin-bottom:6px}#skillModalText{font-size:14px;color:#ffd700;margin-bottom:6px;line-height:1.5}#skillModalCT{font-size:12px;color:#aaa;margin-bottom:12px}#skillModalClose{background:#333;color:#fff;border:none;border-radius:8px;padding:6px 20px;cursor:pointer;font-size:14px}.skillBtn{margin-top:4px;background:#2a3a5a;color:#ffd700;border:1px solid #ffd700;border-radius:6px;padding:2px 8px;font-size:11px;cursor:pointer}#skillTreeModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:10001;justify-content:center;align-items:center}#skillTreeModal.open{display:flex}#skillTreeBox{background:#0d1120;border:2px solid #44cc88;border-radius:16px;padding:18px 14px;max-width:340px;width:92%;text-align:center;position:relative;max-height:88vh;overflow-y:auto}.stNode{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:88px;min-height:72px;border-radius:10px;padding:5px 4px;font-size:10px;border:2px solid #444;background:#111;color:#666;margin:3px;transition:0.2s;cursor:not-allowed}.stNode.unlocked{background:#1a3a20;border-color:#ffd700;color:#ffd700;box-shadow:0 0 8px #ffd70066;cursor:default}.stNode.available{border-color:#44cc88;background:#0d2010;color:#88ffaa;cursor:pointer;animation:stPulse 1.6s infinite alternate}.stNode.skipped{background:#0d0d0d;border-color:#333;color:#333;cursor:default;opacity:0.4}@keyframes stPulse{from{box-shadow:0 0 3px #44cc88}to{box-shadow:0 0 12px #44cc88,0 0 20px #44cc8844}}.stNodeLabel{font-weight:bold;font-size:11px;margin-bottom:2px}.stNodeBonus{font-size:9px;color:#aaffcc;line-height:1.3}.stNodeCost{font-size:9px;color:#ffd700;margin-top:3px}.stRow{display:flex;justify-content:center;gap:4px;margin:3px 0;flex-wrap:wrap}.stArrow{text-align:center;color:#44cc88;font-size:13px;line-height:1.2;margin:1px 0}.stNode.locked_sp{border-color:#aa6600;background:#1a1000;color:#aa7700;cursor:pointer}.stStageHeader{font-size:11px;font-weight:bold;color:#ffd700;background:linear-gradient(90deg,#1a1200,#2a2000,#1a1200);border:1px solid #443300;border-radius:6px;padding:3px 10px;margin:4px 0 2px;letter-spacing:1px}.stStageHeader.done{color:#44cc88;border-color:#224422;background:linear-gradient(90deg,#0a1a0a,#112011,#0a1a0a)}.stStageHeader.locked{color:#555;border-color:#333;background:#111}.spBadge{display:inline-block;background:linear-gradient(135deg,#1a3a1a,#0d2010);border:1px solid #44cc88;color:#88ffaa;border-radius:8px;padding:3px 10px;font-size:12px;font-weight:bold;margin:4px 0}#profileModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:15000;justify-content:center;align-items:flex-start;padding-top:10px}#profileModal.open{display:flex}#profileBox{background:linear-gradient(160deg,#0a0d1a,#0d1028);border:2px solid #ffd700;border-radius:18px;padding:16px 14px 16px;max-width:380px;width:96%;text-align:center;position:relative;max-height:94vh;overflow-y:auto;box-shadow:0 0 40px #ffd70033,0 0 80px #ffd70011}.profileHeader{font-size:17px;font-weight:bold;color:#ffd700;letter-spacing:2px;margin-bottom:12px}#profileBanner{background:linear-gradient(135deg,#1a1500,#2a2200,#1a1500);border:1px solid #ffd700;border-radius:12px;padding:10px 12px;margin-bottom:10px;display:flex;align-items:center;gap:10px}#profileBannerOshiIcon{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #ffd700;flex-shrink:0;background:#222}#profileBannerOshiIconEmpty{width:56px;height:56px;border-radius:50%;border:2px dashed #555;background:#111;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}#profileBannerRight{text-align:left;flex:1;min-width:0}#profileBannerName{font-size:16px;font-weight:bold;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#profileBannerTitleImg{margin-top:4px;max-width:100%;height:28px;object-fit:contain;display:block}.profileCard{background:#0f1525;border:1px solid #1e2840;border-radius:12px;padding:10px 12px;margin-bottom:8px;text-align:left}.profileLabel{font-size:9px;color:#556;letter-spacing:1.5px;margin-bottom:6px;text-transform:uppercase;font-weight:bold}.profileValue{font-size:14px;font-weight:bold;color:#fff}.profileValueGold{color:#ffd700}.profileValueGreen{color:#44ff88}.profileValueBlue{color:#44aaff}.profileInputRow{display:flex;align-items:center;gap:6px}.profileInput{flex:1;background:#1a1f2e;color:#fff;border:1px solid #333;border-radius:6px;padding:7px 10px;font-size:14px;outline:none}.profileInput:focus{border-color:#ffd700}.profileSaveBtn{background:linear-gradient(135deg,#ffd700,#ff9800);color:#000;border:none;border-radius:6px;padding:7px 14px;font-size:12px;font-weight:bold;cursor:pointer;white-space:nowrap}#titleSelectGrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;max-height:200px;overflow-y:auto}.titleSelectItem{background:#0d1a30;border:2px solid #1e3050;border-radius:8px;padding:6px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:0.15s}.titleSelectItem:hover{border-color:#ffd70088}.titleSelectItem.selected{border-color:#ffd700;background:#1a2a00;box-shadow:0 0 8px #ffd70066}.titleSelectItem.locked{opacity:0.35;cursor:default;border-color:#222}.titleBadge{width:100%;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold;overflow:hidden}.titleBadgeText{font-size:9px;color:#aaa;text-align:center;line-height:1.2}.titleLockLabel{font-size:9px;color:#555}#oshiGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-height:340px;overflow-y:auto;margin-top:8px;padding:2px 2px 4px}.oshiItem{cursor:pointer;border-radius:10px;border:2px solid #1e2840;background:#0d1120;display:flex;flex-direction:column;align-items:center;overflow:hidden;transition:border-color 0.15s,box-shadow 0.15s}.oshiItem:active{transform:scale(0.95)}.oshiItem.selected{border-color:#ffd700;box-shadow:0 0 12px #ffd700aa;background:#1a1800}.oshiImgWrap{width:100%;aspect-ratio:1;position:relative;overflow:hidden;background:#111}.oshiImgWrap img{width:100%;height:100%;object-fit:cover;display:block}.oshiRarityDot{position:absolute;top:3px;right:4px;font-size:7px;color:#ffd700;text-shadow:0 0 4px #000,0 0 2px #000;font-weight:bold;letter-spacing:-1px;line-height:1}.oshiSelectedBadge{position:absolute;top:3px;left:4px;font-size:10px;line-height:1}.oshiItemName{width:100%;color:#ccc;font-size:9px;padding:4px 4px 5px;text-align:center;line-height:1.3;word-break:break-all;background:#0d1120}.profileTop3Row{display:flex;gap:6px;flex-wrap:nowrap}.profileTop3Card{flex:1;min-width:0;background:#0d1a28;border:1px solid #1a3050;border-radius:8px;padding:6px;text-align:center;overflow:hidden}.profileTop3Card img{width:44px;height:44px;object-fit:cover;border-radius:6px;margin-bottom:2px;display:block;margin:0 auto 3px}.profileTop3Medal{font-size:18px;margin-bottom:2px}.profileDivider{border:none;border-top:1px solid #1a1f2e;margin:6px 0}#missionModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:16000;justify-content:center;align-items:flex-start;padding-top:10px}#missionModal.open{display:flex}#missionBox{background:linear-gradient(160deg,#0a0d1a,#0d1028);border:2px solid #44cc88;border-radius:18px;padding:16px 14px 16px;max-width:400px;width:96%;text-align:center;position:relative;max-height:94vh;overflow-y:auto;box-shadow:0 0 40px #44cc8833,0 0 80px #44cc8811}.missionHeader{font-size:17px;font-weight:bold;color:#44cc88;letter-spacing:2px;margin-bottom:12px}.missionTabs{display:flex;gap:4px;margin-bottom:12px;justify-content:center;flex-wrap:wrap}.missionTab{padding:5px 12px;border-radius:8px;font-size:12px;font-weight:bold;border:1px solid #333;background:#111;color:#666;cursor:pointer;transition:0.15s}.missionTab.active{background:#1a3a20;border-color:#44cc88;color:#88ffaa}.missionCard{background:#0f1525;border:1px solid #1e2840;border-radius:12px;padding:10px 12px;margin-bottom:7px;text-align:left;position:relative}.missionCard.completed{border-color:#44cc8855;opacity:0.6}.missionCard.claimable{border-color:#ffd700;box-shadow:0 0 8px #ffd70044;animation:missionPulse 1.5s infinite alternate}@keyframes missionPulse{from{box-shadow:0 0 5px #ffd70044}to{box-shadow:0 0 14px #ffd700aa}}.missionTitle{font-size:13px;font-weight:bold;color:#fff;margin-bottom:4px}.missionDesc{font-size:11px;color:#8899aa;margin-bottom:6px;line-height:1.4}.missionProgress{display:flex;align-items:center;gap:6px;margin-bottom:6px}.missionProgBar{flex:1;height:6px;background:#222;border-radius:3px;overflow:hidden}.missionProgFill{height:100%;background:linear-gradient(90deg,#44cc88,#88ffaa);border-radius:3px;transition:width 0.4s}.missionProgText{font-size:10px;color:#aaa;white-space:nowrap}.missionReward{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.missionRewardBadge{font-size:11px;padding:2px 8px;border-radius:6px;font-weight:bold}.missionRewardStone{background:#1a1800;color:#ffd700;border:1px solid #ffd700}.missionRewardSP{background:#0d2010;color:#88ffaa;border:1px solid #44cc88}.missionRewardTitle{background:#10001a;color:#bb88ff;border:1px solid #aa44ff}.missionClaimBtn{margin-left:auto;background:linear-gradient(135deg,#ffd700,#ff9800);color:#000;border:none;border-radius:6px;padding:4px 12px;font-size:12px;font-weight:bold;cursor:pointer}.missionDoneLabel{margin-left:auto;font-size:11px;color:#44cc88;font-weight:bold}.missionStatLine{font-size:11px;color:#556;margin:2px 0}#missionStatsBox{background:#0a0d1a;border:1px solid #1a2a1a;border-radius:10px;padding:8px 10px;margin-bottom:10px;text-align:left}</style>
 </head>
 
 <body>
@@ -2288,6 +2305,25 @@ passive:{type:"shock_on_attack",chance:0.35,text:"⚡雷撃：攻撃時35%で感
 skill:{type:"shield",power:0.3,turn:3,text:"被ダメ30%軽減",cool:3},
 passive:{type:"spirit_passive",value:0.15,text:"👻霊気：攻撃後25%でATK+15%バフ(2T)自動発動"}}
 ];
+// 究極試練の敵キャラプール（通常ガチャキャラ＋全イベントキャラ）
+const ultimateEnemyPool = [
+  ...chars,
+  ...eventChars,
+  ...eventChars2,
+  ...eventChars3,
+  ...eventChars4,
+  ...eventChars5,
+  ...eventChars6,
+  ...eventChars7,
+  ...eventChars8,
+  ...eventChars9,
+  ...eventChars10,
+  ...rewardChar
+];
+function getUltimateEnemyChar(floor){
+  let seed = floor * 7 + 13;
+  return ultimateEnemyPool[seed % ultimateEnemyPool.length];
+}
 const eventStages = [
 {
     name:"OGの試練",
@@ -2687,16 +2723,7 @@ rewardChar:{
         img:"https://imgur.com/kXY8G3P.png"
     },
     reward:100,
-    bossReward:300,
-    rewardChar:{
-        name:"究極の絆",
-        rarity:5,
-        attr:"光",
-        img:"https://imgur.com/kXY8G3P.png",
-        role:"attacker",
-        skill:{type:"ultimate", power:5.0, text:"究極スキル：全能力+100% ダメージ500%", cool:3},
-        passive:{type:"ultimate_passive", text:"🌟究極の力：毎ターンHP5%回復＆全能力+10%"}
-    }
+    bossReward:300
 }
 ];
 const maxDupe = {
@@ -3470,6 +3497,83 @@ function triggerKokuShoku(count){
     }
   });
 }
+const ALLY_TARGET_SKILL_TYPES = new Set([
+  "buff","heal","shield","teamBuff","harumiBuff","echoHeal","happyAura","jokaku",
+  "sakuraBoost","bunshin","taunt","revive","snowRevive","repairRevolution",
+  "weaponSummon","thunderArmor","hp_ratio_atk_buff","saikouchiB",
+  "beta_akahane_lucky","beta_harumi_sight","beta_sakuragi_offset","counter","frozenUnlock"
+]);
+function isAllyTargetSkill(skillType){
+  return ALLY_TARGET_SKILL_TYPES.has(skillType);
+}
+function playSupportMotion(casterId){
+  let casterEl = document.getElementById(casterId);
+  if(casterEl){
+    casterEl.classList.remove("castPulse");
+    void casterEl.offsetWidth;
+    casterEl.classList.add("castPulse");
+    setTimeout(()=>{ if(casterEl) casterEl.classList.remove("castPulse"); }, 500);
+  }
+  setTimeout(()=>{
+    document.querySelectorAll("#teamArea .unit.ally").forEach(el=>{
+      el.classList.remove("allyBuffGlow");
+      void el.offsetWidth;
+      el.classList.add("allyBuffGlow");
+      setTimeout(()=>{ if(el) el.classList.remove("allyBuffGlow"); }, 600);
+      let fx = document.createElement("div");
+      fx.className = "supportFx";
+      for(let i=0;i<3;i++){
+        let sp = document.createElement("div");
+        sp.className = "supportSpark";
+        sp.style.left = (15 + Math.random()*70) + "%";
+        sp.style.animationDelay = (i*0.08) + "s";
+        fx.appendChild(sp);
+      }
+      el.appendChild(fx);
+      setTimeout(()=>fx.remove(), 800);
+    });
+  }, 150);
+}
+function playDebuffMotion(casterId){
+  let casterEl = document.getElementById(casterId);
+  if(casterEl){
+    casterEl.classList.remove("castPulse");
+    void casterEl.offsetWidth;
+    casterEl.classList.add("castPulse");
+    setTimeout(()=>{ if(casterEl) casterEl.classList.remove("castPulse"); }, 500);
+  }
+  setTimeout(()=>{
+    let enemyEl = document.getElementById("enemy");
+    if(!enemyEl) return;
+    enemyEl.classList.remove("enemyDebuffGlow");
+    void enemyEl.offsetWidth;
+    enemyEl.classList.add("enemyDebuffGlow");
+    setTimeout(()=>{ if(enemyEl) enemyEl.classList.remove("enemyDebuffGlow"); }, 600);
+  }, 150);
+}
+function playAttackMotion(attackerId, targetId, attackerIsEnemy){
+  let atkEl = document.getElementById(attackerId);
+  let tgtEl = document.getElementById(targetId);
+  if(atkEl){
+    let lungeClass = attackerIsEnemy ? "atkLungeEnemy" : "atkLungeAlly";
+    atkEl.classList.remove("atkLungeAlly","atkLungeEnemy");
+    void atkEl.offsetWidth;
+    atkEl.classList.add(lungeClass);
+    setTimeout(()=>{ if(atkEl) atkEl.classList.remove(lungeClass); }, 450);
+  }
+  setTimeout(()=>{
+    if(!tgtEl) tgtEl = document.getElementById(targetId);
+    if(!tgtEl) return;
+    tgtEl.classList.remove("hitFlash");
+    void tgtEl.offsetWidth;
+    tgtEl.classList.add("hitFlash");
+    setTimeout(()=>{ if(tgtEl) tgtEl.classList.remove("hitFlash"); }, 400);
+    let slash = document.createElement("div");
+    slash.className = "slashFx show";
+    tgtEl.appendChild(slash);
+    setTimeout(()=>slash.remove(), 350);
+  }, 200);
+}
 function showDamage(id,res,opts){
 let el=document.getElementById(id);
 if(!el){
@@ -3917,6 +4021,10 @@ if(p.sakuraDrainTurn && p.sakuraDrainTurn > 0 && res.dmg > 0){
 }
 renderBattle();
 res.charName = p.name;
+{
+  let _atkId = "p"+turnIndex;
+  setTimeout(()=>playAttackMotion(_atkId, "enemy", false), 0);
+}
 setTimeout(()=>{
     showDamage("enemy",res);
 },10);
@@ -4026,6 +4134,10 @@ function ultimate(){
 let p = players[turnIndex];
 currentAttacker = p.name;
 if(p.ult < 100) return;
+{
+  let _ultId = "p"+turnIndex;
+  setTimeout(()=>playAttackMotion(_ultId, "enemy", false), 0);
+}
 let atk = p.atk;
 if(p.buffs){
     p.buffs.forEach(b=>{
@@ -4231,6 +4343,7 @@ if(target.skill && target.skill.type==="tenGeki"){
     showSynergyText("⚡ 被撃！天撃カウント→" + cnt + "！ATK+" + (cnt*25) + "%！");
 }
 renderBattle();
+playAttackMotion("enemy", "p" + index, true);
 setTimeout(()=>{ showDamage("p" + index, res); }, 50);
 // β版 桜木彰スキル：オフセット反撃 - 被ダメ時に同ダメ反撃
 if(target.currentHp > 0 && target.counters && target.counters.some(c=>c.isOffset && c.turn > 0)){
@@ -4337,7 +4450,8 @@ setTimeout(()=>{
     if(players.length === 0){
       if(isTrainingBattle){ isTrainingBattle=false; if(trainingMaxDmg>(profileData.trainingMaxDmg||0)){profileData.trainingMaxDmg=trainingMaxDmg;profileData.trainingMaxDmgChar=trainingMaxDmgChar;saveData();} let _cin=trainingMaxDmgChar?"\n("+trainingMaxDmgChar+")":""; alert("🏋️ 鍛錬終了\n\n最大ダメージ: "+trainingMaxDmg.toLocaleString()+_cin+"\n\n（敗北）"); trainingMaxDmg=0;trainingMaxDmgChar=""; go("training"); return; }
       alert("敗北");
-      if(currentEvent !== undefined){ currentEvent=undefined; go("event"); }
+      if(currentEventType === "ultimate"){ currentEventType=undefined; currentTrial=undefined; go("ultimate"); }
+      else if(currentEvent !== undefined){ currentEvent=undefined; go("event"); }
       else go("trial");
       return;
     }
@@ -4354,7 +4468,8 @@ setTimeout(()=>{
       setTimeout(()=>{
         if(isTrainingBattle){ isTrainingBattle=false; if(trainingMaxDmg>(profileData.trainingMaxDmg||0)){profileData.trainingMaxDmg=trainingMaxDmg;profileData.trainingMaxDmgChar=trainingMaxDmgChar;saveData();} let _cin=trainingMaxDmgChar?"\n("+trainingMaxDmgChar+")":""; alert("🏋️ 鍛錬終了\n\n最大ダメージ: "+trainingMaxDmg.toLocaleString()+_cin+"\n\n（敗北）"); trainingMaxDmg=0;trainingMaxDmgChar=""; go("training"); return; }
         alert("敗北");
-        if(currentEvent !== undefined){ currentEvent=undefined; go("event"); }
+        if(currentEventType === "ultimate"){ currentEventType=undefined; currentTrial=undefined; go("ultimate"); }
+        else if(currentEvent !== undefined){ currentEvent=undefined; go("event"); }
         else go("trial");
       }, 300);
       return;
@@ -4574,7 +4689,8 @@ function checkTurnLimit(){
   if(rem<=0 && enemy.hp>0){
     if(isTrainingBattle){ isTrainingBattle=false; if(trainingMaxDmg>(profileData.trainingMaxDmg||0)){profileData.trainingMaxDmg=trainingMaxDmg;profileData.trainingMaxDmgChar=trainingMaxDmgChar;saveData();} let _cin=trainingMaxDmgChar?"\n("+trainingMaxDmgChar+")":""; alert("🏋️ 鍛錬終了\n\n最大ダメージ: "+trainingMaxDmg.toLocaleString()+_cin+"\n\nターン制限超過"); trainingMaxDmg=0;trainingMaxDmgChar=""; go("training"); return; }
     alert("⏱ ターン制限超過！敗北...");
-    if(currentEvent!==undefined){ currentEvent=undefined; go("event"); }
+    if(currentEventType==="ultimate"){ currentEventType=undefined; currentTrial=undefined; go("ultimate"); }
+    else if(currentEvent!==undefined){ currentEvent=undefined; go("event"); }
     else go("trial");
   }
 }
@@ -5016,7 +5132,7 @@ if(p.berserkCount && p.berserkCount > 0){
         if(players.length === 0){
             setTimeout(()=>{
               if(isTrainingBattle){ isTrainingBattle=false; if(trainingMaxDmg>(profileData.trainingMaxDmg||0)){profileData.trainingMaxDmg=trainingMaxDmg;profileData.trainingMaxDmgChar=trainingMaxDmgChar;saveData();} let _cin=trainingMaxDmgChar?"\n("+trainingMaxDmgChar+")":""; alert("🏋️ 鍛錬終了\n\n最大ダメージ: "+trainingMaxDmg.toLocaleString()+_cin+"\n\n（敗北）"); trainingMaxDmg=0;trainingMaxDmgChar=""; go("training"); return; }
-              alert("敗北"); if(currentEvent!==undefined){currentEvent=undefined;go("event");}else go("trial"); }, 300);
+              alert("敗北"); if(currentEventType==="ultimate"){currentEventType=undefined;currentTrial=undefined;go("ultimate");}else if(currentEvent!==undefined){currentEvent=undefined;go("event");}else go("trial"); }, 300);
             return;
         }
         if(turnIndex >= players.length) turnIndex = 0;
@@ -5092,7 +5208,7 @@ if(p.berserkCount && p.berserkCount > 0){
     if(players.length===0){
       setTimeout(()=>{
         if(isTrainingBattle){ isTrainingBattle=false; if(trainingMaxDmg>(profileData.trainingMaxDmg||0)){profileData.trainingMaxDmg=trainingMaxDmg;profileData.trainingMaxDmgChar=trainingMaxDmgChar;saveData();} let _cin=trainingMaxDmgChar?"\n("+trainingMaxDmgChar+")":""; alert("🏋️ 鍛錬終了\n\n最大ダメージ: "+trainingMaxDmg.toLocaleString()+_cin+"\n\n（敗北）"); trainingMaxDmg=0;trainingMaxDmgChar=""; go("training"); return; }
-        alert("敗北"); if(currentEvent!==undefined){currentEvent=undefined;go("event");}else go("trial");
+        alert("敗北"); if(currentEventType==="ultimate"){currentEventType=undefined;currentTrial=undefined;go("ultimate");}else if(currentEvent!==undefined){currentEvent=undefined;go("event");}else go("trial");
       }, dotDelay + 100);
       return;
     }
@@ -5322,54 +5438,38 @@ function win(){
     // 究極試練用処理
     if(currentEventType === "ultimate"){
         if(!missionStats.ultimateCleared) missionStats.ultimateCleared = {};
+        let alreadyCleared = !!missionStats.ultimateCleared[enemy.floor];
         missionStats.ultimateCleared[enemy.floor] = true;
         if(!missionStats.ultimateMaxFloor || missionStats.ultimateMaxFloor < enemy.floor + 1){
           missionStats.ultimateMaxFloor = Math.min(enemy.floor + 1, 100);
         }
         
-        let reward = currentTrial.reward;
-        let rewardBonus = Math.floor(enemy.floor / 10) * 50;
-        
-        stone += reward + rewardBonus;
+        let msg;
         sp += 10;
         
-        let msg = `⚡🏰 究極試練 ${enemy.floor}F 撃破！\n\n石×${reward + rewardBonus}獲得`;
-        
         if(enemy.isBoss){
-            let bossReward = currentTrial.bossReward + rewardBonus;
-            stone += bossReward;
-            msg = `👑 究極の守護者撃破！${enemy.floor}F\n\n石×${bossReward}獲得`;
-            
-            if(enemy.floor === 100){
-                msg = `⚡✨ 究極の支配者撃破！\n\n究極試練 完全制覇！\n\n石×${bossReward + 5000}＆ランダムキャラ+究極の絆をゲット！`;
-                stone += 5000;
+            let bossReward = 500;
+            if(!alreadyCleared){
+                stone += bossReward;
+                msg = `👑 究極の守護者撃破！${enemy.floor}F\n\n石×${bossReward}獲得`;
                 
-                // 究極の絆を獲得
-                if(currentTrial.rewardChar && !box.find(c => c.name === currentTrial.rewardChar.name)){
-                    let newChar = {...currentTrial.rewardChar, dupe:0, atk: (currentTrial.rewardChar.atk || 100), hp: (currentTrial.rewardChar.hp || 300)};
-                    box.push(newChar);
+                if(enemy.floor === 100){
+                    msg = `⚡✨ 究極の支配者撃破！\n\n究極試練 完全制覇！\n\n石×${bossReward}獲得！`;
                 }
+            } else {
+                msg = `👑 究極の守護者撃破！${enemy.floor}F\n\n（クリア済みのため石獲得なし）`;
                 
-                // ランダムキャラを100体から選んで獲得
-                let availableChars = chars.filter(c => !c.noTrial && c.rarity <= 4);
-                if(availableChars.length > 0){
-                  let randomChar = availableChars[Math.floor(Math.random() * availableChars.length)];
-                  let newChar = {
-                    name: randomChar.name,
-                    rarity: randomChar.rarity,
-                    attr: randomChar.attr,
-                    img: randomChar.img,
-                    role: randomChar.role,
-                    skill: randomChar.skill,
-                    passive: randomChar.passive,
-                    dupe: 0,
-                    atk: randomChar.atk || 100,
-                    hp: randomChar.hp || 300
-                  };
-                  if(!box.find(c => c.name === newChar.name && c.rarity === newChar.rarity)){
-                    box.push(newChar);
-                  }
+                if(enemy.floor === 100){
+                    msg = `⚡✨ 究極の支配者撃破！\n\n究極試練 完全制覇！\n\n（クリア済みのため石獲得なし）`;
                 }
+            }
+        } else {
+            let reward = 100;
+            if(!alreadyCleared){
+                stone += reward;
+                msg = `⚡🏰 究極試練 ${enemy.floor}F 撃破！\n\n石×${reward}獲得`;
+            } else {
+                msg = `⚡🏰 究極試練 ${enemy.floor}F 撃破！\n\n（クリア済みのため石獲得なし）`;
             }
         }
         
@@ -5466,6 +5566,16 @@ if(!p.skill || !p.skill.type) return;
 if(p.cool > 0) return;
 if(p.skill.type === "heatUp" && p.heatUpUsed) return;
 let s = p.skill;
+{
+  let _casterId = "p"+turnIndex;
+  if(isAllyTargetSkill(s.type)){
+    setTimeout(()=>playSupportMotion(_casterId), 0);
+  } else if(s.type==="debuff" || s.type==="allDebuff" || s.type==="overrideDebuff"){
+    setTimeout(()=>playDebuffMotion(_casterId), 0);
+  } else {
+    setTimeout(()=>playAttackMotion(_casterId, "enemy", false), 0);
+  }
+}
 let _hpBeforeSkill = enemy.hp;
 let atk = p.atk;
 if(p.buffs){
@@ -5522,6 +5632,8 @@ players.forEach((t,i)=>{
     players.forEach(pl=>{
       if(pl.passive && pl.passive.type==="heal_bonus") heal *= (1 + pl.passive.value);
     });
+    let _healerC = box.find(b=>b.name===p.name);
+    if(_healerC && _healerC.treeHealUp) heal *= (1 + _healerC.treeHealUp);
   showSynergyText("回復！");
     t.currentHp += heal;
     if(t.currentHp > t.hp) t.currentHp = t.hp;
@@ -7296,6 +7408,16 @@ currentAttacker = p.name;
 if(!p.skill2 || !p.skill2.type) return;
 if(p.cool2 > 0) return;
 let s = p.skill2;
+{
+  let _casterId = "p"+turnIndex;
+  if(isAllyTargetSkill(s.type)){
+    setTimeout(()=>playSupportMotion(_casterId), 0);
+  } else if(s.type==="debuff" || s.type==="allDebuff" || s.type==="overrideDebuff"){
+    setTimeout(()=>playDebuffMotion(_casterId), 0);
+  } else {
+    setTimeout(()=>playAttackMotion(_casterId, "enemy", false), 0);
+  }
+}
 let _hpBeforeSkill2 = enemy.hp;
 let atk = p.atk;
 if(p.buffs){
@@ -8964,6 +9086,11 @@ function renderUltimate(){
     gimmickTxt = parts.join(" / ");
   }
 
+  let enemyChar = getUltimateEnemyChar(i);
+  let enemyDisplayName = bossFloor
+    ? "【究極】" + enemyChar.name
+    : "【試練】" + enemyChar.name;
+
   let cardBg = bossFloor ? "linear-gradient(135deg,#2a0a3a,#1a0a2a)" : "linear-gradient(135deg,#1a1a3a,#0a0a2a)";
   let borderColor = isCleared ? "#44ff44" : (bossFloor ? "#ff6699" : "#666699");
 
@@ -8973,6 +9100,11 @@ function renderUltimate(){
       <div style="font-size:20px;font-weight:bold;color:#eee;">${i}F ${bossFloor ? '（ボス階層）' : ''}</div>
       ${isCleared ? '<div style="color:#44ff44;font-size:13px;font-weight:bold;">✓ クリア済み</div>' : ''}
       ${!isUnlocked ? '<div style="color:#ff8888;font-size:13px;">🔒 未開放（'+maxFloor+'Fまで挑戦可能）</div>' : ''}
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;margin-top:2px;">
+        <img src="${enemyChar.img}" style="width:64px;height:64px;object-fit:cover;border-radius:12px;border:2px solid ${borderColor};">
+        <div style="font-size:12px;color:#ffddaa;font-weight:bold;">${enemyDisplayName}</div>
+        <div style="font-size:10px;color:#aaa;">属性: ${enemyChar.attr}</div>
+      </div>
       ${stage ? `<div style="font-size:11px;color:#aaccff;">敵HP:${displayHp?.toLocaleString?.()||displayHp} ／ 敵ATK:${displayAtk}</div>` : ''}
       ${gimmickTxt ? `<div style="font-size:11px;color:#ffcc88;">${gimmickTxt}</div>` : ''}
       <button onclick="startUltimateBattle(${i})" ${isUnlocked?'':'disabled'}
@@ -9107,9 +9239,8 @@ function startUltimateBattle(floor){
     };
   }));
 
-  // 既存charsからフロア番号に基づいて決定論的にキャラを選ぶ
-  let seed = floor * 7 + 13;
-  let enemyChar = chars[seed % chars.length];
+  // 全キャラプール（ガチャ＋イベント）からフロア番号に基づいて決定論的にキャラを選ぶ
+  let enemyChar = getUltimateEnemyChar(floor);
   let enemyName = stage.boss
     ? "【究極】" + enemyChar.name + " " + floor + "F"
     : "【試練】" + enemyChar.name + " " + floor + "F";
@@ -9686,6 +9817,16 @@ function weaponSkill(){
     if(!s) return;
     if(p.weaponCool > 0) return;
     let atk = p.atk;
+{
+  let _casterId = "p"+turnIndex;
+  if(isAllyTargetSkill(s.type)){
+    setTimeout(()=>playSupportMotion(_casterId), 0);
+  } else if(s.type==="poison" || s.type==="shock"){
+    setTimeout(()=>playDebuffMotion(_casterId), 0);
+  } else {
+    setTimeout(()=>playAttackMotion(_casterId, "enemy", false), 0);
+  }
+}
 if(s.type==="buff"){
     p.atk *= s.power;
 }
@@ -10570,6 +10711,31 @@ const SKILL_TREE_TOTAL_CHOICES = Object.keys(stNodeMap).length;
       }
     });
     if(ailmentPower > 0) c.treeAilmentPower = ailmentPower;
+  });
+  // 被ダメ軽減(def)・スキル威力強化(powerUp)・CT短縮(ctReduce)・回復量強化(healUp)が
+  // これまで選択済みでも反映されていなかったため、既存の選択履歴から復元する
+  box.forEach(c => {
+    if(!c.skillTreeData || !c.skillTreeData.chosen.length) return;
+    if(c.treeDef !== undefined && c.treeSkillPower !== undefined && c.treeCtReduce !== undefined && c.treeHealUp !== undefined) return;
+    let defRate = 0, skillPowerRate = 0, ctReduceTotal = 0, healUpRate = 0;
+    c.skillTreeData.chosen.forEach(id => {
+      let ch = stNodeMap[id];
+      if(!ch) return;
+      if(ch.type === "bonus"){
+        if(ch.bonus.def) defRate += ch.bonus.def;
+        if(ch.bonus.healUp) healUpRate += ch.bonus.healUp;
+      } else if(ch.type === "skill_up"){
+        if(ch.skillBonus?.powerUp) skillPowerRate += ch.skillBonus.powerUp;
+        if(ch.skillBonus?.ctReduce) ctReduceTotal += ch.skillBonus.ctReduce;
+      }
+    });
+    if(c.treeDef === undefined && defRate > 0) c.treeDef = defRate;
+    if(c.treeSkillPower === undefined && skillPowerRate > 0) c.treeSkillPower = skillPowerRate;
+    if(c.treeHealUp === undefined && healUpRate > 0) c.treeHealUp = healUpRate;
+    if(c.treeCtReduce === undefined && ctReduceTotal > 0){
+      c.treeCtReduce = ctReduceTotal;
+      if(c.skill && c.skill.cool) c.skill.cool = Math.max(1, c.skill.cool - ctReduceTotal);
+    }
   });
 })();
 function getEffectiveAtk(c){
