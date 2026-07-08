@@ -23,7 +23,7 @@
 @keyframes enemyDebuffGlow{0%{box-shadow:0 0 0px transparent;filter:brightness(1)}40%{box-shadow:0 0 18px #aa44ff,0 0 30px #660099;filter:brightness(1.3) hue-rotate(20deg)}100%{box-shadow:0 0 0px transparent;filter:brightness(1)}}
 .supportFx{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:6;overflow:visible}
 .supportSpark{position:absolute;bottom:0;width:6px;height:6px;border-radius:50%;background:#aaffcc;box-shadow:0 0 8px #88ffcc;opacity:0;animation:supportSparkUp 0.7s ease-out forwards}
-@keyframes supportSparkUp{0%{opacity:0;transform:translateY(0) scale(0.6)}25%{opacity:1}100%{opacity:0;transform:translateY(-60px) scale(1.1)}}.ultra{box-shadow:0 0 25px cyan,0 0 40px magenta;animation:glow 1s infinite alternate}@keyframes glow{from{filter:brightness(1)}to{filter:brightness(1.6)}}.eventFlash{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#ff00cc,#3333ff,#00ffff);opacity:0.8;animation:eventFlash 0.8s forwards;z-index:999}@keyframes eventFlash{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.2)}}.banner{animation:bannerGlow 1.5s infinite alternate}@keyframes bannerGlow{from{filter:brightness(1)}to{filter:brightness(1.3)}}#gameTitle{width:200px;height:auto}.status{font-size:12px;margin:4px 0;min-height:14px}.loadingText{font-size:24px;color:#fff;animation:blink 1s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}.hitText{position:absolute;top:20%;left:50%;transform:translateX(-50%);font-size:clamp(11px,3vw,18px);font-weight:bold;color:#ffcc00;text-shadow:0 0 8px #000;animation:hitPop 0.8s forwards;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}.totalDamage{position:absolute;top:30%;left:50%;transform:translateX(-50%);font-size:clamp(14px,4vw,24px);font-weight:bold;color:#ff4444;text-shadow:0 0 10px #000;animation:totalPop 1s forwards;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}@keyframes hitPop{0%{opacity:0;transform:translate(-50%,0) scale(0.5)}30%{opacity:1;transform:translate(-50%,-10px) scale(1.2)}100%{opacity:0;transform:translate(-50%,-30px) scale(1)}}@keyframes totalPop{0%{opacity:0;transform:translate(-50%,0) scale(0.5)}30%{opacity:1;transform:translate(-50%,-10px) scale(1.3)}100%{opacity:0;transform:translate(-50%,-40px) scale(1)}}.dexRow{display:flex;align-items:center;background:#1a1f2e;margin:6px;padding:8px;border-radius:10px;gap:10px}.dexRow img{width:80px;height:80px;object-fit:cover;border-radius:8px}.dexText{text-align:left;font-size:14px}.statusRow{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px;min-height:18px}.sBadge{font-size:10px;padding:1px 4px;border-radius:4px;font-weight:bold}.sBurn{background:#ff4400;color:#fff}.sFreeze{background:#44bbff;color:#fff}.sShock{background:#ffdd00;color:#000}.sPoison{background:#aa44ff;color:#fff}.sShield{background:#44aaff;color:#fff}.sCounter{background:#ff8800;color:#fff}.sBuff{background:#44ff88;color:#000}.sDebuff{background:#8866ff;color:#fff}.sPassive{background:#1a3a1a;color:#88ff88;border:1px solid #44cc44}.roleBadge{display:inline-block;font-size:9px;padding:1px 5px;border-radius:4px;font-weight:bold;margin-bottom:2px}.role-attacker{background:#ff4444;color:#fff}.role-tank{background:#4488ff;color:#fff}.role-support{background:#44cc44;color:#fff}.role-debuffer{background:#aa44ff;color:#fff}.ctWrap{display:flex;align-items:center;gap:3px;margin-top:2px}.ctLabel{font-size:9px;color:#aaa;width:18px}.ctBar{flex:1;height:5px;background:#333;border-radius:3px;overflow:hidden}.ctFill{height:100%;background:linear-gradient(90deg,#ff9800,#ffcc00);border-radius:3px;transition:width 0.2s}.ctFillReady{height:100%;background:#44ff88;border-radius:3px;width:100%}.synergyText{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:clamp(12px,3.8vw,22px);font-weight:bold;color:#fff;text-shadow:0 0 20px #ff0088,0 0 10px #ff0088;animation:synergyPop 1.2s forwards;pointer-events:none;z-index:9998;text-align:center;white-space:normal;word-break:break-word;max-width:90vw;box-sizing:border-box;padding:0 8px;line-height:1.3}@keyframes synergyPop{0%{opacity:0;transform:translate(-50%,-50%) scale(0.5)}20%{opacity:1;transform:translate(-50%,-60%) scale(1.3)}80%{opacity:1;transform:translate(-50%,-65%) scale(1.1)}100%{opacity:0;transform:translate(-50%,-80%) scale(0.9)}}.gimmickRow{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}.gBadge{font-size:9px;padding:2px 5px;border-radius:4px;font-weight:bold;background:#333;color:#ffd700;border:1px solid #ffd700}.dmgBurn{color:#ff6600!important}.dmgFreeze{color:#44ddff!important}.dmgShock{color:#ffee00!important}.dmgSynergy{color:#ff00cc!important;font-size:clamp(16px,5.5vw,30px)!important}#skillModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:10000;justify-content:center;align-items:center}#skillModal.open{display:flex}#skillModalBox{background:#1a1f2e;border:2px solid #ffd700;border-radius:14px;padding:20px 24px;max-width:320px;width:90%;text-align:center;position:relative}#skillModalBox img{width:80px;height:80px;object-fit:cover;border-radius:10px;margin-bottom:8px}#skillModalName{font-size:16px;font-weight:bold;margin-bottom:6px}#skillModalText{font-size:14px;color:#ffd700;margin-bottom:6px;line-height:1.5}#skillModalCT{font-size:12px;color:#aaa;margin-bottom:12px}#skillModalClose{background:#333;color:#fff;border:none;border-radius:8px;padding:6px 20px;cursor:pointer;font-size:14px}.skillBtn{margin-top:4px;background:#2a3a5a;color:#ffd700;border:1px solid #ffd700;border-radius:6px;padding:2px 8px;font-size:11px;cursor:pointer}#skillTreeModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:10001;justify-content:center;align-items:center}#skillTreeModal.open{display:flex}#skillTreeBox{background:#0d1120;border:2px solid #44cc88;border-radius:16px;padding:18px 14px;max-width:340px;width:92%;text-align:center;position:relative;max-height:88vh;overflow-y:auto}.stNode{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:88px;min-height:72px;border-radius:10px;padding:5px 4px;font-size:10px;border:2px solid #444;background:#111;color:#666;margin:3px;transition:0.2s;cursor:not-allowed}.stNode.unlocked{background:#1a3a20;border-color:#ffd700;color:#ffd700;box-shadow:0 0 8px #ffd70066;cursor:default}.stNode.available{border-color:#44cc88;background:#0d2010;color:#88ffaa;cursor:pointer;animation:stPulse 1.6s infinite alternate}.stNode.skipped{background:#0d0d0d;border-color:#333;color:#333;cursor:default;opacity:0.4}@keyframes stPulse{from{box-shadow:0 0 3px #44cc88}to{box-shadow:0 0 12px #44cc88,0 0 20px #44cc8844}}.stNodeLabel{font-weight:bold;font-size:11px;margin-bottom:2px}.stNodeBonus{font-size:9px;color:#aaffcc;line-height:1.3}.stNodeCost{font-size:9px;color:#ffd700;margin-top:3px}.stRow{display:flex;justify-content:center;gap:4px;margin:3px 0;flex-wrap:wrap}.stArrow{text-align:center;color:#44cc88;font-size:13px;line-height:1.2;margin:1px 0}.stNode.locked_sp{border-color:#aa6600;background:#1a1000;color:#aa7700;cursor:pointer}.stStageHeader{font-size:11px;font-weight:bold;color:#ffd700;background:linear-gradient(90deg,#1a1200,#2a2000,#1a1200);border:1px solid #443300;border-radius:6px;padding:3px 10px;margin:4px 0 2px;letter-spacing:1px}.stStageHeader.done{color:#44cc88;border-color:#224422;background:linear-gradient(90deg,#0a1a0a,#112011,#0a1a0a)}.stStageHeader.locked{color:#555;border-color:#333;background:#111}.spBadge{display:inline-block;background:linear-gradient(135deg,#1a3a1a,#0d2010);border:1px solid #44cc88;color:#88ffaa;border-radius:8px;padding:3px 10px;font-size:12px;font-weight:bold;margin:4px 0}#profileModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:15000;justify-content:center;align-items:flex-start;padding-top:10px}#profileModal.open{display:flex}#profileBox{background:linear-gradient(160deg,#0a0d1a,#0d1028);border:2px solid #ffd700;border-radius:18px;padding:16px 14px 16px;max-width:380px;width:96%;text-align:center;position:relative;max-height:94vh;overflow-y:auto;box-shadow:0 0 40px #ffd70033,0 0 80px #ffd70011}.profileHeader{font-size:17px;font-weight:bold;color:#ffd700;letter-spacing:2px;margin-bottom:12px}#profileBanner{background:linear-gradient(135deg,#1a1500,#2a2200,#1a1500);border:1px solid #ffd700;border-radius:12px;padding:10px 12px;margin-bottom:10px;display:flex;align-items:center;gap:10px}#profileBannerOshiIcon{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #ffd700;flex-shrink:0;background:#222}#profileBannerOshiIconEmpty{width:56px;height:56px;border-radius:50%;border:2px dashed #555;background:#111;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}#profileBannerRight{text-align:left;flex:1;min-width:0}#profileBannerName{font-size:16px;font-weight:bold;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#profileBannerTitleImg{margin-top:4px;max-width:100%;height:28px;object-fit:contain;display:block}.profileCard{background:#0f1525;border:1px solid #1e2840;border-radius:12px;padding:10px 12px;margin-bottom:8px;text-align:left}.profileLabel{font-size:9px;color:#556;letter-spacing:1.5px;margin-bottom:6px;text-transform:uppercase;font-weight:bold}.profileValue{font-size:14px;font-weight:bold;color:#fff}.profileValueGold{color:#ffd700}.profileValueGreen{color:#44ff88}.profileValueBlue{color:#44aaff}.profileInputRow{display:flex;align-items:center;gap:6px}.profileInput{flex:1;background:#1a1f2e;color:#fff;border:1px solid #333;border-radius:6px;padding:7px 10px;font-size:14px;outline:none}.profileInput:focus{border-color:#ffd700}.profileSaveBtn{background:linear-gradient(135deg,#ffd700,#ff9800);color:#000;border:none;border-radius:6px;padding:7px 14px;font-size:12px;font-weight:bold;cursor:pointer;white-space:nowrap}#titleSelectGrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;max-height:200px;overflow-y:auto}.titleSelectItem{background:#0d1a30;border:2px solid #1e3050;border-radius:8px;padding:6px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:0.15s}.titleSelectItem:hover{border-color:#ffd70088}.titleSelectItem.selected{border-color:#ffd700;background:#1a2a00;box-shadow:0 0 8px #ffd70066}.titleSelectItem.locked{opacity:0.35;cursor:default;border-color:#222}.titleBadge{width:100%;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold;overflow:hidden}.titleBadgeText{font-size:9px;color:#aaa;text-align:center;line-height:1.2}.titleLockLabel{font-size:9px;color:#555}#oshiGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-height:340px;overflow-y:auto;margin-top:8px;padding:2px 2px 4px}.oshiItem{cursor:pointer;border-radius:10px;border:2px solid #1e2840;background:#0d1120;display:flex;flex-direction:column;align-items:center;overflow:hidden;transition:border-color 0.15s,box-shadow 0.15s}.oshiItem:active{transform:scale(0.95)}.oshiItem.selected{border-color:#ffd700;box-shadow:0 0 12px #ffd700aa;background:#1a1800}.oshiImgWrap{width:100%;aspect-ratio:1;position:relative;overflow:hidden;background:#111}.oshiImgWrap img{width:100%;height:100%;object-fit:cover;display:block}.oshiRarityDot{position:absolute;top:3px;right:4px;font-size:7px;color:#ffd700;text-shadow:0 0 4px #000,0 0 2px #000;font-weight:bold;letter-spacing:-1px;line-height:1}.oshiSelectedBadge{position:absolute;top:3px;left:4px;font-size:10px;line-height:1}.oshiItemName{width:100%;color:#ccc;font-size:9px;padding:4px 4px 5px;text-align:center;line-height:1.3;word-break:break-all;background:#0d1120}.profileTop3Row{display:flex;gap:6px;flex-wrap:nowrap}.profileTop3Card{flex:1;min-width:0;background:#0d1a28;border:1px solid #1a3050;border-radius:8px;padding:6px;text-align:center;overflow:hidden}.profileTop3Card img{width:44px;height:44px;object-fit:cover;border-radius:6px;margin-bottom:2px;display:block;margin:0 auto 3px}.profileTop3Medal{font-size:18px;margin-bottom:2px}.profileDivider{border:none;border-top:1px solid #1a1f2e;margin:6px 0}#missionModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:16000;justify-content:center;align-items:flex-start;padding-top:10px}#missionModal.open{display:flex}#missionBox{background:linear-gradient(160deg,#0a0d1a,#0d1028);border:2px solid #44cc88;border-radius:18px;padding:16px 14px 16px;max-width:400px;width:96%;text-align:center;position:relative;max-height:94vh;overflow-y:auto;box-shadow:0 0 40px #44cc8833,0 0 80px #44cc8811}.missionHeader{font-size:17px;font-weight:bold;color:#44cc88;letter-spacing:2px;margin-bottom:12px}.missionTabs{display:flex;gap:4px;margin-bottom:12px;justify-content:center;flex-wrap:wrap}.missionTab{padding:5px 12px;border-radius:8px;font-size:12px;font-weight:bold;border:1px solid #333;background:#111;color:#666;cursor:pointer;transition:0.15s}.missionTab.active{background:#1a3a20;border-color:#44cc88;color:#88ffaa}.missionCard{background:#0f1525;border:1px solid #1e2840;border-radius:12px;padding:10px 12px;margin-bottom:7px;text-align:left;position:relative}.missionCard.completed{border-color:#44cc8855;opacity:0.6}.missionCard.claimable{border-color:#ffd700;box-shadow:0 0 8px #ffd70044;animation:missionPulse 1.5s infinite alternate}@keyframes missionPulse{from{box-shadow:0 0 5px #ffd70044}to{box-shadow:0 0 14px #ffd700aa}}.missionTitle{font-size:13px;font-weight:bold;color:#fff;margin-bottom:4px}.missionDesc{font-size:11px;color:#8899aa;margin-bottom:6px;line-height:1.4}.missionProgress{display:flex;align-items:center;gap:6px;margin-bottom:6px}.missionProgBar{flex:1;height:6px;background:#222;border-radius:3px;overflow:hidden}.missionProgFill{height:100%;background:linear-gradient(90deg,#44cc88,#88ffaa);border-radius:3px;transition:width 0.4s}.missionProgText{font-size:10px;color:#aaa;white-space:nowrap}.missionReward{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.missionRewardBadge{font-size:11px;padding:2px 8px;border-radius:6px;font-weight:bold}.missionRewardStone{background:#1a1800;color:#ffd700;border:1px solid #ffd700}.missionRewardSP{background:#0d2010;color:#88ffaa;border:1px solid #44cc88}.missionRewardTitle{background:#10001a;color:#bb88ff;border:1px solid #aa44ff}.missionClaimBtn{margin-left:auto;background:linear-gradient(135deg,#ffd700,#ff9800);color:#000;border:none;border-radius:6px;padding:4px 12px;font-size:12px;font-weight:bold;cursor:pointer}.missionDoneLabel{margin-left:auto;font-size:11px;color:#44cc88;font-weight:bold}.missionStatLine{font-size:11px;color:#556;margin:2px 0}#missionStatsBox{background:#0a0d1a;border:1px solid #1a2a1a;border-radius:10px;padding:8px 10px;margin-bottom:10px;text-align:left}</style>
+@keyframes supportSparkUp{0%{opacity:0;transform:translateY(0) scale(0.6)}25%{opacity:1}100%{opacity:0;transform:translateY(-60px) scale(1.1)}}.ultra{box-shadow:0 0 25px cyan,0 0 40px magenta;animation:glow 1s infinite alternate}@keyframes glow{from{filter:brightness(1)}to{filter:brightness(1.6)}}.eventFlash{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#ff00cc,#3333ff,#00ffff);opacity:0.8;animation:eventFlash 0.8s forwards;z-index:999}@keyframes eventFlash{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.2)}}.banner{animation:bannerGlow 1.5s infinite alternate}@keyframes bannerGlow{from{filter:brightness(1)}to{filter:brightness(1.3)}}#gameTitle{width:200px;height:auto}.status{font-size:12px;margin:4px 0;min-height:14px}.loadingText{font-size:24px;color:#fff;animation:blink 1s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}.hitText{position:absolute;top:20%;left:50%;transform:translateX(-50%);font-size:clamp(11px,3vw,18px);font-weight:bold;color:#ffcc00;text-shadow:0 0 8px #000;animation:hitPop 0.8s forwards;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}.totalDamage{position:absolute;top:30%;left:50%;transform:translateX(-50%);font-size:clamp(14px,4vw,24px);font-weight:bold;color:#ff4444;text-shadow:0 0 10px #000;animation:totalPop 1s forwards;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}@keyframes hitPop{0%{opacity:0;transform:translate(-50%,0) scale(0.5)}30%{opacity:1;transform:translate(-50%,-10px) scale(1.2)}100%{opacity:0;transform:translate(-50%,-30px) scale(1)}}@keyframes totalPop{0%{opacity:0;transform:translate(-50%,0) scale(0.5)}30%{opacity:1;transform:translate(-50%,-10px) scale(1.3)}100%{opacity:0;transform:translate(-50%,-40px) scale(1)}}.dexRow{display:flex;align-items:center;background:#1a1f2e;margin:6px;padding:8px;border-radius:10px;gap:10px}.dexRow img{width:80px;height:80px;object-fit:cover;border-radius:8px}.dexText{text-align:left;font-size:14px}.statusRow{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px;min-height:18px}.sBadge{font-size:10px;padding:1px 4px;border-radius:4px;font-weight:bold}.sBurn{background:#ff4400;color:#fff}.sFreeze{background:#44bbff;color:#fff}.sShock{background:#ffdd00;color:#000}.sPoison{background:#aa44ff;color:#fff}.sShield{background:#44aaff;color:#fff}.sCounter{background:#ff8800;color:#fff}.sBuff{background:#44ff88;color:#000}.sDebuff{background:#8866ff;color:#fff}.sPassive{background:#1a3a1a;color:#88ff88;border:1px solid #44cc44}.roleBadge{display:inline-block;font-size:9px;padding:1px 5px;border-radius:4px;font-weight:bold;margin-bottom:2px}.role-attacker{background:#ff4444;color:#fff}.role-tank{background:#4488ff;color:#fff}.role-support{background:#44cc44;color:#fff}.role-debuffer{background:#aa44ff;color:#fff}.ctWrap{display:flex;align-items:center;gap:3px;margin-top:2px}.ctLabel{font-size:9px;color:#aaa;width:18px}.ctBar{flex:1;height:5px;background:#333;border-radius:3px;overflow:hidden}.ctFill{height:100%;background:linear-gradient(90deg,#ff9800,#ffcc00);border-radius:3px;transition:width 0.2s}.ctFillReady{height:100%;background:#44ff88;border-radius:3px;width:100%}.synergyText{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:clamp(12px,3.8vw,22px);font-weight:bold;color:#fff;text-shadow:0 0 20px #ff0088,0 0 10px #ff0088;animation:synergyPop 1.2s forwards;pointer-events:none;z-index:9998;text-align:center;white-space:normal;word-break:break-word;max-width:90vw;box-sizing:border-box;padding:0 8px;line-height:1.3}@keyframes synergyPop{0%{opacity:0;transform:translate(-50%,-50%) scale(0.5)}20%{opacity:1;transform:translate(-50%,-60%) scale(1.3)}80%{opacity:1;transform:translate(-50%,-65%) scale(1.1)}100%{opacity:0;transform:translate(-50%,-80%) scale(0.9)}}.gimmickRow{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}.gBadge{font-size:9px;padding:2px 5px;border-radius:4px;font-weight:bold;background:#333;color:#ffd700;border:1px solid #ffd700}.dmgBurn{color:#ff6600!important}.dmgFreeze{color:#44ddff!important}.dmgShock{color:#ffee00!important}.dmgSynergy{color:#ff00cc!important;font-size:clamp(16px,5.5vw,30px)!important}#skillModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:10000;justify-content:center;align-items:center}#skillModal.open{display:flex}#skillModalBox{background:#1a1f2e;border:2px solid #ffd700;border-radius:14px;padding:20px 24px;max-width:320px;width:90%;text-align:center;position:relative}#skillModalBox img{width:80px;height:80px;object-fit:cover;border-radius:10px;margin-bottom:8px}#skillModalName{font-size:16px;font-weight:bold;margin-bottom:6px}#skillModalText{font-size:14px;color:#ffd700;margin-bottom:6px;line-height:1.5}#skillModalCT{font-size:12px;color:#aaa;margin-bottom:12px}#skillModalClose{background:#333;color:#fff;border:none;border-radius:8px;padding:6px 20px;cursor:pointer;font-size:14px}.skillBtn{margin-top:4px;background:#2a3a5a;color:#ffd700;border:1px solid #ffd700;border-radius:6px;padding:2px 8px;font-size:11px;cursor:pointer}#skillTreeModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:10001;justify-content:center;align-items:center}#skillTreeModal.open{display:flex}#skillTreeBox{background:#0d1120;border:2px solid #44cc88;border-radius:16px;padding:18px 14px;max-width:340px;width:92%;text-align:center;position:relative;max-height:88vh;overflow-y:auto}.stNode{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:88px;min-height:72px;border-radius:10px;padding:5px 4px;font-size:10px;border:2px solid #444;background:#111;color:#666;margin:3px;transition:0.2s;cursor:not-allowed}.stNode.unlocked{background:#1a3a20;border-color:#ffd700;color:#ffd700;box-shadow:0 0 8px #ffd70066;cursor:default}.stNode.available{border-color:#44cc88;background:#0d2010;color:#88ffaa;cursor:pointer;animation:stPulse 1.6s infinite alternate}.stNode.skipped{background:#0d0d0d;border-color:#333;color:#333;cursor:default;opacity:0.4}@keyframes stPulse{from{box-shadow:0 0 3px #44cc88}to{box-shadow:0 0 12px #44cc88,0 0 20px #44cc8844}}.stNodeLabel{font-weight:bold;font-size:11px;margin-bottom:2px}.stNodeBonus{font-size:9px;color:#aaffcc;line-height:1.3}.stNodeCost{font-size:9px;color:#ffd700;margin-top:3px}.stRow{display:flex;justify-content:center;gap:4px;margin:3px 0;flex-wrap:wrap}.stArrow{text-align:center;color:#44cc88;font-size:13px;line-height:1.2;margin:1px 0}.stNode.locked_sp{border-color:#aa6600;background:#1a1000;color:#aa7700;cursor:pointer}.stStageHeader{font-size:11px;font-weight:bold;color:#ffd700;background:linear-gradient(90deg,#1a1200,#2a2000,#1a1200);border:1px solid #443300;border-radius:6px;padding:3px 10px;margin:4px 0 2px;letter-spacing:1px}.stStageHeader.done{color:#44cc88;border-color:#224422;background:linear-gradient(90deg,#0a1a0a,#112011,#0a1a0a)}.stStageHeader.locked{color:#555;border-color:#333;background:#111}.spBadge{display:inline-block;background:linear-gradient(135deg,#1a3a1a,#0d2010);border:1px solid #44cc88;color:#88ffaa;border-radius:8px;padding:3px 10px;font-size:12px;font-weight:bold;margin:4px 0}#profileModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:15000;justify-content:center;align-items:flex-start;padding-top:10px}#profileModal.open{display:flex}#profileBox{background:linear-gradient(160deg,#0a0d1a,#0d1028);border:2px solid #ffd700;border-radius:18px;padding:16px 14px 16px;max-width:380px;width:96%;text-align:center;position:relative;max-height:94vh;overflow-y:auto;box-shadow:0 0 40px #ffd70033,0 0 80px #ffd70011}.profileHeader{font-size:17px;font-weight:bold;color:#ffd700;letter-spacing:2px;margin-bottom:12px}#profileBanner{background:linear-gradient(135deg,#1a1500,#2a2200,#1a1500);border:1px solid #ffd700;border-radius:12px;padding:10px 12px;margin-bottom:10px;display:flex;align-items:center;gap:10px}#profileBannerOshiIcon{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #ffd700;flex-shrink:0;background:#222}#profileBannerOshiIconEmpty{width:56px;height:56px;border-radius:50%;border:2px dashed #555;background:#111;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}#profileBannerRight{text-align:left;flex:1;min-width:0}#profileBannerName{font-size:16px;font-weight:bold;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#profileBannerTitleImg{margin-top:4px;max-width:100%;height:28px;object-fit:contain;display:block}.profileCard{background:#0f1525;border:1px solid #1e2840;border-radius:12px;padding:10px 12px;margin-bottom:8px;text-align:left}.profileLabel{font-size:9px;color:#556;letter-spacing:1.5px;margin-bottom:6px;text-transform:uppercase;font-weight:bold}.profileValue{font-size:14px;font-weight:bold;color:#fff}.profileValueGold{color:#ffd700}.profileValueGreen{color:#44ff88}.profileValueBlue{color:#44aaff}.profileInputRow{display:flex;align-items:center;gap:6px}.profileInput{flex:1;background:#1a1f2e;color:#fff;border:1px solid #333;border-radius:6px;padding:7px 10px;font-size:14px;outline:none}.profileInput:focus{border-color:#ffd700}.profileSaveBtn{background:linear-gradient(135deg,#ffd700,#ff9800);color:#000;border:none;border-radius:6px;padding:7px 14px;font-size:12px;font-weight:bold;cursor:pointer;white-space:nowrap}#titleSelectGrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;max-height:200px;overflow-y:auto}.titleSelectItem{background:#0d1a30;border:2px solid #1e3050;border-radius:8px;padding:6px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:0.15s}.titleSelectItem:hover{border-color:#ffd70088}.titleSelectItem.selected{border-color:#ffd700;background:#1a2a00;box-shadow:0 0 8px #ffd70066}.titleSelectItem.locked{opacity:0.35;cursor:default;border-color:#222}.titleBadge{width:100%;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold;overflow:hidden}.titleBadgeText{font-size:9px;color:#aaa;text-align:center;line-height:1.2}.titleLockLabel{font-size:9px;color:#555}#oshiGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-height:340px;overflow-y:auto;margin-top:8px;padding:2px 2px 4px}.oshiItem{cursor:pointer;border-radius:10px;border:2px solid #1e2840;background:#0d1120;display:flex;flex-direction:column;align-items:center;overflow:hidden;transition:border-color 0.15s,box-shadow 0.15s}.oshiItem:active{transform:scale(0.95)}.oshiItem.selected{border-color:#ffd700;box-shadow:0 0 12px #ffd700aa;background:#1a1800}.oshiImgWrap{width:100%;aspect-ratio:1;position:relative;overflow:hidden;background:#111}.oshiImgWrap img{width:100%;height:100%;object-fit:cover;display:block}.oshiRarityDot{position:absolute;top:3px;right:4px;font-size:7px;color:#ffd700;text-shadow:0 0 4px #000,0 0 2px #000;font-weight:bold;letter-spacing:-1px;line-height:1}.oshiSelectedBadge{position:absolute;top:3px;left:4px;font-size:10px;line-height:1}.oshiItemName{width:100%;color:#ccc;font-size:9px;padding:4px 4px 5px;text-align:center;line-height:1.3;word-break:break-all;background:#0d1120}.profileTop3Row{display:flex;gap:6px;flex-wrap:nowrap}.profileTop3Card{flex:1;min-width:0;background:#0d1a28;border:1px solid #1a3050;border-radius:8px;padding:6px;text-align:center;overflow:hidden}.profileTop3Card img{width:44px;height:44px;object-fit:cover;border-radius:6px;margin-bottom:2px;display:block;margin:0 auto 3px}.profileTop3Medal{font-size:18px;margin-bottom:2px}.profileDivider{border:none;border-top:1px solid #1a1f2e;margin:6px 0}#missionModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:16000;justify-content:center;align-items:flex-start;padding-top:10px}#missionModal.open{display:flex}#missionBox{background:linear-gradient(160deg,#0a0d1a,#0d1028);border:2px solid #44cc88;border-radius:18px;padding:16px 14px 16px;max-width:400px;width:96%;text-align:center;position:relative;max-height:94vh;overflow-y:auto;box-shadow:0 0 40px #44cc8833,0 0 80px #44cc8811}.missionHeader{font-size:17px;font-weight:bold;color:#44cc88;letter-spacing:2px;margin-bottom:12px}.missionTabs{display:flex;gap:4px;margin-bottom:12px;justify-content:center;flex-wrap:wrap}.missionTab{padding:5px 12px;border-radius:8px;font-size:12px;font-weight:bold;border:1px solid #333;background:#111;color:#666;cursor:pointer;transition:0.15s}.missionTab.active{background:#1a3a20;border-color:#44cc88;color:#88ffaa}.missionCard{background:#0f1525;border:1px solid #1e2840;border-radius:12px;padding:10px 12px;margin-bottom:7px;text-align:left;position:relative}.missionCard.completed{border-color:#44cc8855;opacity:0.6}.missionCard.claimable{border-color:#ffd700;box-shadow:0 0 8px #ffd70044;animation:missionPulse 1.5s infinite alternate}@keyframes missionPulse{from{box-shadow:0 0 5px #ffd70044}to{box-shadow:0 0 14px #ffd700aa}}.missionTitle{font-size:13px;font-weight:bold;color:#fff;margin-bottom:4px}.missionDesc{font-size:11px;color:#8899aa;margin-bottom:6px;line-height:1.4}.missionProgress{display:flex;align-items:center;gap:6px;margin-bottom:6px}.missionProgBar{flex:1;height:6px;background:#222;border-radius:3px;overflow:hidden}.missionProgFill{height:100%;background:linear-gradient(90deg,#44cc88,#88ffaa);border-radius:3px;transition:width 0.4s}.missionProgText{font-size:10px;color:#aaa;white-space:nowrap}.missionReward{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.missionRewardBadge{font-size:11px;padding:2px 8px;border-radius:6px;font-weight:bold}.missionRewardStone{background:#1a1800;color:#ffd700;border:1px solid #ffd700}.missionRewardSP{background:#0d2010;color:#88ffaa;border:1px solid #44cc88}.missionRewardTitle{background:#10001a;color:#bb88ff;border:1px solid #aa44ff}.missionClaimBtn{margin-left:auto;background:linear-gradient(135deg,#ffd700,#ff9800);color:#000;border:none;border-radius:6px;padding:4px 12px;font-size:12px;font-weight:bold;cursor:pointer}.missionDoneLabel{margin-left:auto;font-size:11px;color:#44cc88;font-weight:bold}.missionStatLine{font-size:11px;color:#556;margin:2px 0}#missionStatsBox{background:#0a0d1a;border:1px solid #1a2a1a;border-radius:10px;padding:8px 10px;margin-bottom:10px;text-align:left}.battleLogPanel{background:#0a0d16;border:1px solid #2a3550;border-radius:10px;margin-top:8px;overflow:hidden}.battleLogHeader{display:flex;justify-content:space-between;align-items:center;padding:6px 12px;background:linear-gradient(90deg,#151c30,#1a2340);color:#ffd700;font-size:12px;font-weight:bold;letter-spacing:1px;cursor:pointer;user-select:none}.battleLogList{max-height:150px;overflow-y:auto;padding:4px 10px;font-size:11px;line-height:1.5;color:#cdd6f0}.battleLogPanel.collapsed .battleLogList{display:none}.logEntry{padding:3px 0;border-bottom:1px solid #1a2340;word-break:break-word}.logEntry:last-child{border-bottom:none}.logEntry.logUltimate{color:#ff88ff;font-weight:bold}.logEntry.logSkill{color:#88ccff}.logEntry.logDmg{color:#ffaa66}.logEntry.logSystem{color:#88ff99}</style>
 </head>
 
 <body>
@@ -537,6 +537,7 @@
   { members:["リボルト","黒瀬武人"],       emoji:"🌿🌑", name:"久神と武人",         desc:"ATK+20% HP+15%",   atk:20, hp:15 },
   { members:["アステレス","バルナウス"],   emoji:"🌟🌀", name:"神聖旋風",         desc:"ATK+22% HP+10%",   atk:22, hp:10 },
   { members:["ホーレン","ボムブ"],         emoji:"🌸💣", name:"花火爆発",         desc:"ATK+25% HP+5%",    atk:25, hp:5  },
+  { members:["返網転","死橋凪"],       emoji:"🔄🌬", name:"二人の鎌使い",   desc:"ATK+18% HP+10%",   atk:18, hp:10 },
   { members:["ヒナル","マタイ"],           emoji:"🌸🌟", name:"暗殺の炎",         desc:"ATK+22%",          atk:22, hp:0  },
   { members:["ヒナル","黒峰天音"],           emoji:"🌸🎵", name:"双炎",         desc:"ATK+18% HP+18%",   atk:18, hp:18 },
   { members:["和辺重治","和辺重信"],           emoji:"🌊🗡", name:"双子の絆",         desc:"ATK+18% HP+18%",   atk:18, hp:18 },
@@ -565,6 +566,10 @@ const WEAPON_SYNERGY_DEFS = [
   { weapon:"神に届く力",  chars:["FqEa","弐呪刻"],                     emoji:"✨⚡", name:"神域への道",       desc:"ATK+12% HP+6%",         atk:12, hp:6  },
   { weapon:"英雄の記録",  chars:["甲斐翔也","赤羽悠真"],                     emoji:"🦅💙", name:"双雄",       desc:"ATK+10% HP+8%",         atk:10, hp:8  },
   { weapon:"海辺の二人の神",  chars:["アステレス","バルナウス"],                     emoji:"🌟🌀", name:"出港準備",       desc:"ATK+5% HP+13%",         atk:5, hp:13  },
+  { weapon:"後進育成",  chars:["跳田収滋","オリバー"],                     emoji:"🌿💨", name:"教育係",       desc:"ATK+15% HP+3%",         atk:15, hp:3  },
+  { weapon:"狙撃術の活用",  chars:["蒼井朔也","石倉有栖"],                     emoji:"🌀⚡", name:"強者の愉悦",       desc:"ATK+8% HP+10%",         atk:8, hp:10  },
+  { weapon:"美酒に溺れて",  chars:["ミニモータ","ソーメーン"],                     emoji:"🕹🌀", name:"味を求めて",       desc:"ATK+7% HP+11%",         atk:7, hp:11  },
+  { weapon:"潜入準備",  chars:["黒峰天音","晴海亨"],                     emoji:"🎵🌅", name:"任務成功",       desc:"ATK+18% HP+0%",         atk:18, hp:0  },
 ];
 
 function getActiveWeaponSynergies(team){
@@ -1454,6 +1459,12 @@ function renderSynergyListModal(){
 <div id="enemyArea"></div>
 </div>
 <div id="actions"></div>
+<div id="battleLogPanel" class="battleLogPanel" style="display:none;">
+  <div id="battleLogHeader" class="battleLogHeader" onclick="toggleBattleLog()">
+    <span>📜 ログ</span><span id="battleLogToggleIcon">▲</span>
+  </div>
+  <div id="battleLogList" class="battleLogList"></div>
+</div>
 </div>
 
 <script>function applyTeamBuff(players){
@@ -1875,6 +1886,195 @@ passive:{type:"tank_passive",value:0.1,text:"🛡守護：常時被ダメを10%�
 skill:{text:"スキルなし"},
 passive:{type:"burn_on_attack",chance:0.2,power:0.12,turn:1,text:"🔥炎将：攻撃時20%で燃焼付与(1T)"}},
 ];
+// ===== 必殺技個性データ =====
+// 各キャラ固有の必殺技名・威力倍率・追加効果を定義。
+// fx タイプ: burn/poison/shock/freeze/debuff/teamBuff/healAll/healSelf/
+//           shieldAll/shieldSelf/selfBuff/cleanseAllies/multihit/
+//           executeBonus(敵HP割合以下で威力増)/selfLowHpBonus(自HP割合以下で威力増)
+const ULTIMATES = {
+"室井元武":{title:"闘志爆砕拳",mult:3.2,fx:[{t:"burn",pw:0.5,tn:3}]},
+"栗島トウヤ":{title:"奔流電撃",mult:3.0,fx:[{t:"shock",tn:3}]},
+"鈴鹿":{title:"癒しの森羅",mult:1.8,fx:[{t:"healAll",pw:0.3}]},
+"死橋轟":{title:"雷撃粉砕",mult:3.2,fx:[{t:"shock",tn:3}]},
+"沢華":{title:"深淵浸食波",mult:2.6,fx:[{t:"debuff",pw:0.35,tn:3}]},
+"阿波牛壬陸":{title:"猛毒烈打",mult:3.0,fx:[{t:"poison",pw:0.3,tn:3}]},
+"阿波牛星夜":{title:"渦流爆砕撃",mult:3.0,fx:[{t:"selfLowHpBonus",th:0.5,bonus:0.5}]},
+"コード5.2":{title:"焼却プロトコル",mult:3.4,fx:[{t:"burn",pw:0.6,tn:3}]},
+"FqEa":{title:"過負荷連撃砲",mult:2.2,fx:[{t:"multihit",n:3,pw:0.55},{t:"shock",tn:2}]},
+"湯照司吉基":{title:"猛毒帝国宣言",mult:2.6,fx:[{t:"poison",pw:0.45,tn:4}]},
+"明石啓希":{title:"炎の号令",mult:2.0,fx:[{t:"teamBuff",pw:0.5,tn:3}]},
+"珠濃雅紀":{title:"癒しの奔流",mult:1.8,fx:[{t:"healAll",pw:0.4}]},
+"黒峰天音":{title:"業炎乱舞",mult:3.3,fx:[{t:"burn",pw:0.7,tn:3}]},
+"晴海亨":{title:"草原の呪縛",mult:2.4,fx:[{t:"debuff",pw:0.3,tn:3},{t:"poison",pw:0.15,tn:2}]},
+"甲斐翔也":{title:"連撃の極意",mult:2.6,fx:[{t:"multihit",n:2,pw:0.5}]},
+"赤羽悠真":{title:"雷光治癒陣",mult:1.8,fx:[{t:"healAll",pw:0.45},{t:"shock",tn:1}]},
+"桜木彰":{title:"紅蓮の癒し",mult:1.8,fx:[{t:"healAll",pw:0.4},{t:"burn",pw:0.2,tn:2}]},
+"八並解徒":{title:"蔦絡めの縛法",mult:2.5,fx:[{t:"debuff",pw:0.35,tn:3},{t:"freeze",tn:1}]},
+"玉垣剣城":{title:"雷帝乱舞撃",mult:3.4,fx:[{t:"shock",tn:3}]},
+"蒼井朔也":{title:"猛火の激励",mult:2.0,fx:[{t:"teamBuff",pw:0.6,tn:3}]},
+"石倉有栖":{title:"大地の恵み",mult:1.8,fx:[{t:"healAll",pw:0.5},{t:"cleanseAllies"}]},
+"ミニモータ":{title:"猛毒連撃砲",mult:2.4,fx:[{t:"multihit",n:3,pw:0.35},{t:"poison",pw:0.2,tn:2}]},
+"ソーメーン":{title:"雷毒暴走撃",mult:2.8,fx:[{t:"poison",pw:0.5,tn:3},{t:"shock",tn:2}]},
+"跳田収滋":{title:"重圧の水流",mult:2.6,fx:[{t:"debuff",pw:0.4,tn:3}]},
+"オリバー":{title:"絶対零度撃",mult:2.6,fx:[{t:"freeze",tn:2}]},
+"弐呪刻":{title:"十連水牙撃",mult:1.8,fx:[{t:"multihit",n:6,pw:0.3}]},
+"黒瀬武人":{title:"覇王断",mult:3.8,fx:[{t:"executeBonus",th:0.8,bonus:0.2}]},
+"フセイン":{title:"雷神の裁き",mult:2.8,fx:[{t:"debuff",pw:0.5,tn:3},{t:"shock",tn:2}]},
+"リボルト":{title:"森羅万象の加護",mult:1.8,fx:[{t:"teamBuff",pw:0.7,tn:3},{t:"healAll",pw:0.15}]},
+"死橋凪":{title:"焦熱絶滅撃",mult:4.2,fx:[{t:"burn",pw:0.5,tn:3}]},
+"アステレス":{title:"奇跡の泉",mult:1.6,fx:[{t:"healAll",pw:0.6},{t:"cleanseAllies"}]},
+"バルナウス":{title:"業火猛毒撃",mult:2.6,fx:[{t:"burn",pw:0.6,tn:3},{t:"poison",pw:0.35,tn:3}]},
+"室井元武(β)":{title:"珍古砲・極",mult:3.4,fx:[{t:"selfBuff",pw:0.3,tn:3}]},
+"栗島トウヤ(β)":{title:"猛毒臨界爆発",mult:2.4,fx:[{t:"poison",pw:0.55,tn:4}]},
+"死橋轟(β)":{title:"水鏡乱舞",mult:2.6,fx:[{t:"shock",tn:3},{t:"multihit",n:2,pw:0.4}]},
+"阿波牛星夜(β)":{title:"逆境業火",mult:2.8,fx:[{t:"shieldSelf",pw:0.3,tn:3},{t:"selfLowHpBonus",th:0.7,bonus:0.4}]},
+"コード5.2(β)":{title:"光炎ヒートエンド",mult:3.6,fx:[{t:"burn",pw:0.6,tn:3}]},
+"FqEa(β)":{title:"時間崩壊・臨界",mult:3.2,fx:[{t:"debuff",pw:0.4,tn:2}]},
+"黒峰天音(β)":{title:"暴走業炎鎧",mult:3.6,fx:[{t:"burn",pw:0.8,tn:3}]},
+"甲斐翔也(β)":{title:"完全模倣・極",mult:2.8,fx:[{t:"selfBuff",pw:0.3,tn:3}]},
+"玉垣剣城(β)":{title:"神速剣閃・皆伝",mult:3.0,fx:[{t:"multihit",n:3,pw:0.4}]},
+"蒼井朔也(β)":{title:"狙撃・皆中",mult:3.0,fx:[{t:"multihit",n:4,pw:0.5}]},
+"石倉有栖(β)":{title:"永久烙印",mult:2.2,fx:[{t:"debuff",pw:0.3,tn:5}]},
+"ミニモータ(β)":{title:"限界成長突破",mult:3.0,fx:[{t:"selfBuff",pw:0.4,tn:4},{t:"healSelf",pw:0.15}]},
+"ソーメーン(β)":{title:"雷神鎧・全開",mult:3.2,fx:[{t:"shock",tn:3},{t:"healSelf",pw:0.15}]},
+"跳田収滋(β)":{title:"水盾の号令",mult:2.0,fx:[{t:"shieldAll",pw:0.25,tn:3}]},
+"オリバー(β)":{title:"氷光完全模倣",mult:2.8,fx:[{t:"freeze",tn:2},{t:"shieldSelf",pw:0.3,tn:3}]},
+"湯照司吉基(β)":{title:"侵蝕・極",mult:3.2,fx:[{t:"poison",pw:0.4,tn:3},{t:"debuff",pw:0.3,tn:3}]},
+"黒瀬武人(β)":{title:"天撃・覇界",mult:3.6,fx:[{t:"executeBonus",th:0.7,bonus:0.3}]},
+"明石啓希(β)":{title:"暴走解錠・臨界",mult:3.0,fx:[{t:"selfBuff",pw:0.5,tn:3},{t:"healSelf",pw:0.2}]},
+"珠濃雅紀(β)":{title:"完全再構築",mult:2.0,fx:[{t:"healAll",pw:0.4},{t:"shieldAll",pw:0.2,tn:2}]},
+"鈴鹿(β)":{title:"至福の祝福",mult:2.0,fx:[{t:"teamBuff",pw:0.3,tn:3},{t:"healAll",pw:0.25}]},
+"沢華(β)":{title:"竹取乱舞",mult:2.6,fx:[{t:"debuff",pw:0.4,tn:3},{t:"healSelf",pw:0.2}]},
+"阿波牛壬陸(β)":{title:"盛者必衰の理",mult:2.8,fx:[{t:"debuff",pw:0.3,tn:3}]},
+"赤羽悠真(β)":{title:"幸運絶頂",mult:2.4,fx:[{t:"teamBuff",pw:0.4,tn:3},{t:"healAll",pw:0.25}]},
+"晴海亨(β)":{title:"完全視覚共有",mult:2.6,fx:[{t:"debuff",pw:0.35,tn:3},{t:"shieldAll",pw:0.15,tn:3}]},
+"桜木彰(β)":{title:"完全反撃態勢",mult:3.0,fx:[{t:"shieldSelf",pw:0.4,tn:3}]},
+"八並解徒(β)":{title:"一触即発・極",mult:2.8,fx:[{t:"debuff",pw:0.3,tn:3},{t:"shock",tn:2}]},
+"ゲガント":{title:"猛毒一閃",mult:2.4,fx:[{t:"poison",pw:0.2,tn:2}]},
+"ホーレン":{title:"水衝撃波",mult:2.4,fx:[{t:"healSelf",pw:0.1}]},
+"ボムブ":{title:"大爆炎",mult:2.6,fx:[{t:"burn",pw:0.35,tn:2}]},
+"霊剛":{title:"霊雷撃",mult:2.4,fx:[{t:"shock",tn:2}]},
+"安村康夫":{title:"根性の一撃",mult:2.6,fx:[{t:"selfBuff",pw:0.2,tn:2}]},
+"返網転":{title:"水流連打",mult:2.4,fx:[{t:"shock",tn:1}]},
+"和辺重治":{title:"稲妻一閃",mult:2.4,fx:[{t:"shock",tn:2}]},
+"和辺重信":{title:"木毒の矢",mult:2.4,fx:[{t:"poison",pw:0.15,tn:2}]},
+"ヒナル":{title:"閃光乱撃",mult:2.4,fx:[{t:"shock",tn:2}]},
+"マタイ":{title:"鉄壁咆哮",mult:1.8,fx:[{t:"shieldAll",pw:0.2,tn:2}]},
+"ログフ":{title:"炎将の一撃",mult:2.6,fx:[{t:"burn",pw:0.3,tn:2}]},
+};
+const DEFAULT_ULTIMATE = {title:"渾身の一撃",mult:3.0,fx:[]};
+function getUltimateData(p){
+  return ULTIMATES[p.name] || DEFAULT_ULTIMATE;
+}
+function _ultFxLabel(fx, p){
+  switch(fx.t){
+    case "burn": return "🔥 敵に燃焼を刻んだ！";
+    case "poison": return "☠ 敵に猛毒を撒いた！";
+    case "shock": return "⚡ 敵を感電させた！";
+    case "freeze": return "❄ 敵を凍結させた！";
+    case "debuff": return "⬇ 敵を大幅に弱体化させた！";
+    case "teamBuff": return "🔥 味方全体の士気が上昇！";
+    case "healAll": return "💚 味方全体を癒した！";
+    case "healSelf": return "💚 " + p.name + "自身の傷を癒した！";
+    case "shieldAll": return "🛡 味方全体に盾を展開！";
+    case "shieldSelf": return "🛡 " + p.name + "に盾を展開！";
+    case "selfBuff": return "💪 " + p.name + "の力が漲る！";
+    case "cleanseAllies": return "✨ 味方の状態異常を浄化！";
+    case "multihit": return "⚔ 追撃×" + (fx.n||1) + "！";
+    default: return "";
+  }
+}
+function applyUltFx(p, atk, fx){
+  if(!enemy) return;
+  switch(fx.t){
+    case "burn": {
+      if(!enemy.burns) enemy.burns = [];
+      enemy.burns.push({ power: atk * fx.pw, turn: fx.tn || 2 });
+      enemy.burnPower = enemy.burns.reduce((a,b)=>a+b.power,0);
+      enemy.burnTurn = Math.max(...enemy.burns.map(b=>b.turn));
+      break;
+    }
+    case "poison": {
+      if(!enemy.poisons) enemy.poisons = [];
+      enemy.poisons.push({ power: fx.pw, turn: fx.tn || 2, user: p });
+      break;
+    }
+    case "shock": {
+      enemy.shockTurn = Math.max(enemy.shockTurn||0, fx.tn || 2);
+      break;
+    }
+    case "freeze": {
+      enemy.freezeTurn = Math.max(enemy.freezeTurn||0, fx.tn || 1);
+      break;
+    }
+    case "debuff": {
+      if(!enemy.debuffs) enemy.debuffs = [];
+      enemy.debuffs.push({ power: 1 - fx.pw, turn: fx.tn || 3 });
+      enemy.debuffPower = enemy.debuffs.reduce((a,d)=>a*d.power,1);
+      enemy.debuffTurn = Math.max(...enemy.debuffs.map(d=>d.turn));
+      break;
+    }
+    case "teamBuff": {
+      players.forEach(pl=>{
+        if(!pl.buffs) pl.buffs = [];
+        pl.buffs.push({ power: 1 + fx.pw, turn: fx.tn || 3 });
+      });
+      break;
+    }
+    case "healAll": {
+      players.forEach((pl,pi)=>{
+        let healAmt = pl.hp * fx.pw;
+        pl.currentHp = Math.min(pl.hp, pl.currentHp + healAmt);
+        setTimeout(()=>showDamage("p"+pi, {dmg:healAmt, type:"heal"}), 50 + pi*60);
+      });
+      break;
+    }
+    case "healSelf": {
+      let healAmt = p.hp * fx.pw;
+      p.currentHp = Math.min(p.hp, p.currentHp + healAmt);
+      let pi = players.indexOf(p);
+      setTimeout(()=>showDamage("p"+(pi>=0?pi:turnIndex), {dmg:healAmt, type:"heal"}), 50);
+      break;
+    }
+    case "shieldAll": {
+      players.forEach(pl=>{
+        if(!pl.shields) pl.shields = [];
+        pl.shields.push({ turn: fx.tn || 3, power: fx.pw });
+      });
+      break;
+    }
+    case "shieldSelf": {
+      if(!p.shields) p.shields = [];
+      p.shields.push({ turn: fx.tn || 3, power: fx.pw });
+      break;
+    }
+    case "selfBuff": {
+      if(!p.buffs) p.buffs = [];
+      p.buffs.push({ power: 1 + fx.pw, turn: fx.tn || 3 });
+      break;
+    }
+    case "cleanseAllies": {
+      players.forEach(pl=>{
+        pl.burnTurn = 0;
+        pl.shockTurn = 0;
+        pl.freezeTurn = 0;
+      });
+      break;
+    }
+    case "multihit": {
+      let n = fx.n || 1;
+      for(let fi=0; fi<n; fi++){
+        let fres = calcDamage(p.attr, enemy.attr, atk * (fx.pw||0.3));
+        fres = applySkillCrit(fres, p);
+        enemy.hp -= fres.dmg;
+        setTimeout(()=>{ showDamage("enemy", fres, {fast:true, random:true}); }, 220 + fi*90);
+      }
+      break;
+    }
+  }
+  let label = _ultFxLabel(fx, p);
+  if(label) showSynergyText(label);
+}
 const eventChars = [
 {name:"コード5.2🍖",rarity:4,attr:"雷",img:"https://imgur.com/IZIJSZf.png",role:"attacker",
 skill:{type:"damage", power:4.5, text:"450%ダメージ",cool:3},
@@ -2278,6 +2478,46 @@ rarity:3,
 effect:"poison",
 skill:{type:"dual", power:1.6, healRate:0.15, shockChance:0.40, text:"双神の凪波: ATK160%ダメ＋全体HP15%回復＋40%感電付与", cool:3},
 passive:{type:"dual_guardian", hpThreshold:0.6, atkBoost:0.20, healRate:0.05, text:"🌊潮鏡の加護：HP60%以上→与ダメ+20%、HP60%未満→毎T味方全体HP5%回復"}
+},
+{
+name:"後進育成",
+img:"https://imgur.com/Pi1QEEQ.png",
+atk:20,
+hp:130,
+rarity:3,
+effect:"poison",
+skill:{type:"shield", power:0.3, turn:3, text:"3T自身被ダメ30%軽減", weaponCool:3},
+passive:{type:"weapon_regen3t", value:0.08, text:"📖後進育成：戦闘開始から3Tの間、毎ターン味方全体HP8%回復"}
+},
+{
+name:"狙撃術の活用",
+img:"https://imgur.com/RCVvkRb.png",
+atk:115,
+hp:35,
+rarity:3,
+effect:"poison",
+skill:{type:"damage", power:2.0, text:"精密狙撃：200%ダメージ", weaponCool:3},
+passive:{type:"shock_on_attack", chance:0.4, text:"🎯精密射撃：攻撃時40%で感電付与+感電中の敵への与ダメ+25%"}
+},
+{
+name:"美酒に溺れて",
+img:"https://imgur.com/zTY2eFH.png",
+atk:15,
+hp:135,
+rarity:3,
+effect:"poison",
+skill:{type:"heal", power:0.35, text:"美酒の宴：味方全体HP35%回復", weaponCool:3},
+passive:{type:"heal_on_damaged", value:0.08, text:"🍶美酒の余韻：味方が被弾する度、その味方のHPを8%回復"}
+},
+{
+name:"潜入準備",
+img:"https://imgur.com/xSMjCL4.png",
+atk:75,
+hp:75,
+rarity:3,
+effect:"poison",
+skill:{type:"debuff", power:0.75, text:"潜入準備：敵弱体25%(3T)", weaponCool:3},
+passive:{type:"debuff_power_up", value:0.15, text:"🕶周到な下準備：デバフ効果を15%増幅"}
 }
 ];
 const rewardChar = [
@@ -4144,7 +4384,20 @@ if(p.buffs){
         atk *= b.power;
     });
 }
-let res = calcDamage(p.attr, enemy.attr, atk * 3);
+let U = getUltimateData(p);
+let effMult = U.mult;
+let statusFx = [];
+(U.fx||[]).forEach(fx=>{
+  if(fx.t==="selfLowHpBonus"){
+    if(p.hp > 0 && (p.currentHp/p.hp) <= fx.th) effMult += fx.bonus;
+  } else if(fx.t==="executeBonus"){
+    if(enemy.maxHp > 0 && (enemy.hp/enemy.maxHp) <= fx.th) effMult += fx.bonus;
+  } else {
+    statusFx.push(fx);
+  }
+});
+addBattleLog(`✨ ${p.name}の必殺「${U.title}」発動！`, "logUltimate");
+let res = calcDamage(p.attr, enemy.attr, atk * effMult);
 if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
 if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
 let _ksU = p.kokuShoku||0; if(_ksU>0) res.dmg=Math.floor(res.dmg*(1+0.12*_ksU));
@@ -4163,11 +4416,13 @@ setTimeout(()=>{
         type: "ultimate",
         charName: p.name
     });
+    addBattleLog(`💥 ${enemy.name}に${Math.floor(res.dmg)}ダメージ！`, "logDmg");
 },10);
 if(enemy.hp <= 0){
     setTimeout(()=>win(), 600);
     return;
 }
+statusFx.forEach(fx=>applyUltFx(p, atk, fx));
 if(p.skill && p.skill.type==="chinkoPo"){
     p.chinkoPoCount = Math.min(10, (p.chinkoPoCount||0) + 1);
 }
@@ -4185,6 +4440,7 @@ if(p.skill && p.skill.type==="kenSword"){
     }
     if(sc>0){ showSynergyText("⚔ 神速の剣術！剣×"+sc+"追撃！"+(followBonus>0?"(強化中)":"")); renderBattle(); }
 }
+renderBattle();
 endTurn();
 }
 const _synergyQueue = [];
@@ -4206,8 +4462,32 @@ function _processSynergyQueue(){
 }
 function showSynergyText(text){
   if(!_battleScreenActive) return;
+  addBattleLog(text);
   _synergyQueue.push(text);
   if(!_synergyActive) _processSynergyQueue();
+}
+// ===== バトルログ =====
+let battleLogEntries = [];
+function addBattleLog(text, cls){
+  if(!_battleScreenActive) return;
+  battleLogEntries.push({text, cls: cls||""});
+  if(battleLogEntries.length > 60) battleLogEntries.shift();
+  renderBattleLogPanel();
+}
+function renderBattleLogPanel(){
+  const el = document.getElementById("battleLogList");
+  if(!el) return;
+  el.innerHTML = battleLogEntries.slice(-20).reverse().map(e=>
+    `<div class="logEntry ${e.cls||""}">${e.text}</div>`
+  ).join("") || `<div class="logEntry" style="color:#556;">まだログはありません</div>`;
+}
+let _battleLogCollapsed = false;
+function toggleBattleLog(){
+  _battleLogCollapsed = !_battleLogCollapsed;
+  const panel = document.getElementById("battleLogPanel");
+  const icon = document.getElementById("battleLogToggleIcon");
+  if(panel) panel.classList.toggle("collapsed", _battleLogCollapsed);
+  if(icon) icon.textContent = _battleLogCollapsed ? "▼" : "▲";
 }
 function checkSynergy(p, atk){
   if(enemy.poisons && enemy.poisons.length>0 && enemy.burnTurn>0){
@@ -4888,6 +5168,12 @@ function triggerTurnStartPassive(){
 function triggerDamagedPassive(target){
   if(target.currentHp <= 0) return;
   players.forEach((p)=>{
+    if(p.weaponPassive && p.weaponPassive.type === "heal_on_damaged"){
+      let healAmt = Math.floor(target.hp * p.weaponPassive.value);
+      target.currentHp = Math.min(target.hp, target.currentHp + healAmt);
+      let wti = players.indexOf(target);
+      if(wti>=0) setTimeout(()=>showDamage("p"+wti,{dmg:healAmt,type:"heal"}),320);
+    }
     if(!p.passive) return;
     if(p.passive.type === "heal_on_damaged"){
       let healAmt = Math.floor(target.hp * p.passive.value);
@@ -5566,6 +5852,7 @@ if(!p.skill || !p.skill.type) return;
 if(p.cool > 0) return;
 if(p.skill.type === "heatUp" && p.heatUpUsed) return;
 let s = p.skill;
+addBattleLog(`⚔ ${p.name}が「${s.text||"スキル"}」を発動！`, "logSkill");
 {
   let _casterId = "p"+turnIndex;
   if(isAllyTargetSkill(s.type)){
@@ -5675,6 +5962,10 @@ if(s.type==="debuff"){
         if(ally.passive && ally.passive.type==="debuff_power_up"){
             power = 1 - (1 - power) * (1 - ally.passive.value);
             showSynergyText("💧 "+ally.name+"のパッシブ！デバフ効果増幅！");
+        }
+        if(ally.weaponPassive && ally.weaponPassive.type==="debuff_power_up"){
+            power = 1 - (1 - power) * (1 - ally.weaponPassive.value);
+            showSynergyText("🕶 "+ally.name+"の武器パッシブ！デバフ効果増幅！");
         }
     });
     enemy.debuffs.push({ power: power, turn: 3 });
@@ -7408,6 +7699,7 @@ currentAttacker = p.name;
 if(!p.skill2 || !p.skill2.type) return;
 if(p.cool2 > 0) return;
 let s = p.skill2;
+addBattleLog(`⚔ ${p.name}が「${s.text||"スキル2"}」を発動！`, "logSkill");
 {
   let _casterId = "p"+turnIndex;
   if(isAllyTargetSkill(s.type)){
@@ -9817,11 +10109,12 @@ function weaponSkill(){
     if(!s) return;
     if(p.weaponCool > 0) return;
     let atk = p.atk;
+    addBattleLog(`🗡 ${p.name}が武器スキル「${s.text||"武器スキル"}」を発動！`, "logSkill");
 {
   let _casterId = "p"+turnIndex;
   if(isAllyTargetSkill(s.type)){
     setTimeout(()=>playSupportMotion(_casterId), 0);
-  } else if(s.type==="poison" || s.type==="shock"){
+  } else if(s.type==="poison" || s.type==="shock" || s.type==="debuff"){
     setTimeout(()=>playDebuffMotion(_casterId), 0);
   } else {
     setTimeout(()=>playAttackMotion(_casterId, "enemy", false), 0);
@@ -9829,6 +10122,25 @@ function weaponSkill(){
 }
 if(s.type==="buff"){
     p.atk *= s.power;
+}
+if(s.type==="debuff"){
+    if(!enemy.debuffs) enemy.debuffs = [];
+    let power = s.power;
+    players.forEach(ally=>{
+        if(ally.passive && ally.passive.type==="debuff_power_up"){
+            power = 1 - (1 - power) * (1 - ally.passive.value);
+            showSynergyText("💧 "+ally.name+"のパッシブ！デバフ効果増幅！");
+        }
+        if(ally.weaponPassive && ally.weaponPassive.type==="debuff_power_up"){
+            power = 1 - (1 - power) * (1 - ally.weaponPassive.value);
+            showSynergyText("🕶 "+ally.name+"の武器パッシブ！デバフ効果増幅！");
+        }
+    });
+    enemy.debuffs.push({ power: power, turn: 3 });
+    enemy.debuffPower = enemy.debuffs.reduce((acc, d) => acc * d.power, 1);
+    enemy.debuffTurn = Math.max(...enemy.debuffs.map(d=>d.turn));
+    showSynergyText("🕶 "+p.name+"の武器スキル発動！デバフ付与！(×" + enemy.debuffs.length + "重)");
+    renderBattle();
 }
     if(s.type === "damage"){
         let res = calcDamage(p.attr, enemy.attr, atk * s.power);
@@ -12214,6 +12526,8 @@ function ciOpenSkillTree(){
 function onBattleStart(){
   missionStats._currentBattleAilments = 0;
   missionStats._currentBattleAttrs = [];
+  battleLogEntries = [];
+  renderBattleLogPanel();
 }
 function onTrialWin(){
   missionStats.trialWins = (missionStats.trialWins || 0) + 1;
