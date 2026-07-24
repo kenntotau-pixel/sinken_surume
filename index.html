@@ -156,11 +156,27 @@
         <div id="ciAttrRole" style="font-size:11px;color:#aaa;"></div>
       </div>
     </div>
+
+    <div id="ciAwakenToggle" style="display:none;margin-bottom:10px;background:linear-gradient(135deg,#140a1e,#1a0d28);border:1px solid rgba(180,100,255,0.4);border-radius:10px;padding:8px;">
+      <div style="font-size:10px;color:#cc88ff;letter-spacing:1px;margin-bottom:6px;font-weight:bold;">🌗 変貌フォーム確認（見た目・スキル・パッシブが変化）</div>
+      <div style="display:flex;gap:6px;align-items:center;">
+        <div onclick="ciSetAwakenView(false)" id="ciFormBefore" style="flex:1;text-align:center;cursor:pointer;border-radius:8px;padding:5px 2px;border:2px solid #ffd700;background:rgba(255,215,0,0.08);transition:0.15s;">
+          <img id="ciFormBeforeImg" src="" style="width:48px;height:48px;object-fit:cover;border-radius:8px;display:block;margin:0 auto;">
+          <div style="font-size:10px;color:#ffd700;margin-top:3px;font-weight:bold;">変貌前</div>
+        </div>
+        <div style="font-size:16px;color:#888;">→</div>
+        <div onclick="ciSetAwakenView(true)" id="ciFormAfter" style="flex:1;text-align:center;cursor:pointer;border-radius:8px;padding:5px 2px;border:2px solid #333;background:transparent;transition:0.15s;">
+          <img id="ciFormAfterImg" src="" style="width:48px;height:48px;object-fit:cover;border-radius:8px;display:block;margin:0 auto;">
+          <div id="ciFormAfterLabel" style="font-size:10px;color:#888;margin-top:3px;font-weight:bold;">変貌後</div>
+        </div>
+      </div>
+    </div>
     
     <div style="display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap;">
       <button class="ciTab" id="ciTabStatus" onclick="switchCiTab('status')" style="flex:1;min-width:60px;padding:5px 4px;border-radius:6px;border:none;cursor:pointer;font-size:11px;font-weight:bold;background:#ffd700;color:#000;">📊 ステータス</button>
       <button class="ciTab" id="ciTabSkill" onclick="switchCiTab('skill')" style="flex:1;min-width:60px;padding:5px 4px;border-radius:6px;border:1px solid #4488cc;cursor:pointer;font-size:11px;font-weight:bold;background:#1a2a4a;color:#aaddff;">🗡 スキル</button>
       <button class="ciTab" id="ciTabPassive" onclick="switchCiTab('passive')" style="flex:1;min-width:60px;padding:5px 4px;border-radius:6px;border:1px solid #44cc44;cursor:pointer;font-size:11px;font-weight:bold;background:#1a3a1a;color:#88ff88;">🌟 パッシブ</button>
+      <button class="ciTab" id="ciTabUltimate" onclick="switchCiTab('ultimate')" style="flex:1;min-width:60px;padding:5px 4px;border-radius:6px;border:1px solid #cc6644;cursor:pointer;font-size:11px;font-weight:bold;background:#3a1a10;color:#ffaa77;">✨ 必殺</button>
       <button class="ciTab" id="ciTabTree" onclick="switchCiTab('tree')" style="flex:1;min-width:60px;padding:5px 4px;border-radius:6px;border:1px solid #44cc88;cursor:pointer;font-size:11px;font-weight:bold;background:#0d2010;color:#88ffaa;">🌳 スキルツリー</button>
     </div>
     
@@ -240,6 +256,15 @@
       </div>
     </div>
     
+    <div id="ciContentUltimate" style="display:none;">
+      <div style="background:#301608;border:1px solid #6a3a2a;border-radius:10px;padding:12px;margin-bottom:8px;">
+        <div style="font-size:10px;color:#cc6644;letter-spacing:1px;margin-bottom:6px;font-weight:bold;">✨ 必殺技</div>
+        <div id="ciUltimateName" style="font-size:15px;color:#ffaa77;font-weight:bold;margin-bottom:6px;"></div>
+        <div style="font-size:11px;color:#cc8866;margin-bottom:6px;">威力倍率: <span id="ciUltimateMult" style="color:#ffd700;font-weight:bold;"></span></div>
+        <div id="ciUltimateEffects" style="font-size:13px;color:#ffcc99;line-height:1.7;"></div>
+      </div>
+    </div>
+
     <div id="ciContentTree" style="display:none;">
       <div id="ciTreeInfo" style="font-size:12px;color:#88ffaa;background:#0d2010;border:1px solid #224422;border-radius:10px;padding:10px;margin-bottom:8px;"></div>
       <button onclick="ciOpenSkillTree()" style="width:100%;background:linear-gradient(135deg,#0d2010,#1a3a20);color:#88ffaa;border:1px solid #44cc88;border-radius:8px;padding:8px;font-size:13px;cursor:pointer;font-weight:bold;">🌳 スキルツリーを開く</button>
@@ -366,6 +391,14 @@
         <div style="color:#66dd99;font-size:10px;font-weight:bold;letter-spacing:1px;">鍛錬</div>
       </div>
     </div>
+    <!-- ストーリー -->
+    <div style="display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:8px;">
+      <div style="background:linear-gradient(135deg,rgba(255,210,60,0.18),rgba(140,80,0,0.18));border:2px solid rgba(255,210,100,0.5);border-radius:12px;padding:12px 8px;text-align:center;cursor:pointer;transition:transform 0.15s;box-shadow:0 0 15px rgba(255,200,80,0.35);" onclick="go('story')" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'" ontouchstart="this.style.transform='scale(0.95)'" ontouchend="this.style.transform='scale(1)'">
+        <div style="font-size:26px;margin-bottom:3px;">📖</div>
+        <div style="color:#ffdd88;font-size:11px;font-weight:bold;letter-spacing:2px;">ストーリー</div>
+        <div style="color:#ffcc66;font-size:9px;margin-top:2px;">全21章 230話収録</div>
+      </div>
+    </div>
     <!-- 究極試練 -->
     <div style="display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:8px;">
       <div style="background:linear-gradient(135deg,rgba(200,50,255,0.2),rgba(100,20,180,0.2));border:2px solid rgba(200,100,255,0.5);border-radius:12px;padding:12px 8px;text-align:center;cursor:pointer;transition:transform 0.15s;box-shadow:0 0 15px rgba(200,100,255,0.4);" onclick="go('ultimate')" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'" ontouchstart="this.style.transform='scale(0.95)'" ontouchend="this.style.transform='scale(1)'">
@@ -461,6 +494,7 @@
 </div>
 
 <style>@keyframes logoGlowPulse{from{opacity:0.6;transform:translate(-50%,-50%) scale(0.9)}to{opacity:1;transform:translate(-50%,-50%) scale(1.1)}}@keyframes centerBtnPulse{0%,100%{box-shadow:0 0 24px rgba(180,100,255,0.55),0 -2px 0 rgba(255,255,255,0.1),inset 0 1px 0 rgba(255,255,255,0.2)}50%{box-shadow:0 0 40px rgba(200,120,255,0.8),0 0 60px rgba(180,80,255,0.3),0 -2px 0 rgba(255,255,255,0.1),inset 0 1px 0 rgba(255,255,255,0.2)}}#title{background:#060412;min-height:100vh}
+@keyframes vnBlink{0%,100%{opacity:1}50%{opacity:0.25}}
 
 </style>
 
@@ -503,13 +537,16 @@
   { members:["FqEa","弐呪刻"],            emoji:"⚡🃏", name:"神と想像",         desc:"ATK+20% HP+10%",   atk:20, hp:10 },
   { members:["FqEa","和辺重信"],          emoji:"⚡🌊", name:"電流と水流",       desc:"ATK+18% HP+12%",   atk:18, hp:12 },
   { members:["FqEa","返網転"],            emoji:"⚡🔄", name:"反転する閃光",     desc:"ATK+22% HP+5%",    atk:22, hp:5  },
+  { members:["FqEa","黒瀬武人"],            emoji:"⚡🌑", name:"神に認められた者",     desc:"ATK+18% HP+12%",   atk:18, hp:12 },
   { members:["湯照司吉基","甲斐翔也"],     emoji:"🔥🦅", name:"炎翼の猛者",       desc:"ATK+22%",          atk:22, hp:0  },
+  { members:["湯照司吉基","晴海亨"],     emoji:"🔥🌅", name:"世界を見る者",       desc:"ATK+15% HP+15%",   atk:15, hp:15 },
   { members:["明石啓希","赤羽悠真"],       emoji:"✨💙", name:"限界突破",         desc:"ATK+18% HP+12%",   atk:18, hp:12 },
   { members:["明石啓希","黒峰天音"],       emoji:"✨🎵", name:"暴走列車",         desc:"ATK+25% HP+15%",   atk:25, hp:15 },
   { members:["明石啓希","コード5.2"],      emoji:"✨💡", name:"希望の光",         desc:"ATK+20% HP+10%",   atk:20, hp:10 },
   { members:["明石啓希","珠濃雅紀"],      emoji:"✨🌸", name:"第六の二人",         desc:"ATK+10% HP+20%",   atk:20, hp:10 },
   { members:["珠濃雅紀","晴海亨"],         emoji:"🌸🌅", name:"穏やかな調和",     desc:"HP+28%",           atk:0,  hp:28 },
   { members:["珠濃雅紀","コード5.2"],      emoji:"🌸💡", name:"慈愛と知略",       desc:"ATK+12% HP+22%",   atk:12, hp:22 },
+  { members:["珠濃雅紀","死橋凪"],      emoji:"🌸🌬", name:"二人の構築者",       desc:"ATK+15% HP+15%",   atk:15, hp:15 },
   { members:["黒峰天音","ソーメーン"],     emoji:"🎵🌀", name:"雷と炎男",           desc:"ATK+20% HP+8%",    atk:20, hp:8  },
   { members:["黒峰天音","晴海亨"],         emoji:"🎵🌅", name:"響く夜明け",       desc:"ATK+15% HP+18%",   atk:15, hp:18 },
   { members:["甲斐翔也","オリバー"],       emoji:"🦅🌿", name:"空と大地",         desc:"ATK+22% HP+8%",    atk:22, hp:8  },
@@ -519,6 +556,7 @@
   { members:["桜木彰","赤羽悠真"],         emoji:"🌸💙", name:"流れる桜",           desc:"ATK+22%",          atk:22, hp:0  },
   { members:["八並解徒","フセイン"],      emoji:"🎮🧠", name:"虚構と真実",       desc:"ATK+10% HP+14%",    atk:10, hp:14  },
   { members:["晴海亨","八並解徒"],         emoji:"🌅🎮", name:"力を求めて",           desc:"ATK+20% HP+10%",   atk:20, hp:10 },
+  { members:["晴海亨","リボルト"],         emoji:"🌅💚", name:"世界を俯瞰する",            desc:"ATK+16% HP+14%",          atk:16, hp:14  },
   { members:["玉垣剣城","蒼井朔也"],     emoji:"⚔🌀", name:"剣と銃",         desc:"ATK+20%",          atk:20, hp:0  },
   { members:["玉垣剣城","ミニモータ"],     emoji:"⚔🕹", name:"君の希望",         desc:"ATK+22%",          atk:22, hp:0  },
   { members:["玉垣剣城","跳田収滋"],       emoji:"⚔💨", name:"無限重力の連携",   desc:"ATK+20% HP+10%",   atk:20, hp:10 },
@@ -528,24 +566,41 @@
   { members:["蒼井朔也","室井元武"],       emoji:"🌀🔥", name:"二つの牙",         desc:"ATK+10% HP+14%",    atk:10, hp:14  },
   { members:["石倉有栖","跳田収滋"],       emoji:"⚡💨", name:"連撃乱舞",         desc:"ATK+25%",          atk:25, hp:0  },
   { members:["石倉有栖","オリバー"],       emoji:"⚡🌿", name:"閃光と緑",         desc:"ATK+18% HP+10%",   atk:18, hp:10 },
+  { members:["石倉有栖","安村康夫"],       emoji:"⚡🤝", name:"毒の入り口",         desc:"ATK+10% HP+14%",    atk:10, hp:14  },
   { members:["ミニモータ","ソーメーン"],   emoji:"🕹🌀", name:"機械と渦",         desc:"ATK+20% HP+10%",   atk:20, hp:10 },
   { members:["ミニモータ","フセイン"],      emoji:"🕹🧠", name:"生み出された魔術",       desc:"ATK+10% HP+14%",    atk:10, hp:14  },
   { members:["オリバー","ソーメーン"],   emoji:"🌿🌀", name:"雷と生",         desc:"ATK+10% HP+20%",   atk:10, hp:20 },
   { members:["オリバー","跳田収滋"],   emoji:"🌿💨", name:"静と生",         desc:"ATK+10% HP+15%",   atk:10, hp:15 },
+  { members:["黒瀬武人","コード5.2"],       emoji:"🌑💡", name:"拳無双",         desc:"ATK+18% HP+10%",   atk:18, hp:10 },
+  { members:["黒瀬武人","マタイ"],       emoji:"🌑🌟", name:"破壊の側",         desc:"ATK+22% HP+5%",    atk:22, hp:5  },
   { members:["弐呪刻","死橋凪"],           emoji:"🃏🌬", name:"略奪と凪",         desc:"ATK+18% HP+15%",   atk:18, hp:15 },
   { members:["弐呪刻","赤羽悠真"],           emoji:"🃏💙", name:"今日の運勢",         desc:"ATK+22% HP+5%",    atk:22, hp:5  },
-  { members:["リボルト","黒瀬武人"],       emoji:"🌿🌑", name:"久神と武人",         desc:"ATK+20% HP+15%",   atk:20, hp:15 },
+  { members:["リボルト","オリバー"],       emoji:"💚🌿", name:"生物の頂点",        desc:"ATK+18% HP+18%",   atk:18, hp:18 },
+  { members:["リボルト","黒瀬武人"],       emoji:"💚🌑", name:"久神と武人",         desc:"ATK+20% HP+15%",   atk:20, hp:15 },
+  { members:["リボルト","霊剛"],       emoji:"💚🛡", name:"魂への干渉",         desc:"HP+22%",           atk:0,  hp:22 },
   { members:["アステレス","バルナウス"],   emoji:"🌟🌀", name:"神聖旋風",         desc:"ATK+22% HP+10%",   atk:22, hp:10 },
+  { members:["アステレス","阿波牛星夜"],   emoji:"🌟🌙", name:"星の向こうへ",         desc:"ATK+10% HP+14%",    atk:10, hp:14  },
+  { members:["アステレス","ゲガント"],   emoji:"🌟🗡", name:"傷を癒す",         desc:"HP+22%",           atk:0,  hp:22 },
   { members:["ホーレン","ボムブ"],         emoji:"🌸💣", name:"花火爆発",         desc:"ATK+25% HP+5%",    atk:25, hp:5  },
   { members:["返網転","死橋凪"],       emoji:"🔄🌬", name:"二人の鎌使い",   desc:"ATK+18% HP+10%",   atk:18, hp:10 },
   { members:["ヒナル","マタイ"],           emoji:"🌸🌟", name:"暗殺の炎",         desc:"ATK+22%",          atk:22, hp:0  },
   { members:["ヒナル","黒峰天音"],           emoji:"🌸🎵", name:"双炎",         desc:"ATK+18% HP+18%",   atk:18, hp:18 },
   { members:["和辺重治","和辺重信"],           emoji:"🌊🗡", name:"双子の絆",         desc:"ATK+18% HP+18%",   atk:18, hp:18 },
+  { members:["銭生黒蔵","黒瀬武人"],           emoji:"💰🌑", name:"秘密の契約",         desc:"ATK+10% HP+14%",    atk:10, hp:14  },
+  { members:["銭生黒蔵","十金灰"],           emoji:"💰🩸", name:"会社の頭脳",         desc:"ATK+18% HP+12%",   atk:18, hp:12 },
+  { members:["銭生黒蔵","鈴島ネロ"],           emoji:"💰⛄", name:"借金回収",         desc:"ATK+18% HP+10%",   atk:18, hp:10 },
+  { members:["十金灰","ミニモータ"],           emoji:"🩸🕹", name:"二人の伝承者",         desc:"ATK+18% HP+10%",   atk:18, hp:10 },
+  { members:["十金灰","鈴島ネロ"],           emoji:"🩸⛄", name:"サボり発見",         desc:"ATK+20% HP+8%",    atk:20, hp:8  },
+  { members:["夜倉冥","蒼井朔也"],           emoji:"👁🌀", name:"狙撃勝負",         desc:"ATK+10% HP+20%",   atk:10, hp:20 },
+  { members:["夜倉冥","鈴島ネロ"],           emoji:"👁⛄", name:"真逆の二人",         desc:"HP+22%",           atk:0,  hp:22 },
+  { members:["波立嶺","銭生黒蔵"],           emoji:"💉💰", name:"恩人",         desc:"ATK+18% HP+18%",   atk:18, hp:18 },
+  { members:["波立嶺","鈴島ネロ"],           emoji:"💉⛄", name:"実験体候補",         desc:"ATK+10% HP+15%",   atk:10, hp:15 },
   { members:["室井元武","栗島トウヤ","ゲガント"],          emoji:"🔥💧🗡", name:"初勝利",       desc:"ATK+30% HP+20%",  atk:30, hp:20 },
   { members:["室井元武","明石啓希","珠濃雅紀"],            emoji:"🔥✨🌸", name:"熱き誓いの三位一体",desc:"ATK+20% HP+30%",  atk:20, hp:30 },
   { members:["室井元武","栗島トウヤ","鈴鹿"],            emoji:"🔥💧⚡", name:"荒野の誓い",desc:"ATK+20% HP+30%",  atk:20, hp:30 },
   { members:["鈴鹿","沢華","阿波牛壬陸"],            emoji:"⚡🌊🌿", name:"連合のサポーター",desc:"ATK+15% HP+35%",  atk:15, hp:35 },
   { members:["コード5.2","FqEa","玉垣剣城"],            emoji:"💡⚡⚔", name:"三天",desc:"ATK+25% HP+25%",  atk:25, hp:25 },
+  { members:["銭生黒蔵","ホーレン","ボムブ"],            emoji:"💰🌸💣", name:"BPの研修生達",desc:"ATK+20% HP+30%",  atk:20, hp:30 },
 ];
 // ===== 武器×キャラ シナジー定義 =====
 const WEAPON_SYNERGY_DEFS = [
@@ -555,14 +610,14 @@ const WEAPON_SYNERGY_DEFS = [
   { weapon:"蟲毒の拳",    chars:["栗島トウヤ"],                        emoji:"☠💧", name:"毒拳の使い手",     desc:"ATK+10% HP+5%",         atk:10, hp:5  },
   { weapon:"狙撃銃",      chars:["蒼井朔也"],                          emoji:"🔫🌀", name:"精密狙撃",         desc:"ATK+5% HP+5%",   atk:5, hp:5  },
   { weapon:"スペースストッカー", chars:["跳田収滋"],                   emoji:"🌌💨", name:"宇宙の守護者",     desc:"ATK+5% HP+10%",   atk:5,  hp:10 },
-  { weapon:"双式魔術・焔",chars:["栗島トウヤ","フセイン"],              emoji:"🔥🧠", name:"焔の魔術師",       desc:"ATK+10%",         atk:10, hp:0  },
-  { weapon:"双式魔術・燈",chars:["フセイン"],                          emoji:"🏮🧠", name:"燈の癒し",         desc:"HP+10%",          atk:0,  hp:10 },
+  { weapon:"聡式魔術・焔",chars:["栗島トウヤ","フセイン"],              emoji:"🔥🧠", name:"焔の魔術師",       desc:"ATK+10%",         atk:10, hp:0  },
+  { weapon:"聡式魔術・燈",chars:["フセイン"],                          emoji:"🏮🧠", name:"燈の癒し",         desc:"HP+10%",          atk:0,  hp:10 },
   { weapon:"草睲術【詮覆】",chars:["ミニモータ"],                      emoji:"🌿🕹", name:"詮覆の機械",       desc:"ATK+8% HP+2%",   atk:8,  hp:2 },
   { weapon:"in my life【運命の紐】", chars:["八並解徒"],               emoji:"⚡🎮", name:"運命の繋がり",     desc:"ATK+2% HP+8%",   atk:2, hp:8  },
   { weapon:"紅雷双鎌",    chars:["返網転"],                            emoji:"⚡🔄", name:"紅雷の舞",         desc:"ATK+15%",         atk:15, hp:0  },
   { weapon:"ジャック・ナイフ", chars:["弐呪刻"],                       emoji:"🔪🃏", name:"呪われた刃",       desc:"ATK+18%",         atk:18, hp:0  },
   { weapon:"前人未踏の共闘", chars:["室井元武","阿波牛星夜"],           emoji:"🛡🔥", name:"未踏の共闘者",     desc:"ATK+8% HP+10%",   atk:8,  hp:10 },
-  { weapon:"楽園の主従",  chars:["黒瀬武人","リボルト"],               emoji:"🌑🌿", name:"楽園の絆",         desc:"ATK+9% HP+9%",  atk:9, hp:9 },
+  { weapon:"楽園の主従",  chars:["黒瀬武人","リボルト"],               emoji:"🌑💚", name:"楽園の絆",         desc:"ATK+9% HP+9%",  atk:9, hp:9 },
   { weapon:"神に届く力",  chars:["FqEa","弐呪刻"],                     emoji:"✨⚡", name:"神域への道",       desc:"ATK+12% HP+6%",         atk:12, hp:6  },
   { weapon:"英雄の記録",  chars:["甲斐翔也","赤羽悠真"],                     emoji:"🦅💙", name:"双雄",       desc:"ATK+10% HP+8%",         atk:10, hp:8  },
   { weapon:"海辺の二人の神",  chars:["アステレス","バルナウス"],                     emoji:"🌟🌀", name:"出港準備",       desc:"ATK+5% HP+13%",         atk:5, hp:13  },
@@ -622,7 +677,13 @@ function renderWeaponSynergyPanel(team){
 }
 
 function getTeamBaseNames(team){
-  return new Set(team.map(c => getBaseName(c.name)));
+  let names = new Set(team.map(c => getBaseName(c.name)));
+  // タッグキャラ「ホーレン&ボムブ」は一体で両者分のシナジー条件を満たす
+  if(names.has("ホーレン&ボムブ")){
+    names.add("ホーレン");
+    names.add("ボムブ");
+  }
+  return names;
 }
 function getActiveSynergies(team){
   if(!team || team.length === 0) return [];
@@ -1155,6 +1216,7 @@ function renderSynergyListModal(){
   var activeCharSet = new Set(getActiveSynergies(team).map(s => s.name));
   var activeWeaponSet = new Set(getActiveWeaponSynergies(team).map(ws => ws.name));
   var ownedBaseNames = new Set((typeof box !== 'undefined' ? box : []).map(function(b){ return getBaseName(b.name); }));
+  if(ownedBaseNames.has("ホーレン&ボムブ")){ ownedBaseNames.add("ホーレン"); ownedBaseNames.add("ボムブ"); }
   // 所持武器名セット（weapon-synergy用）
   var ownedWeaponNames = new Set((typeof weaponBox !== 'undefined' ? weaponBox : []).map(function(w){ return w.name; }));
 
@@ -1303,6 +1365,52 @@ function renderSynergyListModal(){
 <h2>試練</h2>
 <div id="trialList"></div>
 <button onclick="go('title')">戻る</button>
+</div>
+
+<div id="story" class="screen" style="padding:0;min-height:100vh;background:#0b0f1a;">
+  <div style="padding:16px 16px 0;max-width:460px;margin:0 auto;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+      <button onclick="go('title')" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:#aaa;border-radius:10px;padding:7px 14px;cursor:pointer;font-size:13px;">← 戻る</button>
+      <div>
+        <div style="color:#ffdd88;font-size:16px;font-weight:bold;letter-spacing:2px;">📖 ストーリー</div>
+        <div style="color:rgba(255,220,150,0.5);font-size:10px;">真剣のスルーメ 全21章</div>
+      </div>
+    </div>
+    <div id="storyVolList" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:24px;"></div>
+  </div>
+</div>
+
+<div id="storyVolume" class="screen" style="padding:0;min-height:100vh;background:#0b0f1a;">
+  <div style="padding:16px 16px 0;max-width:460px;margin:0 auto;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+      <button onclick="go('story')" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:#aaa;border-radius:10px;padding:7px 14px;cursor:pointer;font-size:13px;">← 章選択</button>
+      <div id="storyVolumeTitle" style="color:#ffdd88;font-size:15px;font-weight:bold;letter-spacing:1px;"></div>
+    </div>
+    <div id="storyChapterList" style="display:flex;flex-direction:column;gap:8px;margin-bottom:30px;"></div>
+  </div>
+</div>
+
+<div id="storyModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:15000;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;">
+  <div style="background:linear-gradient(160deg,#1a1a2e,#0f0f1c);border:1.5px solid rgba(255,210,120,0.4);border-radius:16px;padding:20px;max-width:420px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 0 40px rgba(0,0,0,0.6);">
+    <div id="storyModalVol" style="color:#ffcc66;font-size:11px;letter-spacing:1px;margin-bottom:4px;"></div>
+    <div id="storyModalTitle" style="color:#fff;font-size:18px;font-weight:bold;margin-bottom:12px;"></div>
+    <div id="storyModalEnemyBox" style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px;margin-bottom:12px;"></div>
+    <div id="storyModalDesc" style="color:#ddd;font-size:13px;line-height:1.8;margin-bottom:18px;white-space:pre-wrap;"></div>
+    <div id="storyModalVN" style="display:none;margin-bottom:14px;">
+      <div style="position:relative;border-radius:12px 12px 0 0;overflow:hidden;background:radial-gradient(ellipse at 50% 100%,rgba(255,180,80,0.12),rgba(0,0,0,0.5) 70%),#0a0a12;min-height:180px;display:flex;align-items:flex-end;justify-content:center;border:1px solid rgba(255,210,120,0.25);border-bottom:none;">
+        <img id="vnPortrait" src="" style="max-height:180px;max-width:80%;object-fit:contain;filter:drop-shadow(0 6px 14px rgba(0,0,0,0.7));">
+      </div>
+      <div onclick="advanceStoryVN()" style="cursor:pointer;background:rgba(10,10,20,0.75);border:1px solid rgba(255,210,120,0.25);border-top:1px solid rgba(255,210,120,0.15);border-radius:0 0 12px 12px;padding:10px 14px 12px;user-select:none;">
+        <div id="vnName" style="color:#ffcc66;font-size:12px;font-weight:bold;margin-bottom:5px;letter-spacing:1px;min-height:14px;"></div>
+        <div id="vnText" style="color:#f2f2f2;font-size:14px;line-height:1.7;min-height:46px;"></div>
+        <div id="vnIndicator" style="text-align:right;color:rgba(255,210,120,0.7);font-size:11px;margin-top:2px;visibility:hidden;animation:vnBlink 1s infinite;">▼ タップで次へ</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button onclick="closeStoryModal()" style="flex:1;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.06);color:#ccc;cursor:pointer;font-size:13px;">閉じる</button>
+      <button id="storyModalActionBtn" style="flex:2;padding:12px;border-radius:10px;border:none;background:linear-gradient(135deg,#ffb833,#dd7700);color:#fff;font-weight:bold;cursor:pointer;font-size:14px;letter-spacing:1px;"></button>
+    </div>
+  </div>
 </div>
 
 <div id="ultimate" class="screen">
@@ -1467,6 +1575,23 @@ function renderSynergyListModal(){
 </div>
 </div>
 
+<div id="tutorialModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:40000;justify-content:center;align-items:center;padding:14px;box-sizing:border-box;">
+  <div id="tutorialBox" style="background:linear-gradient(160deg,#0a0d1a,#0d1028);border:2px solid #ffd700;border-radius:18px;padding:20px 18px;max-width:380px;width:100%;text-align:center;box-shadow:0 0 40px #ffd70033,0 0 80px #ffd70011;max-height:92vh;overflow-y:auto;">
+    <div id="tutorialStepDot" style="display:flex;justify-content:center;gap:5px;margin-bottom:14px;"></div>
+    <div id="tutorialIcon" style="font-size:44px;margin-bottom:8px;"></div>
+    <img id="tutorialImg" src="" style="display:none;width:110px;height:110px;object-fit:cover;border-radius:14px;margin:0 auto 12px;border:3px solid #ffd700;box-shadow:0 0 20px #ffd70066;">
+    <div id="tutorialTitle" style="font-size:18px;font-weight:bold;color:#ffd700;letter-spacing:1px;margin-bottom:10px;"></div>
+    <div id="tutorialDesc" style="font-size:13px;color:#ccc;line-height:1.7;margin-bottom:18px;white-space:pre-line;text-align:left;"></div>
+    <div style="display:flex;gap:8px;justify-content:center;">
+      <button id="tutorialPrevBtn" onclick="tutorialPrev()" style="background:#222;color:#aaa;border:1px solid #444;border-radius:10px;padding:10px 16px;font-size:13px;cursor:pointer;">戻る</button>
+      <button id="tutorialNextBtn" onclick="tutorialNext()" style="flex:1;background:linear-gradient(135deg,#ffd700,#ff9800);color:#000;border:none;border-radius:10px;padding:10px 16px;font-size:14px;font-weight:bold;cursor:pointer;">次へ</button>
+    </div>
+    <div style="margin-top:12px;">
+      <button onclick="skipTutorial()" style="background:none;border:none;color:#556;font-size:11px;cursor:pointer;text-decoration:underline;">スキップする</button>
+    </div>
+  </div>
+</div>
+
 <script>function applyTeamBuff(players){
 let buff = getTeamBuff(players);
 return players.map(p=>{
@@ -1503,7 +1628,8 @@ unlockedMissionTitleIds,
 usedSerials: Array.from(usedSerials),
 presentBox,
 loginBonusData,
-star4GachaTicket
+star4GachaTicket,
+tutorialSeen
 };
 localStorage.setItem("gachaData", JSON.stringify(data));
 }
@@ -1532,6 +1658,7 @@ if(data.unlockedMissionTitleIds && Array.isArray(data.unlockedMissionTitleIds)){
 if(data.presentBox && Array.isArray(data.presentBox)) presentBox = data.presentBox;
 if(data.loginBonusData) Object.assign(loginBonusData, data.loginBonusData);
 if(typeof data.star4GachaTicket === 'number') star4GachaTicket = data.star4GachaTicket;
+tutorialSeen = data.tutorialSeen ?? false;
 }
 let stone=100;
 let star4GachaTicket = 0;
@@ -1546,11 +1673,13 @@ let currentEvent = undefined;
 let currentTrial = undefined;
 let currentEventType = undefined;
 let currentStage = undefined;
+let currentStoryChapter = undefined;
 let weaponBox = [];
 let eventProgress = {};
 let lastAllySkill = null;
 let usedSerials = new Set();
 let usedSerialCodes = new Set();
+let tutorialSeen = false;
 // ===== プレゼントボックス & ログインボーナス =====
 let presentBox = [];
 let loginBonusData = { lastDate: null, totalDays: 0 };
@@ -1662,6 +1791,7 @@ let missionStats = {
   totalGachaDraws:0, ssr4Count:0,
   trialHighLvWin:{}, trialSpecialWin:{},
   ultimateCleared:{},
+  storyCleared:{}, storyMaxChapter:1,
   _currentBattleAilments:0, _currentBattleAttrs:[]
 };
 let missionData = { claimed:{} };
@@ -1774,6 +1904,32 @@ passive:{type:"revive_passive",threshold:0.1,text:"💧奇跡の水：味方が�
 {name:"バルナウス",rarity:4,attr:"火",img:"https://imgur.com/3mibLSW.png",role:"debuffer",
 skill:{type:"poison",power:1.5,text:"150%毒付与(重ね可)",cool:2},
 passive:{type:"burn_on_attack",chance:0.7,power:0.4,turn:2,text:"🔥焦熱：攻撃時70%で燃焼付与(2T)"}},
+{name:"銭生黒蔵",rarity:4,attr:"雷",img:"https://imgur.com/7AkUPJx.png",role:"attacker",
+skill:{type:"moneyContract", power:1.5, text:"換算の契約：金銭カウント×150%ダメ＆金銭カウント全解除(カウント3以上で使用後カウント1付与/6以上で自チームHP12%回復/9以上でATK+250%上昇3T)",cool:3},
+passive:{type:"moneyPassive",text:"💰契約者：各ターンのはじめと被ダメ時金銭カウント+1。金銭カウント5以上で被ダメ20%軽減。10以上で被ダメ50%軽減。"}},
+{name:"十金灰",rarity:4,attr:"火",img:"https://imgur.com/L4EOGz3.png",role:"attacker",
+skill:{type:"grassAntonym", text:"草の対義語：最大HP割合に応じてダメージを与える(HP10%毎に40%上昇)",cool:3},
+passive:{type:"kyuushuu_passive",text:"🩸強制吸収：ターン開始時他のキャラの最大HPを5%軽減。吸い取ったキャラ一体につきこのキャラの最大HP+5%。"}},
+{name:"鈴島ネロ",rarity:4,attr:"水",img:"https://imgur.com/OHt49p3.png",role:"support",
+skill:{type:"snowscape", text:"雪景色：発動から3Tの間自分のチームと相手のダメージを0~このキャラのATK分のランダムな数値で増減する(ATKがマイナス時は1に換算)",cool:4},
+passive:{type:"tank_passive",value:0.08,text:"❄常在の粉雪：被ダメ常時8%減少"}},
+{name:"夜倉冥",rarity:4,attr:"木",img:"https://imgur.com/DwYssr1.png",role:"attacker",
+skill:{type:"sniperBleed", power:4.0, text:"完璧な狙撃術：400%ダメ+出血状態付与(3Tの間相手の攻撃後HPの3%分のダメージ・重複あり)",cool:3},
+passive:{type:"ignore_shield_attr",text:"👁命を貫く眼：相手のシールドと属性を無視して攻撃(すべての攻撃が有利属性として機能)"}},
+{name:"波立嶺",rarity:4,attr:"光",img:"https://imgur.com/vBhy0x1.png",role:"support",
+skill:{type:"jintaiSekkeizu", power:0.15, text:"人体設計図：各キャラのHP15%回復+相手に出血状態付与",cool:3},
+passive:{type:"namitachi_passive",value:5,text:"😈人の皮を被る悪魔：試練勝利時に得ることができる石を+5する。"}},
+{name:"ホーレン&ボムブ",rarity:4,attr:"闇",img:"https://imgur.com/YE3eyhJ.png",role:"attacker",
+skill:{type:"kuukiGoroshi", power:2.7, text:"🌀空気殺し：ATK270%ダメ＋回避状態+1", cool:3},
+passive:{type:"hooren_bombu_soul", threshold:0.5,
+  text:"🌀世殺し：自分以外の味方がダメージを食らった時、自身に回避状態1付与(回避状態:被ダメ時50%でダメージを75%カット。回避状態1解除)(変貌前のみ)＋HP50%以下で変貌(変貌時回避状態解除)",
+  awaken:{
+    img:"https://imgur.com/Z4IDzSN.png",
+    text:"💣地雷源：自身の被ダメ20%上昇。攻撃時、被ダメ時に地雷カウント+1付与(最大15)。地雷カウント3以上で被ダメ時ATK50%分の反撃ダメージを与える+地雷カウント+1。6以上で攻撃毎に燃焼付与(30%)+地雷カウント+1。9以上でATK常時144%上昇。12以上で常時被ダメ40%減少。",
+    skillType:"jirai",
+    skillText:"💣地雷：地雷カウント+3　地雷カウント1につきATK33%ダメ"
+  }
+}},
 {name:"室井元武(β)",rarity:4,attr:"木",img:"https://imgur.com/plm0EbO.png",role:"attacker",
 skill:{type:"chinkoPo", power:2.0, text:"珍古砲(カウント×77%強化)", cool:4},noTrial:true,
 passive:{type:"atk_up_on_attack",value:0.08,text:"🌿木霊：攻撃時ATK+8%(永続、最大+40%)"}},
@@ -1823,7 +1979,7 @@ passive:{type:"freeze_on_attack",chance:0.3,text:"✨氷光：攻撃時30%で凍
 skill:{type:"erosion", cool:4, power:2.2, text:"侵蝕：ATK220%ダメ。毒・燃焼・感電を侵蝕に変換。侵蝕状態時被ダメ+25%/行動終了時に最大HP4%ダメ。解除不能(3T)侵蝕1種につき自身ATK+40%(3T)"},noTrial:true,
 passive:{type:"koku_shoku",text:"⬛黒蝕体質：敵に状態異常付与のたび「黒蝕」+1(最大10)。1stにつき与ダメ+12%・被ダメ-5%"}},
 {name:"黒瀬武人(β)",rarity:4,attr:"光",img:"https://imgur.com/ENp01aX.png",role:"attacker",
-skill:{type:"tenGeki", power:2.0, text:"破壊的で覇界的な一撃(天撃カウント+2・ATK200%ダメ)", cool:4},noTrial:true,
+skill:{type:"tenGeki", power:2.0, text:"破壊的で覇界的な一撃(天撃カウント+2・ATK200%ダメ)(天撃カウント1つにつきATK+25%)", cool:4},noTrial:true,
 passive:{type:"michiPassive",text:"🌌未知な道：HP割合に応じて被ダメ軽減(HP10%ごとに8%up、最大80%)"}},
 {name:"明石啓希(β)",rarity:4,attr:"雷",img:"https://imgur.com/lraRm0Y.png",role:"support",noTrial:true,
 skill:{type:"jokaku", coolMin:1, coolMax:1, text:"解錠：味方1人に解錠カウント+1付与。カウント1つにつきATK+25%・被ダメHP5%回復(CT2)"},
@@ -1886,6 +2042,1793 @@ passive:{type:"tank_passive",value:0.1,text:"🛡守護：常時被ダメを10%�
 skill:{text:"スキルなし"},
 passive:{type:"burn_on_attack",chance:0.2,power:0.12,turn:1,text:"🔥炎将：攻撃時20%で燃焼付与(1T)"}},
 ];
+// ===== ストーリーモード：全21章230話データ =====
+// v:章番号(21=最新話まとめ) n:話数 t:サブタイトル d:あらすじ(conv未設定時のフォールバック表示)
+// conv:会話ステージ用の詳細セリフ配列 [{s:話者名(または"ナレーション"), l:セリフ本文}, ...]
+// e:登場する敵役キャラ名(charsのnameと対応) b:1なら戦闘あり、0なら会話のみ
+const storyChapters=[
+{v:1,n:1,t:"始まりの戦士",d:"荒野を歩く室井元武。生きる気力を失った彼の前に現れたのは...",e:"ソーメーン",b:0,
+conv:[
+{s:"ナレーション",l:"見渡す限り、乾いた荒野が広がっていた。"},
+{s:"ナレーション",l:"室井元武は、ただ足を引きずるように歩いていた。目的も、行く先も、もう何もない。"},
+{s:"元武",l:"……もう、どうでもいいか。"},
+{s:"ナレーション",l:"そのとき、遠くの砂煙の中に人影が揺れた。"},
+{s:"???",l:"おい、そこのお前。こんな所で座り込んでどうした。"},
+{s:"元武",l:"……誰だ。"},
+{s:"ナレーション",l:"元武はゆっくりと顔を上げた。目の前に立っていたのは、自分と同じような、瞳をした少年だった。"},
+]},
+{v:1,n:2,t:"運命の出会い",d:"",e:"死橋凪",b:0,
+conv:[
+{s:"ナレーション",l:"乾いた荒野で誰かと出会った元武。"},
+{s:"トウヤ",l:"俺は栗島トウヤ。お前、名前は？"},
+{s:"元武",l:"……室井元武。"},
+{s:"トウヤ",l:"そうか。元武、腹減ってないか？少しだけ食料持ってるんだ。"},
+{s:"元武",l:"…別に、いい。"},
+{s:"トウヤ",l:"遠慮すんな。一人で歩くのも、二人で歩くのも大して変わらねえだろ。"},
+{s:"ナレーション",l:"元武は戸惑いながらも、差し出された乾いたパンを受け取った。"},
+{s:"元武",l:"…お前も、この荒野をずっと彷徨ってるのか。"},
+{s:"トウヤ",l:"ああ。似た者同士ってやつだな。"},
+{s:"ナレーション",l:"同じ境遇を持つ二人は、言葉少なながらも並んで歩き始めた。"},
+]},
+{v:1,n:3,t:"暴走する力",d:"",e:"安村康夫",b:0,
+conv:[
+{s:"ナレーション",l:"栗島トウヤは元武にあることを問う"},
+{s:"トウヤ",l:"なあ元武、「固有能罪符」って知ってるか？"},
+{s:"元武",l:"なんだそれ。"},
+{s:"トウヤ",l:"人によって違う、特別な力のことだ。俺たちにも眠ってるらしい。"},
+{s:"元武",l:"力……。"},
+{s:"ナレーション",l:"その言葉を聞いた瞬間、元武の目の色が変わった。"},
+{s:"元武",l:"だったら、俺にも何かできるってことか……!"},
+{s:"トウヤ",l:"お、おい落ち着けって。"},
+{s:"ナレーション",l:"生きる意味を失っていた元武の中に、小さな熱が灯った瞬間だった。"},
+]},
+{v:1,n:4,t:"知恵と勇気の結集",d:"",e:"鈴鹿",b:0,
+conv:[
+{s:"ナレーション",l:"固有能罪符を使えるように鍛錬をする元武"},
+{s:"ナレーション",l:"元武は自身の固有能罪符と向き合う。かっこよく戦う自分を夢見ていたのだが……"},
+{s:"元武",l:"……「刃牙刃牙」？"},
+{s:"トウヤ",l:"どんな力なんだ？"},
+{s:"元武",l:"（筋肉を膨らませながら）……筋肉が、増える。それだけだ。"},
+{s:"トウヤ",l:"（笑いをこらえながら）ぶ、無骨でいいじゃねえか!"},
+{s:"元武",l:"くそっ、もっとかっこいい能力が良かった……!"},
+{s:"ナレーション",l:"落胆する元武を、トウヤは笑いながら励ました。地味でも、それは紛れもなく元武だけの力だった。"},
+]},
+{v:1,n:5,t:"ライバルとの挑戦",d:"",e:"湯照司吉基",b:0,
+conv:[
+{s:"ナレーション",l:"気を取り直した元武は、トウヤと共に再び歩き出す。"},
+{s:"トウヤ",l:"元武、前に誰かいるぞ。"},
+{s:"ナレーション",l:"道の先、静かに佇む人影があった。値踏みするような視線がこちらへ向けられる。"},
+{s:"元武",l:"……敵、か?"},
+{s:"トウヤ",l:"わからねえ。けど、ただ者じゃなさそうだ。"},
+{s:"ナレーション",l:"張り詰めた空気の中、二人は思わず身構えた。"},
+]},
+{v:1,n:6,t:"再生の秘術",d:"",e:"ゲガント",b:1,
+conv:[
+{s:"ナレーション",l:"目の前の相手が攻撃を始める。"},
+{s:"ナレーション",l:"ゲガントと対峙する元武とトウヤ、戦闘になるがゲガントの傷は彼の固有能罪符の再生ですぐに治っていく。"},
+{s:"トウヤ",l:"どうして俺達を攻撃する？"},
+{s:"ゲガント",l:"理由は必要ない。ここで殺す。"},
+{s:"元武",l:"俺達の邪魔をするな。"},
+{s:"ゲガント",l:"まだ、底を見せていないぞ。"},
+]},
+{v:1,n:7,t:"激闘",d:"",e:"跳田収滋",b:0,
+conv:[
+{s:"ナレーション",l:"ゲガントとの戦いは激しさを増していく。"},
+{s:"トウヤ",l:"「fourfive砲」……!"},
+{s:"ナレーション",l:"トウヤは瞬間移動の力を使い、ゲガントの懐へと飛び込む。"},
+{s:"元武",l:"くっ……体が、うまく動かない……!"},
+{s:"ナレーション",l:"調子の上がらない元武を庇うように前に出たトウヤの腕に、鋭い刃が走った。"},
+{s:"トウヤ",l:"がっ……!"},
+{s:"元武",l:"トウヤ!!"},
+{s:"ナレーション",l:"血の飛び散る音が、元武の頭の中の何かを破壊した。"},
+]},
+{v:1,n:8,t:"プライドと友情の戦い",d:"",e:"ゲガント",b:1,
+conv:[
+{s:"ナレーション",l:"トウヤが切られた後、元武は静かに怒る。"},
+{s:"ナレーション",l:"元武の拳はゲガントの方へ向かう。"},
+{s:"元武",l:"――行くぞ！"},
+{s:"ゲガント",l:"それが全開か？"},
+]},
+{v:1,n:9,t:"ワールドインフレ",d:"",e:"ゲガント",b:0,
+conv:[
+{s:"ナレーション",l:"ゲガントは倒され何かを落とす。"},
+{s:"ナレーション",l:"ゲガントの持っていた無線からある場所の事を告げられる。"},
+{s:"ナレーション",l:"その場所はワールドインフレ。"},
+{s:"ナレーション",l:"そこへ行けば世界が手に入る。"},
+{s:"元武",l:"なあトウヤ。行こうぜそこへ。"},
+{s:"トウヤ",l:"ああ。"},
+]},
+{v:2,n:10,t:"世界の中心",d:"",e:"死橋轟",b:0,
+conv:[
+{s:"ナレーション",l:"ワールドインフレについて知らされる2人。"},
+{s:"ナレーション",l:"9つの世界の中心に位置するそこを目指す元武とトウヤ。"},
+{s:"元武",l:"仲間が欲しいな。"},
+]},
+{v:2,n:11,t:"弓使い風を射る",d:"",e:"明石啓希",b:0,
+conv:[
+{s:"ナレーション",l:"ワールドインフレを探しに行く2人の横を、一本の矢が通り抜ける。"},
+{s:"ナレーション",l:"その矢を放ったのは…"},
+{s:"死橋轟",l:"そこから先は、俺の領分だ。引き返せ。"},
+]},
+{v:2,n:12,t:"混沌",d:"",e:"死橋轟",b:1,
+conv:[
+{s:"ナレーション",l:"後ろを振り向くと、死橋轟が立っていた。"},
+{s:"ナレーション",l:"元武とトウヤでは太刀打ちできず、倒れることしかできなかった。"},
+{s:"元武",l:"退くわけにはいかない…！"},
+{s:"死橋轟",l:"その程度か？"},
+]},
+{v:2,n:13,t:"絆",d:"",e:"オリバー",b:0,
+conv:[
+{s:"ナレーション",l:"轟の前に倒れるも、2人は諦めず向かっていった。"},
+{s:"ナレーション",l:"その2人に何を思ったのか、轟は去っていった。"},
+{s:"轟",l:"……時間の無駄だ。"},
+{s:"元武",l:"通っていいんだよな...？"},
+{s:"ナレーション",l:"元武とトウヤは疲労と傷でその場に倒れてしまった。"},
+]},
+{v:2,n:14,t:"神秘の存在",d:"",e:"鈴鹿",b:0,
+conv:[
+{s:"ナレーション",l:"鈴鹿の登場。"},
+{s:"ナレーション",l:"元武とトウヤは彼女の固有能罪符で傷を癒していた。"},
+{s:"元武",l:"誰かは知らないがありがとう。"},
+{s:"鈴鹿",l:"気にしないで。"},
+]},
+{v:2,n:15,t:"霊試練",d:"",e:"和辺重治",b:0,
+conv:[
+{s:"ナレーション",l:"傷を治し歩き出した元武達。"},
+{s:"鈴鹿",l:"私もついて行っていい？"},
+{s:"元武",l:"ああ。俺たちの旅を見届けてくれ。"},
+{s:"ナレーション",l:"歩き続ける元武達の前に謎の瓶が投げられる。"},
+{s:"ナレーション",l:"そこから出てきた巨大な生き物は…"},
+{s:"元武",l:"また敵か？"},
+{s:"ホーレン",l:"そいつを倒してみろ。話はそれからだ。"},
+]},
+{v:2,n:16,t:"鬼の化身",d:"",e:"ホーレン",b:1,
+conv:[
+{s:"ナレーション",l:"ホーレンの投げた瓶から、鬼に似たバケモノが出てきて、元武達はピンチ。"},
+{s:"ナレーション",l:"鈴鹿1人で何とかなるはずもなく…"},
+{s:"元武",l:"覚悟は決めてきた。"},
+{s:"ホーレン",l:"どうした？死ぬぞ？"},
+]},
+{v:2,n:17,t:"壮絶なる決闘",d:"",e:"珠濃雅紀",b:0,
+conv:[
+{s:"ナレーション",l:"絶体絶命のピンチ"},
+{s:"ナレーション",l:"そんな中ある男が、鬼に向かって矢を放つ。"},
+{s:"死橋轟",l:"そこから先は、俺の領分だ。"},
+]},
+{v:2,n:18,t:"過去からの復讐",d:"",e:"玉垣剣城",b:0,
+conv:[
+{s:"ナレーション",l:"轟が鬼と対峙する。"},
+{s:"ナレーション",l:"轟は、元武達と戦って己の弱さを感じた。"},
+{s:"元武",l:"助けてくれるのか？"},
+{s:"轟",l:"やっぱり甘いな。"},
+]},
+{v:3,n:19,t:"隠された超能力",d:"",e:"弐呪刻",b:0,
+conv:[
+{s:"ナレーション",l:"轟は固有能罪符「全追尾」を使い、鬼の肉体を射る。"},
+{s:"轟",l:"一歩ずつでも、進むしかないよな。"},
+{s:"トウヤ",l:"……強いな。"},
+]},
+{v:3,n:20,t:"決意の瞬間",d:"",e:"ゲガント",b:0,
+conv:[
+{s:"ナレーション",l:"鬼を倒した轟は元武達に協力することを決めた。"},
+{s:"元武",l:"みんなで、乗り越えよう。"},
+{s:"轟",l:"親玉を倒すぞ。"},
+]},
+{v:3,n:21,t:"暗黒のモンスター",d:"",e:"ホーレン",b:1,
+conv:[
+{s:"ナレーション",l:"鬼を倒した彼らは、ホーレンと戦う。"},
+{s:"ホーレン",l:"……邪魔をするな。"},
+{s:"轟",l:"怪我をしたくないならここから去れ。"},
+]},
+{v:3,n:22,t:"運命の対決",d:"",e:"ホーレン",b:1,
+conv:[
+{s:"ナレーション",l:"ホーレンと戦う中、小さな爆発がホーレンに起こった。"},
+{s:"ホーレン",l:"なんだと..."},
+{s:"ボムブ",l:"悪いな。長くて飽きてきた。"},
+]},
+{v:3,n:23,t:"絆を取り戻すために",d:"",e:"ボムブ",b:1,
+conv:[
+{s:"ナレーション",l:"ホーレンとボムブは一時的な仲間だった。"},
+{s:"ナレーション",l:"ボムブは元武達に攻撃を始める。"},
+{s:"元武",l:"見せてやるぞ、俺たちの力を。"},
+{s:"ボムブ",l:"死を恐れないのか。。"},
+]},
+{v:3,n:24,t:"希望の光",d:"",e:"ボムブ",b:1,
+conv:[
+{s:"ナレーション",l:"ボムブは、元武達に向かっていく。"},
+{s:"ナレーション",l:"爆風を使って。"},
+{s:"元武",l:"さあ、来い！"},
+{s:"ボムブ",l:"本気を出させてもらう。"},
+]},
+{v:3,n:25,t:"強敵との死闘",d:"",e:"ボムブ",b:1,
+conv:[
+{s:"ナレーション",l:"爆風を利用した高速移動に為す術が無い元武とトウヤ。"},
+{s:"ナレーション",l:"しかし轟の矢はボムブを追い続けた。"},
+{s:"トウヤ",l:"ここで止まるわけにはいかない。"},
+{s:"ボムブ",l:"面白くなってきた。"},
+]},
+{v:3,n:26,t:"挑む者たち",d:"栗島トウヤがボムブの動きを何とか止めて、元武の攻撃がボムブに当たる。勝ちだ。",e:"ボムブ",b:1,
+conv:[
+{s:"ナレーション",l:"栗島トウヤがボムブの動きを何とか止めて、元武の攻撃がボムブに当たる。"},
+{s:"元武",l:"覚悟は決めてきた。"},
+{s:"ボムブ",l:"その程度か？"},
+]},
+{v:3,n:27,t:"マスターキー",d:"敵を倒した、元武達の前に沢華という青髪の女性が現れる。彼女がホーレンやボムブと協力して、力を試していたようだ。",e:"ボムブ",b:0,
+conv:[
+{s:"ナレーション",l:"敵を倒した、元武達の前に沢華という青髪の女性が現れる。"},
+{s:"ナレーション",l:"彼女がホーレンやボムブと協力して、力を試していたようだ。"},
+{s:"沢華",l:"思ったよりやるようね。"},
+{s:"轟",l:"こいつも敵か？"},
+]},
+{v:4,n:28,t:"限界を超える力",d:"沢華の登場。彼女に遠慮なく攻撃を始める轟。しかし、トウヤが彼女を庇う。",e:"沢華",b:0,
+conv:[
+{s:"ナレーション",l:"沢華の登場。"},
+{s:"ナレーション",l:"彼女に遠慮なく攻撃を始める轟。"},
+{s:"轟",l:"――行くぞ！"},
+{s:"トウヤ",l:"話を聞いてやれよ。"},
+{s:"轟",l:"お前が先か？"},
+]},
+{v:4,n:29,t:"勇気の炎",d:"トウヤと轟が一触即発の緊急事態。鈴鹿と元武が何とか場を和ませる。そんな中、先遣隊の隊員がやってきた。",e:"鈴鹿",b:0,
+conv:[
+{s:"ナレーション",l:"トウヤと轟が一触即発の緊急事態。"},
+{s:"ナレーション",l:"鈴鹿と元武が何とか場を和ませる。"},
+{s:"元武",l:"落ち着け、落ち着け。"},
+{s:"鈴鹿",l:"話を聞いてみましょうよ。"},
+{s:"ナレーション",l:"その時先遣隊の隊員がやってきた。"},
+]},
+{v:4,n:30,t:"神秘の力との闘い",d:"隊員は、疲労した元武達では太刀打ちできず、トウヤが狙われた。",e:"石倉有栖",b:0,
+conv:[
+{s:"ナレーション",l:"隊員は、疲労した元武達では太刀打ちできず、トウヤが狙われた。"},
+{s:"元武",l:"こいつ強すぎる..."},
+{s:"トウヤ",l:"狙いは俺かよ。"},
+]},
+{v:4,n:31,t:"女戦士の覚醒",d:"トウヤのピンチ。沢華の固有能罪符(竹取の翁(トゥルーカラーズ))によって、隊員は一時撤退となった。(竹取の翁は小さな竹を出すことができる)",e:"沢華",b:0,
+conv:[
+{s:"ナレーション",l:"トウヤのピンチ。"},
+{s:"ナレーション",l:"しかし、沢華の固有能罪符によって、隊員は一時撤退となった。"},
+{s:"トウヤ",l:"..."},
+{s:"沢華",l:"大丈夫だった？"},
+]},
+{v:4,n:32,t:"真実を求めて",d:"隊員はトウヤの過去について、少しだけ話した。トウヤの顔は色々な感情が混ざっていた。",e:"ボムブ",b:0,
+conv:[
+{s:"ナレーション",l:"去り際に隊員はトウヤの過去について、少しだけ話した。"},
+{s:"ナレーション",l:"トウヤの顔は色々な感情が混ざっていた。"},
+{s:"トウヤ",l:"..."},
+]},
+{v:4,n:33,t:"特別な使命",d:"トウヤは自身の過去を少しだけ知り、決断する。両親を探すことを目的に。そして壬陸の登場。壬陸は自身の兄を探すために、元武達と旅をすることに。(壬陸は固有能罪符｢ルイヴィトン｣を持つ)(ルイヴィトンは弱い相手に対しては勝率が低く、強い相手には勝率が高くなる。)",e:"阿波牛壬陸",b:0,
+conv:[
+{s:"ナレーション",l:"トウヤは自身の過去を少しだけ知り、決断する。"},
+{s:"ナレーション",l:"両親を探すことを目的に。"},
+{s:"元武",l:"旅を続けようか。"},
+{s:"阿波牛壬陸",l:"私も連れてってください！"},
+{s:"轟",l:"誰だこいつ。"},
+{s:"阿波牛壬陸",l:"兄を探しているんです！"},
+]},
+{v:4,n:34,t:"奇跡の連鎖",d:"隊員は先遣隊に戻り元武達についてある男に説明した。第二先遣隊隊長、阿波牛星夜の登場である。(阿波牛星夜の固有能罪符は｢珍古砲｣)(珍古砲は、エネルギーを増幅し放出することができる)",e:"阿波牛星夜",b:0,
+conv:[
+{s:"ナレーション",l:"隊員は先遣隊に戻り元武達についてある男に説明した。"},
+{s:"ナレーション",l:"第二先遣隊隊長、阿波牛星夜の登場である。"},
+{s:"阿波牛星夜",l:"ついに見つけたのか..."},
+]},
+{v:4,n:35,t:"疑惑の裏",d:"轟に近寄る阿波牛星夜。攻撃態勢に入るが、星夜は轟を一瞬で制圧した。",e:"阿波牛星夜",b:1,
+conv:[
+{s:"ナレーション",l:"あれから数日、轟に忍び寄る阿波牛星夜。"},
+{s:"ナレーション",l:"攻撃態勢に入るが、星夜は轟を一瞬で制圧した。"},
+{s:"轟",l:"まじかよ..."},
+{s:"阿波牛星夜",l:"…悪いな。"},
+]},
+{v:4,n:36,t:"事件発生",d:"轟の敗北後、元武達は阿波牛星夜にリベンジを望む。",e:"阿波牛星夜",b:0,
+conv:[
+{s:"ナレーション",l:"轟の敗北後、元武達は阿波牛星夜にリベンジを望む。"},
+{s:"元武",l:"そいつはそんなに強かったのか？"},
+{s:"轟",l:"ああ。"},
+]},
+{v:5,n:37,t:"不屈の魂",d:"元武達が多大な時間を費やして、ようやく第二先遣隊のしっぽを掴むことができた。",e:"リボルト",b:0,
+conv:[
+{s:"ナレーション",l:"元武達が多大な時間を費やして、ようやく第二先遣隊の下へたどり着いた。"},
+{s:"元武",l:"……油断するなよ。"},
+{s:"轟",l:"……見ての通りだ。"},
+]},
+{v:5,n:38,t:"第二先遣隊①",d:"阿波牛星夜と栗島トウヤ、死橋轟が対面。阿波牛星夜はトウヤの過去を詳細に話す。それに、理性を失ったトウヤは一瞬だが星夜を圧倒。",e:"死橋轟",b:1,
+conv:[
+{s:"ナレーション",l:"阿波牛星夜と栗島トウヤ、死橋轟が対面。"},
+{s:"ナレーション",l:"阿波牛星夜はトウヤの過去を詳細に話す。"},
+{s:"トウヤ",l:"......"},
+{s:"ナレーション",l:"トウヤの顔が何かで染まる"},
+{s:"死橋轟",l:"トウヤ、待て！。"},
+]},
+{v:5,n:39,t:"第二先遣隊②",d:"星夜を圧倒したトウヤは、一瞬のうちにエネルギーを使い果たし倒れ込んでしまった。轟はトウヤの保護を優先しトウヤを担いでその場を去る。元武は星夜と戦うがやられてしまい、気絶。",e:"阿波牛星夜",b:0,
+conv:[
+{s:"ナレーション",l:"星夜を圧倒したトウヤは、一瞬のうちにエネルギーを使い果たし倒れ込んでしまった。"},
+{s:"ナレーション",l:"轟はトウヤの保護を優先しトウヤを担いでその場を去る。"},
+{s:"轟",l:"一時撤退だ。"},
+{s:"阿波牛星夜",l:"あれ程の力を...。"},
+]},
+{v:5,n:40,t:"第二先遣隊③",d:"阿波牛星夜が元武達を尻目に去ろうとした時、背後に謎の人影が。一瞬で星夜は倒れてしまった。",e:"阿波牛星夜",b:0,
+conv:[
+{s:"ナレーション",l:"阿波牛星夜が元武達を尻目に去ろうとした時、背後に謎の人影が。"},
+{s:"ナレーション",l:"一瞬で星夜は倒れてしまった。"},
+{s:"阿波牛星夜",l:"誰だ..."},
+]},
+{v:5,n:41,t:"第二先遣隊④",d:"倒れた星夜に謎の針を刺し続ける謎の人物(unknown)。そんな中気がついた元武が、謎の人物に攻撃をする。しかし攻撃は効かなかった。だが元武は、星夜と共に戦うことを提案。",e:"阿波牛星夜",b:0,
+conv:[
+{s:"ナレーション",l:"倒れた星夜に謎の針を刺し続ける謎の人物。"},
+{s:"ナレーション",l:"そんな中気がついた元武が、謎の人物に攻撃をする。"},
+{s:"元武",l:"まだ終わらない…ここからだ！"},
+{s:"???",l:"..."},
+]},
+{v:5,n:42,t:"第二先遣隊⑤",d:"星夜と元武が共闘。始めは互角だったが、徐々に劣勢に、元武の限界が近づいてしまったため元武を遠くに飛ばす。そして1人で立ち向かう星夜はやられてしまった。",e:"阿波牛星夜",b:1,
+conv:[
+{s:"ナレーション",l:"星夜と元武が共闘。"},
+{s:"ナレーション",l:"始めは互角だったが、徐々に劣勢に、元武の限界が近づいてしまったため元武を逃がす。"},
+{s:"阿波牛星夜",l:"……悪いな。"},
+]},
+{v:5,n:43,t:"千半譲渡",d:"地面に倒れた星夜を確認せずに去っていった謎の人物。星夜は最後の力を振り絞って、元武に「珍古砲」を譲渡する。壬陸(星夜の妹)を守ると約束をして、、、",e:"阿波牛壬陸",b:0,
+conv:[
+{s:"ナレーション",l:"地面に倒れた星夜を確認せずに去っていった謎の人物。"},
+{s:"ナレーション",l:"星夜は最後の力を振り絞って、元武に「珍古砲」を譲渡する。"},
+{s:"元武",l:"何だこの力..."},
+{s:"阿波牛星夜",l:"俺の妹を守ってくれ。"},
+]},
+{v:5,n:44,t:"それでもか",d:"元武はどこかに歩いていく謎の人物に、叫び続けるが、意味はなかったようだ。",e:"安村康夫",b:0,
+conv:[
+{s:"ナレーション",l:"元武はどこかに歩いていく謎の人物に、叫び続けるが、意味はなかったようだ。"},
+{s:"元武",l:"畜生..."},
+]},
+{v:5,n:45,t:"神登場",d:"舞台はシンギュラリティに変わり、フセインの登場。元武達に興味を引かれていた。(フセインの固有能罪符は全知全識)(全知全識はどんな事でも瞬時にわかる脳を手に入れられる)",e:"フセイン",b:1,
+conv:[
+{s:"ナレーション",l:"舞台はシンギュラリティに変わり、フセインの登場。"},
+{s:"ナレーション",l:"元武達に興味を引かれていた。"},
+{s:"元武",l:"ここで止まるわけにはいかない。"},
+{s:"フセイン",l:"本気を出させてもらう。"},
+]},
+{v:6,n:46,t:"心の戦い",d:"フセインは、トウヤに会いに行った。トウヤはフセインから聖戦天使神響というものを聞いて、、、",e:"フセイン",b:1,
+conv:[
+{s:"ナレーション",l:"フセインは、トウヤに会いに行った。"},
+{s:"ナレーション",l:"トウヤはフセインから聖戦天使神響というものを聞いて…"},
+{s:"トウヤ",l:"覚悟は決めてきた。"},
+{s:"フセイン",l:"――くく、面白い。"},
+]},
+{v:6,n:47,t:"命を賭けた決断",d:"トウヤは元武を連れ、聖戦天使神響の会場に向かう。そこで出会った強者のオーラを放っている人たち。しかし、2人は挑戦する。",e:"桜木彰",b:0,
+conv:[
+{s:"ナレーション",l:"トウヤは元武を連れ、聖戦天使神響の会場に向かう。"},
+{s:"ナレーション",l:"そこで出会った強者のオーラを放っている人たち。"},
+{s:"元武",l:"それが、本当のことなのか。"},
+{s:"???",l:"まだ、話す気はない。"},
+]},
+{v:6,n:48,t:"聖戦天使神響編",d:"聖戦天使神響の始まり、ルールや参加者について知る。",e:"跳田収滋",b:0,
+conv:[
+{s:"ナレーション",l:"聖戦天使神響の始まり、ルールや参加者について知る。"},
+{s:"???",l:"……見ての通りだ。"},
+]},
+{v:6,n:49,t:"死闘の果てに",d:"予選を何とか突破した元武達。勝負はこれからだ。",e:"アステレス",b:0,
+conv:[
+{s:"ナレーション",l:"予選を何とか突破した元武達。"},
+{s:"ナレーション",l:"勝負はこれからだ。"},
+{s:"元武",l:"……そうか、分かった。"},
+{s:"???",l:"……見ての通りだ。"},
+]},
+{v:6,n:50,t:"決戦の予感",d:"霊剛と戦うことになった元武。果たして勝てるのか。",e:"霊剛",b:1,
+conv:[
+{s:"ナレーション",l:"霊剛と戦うことになった元武。"},
+{s:"ナレーション",l:"果たして勝てるのか。"},
+{s:"元武",l:"力の差を、見せてもらう。"},
+{s:"霊剛",l:"力試しといこうか。"},
+]},
+{v:6,n:51,t:"幽霊舞踏会",d:"霊剛の「ポルターガイスト」に苦戦する元武。(ポルターガイストは幽霊を操ることができる)",e:"霊剛",b:1,
+conv:[
+{s:"ナレーション",l:"霊剛の「ポルターガイスト」に苦戦する元武。"},
+{s:"元武",l:"まだ終わらない…ここからだ！"},
+{s:"霊剛",l:"退がっていろ。痛い目を見るぞ。"},
+]},
+{v:6,n:52,t:"希望の証",d:"トウヤに置いていかれない為に、立ち上がる元武。",e:"明石啓希",b:0,
+conv:[
+{s:"ナレーション",l:"トウヤに置いていかれない為に、立ち上がる元武。"},
+{s:"元武",l:"みんなで、乗り越えよう。"},
+{s:"???",l:"興味深いな、お前たちは。"},
+]},
+{v:6,n:53,t:"真理の探求",d:"霊剛と戦う元武。段々優勢になってきたが、、、",e:"霊剛",b:1,
+conv:[
+{s:"ナレーション",l:"霊剛と戦う元武。"},
+{s:"ナレーション",l:"段々優勢になってきたが…"},
+{s:"元武",l:"見誤るなよ、俺たちの力を。"},
+{s:"霊剛",l:"――くく、面白い。"},
+]},
+{v:6,n:54,t:"悪夢の追撃",d:"霊剛が幽霊を弾丸のようにして飛ばしてくる。元武は「刃牙刃牙」で耐え、見事勝利を掴んだ。その一方で、何かを飲む人物が、、、",e:"霊剛",b:1,
+conv:[
+{s:"ナレーション",l:"霊剛が幽霊を弾丸のようにして飛ばしてくる。"},
+{s:"ナレーション",l:"元武は「刃牙刃牙」で耐え、見事勝利を掴んだ。"},
+{s:"元武",l:"これが、俺の全力だ！"},
+{s:"霊剛",l:"その程度か？"},
+]},
+{v:7,n:55,t:"無敵の戦士",d:"安村康夫の登場。栗島トウヤの攻撃が効かず、、、(安村康夫の固有能罪符｢火薬庫｣は毒を体内に入れると痛みが消える。しかし安村は毒に耐性を持っていない)",e:"安村康夫",b:1,
+conv:[
+{s:"ナレーション",l:"安村康夫の登場。"},
+{s:"ナレーション",l:"栗島トウヤの攻撃が効かず…"},
+{s:"トウヤ",l:"ここで止まるわけにはいかない。"},
+{s:"安村康夫",l:"まだ、底を見せていないぞ。"},
+]},
+{v:7,n:56,t:"サイボーグ師匠",d:"ここで少し前に遡る。トウヤはフセインとの訓練で、新たな力を手に入れた。聡式魔術を、、、(フセインはシンギュラリティの神で機械でてきた元人間)(聡式魔術は固有能罪符とは別)",e:"フセイン",b:1,
+conv:[
+{s:"ナレーション",l:"ここで少し前に遡る。"},
+{s:"ナレーション",l:"トウヤはフセインとの訓練で、新たな力を手に入れた。"},
+{s:"トウヤ",l:"覚悟は決めてきた。"},
+{s:"フセイン",l:"……邪魔をするな。"},
+]},
+{v:7,n:57,t:"不屈の意志",d:"安村との先頭に戻り、トウヤは魔術を使って形勢逆転。トウヤの勝ちだ。",e:"安村康夫",b:1,
+conv:[
+{s:"ナレーション",l:"安村との先頭に戻り、トウヤは魔術を使って形勢逆転。"},
+{s:"ナレーション",l:"トウヤの勝ちだ。"},
+{s:"トウヤ",l:"負けられない理由が、俺にはある。"},
+{s:"安村康夫",l:"力試しといこうか。"},
+]},
+{v:7,n:58,t:"捨てられた過去",d:"トウヤは自身の腕のことがフラッシュバックし、、、",e:"珠濃雅紀",b:0,
+conv:[
+{s:"ナレーション",l:"トウヤは自身の腕のことがフラッシュバックし…"},
+{s:"トウヤ",l:"この先に、何が待っているんだろうな。"},
+{s:"???",l:"興味深いな、お前たちは。"},
+]},
+{v:7,n:59,t:"笑顔の決意",d:"トウヤは自身の目的を明確に決めた。ワールドインフレと過去。",e:"玉垣剣城",b:0,
+conv:[
+{s:"ナレーション",l:"トウヤは自身の目的を明確に決めた。"},
+{s:"ナレーション",l:"ワールドインフレと過去。"},
+{s:"トウヤ",l:"一歩ずつでも、進むしかない。"},
+{s:"???",l:"まだ、話す気はない。"},
+]},
+{v:7,n:60,t:"苦難を乗り越えて",d:"トウヤと元武の両者とも初戦突破。",e:"弐呪刻",b:0,
+conv:[
+{s:"ナレーション",l:"トウヤと元武の両者とも初戦突破。"},
+{s:"元武",l:"みんなで、乗り越えよう。"},
+{s:"???",l:"ここから先は、俺の領分だ。"},
+]},
+{v:7,n:61,t:"古代の謎",d:"場面は変わってフセインの所に。伝説の存在｢珍子｣の事を話し始める。",e:"フセイン",b:1,
+conv:[
+{s:"ナレーション",l:"場面は変わってフセインの所に。"},
+{s:"ナレーション",l:"伝説の存在｢珍子｣の事を話し始める。"},
+{s:"フセイン",l:"その程度か？"},
+]},
+{v:7,n:62,t:"死神の誘惑",d:"返網転登場。ヒナルと戦闘開始。",e:"ヒナル",b:1,
+conv:[
+{s:"ナレーション",l:"返網転登場。"},
+{s:"ナレーション",l:"ヒナルと戦闘開始。"},
+{s:"返網転",l:"退くわけにはいかない…！"},
+{s:"ヒナル",l:"まだ、底を見せていないぞ。"},
+]},
+{v:7,n:63,t:"守りし者の使命",d:"今まで己の炎を使って街を守ってきたヒナル。しかし返網転に歯が立たず。(ヒナルは固有能罪符｢ガス杀ン殳（ガスコンロレベルの炎を出せる)｣を持つ。）",e:"返網転",b:1,
+conv:[
+{s:"ナレーション",l:"今まで己の炎を使って街を守ってきたヒナル。"},
+{s:"ナレーション",l:"しかし返網転に歯が立たず。"},
+{s:"ヒナル",l:"見誤るなよ、俺たちの力を。"},
+{s:"返網転",l:"……邪魔をするな。"},
+]},
+{v:8,n:64,t:"許されざる罪",d:"ヒナルの街を荒らした人物を倒すために、この戦いに参加した。ヒナルは倒れても、立ち上がる。",e:"ヒナル",b:1,
+conv:[
+{s:"ナレーション",l:"ヒナルの街を荒らした人物を倒すために、この戦いに参加した。"},
+{s:"ナレーション",l:"ヒナルは倒れても、立ち上がる。"},
+{s:"ヒナル",l:"力試しといこうか。"},
+]},
+{v:8,n:65,t:"闇の双子",d:"和辺達登場。先遣隊出身の2人の最初の相手は、、",e:"蒼井朔也",b:0,
+conv:[
+{s:"ナレーション",l:"和辺達登場。"},
+{s:"ナレーション",l:"先遣隊出身の2人の最初の相手は、、"},
+{s:"???",l:"ここから先は、俺の領分だ。"},
+]},
+{v:8,n:66,t:"霧の迷宮",d:"和辺重治とコード5.2が戦い始める。ずっと目の前に出てくる壁に5.2は、、、(重治は固有能罪符｢迷走迷路｣を持つ)(迷走迷路は触れた場所に迷路を生成する)",e:"コード5.2",b:1,
+conv:[
+{s:"ナレーション",l:"和辺重治とコード5.2が戦い始める。"},
+{s:"ナレーション",l:"ずっと目の前に出てくる壁に5.2は…"},
+{s:"重治",l:"覚悟は決めてきた。"},
+{s:"コード5.2",l:"本気を出させてもらう。"},
+]},
+{v:8,n:67,t:"因果の法則",d:"和辺重信とFqEaの戦いが始まる。FqEaは近づくことができなくて、、、(重信は固有能罪符｢因果反発｣を持つ)(因果反発は選択したもの同士を近づけなくする)",e:"FqEa",b:1,
+conv:[
+{s:"ナレーション",l:"和辺重信とFqEaの戦いが始まる。"},
+{s:"ナレーション",l:"FqEaは近づくことができなくて…"},
+{s:"重信",l:"負けられない理由が、俺にはある。"},
+{s:"FqEa",l:"――くく、面白い。"},
+]},
+{v:8,n:68,t:"強火",d:"場面は返網転とヒナルに戻る。ヒナルは最大火力を出すが、返網転には効かず倒されてしまった。(返網転は固有能罪符｢死神大天国を持つ｣)(死神大天国は死神を出し攻撃できる。(ほぼ回避不能))",e:"ヒナル",b:1,
+conv:[
+{s:"ナレーション",l:"場面は返網転とヒナルに戻る。"},
+{s:"ナレーション",l:"ヒナルは最大火力を出すが、返網転には効かず倒されてしまった。"},
+{s:"返網転",l:"――行くぞ！"},
+{s:"ヒナル",l:"その程度か？"},
+]},
+{v:8,n:69,t:"心の闘い",d:"和辺重治が5.2に押されている中、重治の言葉で自分を信じれなくなってしまう。",e:"コード5.2",b:1,
+conv:[
+{s:"ナレーション",l:"和辺重治が5.2に押されている中、重治の言葉で自分を信じれなくなってしまう。"},
+{s:"重治",l:"この先に、進むために。"},
+{s:"コード5.2",l:"まだ、底を見せていないぞ。"},
+]},
+{v:8,n:70,t:"超越の境地",d:"5.2は信じれなくなった自分を超える。次第に優勢に、、、(5.2は固有能罪符｢エンライトメント｣を持つ)(エンライトメントは脳汁に比例してパワーが上がる)",e:"コード5.2",b:1,
+conv:[
+{s:"ナレーション",l:"5.2は信じれなくなった自分を超える。"},
+{s:"ナレーション",l:"次第に優勢に…"},
+{s:"コード5.2",l:"……邪魔をするな。"},
+]},
+{v:8,n:71,t:"伝説の武器",d:"FqEaの重信の戦いに移る。見えない攻撃に重信は苦戦。(FqEaは固有能罪符｢イマジナリーフレンド｣を持つ)(イマジナリーフレンドは息を止めている間のみ時間を操ることができる)",e:"和辺重信",b:1,
+conv:[
+{s:"ナレーション",l:"FqEaの重信の戦いに移る。"},
+{s:"ナレーション",l:"見えない攻撃に重信は苦戦。"},
+{s:"FqEa",l:"まだ終わらない…ここからだ！"},
+{s:"和辺重信",l:"力試しといこうか。"},
+]},
+{v:8,n:72,t:"未知の力",d:"重信は、見えない攻撃の中でもFqEaを寄せつけない。しかし、FqEaの圧倒的センスの前に、、、",e:"FqEa",b:1,
+conv:[
+{s:"ナレーション",l:"重信は、見えない攻撃の中でもFqEaを寄せつけない。"},
+{s:"ナレーション",l:"しかし、FqEaの圧倒的センスの前に…"},
+{s:"FqEa",l:"退がっていろ。痛い目を見るぞ。"},
+]},
+{v:9,n:73,t:"第一先遣隊の二人",d:"先遣隊の2人は双子に見事勝利。双子の代よりも強くなった第一先遣隊である事が分かり双子は、一安心。",e:"ボムブ",b:0,
+conv:[
+{s:"ナレーション",l:"先遣隊の2人は双子に見事勝利。"},
+{s:"ナレーション",l:"双子の代よりも強くなった第一先遣隊である事が分かり双子は、一安心。"},
+{s:"ボムブ",l:"そう急くな。"},
+]},
+{v:9,n:74,t:"破滅へのカウントダウン",d:"マタイの登場。ヒナルはマタイの固有能罪符(ヘルカウント)によって殺される。(ヘルカウントは時間とともに肉体が崩壊する)",e:"ヒナル",b:1,
+conv:[
+{s:"ナレーション",l:"マタイの登場。"},
+{s:"ナレーション",l:"ヒナルはマタイの固有能罪符によって殺される。"},
+{s:"マタイ",l:"これが、俺の全力だ！"},
+{s:"ヒナル",l:"――くく、面白い。"},
+]},
+{v:9,n:75,t:"奪われた正義",d:"5.2はマタイの行動に怒り、次の試合で必ず倒すことを誓う。",e:"マタイ",b:1,
+conv:[
+{s:"ナレーション",l:"5.2はマタイの行動に怒り、次の試合で必ず倒すことを誓う。"},
+{s:"マタイ",l:"その程度か？"},
+]},
+{v:9,n:76,t:"襲撃",d:"FqEaの背後から返網転の攻撃が、、、しかしうまく避けることができた。",e:"返網転",b:1,
+conv:[
+{s:"ナレーション",l:"FqEaの背後から返網転の攻撃が…しかしうまく避けることができた。"},
+{s:"FqEa",l:"覚悟は決めてきた。"},
+{s:"返網転",l:"まだ、底を見せていないぞ。"},
+]},
+{v:9,n:77,t:"約束の地",d:"一方その頃、死橋轟は最初に元武達と会った場所に、、、その時ログフが登場。",e:"ログフ",b:1,
+conv:[
+{s:"ナレーション",l:"一方その頃、死橋轟は最初に元武達と会った場所に…その時ログフが登場。"},
+{s:"元武",l:"負けられない理由が、俺にはある。"},
+{s:"ログフ",l:"……邪魔をするな。"},
+]},
+{v:9,n:78,t:"魔法陣の罠",d:"壬陸がログフに捕まえられている。轟は武器を捨てて壬陸を返してもらおうとするが、、、",e:"ログフ",b:1,
+conv:[
+{s:"ナレーション",l:"壬陸がログフに捕まえられている。"},
+{s:"ナレーション",l:"轟は武器を捨てて壬陸を返してもらおうとするが…"},
+{s:"轟",l:"――行くぞ！"},
+{s:"ログフ",l:"力試しといこうか。"},
+]},
+{v:9,n:79,t:"アンデッドの侵略",d:"壬陸は、ゾビンソンというバケモノが変装したものだった。弓を失った轟。ピンチかもしれない。",e:"阿波牛壬陸",b:1,
+conv:[
+{s:"ナレーション",l:"壬陸は、ゾビンソンというバケモノが変装したものだった。"},
+{s:"ナレーション",l:"弓を失った轟。"},
+{s:"轟",l:"この先に、進むために。"},
+{s:"阿波牛壬陸",l:"退がっていろ。痛い目を見るぞ。"},
+]},
+{v:9,n:80,t:"復讐の果て",d:"轟はゾビンソンを全て倒し、ログフをチェックメイト。",e:"ログフ",b:1,
+conv:[
+{s:"ナレーション",l:"轟はゾビンソンを全て倒し、ログフをチェックメイト。"},
+{s:"轟",l:"力の差を、見せてもらう。"},
+{s:"ログフ",l:"本気を出させてもらう。"},
+]},
+{v:9,n:81,t:"魔法生物の領域",d:"ログフの固有能罪符(フリーエリア)によって周りが動き、轟はその場から動けなく、、、(フリーエリアは自分の周りの空間を自由に操れる)",e:"ログフ",b:1,
+conv:[
+{s:"ナレーション",l:"ログフの固有能罪符によって周りが動き、轟はその場から動けなく…"},
+{s:"轟",l:"まだ終わらない…ここからだ！"},
+{s:"ログフ",l:"――くく、面白い。"},
+]},
+{v:10,n:82,t:"切り札との対決",d:"FqEaと返網転の戦いが始まった。返網転の能力で切り刻まれるFqEa。しかし傷は戻っていき、、、",e:"返網転",b:1,
+conv:[
+{s:"ナレーション",l:"FqEaと返網転の戦いが始まった。"},
+{s:"ナレーション",l:"返網転の能力で切り刻まれるFqEa。"},
+{s:"FqEa",l:"退くわけにはいかない…！"},
+{s:"返網転",l:"その程度か？"},
+]},
+{v:10,n:83,t:"復讐者",d:"ログフが轟にトドメを誘うとした時、石を使って全追尾を発動。ログフはその場で倒れる。",e:"ログフ",b:1,
+conv:[
+{s:"ナレーション",l:"ログフが轟にトドメを誘うとした時、石を使って全追尾を発動。"},
+{s:"ナレーション",l:"ログフはその場で倒れる。"},
+{s:"轟",l:"見誤るなよ、俺たちの力を。"},
+{s:"ログフ",l:"まだ、底を見せていないぞ。"},
+]},
+{v:10,n:84,t:"希望の光芒",d:"FqEaに攻撃を与え続けるも、意味がない。一瞬の隙をつかれて、返網転は負ける。",e:"返網転",b:1,
+conv:[
+{s:"ナレーション",l:"FqEaに攻撃を与え続けるも、意味がない。"},
+{s:"ナレーション",l:"一瞬の隙をつかれて、返網転は負ける。"},
+{s:"FqEa",l:"これが、俺の全力だ！"},
+{s:"返網転",l:"……邪魔をするな。"},
+]},
+{v:10,n:85,t:"反乱",d:"マタイと5.2の戦いが始まった。はじめは互角だったが、5.2は怒りの拳をくらわせて、勝利した。",e:"コード5.2",b:1,
+conv:[
+{s:"ナレーション",l:"マタイと5.2の戦いが始まった。"},
+{s:"ナレーション",l:"はじめは互角だったが、5.2は怒りの拳をくらわせて、勝利した。"},
+{s:"マタイ",l:"ここで止まるわけにはいかない。"},
+{s:"コード5.2",l:"力試しといこうか。"},
+]},
+{v:10,n:86,t:"神聖なる武器",d:"室井元武は会場から姿を消し、星夜から譲渡された珍古砲の鍛錬を始める。しかし身体中から血が流れだし、、",e:"阿波牛星夜",b:1,
+conv:[
+{s:"ナレーション",l:"室井元武は会場から姿を消し、星夜から譲渡された珍古砲の鍛錬を始める。"},
+{s:"ナレーション",l:"しかし身体中から血が流れだし、、"},
+{s:"元武",l:"覚悟は決めてきた。"},
+{s:"阿波牛星夜",l:"退がっていろ。痛い目を見るぞ。"},
+]},
+{v:10,n:87,t:"魂の決断",d:"栗島トウヤは元武の姿を見て驚いた。何とか止めようとするが、止めることはできなかった。",e:"湯照司吉基",b:0,
+conv:[
+{s:"ナレーション",l:"栗島トウヤは元武の姿を見て驚いた。"},
+{s:"ナレーション",l:"何とか止めようとするが、止めることはできなかった。"},
+{s:"元武",l:"それが、本当のことなのか。"},
+{s:"???",l:"話はそれからだ。"},
+]},
+{v:10,n:88,t:"選ばれし存在",d:"室井元武は、ワールドインフレを見つけるために更なる力を求めていた。",e:"桜木彰",b:0,
+conv:[
+{s:"ナレーション",l:"室井元武は、ワールドインフレを見つけるために更なる力を求めていた。"},
+{s:"元武",l:"少し、落ち着いて話そう。"},
+{s:"???",l:"興味深いな、お前たちは。"},
+]},
+{v:10,n:89,t:"哀しき運命",d:"トウヤと元武はその1件で口も聞かなくなってしまった。",e:"跳田収滋",b:0,
+conv:[
+{s:"ナレーション",l:"トウヤと元武はその1件で口も聞かなくなってしまった。"},
+{s:"元武",l:"……そうか、分かった。"},
+{s:"???",l:"まだ、話す気はない。"},
+]},
+{v:10,n:90,t:"無表情の刺客",d:"室井元武の珍古砲を見て、第二先遣隊副隊長湯照司吉基の登場。",e:"湯照司吉基",b:1,
+conv:[
+{s:"ナレーション",l:"室井元武の珍古砲を見て、第二先遣隊副隊長湯照司吉基の登場。"},
+{s:"元武",l:"力の差を、見せてもらう。"},
+{s:"湯照司吉基",l:"まだ、底を見せていないぞ。"},
+]},
+{v:11,n:91,t:"未来の預言",d:"室井元武に栗島トウヤとの仲を戻すように伝える予知能力をもつ吉基。(固有能罪符｢if it is｣による予知)",e:"湯照司吉基",b:1,
+conv:[
+{s:"ナレーション",l:"室井元武に栗島トウヤとの仲を戻すように伝える予知能力をもつ吉基。"},
+{s:"元武",l:"まだ終わらない…ここからだ！"},
+{s:"湯照司吉基",l:"……邪魔をするな。"},
+]},
+{v:11,n:92,t:"戦いの舞台",d:"場面は変わり5.2達の方は決勝戦へ。5.2vsFqEaの戦いの始まり。",e:"FqEa",b:1,
+conv:[
+{s:"ナレーション",l:"場面は変わり5.2達の方は決勝戦へ。"},
+{s:"ナレーション",l:"5.2vsFqEaの戦いの始まり。"},
+{s:"FqEa",l:"力試しといこうか。"},
+]},
+{v:11,n:93,t:"魔法都市の秘密",d:"聖戦天使神響の舞台《セレスティエデン》の謎を知るために第一先遣隊の隊長と副隊長である5.2とFqEaは聖戦に参加したことが明らかに。",e:"FqEa",b:1,
+conv:[
+{s:"ナレーション",l:"聖戦天使神響の舞台《セレスティエデン》の謎を知るために第一先遣隊の隊長と副隊長である5.2とFqEaは聖戦に参加したことが明らかに。"},
+{s:"FqEa",l:"退がっていろ。痛い目を見るぞ。"},
+]},
+{v:11,n:94,t:"空中戦",d:"FqEaが優勢に、だが5.2はヒートアップ。エンライトメントを使った打撃でFqEaを追い込む。しかし、FqEaは時間を止めて、5.2を場外に運び、場外負けにした。",e:"コード5.2",b:1,
+conv:[
+{s:"ナレーション",l:"FqEaが優勢に、だが5.2はヒートアップ。"},
+{s:"ナレーション",l:"エンライトメントを使った打撃でFqEaを追い込む。"},
+{s:"FqEa",l:"これが、俺の全力だ！"},
+{s:"コード5.2",l:"本気を出させてもらう。"},
+]},
+{v:11,n:95,t:"勇者の証",d:"聖戦天使神響の優勝者は第一先遣隊副隊長のFqEaに決まった。",e:"FqEa",b:1,
+conv:[
+{s:"ナレーション",l:"聖戦天使神響の優勝者は第一先遣隊副隊長のFqEaに決まった。"},
+{s:"FqEa",l:"――くく、面白い。"},
+]},
+{v:11,n:96,t:"代償の力",d:"元武はなんとかしてトウヤと仲を戻すが吉基について聞かれた。吉基はトウヤに第二先遣隊副隊長であることを明かし、、、",e:"湯照司吉基",b:1,
+conv:[
+{s:"ナレーション",l:"元武はなんとかしてトウヤと仲を戻すが吉基について聞かれた。"},
+{s:"ナレーション",l:"吉基はトウヤに第二先遣隊副隊長であることを明かし…"},
+{s:"元武",l:"覚悟は決めてきた。"},
+{s:"湯照司吉基",l:"その程度か？"},
+]},
+{v:11,n:97,t:"神秘の女王",d:"ワールドインフレには魔神｢珍子｣がいる。彼女は全世界の頂点。しかし彼女に出会った人間はいない。これが珍子の伝説である。",e:"和辺重治",b:0,
+conv:[
+{s:"ナレーション",l:"ワールドインフレには魔神｢珍子｣がいる。"},
+{s:"ナレーション",l:"彼女は全世界の頂点。"},
+{s:"和辺重治",l:"そう急くな。"},
+]},
+{v:11,n:98,t:"偽りの情",d:"吉基は元武達に阿波牛星夜の行方を教えてもらうために、接近した。",e:"阿波牛星夜",b:1,
+conv:[
+{s:"ナレーション",l:"吉基は元武達に阿波牛星夜の行方を教えてもらうために、接近した。"},
+{s:"元武",l:"――行くぞ！"},
+{s:"阿波牛星夜",l:"……邪魔をするな。"},
+]},
+{v:11,n:99,t:"ジョーカー",d:"生憎、元武達も星夜の行方は知らなかった。しかし吉基は星夜を見つけるまでの間元武達の仲間になる事になった。これで、連合が完成した。",e:"湯照司吉基",b:1,
+conv:[
+{s:"ナレーション",l:"生憎、元武達も星夜の行方は知らなかった。"},
+{s:"ナレーション",l:"しかし吉基は星夜を見つけるまでの間元武達の仲間になる事になった。"},
+{s:"元武",l:"この先に、進むために。"},
+{s:"湯照司吉基",l:"力試しといこうか。"},
+]},
+{v:12,n:100,t:"光と闇の激突",d:"それから少しして元武はコード5.2の所に来た。5.2に鍛えてもらうために、、、",e:"コード5.2",b:1,
+conv:[
+{s:"ナレーション",l:"それから少しして元武はコード5.2の所に来た。"},
+{s:"ナレーション",l:"5.2に鍛えてもらうために…"},
+{s:"元武",l:"力の差を、見せてもらう。"},
+{s:"コード5.2",l:"退がっていろ。痛い目を見るぞ。"},
+]},
+{v:12,n:101,t:"真の力目覚める！",d:"5.2は元武と戦うことにした。5.2は的確にアドバイスしながら拳を振る。",e:"コード5.2",b:1,
+conv:[
+{s:"ナレーション",l:"5.2は元武と戦うことにした。"},
+{s:"ナレーション",l:"5.2は的確にアドバイスしながら拳を振る。"},
+{s:"元武",l:"まだ終わらない…ここからだ！"},
+{s:"コード5.2",l:"本気を出させてもらう。"},
+]},
+{v:12,n:102,t:"暴走する闘志",d:"ついつい熱くなった5.2が少し本気を出してしまう。その攻撃に元武は耐えることができず。少し先の壁まで吹っ飛ぶ。",e:"コード5.2",b:1,
+conv:[
+{s:"ナレーション",l:"ついつい熱くなった5.2が少し本気を出してしまう。"},
+{s:"ナレーション",l:"その攻撃に元武は耐えることができず。"},
+{s:"元武",l:"退くわけにはいかない…！"},
+{s:"コード5.2",l:"――くく、面白い。"},
+]},
+{v:12,n:103,t:"超越世界",d:"室井元武は5.2のパンチをくらい、意識が朦朧とする中、目の前にはFqEaと第四先遣隊隊長である甲斐翔也が現れる。",e:"甲斐翔也",b:1,
+conv:[
+{s:"ナレーション",l:"室井元武は5.2のパンチをくらい、意識が朦朧とする中、目の前にはFqEaと第四先遣隊隊長である甲斐翔也が現れる。"},
+{s:"元武",l:"見誤るなよ、俺たちの力を。"},
+{s:"甲斐翔也",l:"その程度か？"},
+]},
+{v:12,n:104,t:"火花散る壮絶な戦い",d:"FqEaと翔也は、元武達連合と戦う事になる。先遣隊vs連合が始まろうとしている。",e:"甲斐翔也",b:1,
+conv:[
+{s:"ナレーション",l:"FqEaと翔也は、元武達連合と戦う事になる。"},
+{s:"ナレーション",l:"先遣隊vs連合が始まろうとしている。"},
+{s:"元武",l:"これが、俺の全力だ！"},
+{s:"甲斐翔也",l:"まだ、底を見せていないぞ。"},
+]},
+{v:12,n:105,t:"絆を求めて",d:"FqEaと翔也は帰り、元武は5.2に連合側として戦ってもらうために交渉をする。",e:"コード5.2",b:1,
+conv:[
+{s:"ナレーション",l:"FqEaと翔也は帰り、元武は5.2に連合側として戦ってもらうために交渉をする。"},
+{s:"元武",l:"ここで止まるわけにはいかない。"},
+{s:"コード5.2",l:"……邪魔をするな。"},
+]},
+{v:12,n:106,t:"エンライトメント",d:"しかし5.2は先遣隊として戦わなければならない。",e:"コード5.2",b:1,
+conv:[
+{s:"ナレーション",l:"しかし5.2は先遣隊として戦わなければならない。"},
+{s:"コード5.2",l:"力試しといこうか。"},
+]},
+{v:12,n:107,t:"戦いの狂気",d:"元武達連合は、全員で集まり戦力増加を望む。(この時点で連合は、室井元武･栗島トウヤ･鈴鹿･死橋轟･沢華･壬陸･湯照司吉基･第二先遣隊の隊員数十名)",e:"湯照司吉基",b:1,
+conv:[
+{s:"ナレーション",l:"元武達連合は、全員で集まり戦力増加を望む。"},
+{s:"元武",l:"負けられない理由が、俺にはある。"},
+{s:"湯照司吉基",l:"退がっていろ。痛い目を見るぞ。"},
+]},
+{v:12,n:108,t:"悪夢",d:"室井元武は眠ってしまい、夢を見た。トウヤと戦う夢を。",e:"ホーレン",b:0,
+conv:[
+{s:"ナレーション",l:"室井元武は眠ってしまい、夢を見た。"},
+{s:"ナレーション",l:"トウヤと戦う夢を。"},
+{s:"元武",l:"みんなで、乗り越えよう。"},
+{s:"ホーレン",l:"ここから先は、俺の領分だ。"},
+]},
+{v:13,n:109,t:"戦場",d:"先遣隊vs連合の戦いの舞台が決まり多くのものがそこに集まった。",e:"ヒナル",b:0,
+conv:[
+{s:"ナレーション",l:"先遣隊vs連合の戦いの舞台が決まり多くのものがそこに集まった。"},
+{s:"ヒナル",l:"そう急くな。"},
+]},
+{v:13,n:110,t:"幕開け",d:"そこでは、ある男が先遣隊と連合のどちらが勝つかで賭けをしていた。その男の名は弍呪刻。",e:"弐呪刻",b:1,
+conv:[
+{s:"ナレーション",l:"そこでは、ある男が先遣隊と連合のどちらが勝つかで賭けをしていた。"},
+{s:"ナレーション",l:"その男の名は弍呪刻。"},
+{s:"弐呪刻",l:"その程度か？"},
+]},
+{v:13,n:111,t:"薔薇道",d:"そこに元武達連合も行き、弍呪刻と会話する。",e:"弐呪刻",b:1,
+conv:[
+{s:"ナレーション",l:"そこに元武達連合も行き、弍呪刻と会話する。"},
+{s:"元武",l:"まだ終わらない…ここからだ！"},
+{s:"弐呪刻",l:"まだ、底を見せていないぞ。"},
+]},
+{v:13,n:112,t:"終わりなき追求",d:"死橋轟は弍呪刻の正体に気付いた。ジャックナイフの神、略奪神｢弍呪刻｣である。",e:"弐呪刻",b:1,
+conv:[
+{s:"ナレーション",l:"死橋轟は弍呪刻の正体に気付いた。"},
+{s:"ナレーション",l:"ジャックナイフの神、略奪神｢弍呪刻｣である。"},
+{s:"轟",l:"退くわけにはいかない…！"},
+{s:"弐呪刻",l:"……邪魔をするな。"},
+]},
+{v:13,n:113,t:"悪意の企み",d:"轟はすぐさま弍呪刻に、先遣隊に勝つためにどうすればいいかを尋ねた。弍呪刻は第六先遣隊を仲間にすれば勝てると言った。",e:"弐呪刻",b:1,
+conv:[
+{s:"ナレーション",l:"轟はすぐさま弍呪刻に、先遣隊に勝つためにどうすればいいかを尋ねた。"},
+{s:"ナレーション",l:"弍呪刻は第六先遣隊を仲間にすれば勝てると言った。"},
+{s:"轟",l:"見誤るなよ、俺たちの力を。"},
+{s:"弐呪刻",l:"力試しといこうか。"},
+]},
+{v:13,n:114,t:"幻惑の罠",d:"轟は弍呪刻からの話を全員に伝え第六先遣隊に向かう。",e:"弐呪刻",b:1,
+conv:[
+{s:"ナレーション",l:"轟は弍呪刻からの話を全員に伝え第六先遣隊に向かう。"},
+{s:"轟",l:"これが、俺の全力だ！"},
+{s:"弐呪刻",l:"退がっていろ。痛い目を見るぞ。"},
+]},
+{v:13,n:115,t:"第六先遣隊①",d:"連合は、第六先遣隊隊長と話をするために正体を隠して隊員に頼んだ。",e:"マタイ",b:0,
+conv:[
+{s:"ナレーション",l:"連合は、第六先遣隊隊長と話をするために正体を隠して隊員に頼んだ。"},
+{s:"マタイ",l:"そう急くな。"},
+]},
+{v:13,n:116,t:"第六先遣隊②",d:"すると、第六先遣隊隊長の明石啓希と副隊長の珠濃雅紀が出てきた。",e:"珠濃雅紀",b:1,
+conv:[
+{s:"ナレーション",l:"すると、第六先遣隊隊長の明石啓希と副隊長の珠濃雅紀が出てきた。"},
+{s:"啓希",l:"覚悟は決めてきた。"},
+{s:"珠濃雅紀",l:"――くく、面白い。"},
+]},
+{v:13,n:117,t:"第六先遣隊③",d:"元武は2人に、仲間になるように説得した。そしてようやく仲間に引き入れることができた。",e:"甲斐翔也",b:0,
+conv:[
+{s:"ナレーション",l:"元武は2人に、仲間になるように説得した。"},
+{s:"ナレーション",l:"そしてようやく仲間に引き入れることができた。"},
+{s:"元武",l:"……油断するなよ。"},
+{s:"甲斐翔也",l:"話はそれからだ。"},
+]},
+{v:14,n:118,t:"第六先遣隊④",d:"明石啓希は隊員達にも連合の支援を求め、連合の戦力は徐々に増加していった。",e:"明石啓希",b:1,
+conv:[
+{s:"ナレーション",l:"明石啓希は隊員達にも連合の支援を求め、連合の戦力は徐々に増加していった。"},
+{s:"明石啓希",l:"まだ、底を見せていないぞ。"},
+]},
+{v:14,n:119,t:"第六先遣隊⑤",d:"明石啓希と珠濃雅紀の力を試すために元武と手合わせをする。",e:"珠濃雅紀",b:1,
+conv:[
+{s:"ナレーション",l:"明石啓希と珠濃雅紀の力を試すために元武と手合わせをする。"},
+{s:"元武",l:"この先に、進むために。"},
+{s:"珠濃雅紀",l:"……邪魔をするな。"},
+]},
+{v:14,n:120,t:"解放と創造",d:"明石啓希は固有能罪符｢解錠｣を使いフルパワーを出し戦う。一方珠濃雅紀は｢再構築｣で、地形を整え戦うが元武と互角程度だった。(固有能罪符｢解錠｣はその名の通り触れたものを解錠できる(啓希はこの能力を自身に使い力の上限を引き出した。)) (再構築は体の一部を作り替える能力)",e:"珠濃雅紀",b:1,
+conv:[
+{s:"ナレーション",l:"明石啓希は固有能罪符｢解錠｣を使いフルパワーを出し戦う。"},
+{s:"ナレーション",l:"一方珠濃雅紀は｢再構築｣で、地形を整え戦うが元武と互角程度だった。"},
+{s:"元武",l:"力の差を、見せてもらう。"},
+{s:"珠濃雅紀",l:"力試しといこうか。"},
+]},
+{v:14,n:121,t:"修羅との邂逅",d:"第六先遣隊の元にコード5.2がやってきた。彼はそこにいた元武と最後の対決を申し込む。",e:"コード5.2",b:1,
+conv:[
+{s:"ナレーション",l:"第六先遣隊の元にコード5.2がやってきた。"},
+{s:"ナレーション",l:"彼はそこにいた元武と最後の対決を申し込む。"},
+{s:"元武",l:"まだ終わらない…ここからだ！"},
+{s:"コード5.2",l:"退がっていろ。痛い目を見るぞ。"},
+]},
+{v:14,n:122,t:"師弟の対決",d:"先遣隊vs連合の前に5.2と元武の対決が始まろうとしていた。だが5.2の圧倒的な力の前に元武は勝てなかった。",e:"コード5.2",b:1,
+conv:[
+{s:"ナレーション",l:"先遣隊vs連合の前に5.2と元武の対決が始まろうとしていた。"},
+{s:"ナレーション",l:"だが5.2の圧倒的な力の前に元武は勝てなかった。"},
+{s:"元武",l:"退くわけにはいかない…！"},
+{s:"コード5.2",l:"本気を出させてもらう。"},
+]},
+{v:14,n:123,t:"悲劇の始まり",d:"5.2は第一先遣隊は連合の仲間にできないが、自分一人なら仲間になる。と言って連合側についた。",e:"コード5.2",b:1,
+conv:[
+{s:"ナレーション",l:"5.2は第一先遣隊は連合の仲間にできないが、自分一人なら仲間になる。"},
+{s:"ナレーション",l:"と言って連合側についた。"},
+{s:"コード5.2",l:"――くく、面白い。"},
+]},
+{v:14,n:124,t:"襲い来る極限状況",d:"戦力も先遣隊と渡り合える程になり等々戦いが始まる。(第一先遣隊(隊長不在)+第三先遣隊+第四先遣隊+第五先遣隊vs元武達+第二先遣隊+第六先遣隊+コード5.2)",e:"コード5.2",b:1,
+conv:[
+{s:"ナレーション",l:"戦力も先遣隊と渡り合える程になり等々戦いが始まる。"},
+{s:"ナレーション",l:"+第三先遣隊+第四先遣隊+第五先遣隊vs元武達+第二先遣隊+第六先遣隊+コード5.2）"},
+{s:"元武",l:"これが、俺の全力だ！"},
+{s:"コード5.2",l:"その程度か？"},
+]},
+{v:14,n:125,t:"叉類雪落①",d:"戦いが始まった。死橋轟vs第五先遣隊副隊長の黒峰天音の開幕。(黒峰天音は固有能罪符｢烈火の舞｣を使う)(烈火の舞はエネルギーを炎に変えて操れる。)",e:"黒峰天音",b:1,
+conv:[
+{s:"ナレーション",l:"戦いが始まった。"},
+{s:"ナレーション",l:"死橋轟vs第五先遣隊副隊長の黒峰天音の開幕。"},
+{s:"轟",l:"ここで止まるわけにはいかない。"},
+{s:"黒峰天音",l:"まだ、底を見せていないぞ。"},
+]},
+{v:14,n:126,t:"叉類雪落②",d:"死橋轟は倒れても立ち上がったが、遂に天音に倒されてしまった。そして、明石啓希vs第四先遣隊副隊長の赤羽悠真、珠濃雅紀vs第五先遣隊隊長である晴海亨の戦いが始まる。",e:"晴海亨",b:1,
+conv:[
+{s:"ナレーション",l:"死橋轟は倒れても立ち上がったが、遂に天音に倒されてしまった。"},
+{s:"ナレーション",l:"そして、明石啓希vs第四先遣隊副隊長の赤羽悠真、珠濃雅紀vs第五先遣隊隊長である晴海亨の戦いが始まる。"},
+{s:"轟",l:"覚悟は決めてきた。"},
+{s:"晴海亨",l:"……邪魔をするな。"},
+]},
+{v:15,n:127,t:"叉類雪落③",d:"悠真は自身の｢幸運｣で啓希を翻弄。最後は悠真の攻撃で立ち上がれなくなってしまう。(赤羽悠真の固有能罪符｢幸運｣は自身の選んだ人間の運を底上げする。)",e:"赤羽悠真",b:1,
+conv:[
+{s:"ナレーション",l:"悠真は自身の｢幸運｣で啓希を翻弄。"},
+{s:"ナレーション",l:"最後は悠真の攻撃で立ち上がれなくなってしまう。"},
+{s:"赤羽悠真",l:"力試しといこうか。"},
+]},
+{v:15,n:128,t:"叉類雪落④",d:"雅紀vs亨の始まり。雅紀は自身の髪の毛の先を尖らせて伸ばし、亨にぶつけようとしたがかわされてしまった。(晴海亨の固有能罪符は｢サイトシェア｣サイトシェアは3つの視点からものを見ることができる。視点の元は自由に変えれる)",e:"晴海亨",b:1,
+conv:[
+{s:"ナレーション",l:"雅紀vs亨の始まり。"},
+{s:"ナレーション",l:"雅紀は自身の髪の毛の先を尖らせて伸ばし、亨にぶつけようとしたがかわされてしまった。"},
+{s:"晴海亨",l:"退がっていろ。痛い目を見るぞ。"},
+]},
+{v:15,n:129,t:"叉類雪落⑤",d:"湯照司吉基vs甲斐翔也の始まり。甲斐翔也は吉基を押していく。その時、あの男が登場。",e:"甲斐翔也",b:1,
+conv:[
+{s:"ナレーション",l:"湯照司吉基vs甲斐翔也の始まり。"},
+{s:"ナレーション",l:"甲斐翔也は吉基を押していく。"},
+{s:"吉基",l:"この先に、進むために。"},
+{s:"甲斐翔也",l:"本気を出させてもらう。"},
+]},
+{v:15,n:130,t:"叉類雪落⑥",d:"第二先遣隊元隊長阿波牛星夜の帰還。星夜は黒峰天音を倒した後、吉基の元に向かった。そして阿波牛星夜vs甲斐翔也になって戦場は一層熱くなった。阿波牛星夜は自身の身体能力だけで甲斐翔也と渡り合う。",e:"甲斐翔也",b:1,
+conv:[
+{s:"ナレーション",l:"第二先遣隊元隊長阿波牛星夜の帰還。"},
+{s:"ナレーション",l:"星夜は黒峰天音を倒した後、吉基の元に向かった。"},
+{s:"星夜",l:"力の差を、見せてもらう。"},
+{s:"甲斐翔也",l:"――くく、面白い。"},
+]},
+{v:15,n:131,t:"叉類雪落⑦",d:"翔也は星夜の固有能罪符をコピーしようとするができなかった。星夜は固有能罪符を失ったのだ。だか翔也はあらかじめコピーしておいた｢全追尾｣を拳にまとい、必中の打撃を繰り返す。(甲斐翔也は固有能罪符｢カリスマ｣を持つ。カリスマは相手の固有能罪符をコピーし、3つまでストックしておける。)",e:"甲斐翔也",b:1,
+conv:[
+{s:"ナレーション",l:"翔也は星夜の固有能罪符をコピーしようとするができなかった。"},
+{s:"ナレーション",l:"星夜は固有能罪符を失ったのだ。"},
+{s:"星夜",l:"まだ終わらない…ここからだ！"},
+{s:"甲斐翔也",l:"その程度か？"},
+]},
+{v:15,n:132,t:"叉類雪落⑧",d:"雅紀vs亨に戻り、亨は善戦していたが徐々に押され、敗北。連合側初の勝利を収めたのは珠濃雅紀だった。",e:"珠濃雅紀",b:1,
+conv:[
+{s:"ナレーション",l:"雅紀vs亨に戻り、亨は善戦していたが徐々に押され、敗北。"},
+{s:"ナレーション",l:"連合側初の勝利を収めたのは珠濃雅紀だった。"},
+{s:"珠濃雅紀",l:"まだ、底を見せていないぞ。"},
+]},
+{v:15,n:133,t:"叉類雪落⑨",d:"甲斐翔也と星夜の殴り合いは続き、最後は両者ともに倒れてしまった。",e:"阿波牛星夜",b:1,
+conv:[
+{s:"ナレーション",l:"甲斐翔也と星夜の殴り合いは続き、最後は両者ともに倒れてしまった。"},
+{s:"星夜",l:"見誤るなよ、俺たちの力を。"},
+{s:"阿波牛星夜",l:"……邪魔をするな。"},
+]},
+{v:15,n:134,t:"叉類雪落⑩",d:"コード5.2vsFqEa開幕。5.2は何度も拳を振るが止まった時間の中を動くFqEaには当たらなかった。",e:"FqEa",b:1,
+conv:[
+{s:"ナレーション",l:"コード5.2vsFqEa開幕。"},
+{s:"ナレーション",l:"5.2は何度も拳を振るが止まった時間の中を動くFqEaには当たらなかった。"},
+{s:"5.2",l:"これが、俺の全力だ！"},
+{s:"FqEa",l:"力試しといこうか。"},
+]},
+{v:15,n:135,t:"叉類雪落⑪",d:"着実にダメージが蓄積する5.2に対し、現在ダメージをくらっていないFqEa。5.2はなんとか自身の打撃を当てるが、その反動で地面に倒れ込んでしまった。",e:"FqEa",b:1,
+conv:[
+{s:"ナレーション",l:"着実にダメージが蓄積する5.2に対し、現在ダメージをくらっていないFqEa。"},
+{s:"ナレーション",l:"5.2はなんとか自身の打撃を当てるが、その反動で地面に倒れ込んでしまった。"},
+{s:"FqEa",l:"退がっていろ。痛い目を見るぞ。"},
+]},
+{v:16,n:136,t:"叉類雪落⑫",d:"その場にいる誰もが先遣隊の勝利だと確信していたが、連合側は諦めない。明石啓希が、近くで倒れていた天音を固有能罪符で起こし、天音は意識が戻るまでの間無意識の殺戮人形になった。",e:"黒峰天音",b:1,
+conv:[
+{s:"ナレーション",l:"その場にいる誰もが先遣隊の勝利だと確信していたが、連合側は諦めない。"},
+{s:"ナレーション",l:"明石啓希が、近くで倒れていた天音を固有能罪符で起こし、天音は意識が戻るまでの間無意識の殺戮人形になった。"},
+{s:"啓希",l:"覚悟は決めてきた。"},
+{s:"黒峰天音",l:"本気を出させてもらう。"},
+]},
+{v:16,n:137,t:"叉類雪落⑬",d:"無意識の天音によって先遣隊、連合両者とも大半が倒されてしまった。しかし、FqEaは立っていた。",e:"FqEa",b:1,
+conv:[
+{s:"ナレーション",l:"無意識の天音によって先遣隊、連合両者とも大半が倒されてしまった。"},
+{s:"ナレーション",l:"しかし、FqEaは立っていた。"},
+{s:"FqEa",l:"――くく、面白い。"},
+]},
+{v:16,n:138,t:"叉類雪落⑭",d:"黒峰天音vsFqEaになってしまい、なんとか無意識で動く天音を止めることがてきたFqEaだが、その戦いを見ていた男がFqEaの所に来てしまった。",e:"FqEa",b:1,
+conv:[
+{s:"ナレーション",l:"黒峰天音vsFqEaになってしまい、なんとか無意識で動く天音を止めることがてきたFqEaだが、その戦いを見ていた男がFqEaの所に来てしまった。"},
+{s:"天音",l:"――行くぞ！"},
+{s:"FqEa",l:"その程度か？"},
+]},
+{v:16,n:139,t:"叉類雪落⑮",d:"FqEaは危険だという理由で帰らせようとしたが、その男は微動だにせず正体を明かした。｢弍呪刻｣と、、、",e:"弐呪刻",b:1,
+conv:[
+{s:"ナレーション",l:"FqEaは危険だという理由で帰らせようとしたが、その男は微動だにせず正体を明かした。"},
+{s:"ナレーション",l:"｢弍呪刻｣と…"},
+{s:"FqEa",l:"この先に、進むために。"},
+{s:"弐呪刻",l:"まだ、底を見せていないぞ。"},
+]},
+{v:16,n:140,t:"盗賊の登場",d:"弍呪刻は、FqEaと戦うために戦場に行き、FqEaの体力を戻すための薬を飲ませた。",e:"FqEa",b:1,
+conv:[
+{s:"ナレーション",l:"弍呪刻は、FqEaと戦うために戦場に行き、FqEaの体力を戻すための薬を飲ませた。"},
+{s:"FqEa",l:"……邪魔をするな。"},
+]},
+{v:16,n:141,t:"生き抜く意味",d:"他の戦士達の意識が薄れていく中、弍呪刻vsFqEa(神vs人間)が始まってしまった。",e:"FqEa",b:1,
+conv:[
+{s:"ナレーション",l:"他の戦士達の意識が薄れていく中、弍呪刻vsFqEaが始まってしまった。"},
+{s:"FqEa",l:"力試しといこうか。"},
+]},
+{v:16,n:142,t:"真の最終決戦",d:"弍呪刻はFqEaの固有能罪符をくらっても攻撃をくらうことはなかった。弍呪刻は止まった時間での必勝法を見つけたのだ。(弍呪刻の固有能罪符は｢略奪｣)(略奪はものを引き寄せることができる)",e:"FqEa",b:1,
+conv:[
+{s:"ナレーション",l:"弍呪刻はFqEaの固有能罪符をくらっても攻撃をくらうことはなかった。"},
+{s:"ナレーション",l:"弍呪刻は止まった時間での必勝法を見つけたのだ。"},
+{s:"FqEa",l:"退がっていろ。痛い目を見るぞ。"},
+]},
+{v:16,n:143,t:"楽観",d:"弍呪刻はFqEaに勝つことができたが、片腕が折られてしまっていた。",e:"FqEa",b:1,
+conv:[
+{s:"ナレーション",l:"弍呪刻はFqEaに勝つことができたが、片腕が折られてしまっていた。"},
+{s:"FqEa",l:"本気を出させてもらう。"},
+]},
+{v:16,n:144,t:"略奪神",d:"自分の腕を折ったFqEaを気に入った弍呪刻は、彼をジャックナイフに招待した。",e:"弐呪刻",b:1,
+conv:[
+{s:"ナレーション",l:"自分の腕を折ったFqEaを気に入った弍呪刻は、彼をジャックナイフに招待した。"},
+{s:"FqEa",l:"これが、俺の全力だ！"},
+{s:"弐呪刻",l:"――くく、面白い。"},
+]},
+{v:17,n:145,t:"破滅的な状況",d:"先遣隊vs連合の戦いが終わったなか、殆どの人間がその場に倒れていた。",e:"阿波牛壬陸",b:0,
+conv:[
+{s:"ナレーション",l:"先遣隊vs連合の戦いが終わったなか、殆どの人間がその場に倒れていた。"},
+{s:"阿波牛壬陸",l:"そう急くな。"},
+]},
+{v:17,n:146,t:"武神の傍観",d:"ここでデッドアイデンティティの神である死橋凪の登場。先遣隊と連合の両者全員が起きるまで弍呪刻と話していた。",e:"弐呪刻",b:1,
+conv:[
+{s:"ナレーション",l:"ここでデッドアイデンティティの神である死橋凪の登場。"},
+{s:"ナレーション",l:"先遣隊と連合の両者全員が起きるまで弍呪刻と話していた。"},
+{s:"弐呪刻",l:"まだ、底を見せていないぞ。"},
+]},
+{v:17,n:147,t:"闘志の花開く",d:"場面は戻り、室井元武vs第三先遣隊隊長、桜木彰の戦いが始まった。(桜木彰の固有能罪符は「オフセット」)(オフセットは、ダメージを受けた時に、ダメージを与えた対象に同威力のダメージを与えることができる。）",e:"桜木彰",b:1,
+conv:[
+{s:"ナレーション",l:"場面は戻り、室井元武vs第三先遣隊隊長、桜木彰の戦いが始まった。"},
+{s:"元武",l:"負けられない理由が、俺にはある。"},
+{s:"桜木彰",l:"……邪魔をするな。"},
+]},
+{v:17,n:148,t:"逆転の瞬間",d:"彰のオフセットに翻弄される元武だが、星夜に託された珍古砲を使い何とか勝利。",e:"阿波牛星夜",b:1,
+conv:[
+{s:"ナレーション",l:"彰のオフセットに翻弄される元武だが、星夜に託された珍古砲を使い何とか勝利。"},
+{s:"元武",l:"――行くぞ！"},
+{s:"阿波牛星夜",l:"力試しといこうか。"},
+]},
+{v:17,n:149,t:"真の道",d:"叉類雪落最後の戦い、栗島トウヤvs第三先遣隊副隊長、八並解徒が始まる。(八並解徒の固有能罪符は一触即没。触れた対象の固有能罪符を一定時間使えなくする。)",e:"八並解徒",b:1,
+conv:[
+{s:"ナレーション",l:"叉類雪落最後の戦い、栗島トウヤvs第三先遣隊副隊長、八並解徒が始まる。"},
+{s:"トウヤ",l:"この先に、進むために。"},
+{s:"八並解徒",l:"退がっていろ。痛い目を見るぞ。"},
+]},
+{v:17,n:150,t:"危機",d:"固有能罪符が使えなくなったトウヤだが、聡式魔術を使い勝利。",e:"ヒナル",b:0,
+conv:[
+{s:"ナレーション",l:"固有能罪符が使えなくなったトウヤだが、聡式魔術を使い勝利。"},
+{s:"トウヤ",l:"まだ聞きたいことがある。"},
+{s:"ヒナル",l:"ここから先は、俺の領分だ。"},
+]},
+{v:17,n:151,t:"勧誘",d:"第三先遣隊に勝利した元武とトウヤは、連合側に勧誘した。だが、仲間にはなってもらえなかった。",e:"阿波牛星夜",b:0,
+conv:[
+{s:"ナレーション",l:"第三先遣隊に勝利した元武とトウヤは、連合側に勧誘した。"},
+{s:"ナレーション",l:"だが、仲間にはなってもらえなかった。"},
+{s:"元武",l:"それが、本当のことなのか。"},
+{s:"阿波牛星夜",l:"……見ての通りだ。"},
+]},
+{v:17,n:152,t:"執念の対決",d:"待つのに飽きた死橋凪が、弐呪刻との戦闘を提案。弐呪刻はそれに乗る。死橋凪vs弐呪刻(神vs神)の始まり。",e:"弐呪刻",b:1,
+conv:[
+{s:"ナレーション",l:"待つのに飽きた死橋凪が、弐呪刻との戦闘を提案。"},
+{s:"ナレーション",l:"弐呪刻はそれに乗る。"},
+{s:"弐呪刻",l:"その程度か？"},
+]},
+{v:17,n:153,t:"仲間たちの信頼",d:"死橋凪は自身の固有能罪符「全構築」で生み出した武器を使い戦う。弐呪刻は自身の機動力でそれを避ける。(全構築は寿命を媒体に武器を生み出すことが可能。(武器に固有能罪符をもたせることもできる))",e:"弐呪刻",b:1,
+conv:[
+{s:"ナレーション",l:"死橋凪は自身の固有能罪符「全構築」で生み出した武器を使い戦う。"},
+{s:"ナレーション",l:"弐呪刻は自身の機動力でそれを避ける。"},
+{s:"弐呪刻",l:"まだ、底を見せていないぞ。"},
+]},
+{v:18,n:154,t:"闇を切り裂け！",d:"死橋凪の亡者の鎌で斬られた弐呪刻は動きが止まる。死橋凪の勝ちだ。",e:"弐呪刻",b:1,
+conv:[
+{s:"ナレーション",l:"死橋凪の亡者の鎌で斬られた弐呪刻は動きが止まる。"},
+{s:"ナレーション",l:"死橋凪の勝ちだ。"},
+{s:"弐呪刻",l:"……邪魔をするな。"},
+]},
+{v:18,n:155,t:"絆の使者",d:"久しぶりの強敵と戦った死橋凪は、昔のことを思い出す。「珍子」との旅を。",e:"死橋凪",b:1,
+conv:[
+{s:"ナレーション",l:"久しぶりの強敵と戦った死橋凪は、昔のことを思い出す。"},
+{s:"ナレーション",l:"「珍子」との旅を。"},
+{s:"死橋凪",l:"力試しといこうか。"},
+]},
+{v:18,n:156,t:"悲壮なる奮闘",d:"死橋凪はデッドアイデンティティの神になる前、珍子とワールドインフレを探していた。凪は珍子と戦うことを提案し、戦った。",e:"死橋凪",b:1,
+conv:[
+{s:"ナレーション",l:"死橋凪はデッドアイデンティティの神になる前、珍子とワールドインフレを探していた。"},
+{s:"ナレーション",l:"凪は珍子と戦うことを提案し、戦った。"},
+{s:"死橋凪",l:"退がっていろ。痛い目を見るぞ。"},
+]},
+{v:18,n:157,t:"輝く未来へ",d:"珍子と戦った凪だが、珍子の固有能罪符に手も足も出ず、負けた。(珍子の固有能罪符は、「真・珍古砲(エネルギーの大量放出)」「薔薇道(薔薇の道を生成。主に捕獲に使う)」「ガキの戯れ(相手の周りをうるさくする)」「コカイン(相手に異常状態を付与する)」)",e:"コード5.2",b:0,
+conv:[
+{s:"ナレーション",l:"珍子と戦った凪だが、珍子の固有能罪符に手も足も出ず、負けた。"},
+{s:"ナレーション",l:"」「薔薇道」「ガキの戯れ」「コカイン」）"},
+{s:"コード5.2",l:"そう急くな。"},
+]},
+{v:18,n:158,t:"希望の灯火",d:"凪は、懐かしい思い出に思わず笑ってしまう。",e:"甲斐翔也",b:0,
+conv:[
+{s:"ナレーション",l:"凪は、懐かしい思い出に思わず笑ってしまう。"},
+{s:"甲斐翔也",l:"話はそれからだ。"},
+]},
+{v:18,n:159,t:"運命の相対",d:"凪は珍子の行方を起きた連合側に聞かれるも、わからないようだった。",e:"ミニモータ",b:0,
+conv:[
+{s:"ナレーション",l:"凪は珍子の行方を起きた連合側に聞かれるも、わからないようだった。"},
+{s:"???",l:"興味深いな、お前たちは。"},
+]},
+{v:18,n:160,t:"伝説的存在",d:"凪は、伝説的存在である珍子と人間が会うことはこの先はないという結論を出した。その直後、神々に異変が起こる。",e:"リボルト",b:0,
+conv:[
+{s:"ナレーション",l:"凪は、伝説的存在である珍子と人間が会うことはこの先はないという結論を出した。"},
+{s:"ナレーション",l:"その直後、神々に異変が起こる。"},
+{s:"???",l:"まだ、話す気はない。"},
+]},
+{v:18,n:161,t:"緊迫の一瞬",d:"神々の脳内に語りかけられる謎の声。その声の主は、「組稀和時」と名乗った。その後、珍子を殺すという旨の発言をした。(和時の固有能罪符は「神に対抗する力」どのような能力かはわかっていない。)",e:"霊剛",b:0,
+conv:[
+{s:"ナレーション",l:"神々の脳内に語りかけられる謎の声。"},
+{s:"ナレーション",l:"その声の主は、「組稀和時」と名乗った。"},
+{s:"霊剛",l:"ここから先は、俺の領分だ。"},
+]},
+{v:18,n:162,t:"不死",d:"場面はマジシヤモに移り、そこの神であるリボルトと紫色の髪をした男が話す。(リボルトの固有能罪符は｢万世諸行｣自分の命を他のものに移し替えることが出来る(命を移し替えたものが破壊されない限り使用者自身は死ぬことは無い))",e:"リボルト",b:1,
+conv:[
+{s:"ナレーション",l:"場面はマジシヤモに移り、そこの神であるリボルトと紫色の髪をした男が話す。"},
+{s:"ナレーション",l:"）"},
+{s:"リボルト",l:"力試しといこうか。"},
+]},
+{v:19,n:163,t:"心の壁",d:"轟は天音に負けたことを悔い、リベンジを望む。",e:"黒峰天音",b:1,
+conv:[
+{s:"ナレーション",l:"轟は天音に負けたことを悔い、リベンジを望む。"},
+{s:"轟",l:"見誤るなよ、俺たちの力を。"},
+{s:"黒峰天音",l:"退がっていろ。痛い目を見るぞ。"},
+]},
+{v:19,n:164,t:"激突！友情と野望",d:"仲間たちと訓練をする。",e:"赤羽悠真",b:0,
+conv:[
+{s:"ナレーション",l:"仲間たちと訓練をする。"},
+{s:"赤羽悠真",l:"話はそれからだ。"},
+]},
+{v:19,n:165,t:"真理との対決",d:"轟は自身の固有能罪符を更に高める。",e:"ソーメーン",b:0,
+conv:[
+{s:"ナレーション",l:"轟は自身の固有能罪符を更に高める。"},
+{s:"轟",l:"……油断するなよ。"},
+{s:"???",l:"話はそれからだ。"},
+]},
+{v:19,n:166,t:"見せつけろ！本物の剣技",d:"トウヤと轟が戦う。轟の勝ち。",e:"死橋凪",b:0,
+conv:[
+{s:"ナレーション",l:"トウヤと轟が戦う。"},
+{s:"ナレーション",l:"轟の勝ち。"},
+{s:"トウヤ",l:"まだ聞きたいことがある。"},
+{s:"死橋凪",l:"興味深いな、お前たちは。"},
+]},
+{v:19,n:167,t:"友の証",d:"轟達の所に星夜が登場。阿波牛星夜と吉基の再会。連合側に着くことを約束。",e:"湯照司吉基",b:1,
+conv:[
+{s:"ナレーション",l:"轟達の所に星夜が登場。"},
+{s:"ナレーション",l:"阿波牛星夜と吉基の再会。"},
+{s:"轟",l:"負けられない理由が、俺にはある。"},
+{s:"湯照司吉基",l:"まだ、底を見せていないぞ。"},
+]},
+{v:19,n:168,t:"愚者の幕開け",d:"新章開幕。新組織イミュータブルの登場。",e:"鈴鹿",b:0,
+conv:[
+{s:"ナレーション",l:"新章開幕。"},
+{s:"ナレーション",l:"新組織イミュータブルの登場。"},
+{s:"鈴鹿",l:"……見ての通りだ。"},
+]},
+{v:19,n:169,t:"喪失と再生",d:"轟が天音の所へ向かい戦闘開始。",e:"黒峰天音",b:1,
+conv:[
+{s:"ナレーション",l:"轟が天音の所へ向かい戦闘開始。"},
+{s:"轟",l:"この先に、進むために。"},
+{s:"黒峰天音",l:"力試しといこうか。"},
+]},
+{v:19,n:170,t:"除草",d:"別の戦いが始まる。栗島トウヤ、八並解徒、晴海亨の所にイミュータブルNo.4ミニモータ登場(ミニモータの固有能罪符は「死刑教育」エネルギーによって植物の成長を促したり逆に植物からエネルギーを吸い取ることもできる。）",e:"ミニモータ",b:1,
+conv:[
+{s:"ナレーション",l:"別の戦いが始まる。"},
+{s:"ナレーション",l:"栗島トウヤ、八並解徒、晴海亨の所にイミュータブルNo.4ミニモータ登場"},
+{s:"トウヤ",l:"力の差を、見せてもらう。"},
+{s:"ミニモータ",l:"退がっていろ。痛い目を見るぞ。"},
+]},
+{v:19,n:171,t:"雷鳴",d:"轟、天音の所にイミュータブルNo.5マイティー･ソーメーン登場(ソーメーンの固有能罪符は「双雷の裁き」自身のエネルギーを電気に変換できる)",e:"ソーメーン",b:1,
+conv:[
+{s:"ナレーション",l:"轟、天音の所にイミュータブルNo.5マイティー･ソーメーン登場"},
+{s:"轟",l:"まだ終わらない…ここからだ！"},
+{s:"ソーメーン",l:"本気を出させてもらう。"},
+]},
+{v:20,n:172,t:"強敵",d:"轟と天音が戦っている中、ソーメーンは傍観。そこにイミュータブルNo.1玉垣剣城登場。(剣城の固有能罪符は無限重量(レクイエム)。自身の重力のみを操ることができ、高速移動を得意とする。)",e:"玉垣剣城",b:1,
+conv:[
+{s:"ナレーション",l:"轟と天音が戦っている中、ソーメーンは傍観。"},
+{s:"ナレーション",l:"そこにイミュータブルNo.1玉垣剣城登場。"},
+{s:"轟",l:"退くわけにはいかない…！"},
+{s:"玉垣剣城",l:"――くく、面白い。"},
+]},
+{v:20,n:173,t:"疾風の一撃",d:"剣城は轟を無視し、剣城と黒峰天音で戦闘開始。",e:"黒峰天音",b:1,
+conv:[
+{s:"ナレーション",l:"剣城は轟を無視し、剣城と黒峰天音で戦闘開始。"},
+{s:"轟",l:"見誤るなよ、俺たちの力を。"},
+{s:"黒峰天音",l:"その程度か？"},
+]},
+{v:20,n:174,t:"温故知新",d:"黒峰天音は押されながらも逆転のチャンスを待った。",e:"黒峰天音",b:1,
+conv:[
+{s:"ナレーション",l:"黒峰天音は押されながらも逆転のチャンスを待った。"},
+{s:"黒峰天音",l:"まだ、底を見せていないぞ。"},
+]},
+{v:20,n:175,t:"結末",d:"しかし、黒峰天音は剣城の一撃により敗北。",e:"玉垣剣城",b:1,
+conv:[
+{s:"ナレーション",l:"しかし、黒峰天音は剣城の一撃により敗北。"},
+{s:"天音",l:"ここで止まるわけにはいかない。"},
+{s:"玉垣剣城",l:"……邪魔をするな。"},
+]},
+{v:20,n:176,t:"重力の使者",d:"剣城が去ろうとした時FqEaが到着。",e:"FqEa",b:1,
+conv:[
+{s:"ナレーション",l:"剣城が去ろうとした時FqEaが到着。"},
+{s:"FqEa",l:"力試しといこうか。"},
+]},
+{v:20,n:177,t:"ボールは友達",d:"黒峰天音が傷つけられ、FqEaは剣城と戦うことに。",e:"玉垣剣城",b:1,
+conv:[
+{s:"ナレーション",l:"黒峰天音が傷つけられ、FqEaは剣城と戦うことに。"},
+{s:"FqEa",l:"……天音を、傷つけたのはお前か。"},
+{s:"玉垣剣城",l:"文句があるなら、力で示せ。"},
+]},
+{v:20,n:178,t:"闘争の果てに",d:"FqEaは剣城に先遣隊に戻ってくるよう説得。しかし剣城はそれに応じなかった。（剣城はコード5.2の1つ前の第一先遣隊隊長)",e:"コード5.2",b:1,
+conv:[
+{s:"ナレーション",l:"FqEaは剣城に先遣隊に戻ってくるよう説得。"},
+{s:"ナレーション",l:"しかし剣城はそれに応じなかった。"},
+{s:"FqEa",l:"――行くぞ！"},
+{s:"コード5.2",l:"本気を出させてもらう。"},
+]},
+{v:20,n:179,t:"無敵の鉄拳",d:"コード5.2参戦。FqEa、5.2、剣城の三つ巴の戦いが始まる。",e:"玉垣剣城",b:1,
+conv:[
+{s:"ナレーション",l:"コード5.2参戦。"},
+{s:"ナレーション",l:"FqEa、5.2、剣城の三つ巴の戦いが始まる。"},
+{s:"5.2",l:"この先に、進むために。"},
+{s:"玉垣剣城",l:"――くく、面白い。"},
+]},
+{v:20,n:180,t:"闘志",d:"三つ巴の戦い",e:"沢華",b:0,
+conv:[
+{s:"ナレーション",l:"三つ巴の戦い"},
+{s:"沢華",l:"……見ての通りだ。"},
+]},
+{v:21,n:181,t:"時の戦士",d:"FqEaによる時間停止で5.2と剣城はダメージを負う。",e:"玉垣剣城",b:1,
+conv:[
+{s:"ナレーション",l:"FqEaによる時間停止で5.2と剣城はダメージを負う。"},
+{s:"FqEa",l:"まだ終わらない…ここからだ！"},
+{s:"玉垣剣城",l:"まだ、底を見せていないぞ。"},
+]},
+{v:21,n:182,t:"悪魔の子",d:"剣城達の所に死橋轟が登場。",e:"死橋轟",b:1,
+conv:[
+{s:"ナレーション",l:"剣城達の所に死橋轟が登場。"},
+{s:"轟",l:"退くわけにはいかない…！"},
+{s:"死橋轟",l:"……邪魔をするな。"},
+]},
+{v:21,n:183,t:"ダークヒーロー",d:"その場にいたものに轟が元イミュータブルの1人であったことを剣城にバラされてしまう。",e:"玉垣剣城",b:1,
+conv:[
+{s:"ナレーション",l:"その場にいたものに轟が元イミュータブルの1人であったことを剣城にバラされてしまう。"},
+{s:"轟",l:"見誤るなよ、俺たちの力を。"},
+{s:"玉垣剣城",l:"力試しといこうか。"},
+]},
+{v:21,n:184,t:"撤退",d:"死橋凪がその場に登場。その場にいたものは全員撤退することに。",e:"死橋凪",b:1,
+conv:[
+{s:"ナレーション",l:"死橋凪がその場に登場。"},
+{s:"ナレーション",l:"その場にいたものは全員撤退することに。"},
+{s:"死橋凪",l:"退がっていろ。痛い目を見るぞ。"},
+]},
+{v:21,n:185,t:"狂瀾の武神",d:"剣城と凪が何かを話す。凪は轟とデッドアイデンティティへと帰る。",e:"玉垣剣城",b:1,
+conv:[
+{s:"ナレーション",l:"剣城と凪が何かを話す。"},
+{s:"ナレーション",l:"凪は轟とデッドアイデンティティへと帰る。"},
+{s:"轟",l:"ここで止まるわけにはいかない。"},
+{s:"玉垣剣城",l:"本気を出させてもらう。"},
+]},
+{v:21,n:186,t:"怒りの炎",d:"",e:"阿波牛壬陸",b:0,
+conv:[
+{s:"ナレーション",l:"壬陸の胸に、静かな怒りが燃えていた。"},
+{s:"阿波牛壬陸",l:"兄さんを、これ以上苦しめさせない。"},
+]},
+{v:21,n:187,t:"稲妻の一撃",d:"",e:"黒峰天音",b:0,
+conv:[
+{s:"ナレーション",l:"天音の拳に、鋭い一撃の気配が宿る。"},
+{s:"黒峰天音",l:"この一撃で、けりをつける。"},
+]},
+{v:21,n:188,t:"悪魔の涙",d:"",e:"蒼井朔也",b:0,
+conv:[
+{s:"ナレーション",l:"朔也の瞳に、拭えない哀しみが滲んでいた。"},
+{s:"???",l:"……俺の力は、誰かを幸せにはしない。"},
+]},
+{v:21,n:189,t:"イミュータブル",d:"",e:"黒瀬武人",b:0,
+conv:[
+{s:"ナレーション",l:"「イミュータブル」――その名が、再びざわめきを呼んだ。"},
+{s:"???",l:"俺たちの名を、忘れさせはしない。"},
+]},
+{v:21,n:190,t:"雷神の登場",d:"",e:"ホーレン",b:0,
+conv:[
+{s:"ナレーション",l:"雷鳴のような気配とともに、ホーレンが姿を見せる。"},
+{s:"ホーレン",l:"気配を消す必要も、もうないな。"},
+]},
+{v:21,n:191,t:"プロメテウスVSトール",d:"",e:"ヒナル",b:0,
+conv:[
+{s:"ナレーション",l:"炎の名を持つ者と、雷の名を持つ者が向かい合う。"},
+{s:"ヒナル",l:"この炎で、決着をつけよう。"},
+]},
+{v:21,n:192,t:"小型電動機",d:"",e:"阿波牛星夜",b:0,
+conv:[
+{s:"ナレーション",l:"固有能罪符を失った星夜は、懐から小さな道具を取り出した。"},
+{s:"阿波牛星夜",l:"力がなくても、俺には俺のやり方がある。"},
+]},
+{v:21,n:193,t:"轟音の交響曲",d:"",e:"晴海亨",b:0,
+conv:[
+{s:"ナレーション",l:"亨の三つの視点が、戦場の全てを映し出す。"},
+{s:"晴海亨",l:"見えているものが、全てじゃない。"},
+]},
+{v:21,n:194,t:"希望の矢",d:"",e:"石倉有栖",b:0,
+conv:[
+{s:"ナレーション",l:"有栖の放つ一手に、かすかな希望が宿っていた。"},
+{s:"???",l:"まだ、諦めるには早い。"},
+]},
+{v:21,n:195,t:"微千半譲渡",d:"阿波牛星夜と吉基が特訓。固有能罪符の無い星夜は以前よりも弱体化していた。",e:"湯照司吉基",b:1,
+conv:[
+{s:"ナレーション",l:"阿波牛星夜と吉基が特訓。"},
+{s:"ナレーション",l:"固有能罪符の無い星夜は以前よりも弱体化していた。"},
+{s:"星夜",l:"ここで止まるわけにはいかない。"},
+{s:"湯照司吉基",l:"まだ、底を見せていないぞ。"},
+]},
+{v:21,n:196,t:"キャスティング",d:"星夜の所にイミュータブルNo.3石倉有栖登場。(石倉有栖の固有能罪符は生前死後のキャスティング。前世と来世の固有能罪符を使える。(現在は異分子耐性という力のみ使える))",e:"石倉有栖",b:1,
+conv:[
+{s:"ナレーション",l:"星夜の所にイミュータブルNo.3石倉有栖登場。"},
+{s:"ナレーション",l:"）"},
+{s:"星夜",l:"覚悟は決めてきた。"},
+{s:"石倉有栖",l:"……邪魔をするな。"},
+]},
+{v:21,n:197,t:"極限の戦士",d:"星夜と有栖が戦闘開始。実力はほぼ互角。明石啓希と珠濃雅紀がメイソンに描写なく敗北。",e:"石倉有栖",b:1,
+conv:[
+{s:"ナレーション",l:"星夜と有栖が戦闘開始。"},
+{s:"ナレーション",l:"実力はほぼ互角。"},
+{s:"星夜",l:"負けられない理由が、俺にはある。"},
+{s:"有栖",l:"力試しといこうか。"},
+]},
+{v:21,n:198,t:"模倣者の生命観",d:"有栖の所にイミュータブルNo.8オリバー･メイソン登場(固有能罪符はミラーマスター。動物の身体的特徴を自身に付与できる)",e:"オリバー",b:1,
+conv:[
+{s:"ナレーション",l:"有栖の所にイミュータブルNo.8オリバー･メイソン登場"},
+{s:"オリバー",l:"退がっていろ。痛い目を見るぞ。"},
+]},
+{v:21,n:199,t:"魂の奏鳴曲",d:"星夜の所へ甲斐翔也が登場。星夜を休ませ翔也が参戦。",e:"甲斐翔也",b:1,
+conv:[
+{s:"ナレーション",l:"星夜の所へ甲斐翔也が登場。"},
+{s:"ナレーション",l:"星夜を休ませ翔也が参戦。"},
+{s:"星夜",l:"この先に、進むために。"},
+{s:"甲斐翔也",l:"本気を出させてもらう。"},
+]},
+{v:21,n:200,t:"圧殺",d:"翔也と有栖 戦闘開始",e:"石倉有栖",b:1,
+conv:[
+{s:"ナレーション",l:"翔也と有栖 戦闘開始"},
+{s:"石倉有栖",l:"――くく、面白い。"},
+]},
+{v:21,n:201,t:"策士の収納",d:"有栖が危なくなり、イミュータブルNo.6跳田収滋登場。(固有能罪符は神器の収納術。具現化した本に物を収納できる。)",e:"跳田収滋",b:1,
+conv:[
+{s:"ナレーション",l:"有栖が危なくなり、イミュータブルNo.6跳田収滋登場。"},
+{s:"跳田収滋",l:"その程度か？"},
+]},
+{v:21,n:202,t:"裏技",d:"本から大量の煙が出る。",e:"霊剛",b:0,
+conv:[
+{s:"ナレーション",l:"本から大量の煙が出る。"},
+{s:"霊剛",l:"まだ、話す気はない。"},
+]},
+{v:21,n:203,t:"撤退",d:"有栖と収滋はその場からいなくなった。",e:"跳田収滋",b:1,
+conv:[
+{s:"ナレーション",l:"有栖と収滋はその場からいなくなった。"},
+{s:"跳田収滋",l:"……邪魔をするな。"},
+]},
+{v:21,n:204,t:"魂の対峙",d:"メイソンと翔也の戦闘へと移行。",e:"甲斐翔也",b:1,
+conv:[
+{s:"ナレーション",l:"メイソンと翔也の戦闘へと移行。"},
+{s:"甲斐翔也",l:"力試しといこうか。"},
+]},
+{v:21,n:205,t:"カリスマ",d:"お互いの固有能罪符のぶつかり合い。",e:"赤羽悠真",b:0,
+conv:[
+{s:"ナレーション",l:"お互いの固有能罪符のぶつかり合い。"},
+{s:"赤羽悠真",l:"そう急くな。"},
+]},
+{v:21,n:206,t:"フリーエリア",d:"翔也はログフの持っていた陣地生成を使い、自身の固有能罪符カリスマを120%で運用する。",e:"ログフ",b:1,
+conv:[
+{s:"ナレーション",l:"翔也はログフの持っていた陣地生成を使い、自身の固有能罪符カリスマを120%で運用する。"},
+{s:"ログフ",l:"本気を出させてもらう。"},
+]},
+{v:21,n:207,t:"序列",d:"",e:"死橋凪",b:0,
+conv:[
+{s:"ナレーション",l:"神々の間にも、揺るがぬ序列があるという。"},
+{s:"死橋凪",l:"力の順番など、俺には興味がない。"},
+]},
+{v:21,n:208,t:"融合",d:"",e:"安村康夫",b:0,
+conv:[
+{s:"ナレーション",l:"安村の中で、二つの力が混じり合おうとしていた。"},
+{s:"安村康夫",l:"痛みごと、飲み込んでやる。"},
+]},
+{v:21,n:209,t:"力試し",d:"",e:"鈴鹿",b:0,
+conv:[
+{s:"ナレーション",l:"鈴鹿は、自分の力がどこまで届くのか試したくなった。"},
+{s:"鈴鹿",l:"みんなを守れる力に、もっと近づきたい。"},
+]},
+{v:21,n:210,t:"here we go",d:"",e:"湯照司吉基",b:0,
+conv:[
+{s:"ナレーション",l:"吉基は静かに息を吐き、前を見据えた。"},
+{s:"湯照司吉基",l:"……here we go、だな。"},
+]},
+{v:21,n:211,t:"改造",d:"イミュータブルNo.2蒼井朔也の登場(固有能罪符は運命と黄昏の同化(触れたもの同士を融合させる。)と刃牙刃牙)",e:"蒼井朔也",b:1,
+conv:[
+{s:"ナレーション",l:"イミュータブルNo.2蒼井朔也の登場と刃牙刃牙）"},
+{s:"蒼井朔也",l:"力試しといこうか。"},
+]},
+{v:21,n:212,t:"旧双",d:"",e:"跳田収滋",b:0,
+conv:[
+{s:"ナレーション",l:"かつての相棒との因縁が、収滋の脳裏をよぎる。"},
+{s:"跳田収滋",l:"旧い縁ほど、断ち切るのは難しい。"},
+]},
+{v:21,n:213,t:"神会議",d:"場面は神達の所へと移りセレスティエデンの神アストレスの登場。(固有能罪符は番の救済と偽りの厄災。(回復効果と物体のサイズ変更がでかる。))",e:"アステレス",b:1,
+conv:[
+{s:"ナレーション",l:"場面は神達の所へと移りセレスティエデンの神アストレスの登場。"},
+{s:"ナレーション",l:"）"},
+{s:"アステレス",l:"本気を出させてもらう。"},
+]},
+{v:21,n:214,t:"GOD",d:"楽園の神リボルトの付き人として黒瀬武人の登場。(固有能罪符は破壊的で覇界的な一撃と未知な道。(身体能力の超絶強化と防御力上昇))",e:"黒瀬武人",b:1,
+conv:[
+{s:"ナレーション",l:"楽園の神リボルトの付き人として黒瀬武人の登場。"},
+{s:"ナレーション",l:"）"},
+{s:"黒瀬武人",l:"――くく、面白い。"},
+]},
+{v:21,n:215,t:"world",d:"",e:"死橋轟",b:0,
+conv:[
+{s:"ナレーション",l:"世界は、まだ轟に多くのことを問いかけてくる。"},
+{s:"死橋轟",l:"この世界の全部を、知る必要はない。ただ、進むだけだ。"},
+]},
+{v:21,n:216,t:"運命の訪れ",d:"",e:"明石啓希",b:0,
+conv:[
+{s:"ナレーション",l:"啓希の元に、避けられない運命が近づいていた。"},
+{s:"明石啓希",l:"来るなら来い。俺は逃げない。"},
+]},
+{v:21,n:217,t:"試練の幕開け",d:"",e:"八並解徒",b:0,
+conv:[
+{s:"ナレーション",l:"新たな試練の幕が、静かに上がろうとしていた。"},
+{s:"八並解徒",l:"触れれば分かる。俺の力の意味が。"},
+]},
+{v:21,n:218,t:"仲間の絆",d:"",e:"オリバー",b:0,
+conv:[
+{s:"ナレーション",l:"仲間との絆が、時に何よりの武器になる。"},
+{s:"オリバー",l:"俺には、真似できない絆もあるらしい。"},
+]},
+{v:21,n:219,t:"暗闇の中の希望",d:"",e:"バルナウス",b:0,
+conv:[
+{s:"ナレーション",l:"海の底のような暗闇の中、小さな光が灯る。"},
+{s:"???",l:"荒くれ者にも、守りたいものはある。"},
+]},
+{v:21,n:220,t:"過去との対峙",d:"",e:"和辺重治",b:0,
+conv:[
+{s:"ナレーション",l:"重治は、迷路の奥に隠していた過去と向き合う。"},
+{s:"和辺重治",l:"……もう、逃げ道は作らない。"},
+]},
+{v:21,n:221,t:"新たなる力",d:"",e:"沢華",b:0,
+conv:[
+{s:"ナレーション",l:"沢華の中に、これまでとは違う力の気配が芽生えていた。"},
+{s:"沢華",l:"この力で、守れるものを守る。"},
+]},
+{v:21,n:222,t:"決意の瞬間",d:"",e:"珠濃雅紀",b:0,
+conv:[
+{s:"ナレーション",l:"雅紀は拳を握りしめ、静かに決意を固めた。"},
+{s:"珠濃雅紀",l:"作り替えるのは、体だけじゃない。俺自身もだ。"},
+]},
+{v:21,n:223,t:"その先の道",d:"",e:"玉垣剣城",b:0,
+conv:[
+{s:"ナレーション",l:"剣城の視線は、もうこの場所を通り越していた。"},
+{s:"玉垣剣城",l:"俺の道は、俺自身が決める。"},
+]},
+{v:21,n:224,t:"宿命の戦い",d:"",e:"弐呪刻",b:0,
+conv:[
+{s:"ナレーション",l:"神と人、その宿命が再び交わろうとしていた。"},
+{s:"弐呪刻",l:"面白い星の下に、生まれてきたものだ。"},
+]},
+{v:21,n:225,t:"真実",d:"",e:"ゲガント",b:0,
+conv:[
+{s:"ナレーション",l:"全ての始まりにいたゲガントの真実が、今明かされようとしていた。"},
+{s:"ゲガント",l:"……あの時のことを、今更悔いても遅い。"},
+]},
+{v:21,n:226,t:"運命を変える選択",d:"",e:"和辺重信",b:0,
+conv:[
+{s:"ナレーション",l:"重信は、これまでとは違う道を選ぼうとしていた。"},
+{s:"和辺重信",l:"近づけない力も、時には使い方次第だ。"},
+]},
+{v:21,n:227,t:"心の叫び",d:"",e:"阿波牛壬陸",b:0,
+conv:[
+{s:"ナレーション",l:"壬陸の胸の内から、抑えきれない叫びがあふれる。"},
+{s:"阿波牛壬陸",l:"もう、誰にも大事な人を奪わせない。"},
+]},
+{v:21,n:228,t:"力の限界",d:"",e:"黒峰天音",b:0,
+conv:[
+{s:"ナレーション",l:"天音は、自分の力の限界を静かに悟りはじめていた。"},
+{s:"黒峰天音",l:"……ここが、俺の限界か。"},
+]},
+{v:21,n:229,t:"最終局面",d:"",e:"蒼井朔也",b:0,
+conv:[
+{s:"ナレーション",l:"全ての因縁が、最終局面へと向かっていく。"},
+{s:"蒼井朔也",l:"終わらせよう、全部まとめて。"},
+]},
+{v:21,n:230,t:"未来への一歩",d:"",e:"黒瀬武人",b:0,
+conv:[
+{s:"ナレーション",l:"長い戦いの果てに、それぞれが未来への一歩を踏み出そうとしていた。"},
+{s:"黒瀬武人",l:"――さあ、ここからだ。"},
+]}
+];
+
+function getStoryVolumes(){
+  let vols = [];
+  let seen = {};
+  storyChapters.forEach(c=>{
+    if(!seen[c.v]){ seen[c.v]=true; vols.push(c.v); }
+  });
+  return vols;
+}
+function getStoryVolumeLabel(v){
+  return v===21 ? "本誌（最新話）" : (v+"章");
+}
+const storyNameAliases = {
+  "元武":"室井元武", "求武":"室井元武",
+  "トウヤ":"栗島トウヤ",
+  "轟":"死橋轟",
+  "5.2":"コード5.2",
+  "吉基":"湯照司吉基",
+  "啓希":"明石啓希",
+  "天音":"黒峰天音",
+  "星夜":"阿波牛星夜",
+  "有栖":"石倉有栖",
+  "重信":"和辺重信",
+  "重治":"和辺重治",
+  "壬陸":"阿波牛壬陸",
+  "凪":"死橋凪",
+  "亨":"晴海亨",
+};
+function getStoryEnemyBase(rawName){
+  const name = storyNameAliases[rawName] || rawName;
+  return chars.find(c=>c.name===name) || eventChars.find(c=>c.name===name) || eventChars2.find(c=>c.name===name) ||
+    eventChars3.find(c=>c.name===name) || eventChars4.find(c=>c.name===name) || eventChars5.find(c=>c.name===name) ||
+    eventChars6.find(c=>c.name===name) || eventChars7.find(c=>c.name===name) || eventChars8.find(c=>c.name===name) ||
+    eventChars9.find(c=>c.name===name) || eventChars10.find(c=>c.name===name) || rewardChar.find(c=>c.name===name) ||
+    { name:name, attr:"闇", img:"https://imgur.com/21T5sVB.png" };
+}
+function getStoryStageStats(n){
+  // 第1章(1〜9話)は初期配布キャラ「室井元武」1体・Lv1・無凸の状態でも
+  // ギリギリ勝てるように個別調整（同一敵ゲガントと3回戦うたびに緊張感が増す想定）。
+  const chapter1Battles = {
+    6: { hp:140, atk:42 },  // 初戦。手探りの中なんとか押し切れる程度
+    8: { hp:210, atk:46 },  // 中盤。必殺技を使わないと厳しくなる
+    9: { hp:290, atk:50 },  // 章クライマックス。ギリギリの辛勝を想定
+  };
+  if(chapter1Battles[n]) return chapter1Battles[n];
+  // 話数(1〜230)に応じて緩やかに強くなっていくバランス。試練よりやや易しめの学習用カーブ。
+  let hp = Math.floor(300 + Math.pow(n,1.75)*9 + n*120);
+  let atk = Math.floor(25 + Math.pow(n,1.35)*2 + n*8);
+  return {hp, atk};
+}
+function getStoryMaxChapter(){
+  let cleared = missionStats.storyCleared || {};
+  let maxN = missionStats.storyMaxChapter || 1;
+  for(let i=1;i<=storyChapters.length;i++){
+    if(cleared[i] && maxN < i+1) maxN = i+1;
+  }
+  if(maxN > storyChapters.length) maxN = storyChapters.length;
+  missionStats.storyMaxChapter = maxN;
+  return maxN;
+}
+function renderStory(){
+  let maxN = getStoryMaxChapter();
+  let cleared = missionStats.storyCleared || {};
+  let vols = getStoryVolumes();
+  let html = "";
+  vols.forEach(v=>{
+    let chsInVol = storyChapters.filter(c=>c.v===v);
+    let clearedCount = chsInVol.filter(c=>cleared[c.n]).length;
+    let unlocked = chsInVol.some(c=>c.n <= maxN);
+    let done = clearedCount === chsInVol.length;
+    html += `
+    <div onclick="${unlocked ? `openStoryVolume(${v})` : ''}" style="background:${done?'linear-gradient(135deg,rgba(80,220,140,0.15),rgba(20,100,60,0.15))':'linear-gradient(135deg,rgba(255,210,80,0.12),rgba(120,70,0,0.12))'};border:1.5px solid ${done?'rgba(100,255,160,0.5)':'rgba(255,210,120,0.35)'};border-radius:12px;padding:12px 6px;text-align:center;cursor:${unlocked?'pointer':'default'};opacity:${unlocked?1:0.4};position:relative;">
+      <div style="font-size:20px;">${done?'✅':'📖'}</div>
+      <div style="color:#ffe0a0;font-size:11px;font-weight:bold;margin-top:2px;">${getStoryVolumeLabel(v)}</div>
+      <div style="color:#bbb;font-size:9px;margin-top:2px;">${clearedCount}/${chsInVol.length}</div>
+      ${!unlocked?'<div style="position:absolute;top:6px;right:8px;font-size:11px;">🔒</div>':''}
+    </div>`;
+  });
+  document.getElementById("storyVolList").innerHTML = html;
+}
+let currentStoryVol = 1;
+function openStoryVolume(v){
+  currentStoryVol = v;
+  go("storyVolume");
+}
+function renderStoryVolume(){
+  let v = currentStoryVol;
+  let maxN = getStoryMaxChapter();
+  let cleared = missionStats.storyCleared || {};
+  document.getElementById("storyVolumeTitle").textContent = "📖 " + getStoryVolumeLabel(v);
+  let chsInVol = storyChapters.filter(c=>c.v===v);
+  let html = chsInVol.map(c=>{
+    let isCleared = !!cleared[c.n];
+    let isUnlocked = c.n <= maxN;
+    let enemyBase = getStoryEnemyBase(c.e);
+    return `
+    <div style="display:flex;align-items:center;gap:10px;background:${isCleared?'rgba(80,220,140,0.08)':'rgba(255,255,255,0.03)'};border:1px solid ${isCleared?'rgba(100,255,160,0.35)':'rgba(255,255,255,0.1)'};border-radius:12px;padding:10px;opacity:${isUnlocked?1:0.4};cursor:${isUnlocked?'pointer':'default'};" onclick="${isUnlocked ? `showStoryChapter(${c.n})` : ''}">
+      <div style="width:44px;height:44px;flex:0 0 auto;border-radius:10px;overflow:hidden;background:#222;display:flex;align-items:center;justify-content:center;font-size:20px;">${c.b?`<img src="${enemyBase.img}" style="width:100%;height:100%;object-fit:cover;">`:'💬'}</div>
+      <div style="flex:1;text-align:left;min-width:0;">
+        <div style="color:#ffe0a0;font-size:10px;">第${c.n}話${c.b?' ・ ⚔️バトル':' ・ 📜会話'}</div>
+        <div style="color:#fff;font-size:13px;font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.t}</div>
+      </div>
+      <div style="flex:0 0 auto;font-size:16px;">${isCleared?'✅':(isUnlocked?'▶️':'🔒')}</div>
+    </div>`;
+  }).join("");
+  document.getElementById("storyChapterList").innerHTML = html;
+}
+let storyModalChapterNum = null;
+let vnLines = [];
+let vnIndex = 0;
+let vnTyping = null;
+let vnLineDone = false;
+let vnOnDone = null;
+const vnTypeSpeed = 28;
+function showStoryChapter(n){
+  let c = storyChapters.find(ch=>ch.n===n);
+  if(!c) return;
+  storyModalChapterNum = n;
+  document.getElementById("storyModalVol").textContent = getStoryVolumeLabel(c.v) + " ・ 第" + c.n + "話";
+  document.getElementById("storyModalTitle").textContent = c.t;
+  let descEl = document.getElementById("storyModalDesc");
+  let vnBox = document.getElementById("storyModalVN");
+  let enemyBox = document.getElementById("storyModalEnemyBox");
+  let actionBtn = document.getElementById("storyModalActionBtn");
+  function revealPostConv(){
+    if(c.b){
+      let enemyBase = getStoryEnemyBase(c.e);
+      let stats = getStoryStageStats(c.n);
+      enemyBox.style.display = "flex";
+      enemyBox.innerHTML = `
+      <img src="${enemyBase.img}" style="width:52px;height:52px;border-radius:10px;object-fit:cover;border:2px solid rgba(255,210,120,0.4);">
+      <div style="text-align:left;">
+        <div style="color:#ffcc66;font-size:12px;font-weight:bold;">⚔️ ${c.e}</div>
+        <div style="color:#999;font-size:10px;">属性:${enemyBase.attr} ／ HP:${stats.hp.toLocaleString()} ／ ATK:${stats.atk}</div>
+      </div>`;
+      actionBtn.textContent = "⚔️ 戦闘開始";
+      actionBtn.onclick = function(){ startStoryBattle(n); };
+    } else {
+      enemyBox.style.display = "none";
+      enemyBox.innerHTML = "";
+      actionBtn.textContent = "📜 読み進める";
+      actionBtn.onclick = function(){ completeStoryChapter(n); };
+    }
+    actionBtn.style.display = "block";
+  }
+  clearInterval(vnTyping);
+  if(c.conv && c.conv.length){
+    descEl.style.display = "none";
+    descEl.textContent = "";
+    vnBox.style.display = "block";
+    enemyBox.style.display = "none";
+    enemyBox.innerHTML = "";
+    actionBtn.style.display = "none";
+    startStoryVN(c.conv, revealPostConv);
+  } else {
+    vnBox.style.display = "none";
+    descEl.style.display = "block";
+    descEl.textContent = c.d || "（本編で描かれる一幕）";
+    revealPostConv();
+  }
+  document.getElementById("storyModal").style.display = "flex";
+}
+function startStoryVN(lines, onDone){
+  vnLines = lines;
+  vnIndex = 0;
+  vnOnDone = onDone;
+  renderVNLine();
+}
+function renderVNLine(){
+  let vnBox = document.getElementById("storyModalVN");
+  if(vnIndex >= vnLines.length){
+    vnBox.style.display = "none";
+    if(vnOnDone) vnOnDone();
+    return;
+  }
+  let line = vnLines[vnIndex];
+  let isNarration = line.s === "ナレーション";
+  let isUnknown = line.s === "???";
+  let nameEl = document.getElementById("vnName");
+  let portraitEl = document.getElementById("vnPortrait");
+  let textEl = document.getElementById("vnText");
+  let indicator = document.getElementById("vnIndicator");
+  indicator.style.visibility = "hidden";
+  if(isNarration){
+    nameEl.textContent = "";
+    portraitEl.style.display = "none";
+    textEl.style.fontStyle = "italic";
+    textEl.style.color = "#aaa";
+    textEl.style.textAlign = "center";
+  } else {
+    nameEl.textContent = line.s;
+    textEl.style.fontStyle = "normal";
+    textEl.style.color = "#f2f2f2";
+    textEl.style.textAlign = "left";
+    if(isUnknown){
+      portraitEl.style.display = "none";
+    } else {
+      let base = getStoryEnemyBase(line.s);
+      portraitEl.src = base.img;
+      portraitEl.style.display = "block";
+    }
+  }
+  let full = line.l;
+  let i = 0;
+  vnLineDone = false;
+  textEl.textContent = "";
+  clearInterval(vnTyping);
+  vnTyping = setInterval(function(){
+    i++;
+    textEl.textContent = full.slice(0, i);
+    if(i >= full.length){
+      clearInterval(vnTyping);
+      vnLineDone = true;
+      indicator.style.visibility = "visible";
+    }
+  }, vnTypeSpeed);
+}
+function advanceStoryVN(){
+  if(!vnLineDone){
+    clearInterval(vnTyping);
+    document.getElementById("vnText").textContent = vnLines[vnIndex].l;
+    vnLineDone = true;
+    document.getElementById("vnIndicator").style.visibility = "visible";
+    return;
+  }
+  vnIndex++;
+  renderVNLine();
+}
+function closeStoryModal(){
+  clearInterval(vnTyping);
+  document.getElementById("storyModal").style.display = "none";
+}
+function completeStoryChapter(n){
+  if(!missionStats.storyCleared) missionStats.storyCleared = {};
+  let already = !!missionStats.storyCleared[n];
+  missionStats.storyCleared[n] = true;
+  getStoryMaxChapter();
+  saveData();
+  closeStoryModal();
+  if(!already){
+    stone += 5;
+    showToast("📜 話を読み進めた！ 石+5");
+  }
+  renderStoryVolume();
+}
+function startStoryBattle(n){
+  let c = storyChapters.find(ch=>ch.n===n);
+  if(!c || !c.b) return;
+  if(team.length === 0){
+    showToast("⚠️ パーティを編成してください！");
+    return;
+  }
+  closeStoryModal();
+  battleEnded = false;
+  isAttackProcessing = false;
+  currentEvent = undefined;
+  go("battle");
+  onBattleStart();
+  currentTrial = undefined;
+  currentEventType = "story";
+  currentStoryChapter = n;
+
+  players = applyTeamBuff(team.map(c2=>{
+    let base =
+        chars.find(ch => ch.name === c2.name) ||
+        eventChars.find(ch => ch.name === c2.name) ||
+        eventChars2.find(ch => ch.name === c2.name) ||
+        eventChars3.find(ch => ch.name === c2.name) ||
+        eventChars4.find(ch => ch.name === c2.name) ||
+        eventChars5.find(ch => ch.name === c2.name) ||
+        eventChars6.find(ch => ch.name === c2.name) ||
+        eventChars7.find(ch => ch.name === c2.name) ||
+        eventChars8.find(ch => ch.name === c2.name) ||
+        eventChars9.find(ch => ch.name === c2.name) ||
+        eventChars10.find(ch => ch.name === c2.name) ||
+        rewardChar.find(ch => ch.name === c2.name);
+    let weapon = c2.weapon;
+    let finalAtk = getEffectiveAtk(c2) + (weapon?.atk || 0);
+    let finalHp = getEffectiveHp(c2) + (weapon?.hp || 0);
+    let initSkill = base?.skill || c2.skill;
+    return {
+        ...c2,
+        atk: finalAtk,
+        hp: finalHp,
+        currentHp: finalHp,
+        skill: initSkill,
+        skill2: base?.skill2 || c2.skill2 || null,
+        cool2: 0,
+        weapon: c2.weapon ? {...c2.weapon} : null,
+        weaponCool: 0,
+        sniperAmmo: initSkill?.type === "sniper" ? (initSkill.maxAmmo || 6) : undefined,
+        swordCount: initSkill?.type === "kenSword" ? 0 : undefined,
+        swordBuff: initSkill?.type === "kenSword" ? 0 : undefined,
+        passive: base?.passive || c2.passive || null,
+        passiveAtkBonus: 0,
+        kokuShoku: 0,
+        weaponPassive: c2.weapon?.passive || null,
+        betaLuckyTurn: 0,
+        betaLuckyDmgBuff: false,
+        betaSightCount: 0,
+        betaHimoCount: 0,
+        betaSakuragiDefActive: false,
+    };
+  }));
+
+  let enemyBase = getStoryEnemyBase(c.e);
+  let stats = getStoryStageStats(n);
+  enemy = {
+    name: "【第"+n+"話】"+c.e,
+    attr: enemyBase.attr,
+    img: enemyBase.img,
+    hp: stats.hp,
+    maxHp: stats.hp,
+    atk: stats.atk,
+    baseAtk: stats.atk,
+    poison:0, poisons:[],
+    burnTurn:0, burnPower:0, burns:[],
+    freezeTurn:0, shockTurn:0, shockPower:0,
+    shield:0,
+    debuffUsed:false, debuffPower:1, debuffTurn:0,
+    debuffs:[], erosions:[], taketogeStacks:[],
+    gimmick:{},
+    turnCount:0,
+    betaIssokuCount:0, betaSightDebuff:0
+  };
+  turn="player"; turnIndex=0;
+  deadPlayers=[];
+  lastAllySkill = null;
+  players.forEach(p => p.weaponCool = 0);
+  players.forEach(p => { charUseCount[p.name] = (charUseCount[p.name]||0) + 1; });
+  renderBattle();
+  showBattleSynergyNotice(team);
+}
 // ===== 必殺技個性データ =====
 // 各キャラ固有の必殺技名・威力倍率・追加効果を定義。
 // fx タイプ: burn/poison/shock/freeze/debuff/teamBuff/healAll/healSelf/
@@ -1953,6 +3896,7 @@ const ULTIMATES = {
 "ゲガント":{title:"猛毒一閃",mult:2.4,fx:[{t:"poison",pw:0.2,tn:2}]},
 "ホーレン":{title:"水衝撃波",mult:2.4,fx:[{t:"healSelf",pw:0.1}]},
 "ボムブ":{title:"大爆炎",mult:2.6,fx:[{t:"burn",pw:0.35,tn:2}]},
+"ホーレン&ボムブ":{title:"双爆・共鳴撃",mult:3.0,fx:[{t:"burn",pw:0.4,tn:3},{t:"healSelf",pw:0.1}]},
 "霊剛":{title:"霊雷撃",mult:2.4,fx:[{t:"shock",tn:2}]},
 "安村康夫":{title:"根性の一撃",mult:2.6,fx:[{t:"selfBuff",pw:0.2,tn:2}]},
 "返網転":{title:"水流連打",mult:2.4,fx:[{t:"shock",tn:1}]},
@@ -1961,6 +3905,93 @@ const ULTIMATES = {
 "ヒナル":{title:"閃光乱撃",mult:2.4,fx:[{t:"shock",tn:2}]},
 "マタイ":{title:"鉄壁咆哮",mult:1.8,fx:[{t:"shieldAll",pw:0.2,tn:2}]},
 "ログフ":{title:"炎将の一撃",mult:2.6,fx:[{t:"burn",pw:0.3,tn:2}]},
+// ===== イベント限定キャラの必殺技 =====
+"コード5.2🍖":{title:"極旨雷撃砲",mult:3.2,fx:[{t:"shock",tn:3}]},
+"FqEa🍖":{title:"満腹木霊爆",mult:3.0,fx:[{t:"poison",pw:0.3,tn:3}]},
+"甲斐翔也🍖":{title:"宴の水責め",mult:2.6,fx:[{t:"debuff",pw:0.4,tn:3},{t:"freeze",tn:1}]},
+"黒峰天音🍖":{title:"冷やし水閃斬",mult:2.6,fx:[{t:"freeze",tn:2}]},
+"晴海亨🍖":{title:"炙り雷撃",mult:2.6,fx:[{t:"shock",tn:2}]},
+"赤羽悠真🍖":{title:"宴の御馳走",mult:2.0,fx:[{t:"healAll",pw:0.4}]},
+"桜木彰🍖":{title:"満腹弱体の膳",mult:2.4,fx:[{t:"debuff",pw:0.3,tn:3}]},
+"八並解徒🍖":{title:"炎宴縛りの毒",mult:2.4,fx:[{t:"poison",pw:0.25,tn:3},{t:"debuff",pw:0.2,tn:2}]},
+"室井元武🌊":{title:"波濤雷轟撃",mult:3.2,fx:[{t:"shock",tn:3},{t:"multihit",n:2,pw:0.4}]},
+"栗島トウヤ🌊":{title:"汐風業炎撃",mult:3.2,fx:[{t:"burn",pw:0.5,tn:3}]},
+"死橋轟🌊":{title:"碧海の毒破斬",mult:3.0,fx:[{t:"poison",pw:0.35,tn:3}]},
+"鈴鹿🌊":{title:"波間の雷閃",mult:2.6,fx:[{t:"shock",tn:2}]},
+"沢華🌊":{title:"汐騒の毒矢",mult:2.6,fx:[{t:"poison",pw:0.25,tn:2}]},
+"阿波牛壬陸🌊":{title:"夏日の癒し波",mult:1.8,fx:[{t:"healAll",pw:0.4}]},
+"湯照司吉基🌊":{title:"深海凍結撃",mult:2.6,fx:[{t:"freeze",tn:2}]},
+"玉垣剣城🃏":{title:"運命の雷閃斬",mult:3.4,fx:[{t:"shock",tn:3}]},
+"蒼井朔也🃏":{title:"オールイン鉄壁",mult:2.0,fx:[{t:"shieldAll",pw:0.3,tn:3}]},
+"石倉有栖🃏":{title:"大逆転の盾炎",mult:1.8,fx:[{t:"shieldSelf",pw:0.3,tn:3}]},
+"ミニモータ🃏":{title:"運命の氷牌撃",mult:2.6,fx:[{t:"freeze",tn:2}]},
+"ソーメーン🃏":{title:"大当たり毒連撃",mult:2.4,fx:[{t:"multihit",n:3,pw:0.3},{t:"poison",pw:0.15,tn:2}]},
+"跳田収滋🃏":{title:"不沈の炎盾",mult:2.0,fx:[{t:"shieldAll",pw:0.4,tn:3}]},
+"オリバー🃏":{title:"一発逆転の雷",mult:2.6,fx:[{t:"shock",tn:2},{t:"selfBuff",pw:0.2,tn:2}]},
+"FqEa🌌":{title:"深宇宙氷結撃",mult:3.2,fx:[{t:"freeze",tn:2},{t:"debuff",pw:0.3,tn:2}]},
+"返網転🌌":{title:"星屑封絶の光",mult:2.8,fx:[{t:"debuff",pw:0.45,tn:3}]},
+"黒瀬武人🌌":{title:"銀河断滅撃",mult:3.8,fx:[{t:"executeBonus",th:0.7,bonus:0.3}]},
+"コード5.2🌌":{title:"星霜の毒盾",mult:2.0,fx:[{t:"shieldSelf",pw:0.25,tn:3}]},
+"阿波牛星夜🌌":{title:"深宇宙業炎爪",mult:2.8,fx:[{t:"selfLowHpBonus",th:0.5,bonus:0.4}]},
+"室井元武🌌":{title:"星辰の光盾",mult:1.8,fx:[{t:"shieldAll",pw:0.2,tn:3}]},
+"栗島トウヤ🌌":{title:"漆黒流星撃",mult:2.8,fx:[{t:"debuff",pw:0.3,tn:3}]},
+"霊剛👻":{title:"亡霊焦光撃",mult:3.4,fx:[{t:"burn",pw:0.5,tn:3}]},
+"阿波牛星夜👻":{title:"彷徨う癒しの森",mult:1.8,fx:[{t:"healAll",pw:0.45}]},
+"湯照司吉基👻":{title:"怨嗟の雷令",mult:2.0,fx:[{t:"teamBuff",pw:0.5,tn:3}]},
+"死橋轟👻":{title:"亡霊乱舞撃",mult:2.6,fx:[{t:"multihit",n:3,pw:0.35},{t:"burn",pw:0.2,tn:2}]},
+"玉垣剣城👻":{title:"怨霊氷刃",mult:2.6,fx:[{t:"freeze",tn:2}]},
+"甲斐翔也👻":{title:"彷徨う雷連撃",mult:2.6,fx:[{t:"shock",tn:2},{t:"multihit",n:2,pw:0.4}]},
+"オリバー👻":{title:"亡霊毒牙撃",mult:2.4,fx:[{t:"poison",pw:0.2,tn:2}]},
+"黒峰天音🔒":{title:"禁忌連鎖爆滅",mult:3.4,fx:[{t:"debuff",pw:0.4,tn:3},{t:"burn",pw:0.3,tn:2}]},
+"沢華🔒":{title:"封印の蘇生炎",mult:1.8,fx:[{t:"healAll",pw:0.5}]},
+"ヒナル🔒":{title:"秘鍵完全封殺",mult:2.8,fx:[{t:"debuff",pw:0.5,tn:3},{t:"freeze",tn:2}]},
+"石倉有栖🔒":{title:"封焔雷撃",mult:2.8,fx:[{t:"burn",pw:0.4,tn:3},{t:"shock",tn:2}]},
+"ミニモータ🔒":{title:"禁忌鉄壁",mult:2.0,fx:[{t:"shieldAll",pw:0.25,tn:3}]},
+"ソーメーン🔒":{title:"封印解放連撃",mult:2.6,fx:[{t:"multihit",n:4,pw:0.3}]},
+"赤羽悠真🔒":{title:"秘薬吸収の炎",mult:2.0,fx:[{t:"healAll",pw:0.35},{t:"healSelf",pw:0.15}]},
+"鈴鹿🎸":{title:"熱唱共鳴聖歌",mult:2.0,fx:[{t:"healAll",pw:0.4},{t:"cleanseAllies"}]},
+"赤羽悠真🎸":{title:"轟音共鳴の波",mult:2.0,fx:[{t:"healAll",pw:0.45},{t:"teamBuff",pw:0.3,tn:3}]},
+"阿波牛壬陸🎸":{title:"轟音雷撃破",mult:2.8,fx:[{t:"debuff",pw:0.45,tn:3},{t:"shock",tn:3}]},
+"甲斐翔也🎸":{title:"超絶ソロ連撃",mult:2.6,fx:[{t:"multihit",n:3,pw:0.4}]},
+"室井元武🎸":{title:"熱狂の水盾",mult:2.0,fx:[{t:"shieldSelf",pw:0.3,tn:3}]},
+"蒼井朔也🎸":{title:"轟音雷閃斬",mult:2.6,fx:[{t:"shock",tn:2}]},
+"跳田収滋🎸":{title:"熱唱の癒し",mult:1.8,fx:[{t:"healAll",pw:0.4}]},
+"明石啓希⛄":{title:"雪解けの祝福",mult:2.0,fx:[{t:"healAll",pw:0.5},{t:"cleanseAllies"}]},
+"珠濃雅紀⛄":{title:"白銀再生の炎",mult:2.0,fx:[{t:"healAll",pw:0.5},{t:"teamBuff",pw:0.3,tn:3}]},
+"コード5.2⛄":{title:"極寒凍牢破壊",mult:3.0,fx:[{t:"freeze",tn:2},{t:"debuff",pw:0.4,tn:3}]},
+"栗島トウヤ⛄":{title:"雪華毒閃",mult:2.4,fx:[{t:"poison",pw:0.2,tn:2}]},
+"死橋轟⛄":{title:"白銀の号令",mult:2.0,fx:[{t:"teamBuff",pw:0.4,tn:3}]},
+"鈴鹿⛄":{title:"雪原凍縛",mult:2.4,fx:[{t:"debuff",pw:0.3,tn:3},{t:"freeze",tn:1}]},
+"沢華⛄":{title:"雪華連雷撃",mult:2.6,fx:[{t:"multihit",n:2,pw:0.5},{t:"shock",tn:2}]},
+"桜木彰🎮":{title:"ラストコンティニュー雷爆",mult:3.2,fx:[{t:"selfBuff",pw:0.4,tn:3},{t:"shock",tn:2}]},
+"八並解徒🎮":{title:"運命の紐・全開",mult:3.0,fx:[{t:"multihit",n:4,pw:0.4}]},
+"晴海亨🎮":{title:"フルスロットル号令",mult:2.0,fx:[{t:"teamBuff",pw:0.5,tn:3},{t:"shieldAll",pw:0.2,tn:2}]},
+"FqEa🎮":{title:"コンボブレイク盾",mult:2.0,fx:[{t:"shieldSelf",pw:0.3,tn:3}]},
+"黒峰天音🎮":{title:"ハイスコア毒撃",mult:2.6,fx:[{t:"poison",pw:0.25,tn:2}]},
+"阿波牛星夜🎮":{title:"光の封殺コンボ",mult:2.4,fx:[{t:"debuff",pw:0.3,tn:3}]},
+"阿波牛壬陸🎮":{title:"暗黒コンティニュー",mult:2.0,fx:[{t:"healAll",pw:0.35},{t:"shieldAll",pw:0.15,tn:2}]},
+"ソーメーン🕹":{title:"8bit修復の陣",mult:2.0,fx:[{t:"healAll",pw:0.4},{t:"shieldAll",pw:0.2,tn:3}]},
+"ミニモータ🕹":{title:"ハイスコア乱撃",mult:3.0,fx:[{t:"multihit",n:5,pw:0.3}]},
+"石倉有栖🕹":{title:"レトロ魂・連撃",mult:3.2,fx:[{t:"multihit",n:3,pw:0.45},{t:"debuff",pw:0.2,tn:2}]},
+"オリバー🕹":{title:"8bit不屈の盾",mult:2.0,fx:[{t:"shieldAll",pw:0.25,tn:3}]},
+"跳田収滋🕹":{title:"ハイスコア雷連打",mult:2.6,fx:[{t:"shock",tn:2},{t:"multihit",n:2,pw:0.4}]},
+"蒼井朔也🕹":{title:"レトロ光焔撃",mult:2.6,fx:[{t:"burn",pw:0.3,tn:2}]},
+"玉垣剣城🕹":{title:"レトロ暗黒盾",mult:2.0,fx:[{t:"shieldSelf",pw:0.3,tn:3}]},
+"和辺重信🍖":{title:"宴の閃火撃",mult:2.6,fx:[{t:"burn",pw:0.3,tn:2}]},
+"明石啓希🌊":{title:"碧海追撃",mult:2.6,fx:[{t:"multihit",n:2,pw:0.5}]},
+"弐呪刻🃏":{title:"大当たり四連雷撃",mult:2.4,fx:[{t:"multihit",n:4,pw:0.3},{t:"shock",tn:2}]},
+"死橋凪🌌":{title:"星屑狂撃",mult:3.0,fx:[{t:"selfBuff",pw:0.4,tn:3}]},
+"フセイン👻":{title:"機神の癒し",mult:1.8,fx:[{t:"healAll",pw:0.4}]},
+"リボルト🔒":{title:"禁忌の猛炎毒",mult:2.6,fx:[{t:"burn",pw:0.35,tn:4}]},
+"アステレス🎸":{title:"熱唱の奇跡",mult:1.8,fx:[{t:"healAll",pw:0.5},{t:"cleanseAllies"}]},
+"バルナウス⛄":{title:"極寒の海淵",mult:2.4,fx:[{t:"freeze",tn:2},{t:"poison",pw:0.3,tn:3}]},
+"黒瀬武人🎮":{title:"ラストボス撃滅",mult:3.0,fx:[{t:"shock",tn:3}]},
+"霊剛🕹":{title:"レトロ守護霊",mult:2.0,fx:[{t:"shieldSelf",pw:0.3,tn:3}]},
+"銭生黒蔵":{title:"黄金清算・完全履行",mult:3.4,fx:[{t:"shock",tn:3},{t:"selfBuff",pw:0.3,tn:3}]},
+"十金灰":{title:"灼熱の返礼",mult:3.6,fx:[{t:"burn",pw:0.5,tn:3},{t:"healSelf",pw:0.2}]},
+"鈴島ネロ":{title:"吹雪の狂想曲",mult:2.6,fx:[{t:"freeze",tn:2},{t:"debuff",pw:0.3,tn:2}]},
+"夜倉冥":{title:"貫通・完全排除",mult:3.8,fx:[{t:"executeBonus",th:0.7,bonus:0.3}]},
+"波立嶺":{title:"生命設計・完全体",mult:1.8,fx:[{t:"healAll",pw:0.5},{t:"cleanseAllies"}]},
 };
 const DEFAULT_ULTIMATE = {title:"渾身の一撃",mult:3.0,fx:[]};
 function getUltimateData(p){
@@ -1982,6 +4013,27 @@ function _ultFxLabel(fx, p){
     case "cleanseAllies": return "✨ 味方の状態異常を浄化！";
     case "multihit": return "⚔ 追撃×" + (fx.n||1) + "！";
     default: return "";
+  }
+}
+function ciUltFxDesc(fx){
+  const pct = (v)=> Math.round((v||0)*100) + '%';
+  switch(fx.t){
+    case "burn": return "🔥 敵に燃焼を付与（威力" + pct(fx.pw) + " / " + (fx.tn||2) + "ターン）";
+    case "poison": return "☠ 敵に猛毒を付与（威力" + pct(fx.pw) + " / " + (fx.tn||2) + "ターン）";
+    case "shock": return "⚡ 敵に感電を付与（" + (fx.tn||2) + "ターン）";
+    case "freeze": return "❄ 敵を凍結（" + (fx.tn||1) + "ターン）";
+    case "debuff": return "⬇ 敵を弱体化（威力" + pct(fx.pw) + " / " + (fx.tn||3) + "ターン）";
+    case "teamBuff": return "🔥 味方全体を強化（攻撃+" + pct(fx.pw) + " / " + (fx.tn||3) + "ターン）";
+    case "healAll": return "💚 味方全体を回復（" + pct(fx.pw) + "）";
+    case "healSelf": return "💚 自身を回復（" + pct(fx.pw) + "）";
+    case "shieldAll": return "🛡 味方全体にシールド付与（" + pct(fx.pw) + " / " + (fx.tn||3) + "ターン）";
+    case "shieldSelf": return "🛡 自身にシールド付与（" + pct(fx.pw) + " / " + (fx.tn||3) + "ターン）";
+    case "selfBuff": return "💪 自身を強化（攻撃+" + pct(fx.pw) + " / " + (fx.tn||3) + "ターン）";
+    case "cleanseAllies": return "✨ 味方全体の状態異常を解除";
+    case "multihit": return "⚔ " + (fx.n||1) + "回追撃（各威力" + pct(fx.pw) + "）";
+    case "executeBonus": return "🎯 敵HPが" + pct(fx.th) + "以下の時、威力+" + pct(fx.bonus);
+    case "selfLowHpBonus": return "🩸 自身のHPが" + pct(fx.th) + "以下の時、威力+" + pct(fx.bonus);
+    default: return "特殊効果";
   }
 }
 function applyUltFx(p, atk, fx){
@@ -2370,7 +4422,7 @@ skill:{type:"multi", power:0.5, hits:4, text:"4連撃+デバフ",weaponCool:2},
 passive:{type:"multi_hit_bonus",value:0.08,text:"🌌宇宙の力：多段攻撃の各ヒットATK+8%"}
 },
 {
-name:"双式魔術・焔",
+name:"聡式魔術・焔",
 img:"https://imgur.com/Be9Doth.png",
 atk:20,
 hp:10,
@@ -2380,7 +4432,7 @@ skill:{type:"buff", power:1.1, text:"10%バフ",weaponCool:2},
 passive:{type:"burn_on_attack",chance:0.2,power:0.1,turn:1,text:"🔥焔術：攻撃時20%で燃焼付与(1T)"}
 },
 {
-name:"双式魔術・燈",
+name:"聡式魔術・燈",
 img:"https://imgur.com/EKzr6Zo.png",
 atk:10,
 hp:20,
@@ -3038,6 +5090,16 @@ const charDetails = {
     story:"セレスティエデンの神。固有能罪符「番いの救済」と「偽りの厄災」を持つ。凪や弐呪刻とは仲が悪い。",},
   "バルナウス": {title:"軍神",
     story:"海星の神であり、バルナウス海賊団の船長。固有能罪符「荒くれ者たちの結束」を持つ。阿波牛星夜を死地から救った人物。",},
+  "銭生黒蔵": {title:"守銭奴",
+    story:"BLACK PRICEの所長。固有能罪符「換算の契約(ブラックマーケット)」を持ち、黒瀬武人の育ての親。金さえ積めばどんな依頼もこなし、逆に契約を破れば容赦なく全てを奪う。",},
+  "十金灰": {title:"伝承者",
+    story:"BLACK PRICEの副所長。ミニモータと同じ固有能罪符を持ち、携帯している複数のナイフを使い戦う。BPの財布を握る人物。",},
+  "鈴島ネロ": {title:"問題児",
+    story:"BLACK PRICEの問題社員兼情報収集係。銭生から給料の8割を借金として持っていかれている。本人は逃げようとしているが、失敗。借金額が毎日増えている。",},
+  "夜倉冥": {title:"魂を打ち抜く",
+    story:"BLACK PRICEの社員。暗殺一家の最強狙撃手。依頼失敗の責任を押し付けられ、一族から処刑対象にされたが銭生により生存。以降、忠誠を誓う。",},
+  "波立嶺": {title:"悪魔の真似事",
+    story:"BLACK PRICEの社員。元天才外科医。人体改造が違法認定され、研究所を爆破された。瀕死だったところを銭生が回収。今では社員全員の健康管理担当。ただし趣味で改造したがる。",},
   "室井元武(β)": {title:"千半譲渡",
     story:"　",},
   "栗島トウヤ(β)": {title:"望んだ未来へ",
@@ -3093,9 +5155,11 @@ const charDetails = {
   "ゲガント": {title:"再生",
     story:"元武達によって倒された最初の敵。固有能罪符は「再生」",},
   "ホーレン": {title:"空気殺し",
-    story:"固有能罪符「空気殺し」を持つ。ボムブにより戦線離脱。",},
+    story:"固有能罪符「空気殺し」を持つ。ボムブにより戦線離脱。現在はBPの研修生",},
   "ボムブ": {title:"地雷",
-    story:"固有能罪符の「地雷」を駆使した高速移動が可能。。",},
+    story:"固有能罪符の「地雷」を駆使した高速移動が可能。現在はBPの研修生",},
+  "ホーレン&ボムブ": {title:"有望な新入り",
+    story:"　",},
   "霊剛": {title:"ポルターガイスト",
     story:"聖戦天使神響の参加者。元武により脱落。",},
   "安村康夫": {title:"火薬庫",
@@ -3315,6 +5379,8 @@ let missionBtn = document.getElementById("missionBtn");
 if(missionBtn) missionBtn.style.display = (id === "battle") ? "none" : "";
 update();
 if(id==="trial")renderTrials();
+if(id==="story") renderStory();
+if(id==="storyVolume") renderStoryVolume();
 if(id==="ultimate"){ ultimateSlideIndex = getUltimateMaxFloor(); renderUltimate(); }
 if(id==="event") renderEvent();
 if(id==="dex") renderDex();
@@ -3570,6 +5636,7 @@ battleEnded = false;
 isAttackProcessing = false;
 currentEventType = undefined;
 currentTrial = undefined;
+currentStoryChapter = undefined;
 go("battle");
 onBattleStart();
 let lv = progress[i] || 1;
@@ -3724,6 +5791,30 @@ function applyErosionBoost(res){
   let boost = 1 + 0.25 * enemy.erosions.length;
   return { ...res, dmg: Math.floor(res.dmg * boost) };
 }
+// 夜倉冥パッシブ「命を貫く眼」：相手のシールドと属性を無視し、常に有利属性として扱う
+function forceAdvantageIfNeeded(p, base, res){
+  if(p && p.passive && p.passive.type === "ignore_shield_attr"){
+    return { dmg: Math.floor(base * 1.5), type: "weak" };
+  }
+  return res;
+}
+// 鈴島ネロ スキル「雪景色」：発動中はこのキャラのATK分、全ダメージがランダムに増減する
+function getActiveNeroSnowAtk(){
+  let nero = players.find(pl => pl.snowscapeTurn && pl.snowscapeTurn > 0);
+  if(!nero) return null;
+  let a = nero.atk;
+  if(nero.buffs) nero.buffs.forEach(b=>{ a *= b.power; });
+  if(a < 0) a = 1;
+  return a;
+}
+function applyNeroSnowscape(dmg){
+  let a = getActiveNeroSnowAtk();
+  if(a === null) return dmg;
+  let magnitude = Math.floor(Math.random() * (Math.round(a) + 1)); // 0〜ATKのランダムな数
+  let delta = magnitude * (Math.random() < 0.5 ? -1 : 1);
+  let result = Math.floor(dmg + delta);
+  return result < 0 ? 0 : result;
+}
 function triggerKokuShoku(count){
   count = count || 1;
   players.forEach(pl => {
@@ -3741,7 +5832,8 @@ const ALLY_TARGET_SKILL_TYPES = new Set([
   "buff","heal","shield","teamBuff","harumiBuff","echoHeal","happyAura","jokaku",
   "sakuraBoost","bunshin","taunt","revive","snowRevive","repairRevolution",
   "weaponSummon","thunderArmor","hp_ratio_atk_buff","saikouchiB",
-  "beta_akahane_lucky","beta_harumi_sight","beta_sakuragi_offset","counter","frozenUnlock"
+  "beta_akahane_lucky","beta_harumi_sight","beta_sakuragi_offset","counter","frozenUnlock",
+  "jintaiSekkeizu"
 ]);
 function isAllyTargetSkill(skillType){
   return ALLY_TARGET_SKILL_TYPES.has(skillType);
@@ -3914,6 +6006,20 @@ function getPlayerStatusHTML(p){
     let atkBonus = cnt * 25;
     h += `<span class="sBadge" style="background:#1a0033;color:#cc88ff;border:1px solid #8833ff;">⚡天撃×${cnt}(ATK+${atkBonus}%)</span>`;
   }
+  if(p.passive && p.passive.type==="moneyPassive"){
+    let mc = p.moneyCount || 0;
+    let reduceTxt = mc>=10 ? "(被ダメ-50%)" : mc>=5 ? "(被ダメ-20%)" : "";
+    h += `<span class="sBadge" style="background:#2a2000;color:#ffd700;border:1px solid #ffaa00;">💰金銭×${mc}${reduceTxt}</span>`;
+  }
+  if(p.skill && p.skill.type==="grassAntonym"){
+    let baseMax = p.baseMaxHp || p.hp;
+    let ratio = baseMax>0 ? Math.floor((p.currentHp/baseMax)*100) : 0;
+    let mult = Math.max(0, Math.floor(ratio*4));
+    h += `<span class="sBadge" style="background:#663300;color:#ffcc66;border:1px solid #cc6600;">🌾HP割合${ratio}%(ダメ${mult}%)</span>`;
+  }
+  if(p.snowscapeTurn && p.snowscapeTurn > 0){
+    h += `<span class="sBadge" style="background:#003344;color:#aaeeff;border:1px solid #0099cc;">❄雪景色(${p.snowscapeTurn}T)</span>`;
+  }
   if(p.passive && p.passive.type==="michiPassive"){
     let hpRatio = (p.hp > 0) ? p.currentHp / p.hp : 0;
     let tier = Math.min(10, Math.floor((1 - hpRatio) / 0.1) + 1);
@@ -4065,11 +6171,27 @@ function getPlayerStatusHTML(p){
   if(p.copySkillPowerBuff && p.copySkillPowerBuff.turn > 0){
     h+=`<span class="sBadge" style="background:#0a2a10;color:#88ffaa;border:1px solid #44cc66;">🦅コピー威力+${Math.floor(p.copySkillPowerBuff.power*100)}%(${p.copySkillPowerBuff.turn}T)</span>`;
   }
+  // ホーレン&ボムブ：回避状態バッジ(変貌前)
+  if(p.evasionCount && p.evasionCount > 0){
+    h+=`<span class="sBadge" style="background:#003344;color:#aaeeff;border:1px solid #0099cc;">🌀回避状態×${p.evasionCount}(被ダメ時50%で75%カット)</span>`;
+  }
+  // ホーレン&ボムブ：地雷カウントバッジ(変貌後)＋発動中の効果を表示
+  if(p.jiraiCount && p.jiraiCount > 0){
+    let jc = p.jiraiCount;
+    let effects = [];
+    if(jc >= 3) effects.push("反撃ATK50%");
+    if(jc >= 6) effects.push("攻撃時燃焼30%");
+    if(jc >= 9) effects.push("ATK+144%");
+    if(jc >= 12) effects.push("被ダメ-40%");
+    let effTxt = effects.length ? `(${effects.join("/")})` : "(次3で反撃解放)";
+    h+=`<span class="sBadge" style="background:#331100;color:#ffaa66;border:1px solid #cc5500;">💣地雷×${jc}/15${effTxt}</span>`;
+  }
   return h;
 }
 function getEnemyStatusHTML(){
   let h="";
   if(enemy.poisons && enemy.poisons.length>0) h+=`<span class="sBadge sPoison">☠毒×${enemy.poisons.length}</span>`;
+  if(enemy.bleeds && enemy.bleeds.length>0){ let maxBT=Math.max(...enemy.bleeds.map(b=>b.turn||0)); h+=`<span class="sBadge" style="background:#5a0010;color:#ff6688;border:1px solid #cc0033;">🩸出血×${enemy.bleeds.length}(${maxBT}T)</span>`; }
   if(enemy.burns && enemy.burns.length>0) h+=`<span class="sBadge sBurn">🔥燃${enemy.burns.length}重(${enemy.burnTurn}T)</span>`;
   else if(enemy.burnTurn>0) h+=`<span class="sBadge sBurn">🔥燃${enemy.burnTurn}</span>`;
   if(enemy.freezeTurn>0) h+=`<span class="sBadge sFreeze">❄凍${enemy.freezeTurn}</span>`;
@@ -4108,7 +6230,37 @@ function getGimmickHTML(){
   h+=`</div>`;
   return h;
 }
+function checkAwakenTransforms(){
+  if(!players) return;
+  players.forEach(p=>{
+    if(p.passive && p.passive.type === "hooren_bombu_soul" && p.passive.awaken && !p.transformed && p.hp > 0){
+      let ratio = p.currentHp / p.hp;
+      if(ratio <= p.passive.threshold){
+        let A = p.passive.awaken;
+        p.transformed = true;
+        p.evasionCount = 0;
+        p.jiraiCount = 0;
+        p.img = A.img;
+        p.passive = {...p.passive, text: A.text};
+        if(p.skill){
+          p.skill = {...p.skill,
+            type: A.skillType || p.skill.type,
+            power: A.skillPower ?? p.skill.power,
+            text: A.skillText || p.skill.text};
+        }
+        if(p.skill2){
+          p.skill2 = {...p.skill2,
+            power: A.skill2Power ?? p.skill2.power,
+            text: A.skill2Text || p.skill2.text};
+        }
+        showSynergyText("🌑💥 "+getBaseName(p.name)+"、変貌！ホーレン→ボムブ！回避状態解除！");
+        addBattleLog("💥 "+getBaseName(p.name)+"がボムブへと変貌した！回避状態が解除された！", "logSystem");
+      }
+    }
+  });
+}
 function renderBattle(){
+  checkAwakenTransforms();
   let teamArea = document.getElementById("teamArea");
   let enemyArea = document.getElementById("enemyArea");
   teamArea.innerHTML = players.map((p,i)=>{
@@ -4195,6 +6347,7 @@ if(p.buffs){
     });
 }
 let res = calcDamage(p.attr,enemy.attr,atk);
+res = forceAdvantageIfNeeded(p, atk, res);
 res.dmg = Math.floor(res.dmg * applyPassiveAtk(p));
 players.forEach(ally=>{
     if(ally === p) return;
@@ -4220,17 +6373,19 @@ if(enemy.betaIssokuCount && enemy.betaIssokuCount > 0){
 }
 res = applyErosionBoost(res);
 res = applyCrit(res, p);
-if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly){
+let _ignoreShieldAttr = p.passive && p.passive.type === "ignore_shield_attr";
+if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && !_ignoreShieldAttr){
   if(enemy.shield>0){
   } else {
     res.dmg = Math.floor(res.dmg * 0.05);
   }
 }
-if(enemy.shield>0){
+if(enemy.shield>0 && !_ignoreShieldAttr){
   let absorbed=Math.min(enemy.shield, res.dmg);
   enemy.shield -= absorbed;
   res.dmg -= absorbed;
 }
+res.dmg = applyNeroSnowscape(res.dmg);
 if(enemy.soundCrushAmp){
     res.dmg = Math.floor(res.dmg * 2);
     enemy.soundCrushAmp = false;
@@ -4398,10 +6553,13 @@ let statusFx = [];
 });
 addBattleLog(`✨ ${p.name}の必殺「${U.title}」発動！`, "logUltimate");
 let res = calcDamage(p.attr, enemy.attr, atk * effMult);
-if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
-if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+res = forceAdvantageIfNeeded(p, atk * effMult, res);
+let _ignoreShieldAttrU = p.passive && p.passive.type === "ignore_shield_attr";
+if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0 && !_ignoreShieldAttrU) res.dmg=Math.floor(res.dmg*0.05);
+if(enemy.shield>0 && !_ignoreShieldAttrU){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
 let _ksU = p.kokuShoku||0; if(_ksU>0) res.dmg=Math.floor(res.dmg*(1+0.12*_ksU));
 res = applyErosionBoost(res);
+res.dmg = applyNeroSnowscape(res.dmg);
 enemy.hp -= res.dmg;
 applyShockBonus(p, atk);
 p.ult = 0;
@@ -4582,6 +6740,8 @@ if(enemy.gimmick?.counter){
 }
 let res = calcDamage(enemy.attr, target.attr, atk);
 res.dmg = Math.floor(res.dmg * applyPassiveDef(target));
+res.dmg = applyNeroSnowscape(res.dmg);
+if(res.dmg < 0) res.dmg = 0;
 if(target.shields && target.shields.length > 0){
     let totalPower = Math.min(1, target.shields.reduce((acc,s)=>acc+s.power, 0));
     res.dmg *= (1 - totalPower);
@@ -4731,6 +6891,7 @@ setTimeout(()=>{
       if(isTrainingBattle){ isTrainingBattle=false; if(trainingMaxDmg>(profileData.trainingMaxDmg||0)){profileData.trainingMaxDmg=trainingMaxDmg;profileData.trainingMaxDmgChar=trainingMaxDmgChar;saveData();} let _cin=trainingMaxDmgChar?"\n("+trainingMaxDmgChar+")":""; alert("🏋️ 鍛錬終了\n\n最大ダメージ: "+trainingMaxDmg.toLocaleString()+_cin+"\n\n（敗北）"); trainingMaxDmg=0;trainingMaxDmgChar=""; go("training"); return; }
       alert("敗北");
       if(currentEventType === "ultimate"){ currentEventType=undefined; currentTrial=undefined; go("ultimate"); }
+      else if(currentEventType === "story"){ currentEventType=undefined; currentTrial=undefined; currentStoryChapter=undefined; go("storyVolume"); }
       else if(currentEvent !== undefined){ currentEvent=undefined; go("event"); }
       else go("trial");
       return;
@@ -4749,6 +6910,7 @@ setTimeout(()=>{
         if(isTrainingBattle){ isTrainingBattle=false; if(trainingMaxDmg>(profileData.trainingMaxDmg||0)){profileData.trainingMaxDmg=trainingMaxDmg;profileData.trainingMaxDmgChar=trainingMaxDmgChar;saveData();} let _cin=trainingMaxDmgChar?"\n("+trainingMaxDmgChar+")":""; alert("🏋️ 鍛錬終了\n\n最大ダメージ: "+trainingMaxDmg.toLocaleString()+_cin+"\n\n（敗北）"); trainingMaxDmg=0;trainingMaxDmgChar=""; go("training"); return; }
         alert("敗北");
         if(currentEventType === "ultimate"){ currentEventType=undefined; currentTrial=undefined; go("ultimate"); }
+        else if(currentEventType === "story"){ currentEventType=undefined; currentTrial=undefined; currentStoryChapter=undefined; go("storyVolume"); }
         else if(currentEvent !== undefined){ currentEvent=undefined; go("event"); }
         else go("trial");
       }, 300);
@@ -4914,6 +7076,16 @@ function applyEnemyStatusDamage(callback){
     delay+=100;
     enemy.burnTurn--;
   }
+  if(enemy.bleeds && enemy.bleeds.length > 0){
+    enemy.bleeds = enemy.bleeds.filter(bl => {
+      let bDmg = Math.floor(enemy.hp * bl.power);
+      enemy.hp -= bDmg;
+      setTimeout(()=>showDamage("enemy",{dmg:bDmg,type:"poison"}), delay);
+      delay += 90;
+      bl.turn--;
+      return bl.turn > 0;
+    });
+  }
   if(enemy.erosions && enemy.erosions.length > 0){
     enemy.erosions = enemy.erosions.filter(er => {
       let dotDmg = Math.floor((er.maxHp || enemy.hp) * er.maxHpDot);
@@ -4970,6 +7142,7 @@ function checkTurnLimit(){
     if(isTrainingBattle){ isTrainingBattle=false; if(trainingMaxDmg>(profileData.trainingMaxDmg||0)){profileData.trainingMaxDmg=trainingMaxDmg;profileData.trainingMaxDmgChar=trainingMaxDmgChar;saveData();} let _cin=trainingMaxDmgChar?"\n("+trainingMaxDmgChar+")":""; alert("🏋️ 鍛錬終了\n\n最大ダメージ: "+trainingMaxDmg.toLocaleString()+_cin+"\n\nターン制限超過"); trainingMaxDmg=0;trainingMaxDmgChar=""; go("training"); return; }
     alert("⏱ ターン制限超過！敗北...");
     if(currentEventType==="ultimate"){ currentEventType=undefined; currentTrial=undefined; go("ultimate"); }
+    else if(currentEventType==="story"){ currentEventType=undefined; currentTrial=undefined; currentStoryChapter=undefined; go("storyVolume"); }
     else if(currentEvent!==undefined){ currentEvent=undefined; go("event"); }
     else go("trial");
   }
@@ -5019,6 +7192,21 @@ function triggerAttackPassive(p){
       p.buffs.push({power: 1 + p.passiveAtkBonus, turn: 3, isPassiveAtk: true});
       showSynergyText("💪 "+label+"のパッシブ！ATK+"+(Math.floor(p.passiveAtkBonus*100))+"%！");
     }
+  }
+  if(ps.type === "hooren_bombu_soul" && p.transformed){
+    p.jiraiCount = Math.min(15, (p.jiraiCount||0) + 1);
+    let _jiraiMsg = "💣 "+label+"のパッシブ！攻撃→地雷カウント→"+p.jiraiCount+"！";
+    if(p.jiraiCount >= 6 && Math.random() < 0.3){
+      if(!enemy.burns) enemy.burns = [];
+      enemy.burns.push({power: p.atk * 0.3, turn: 2, user: p});
+      enemy.burnPower = enemy.burns.reduce((acc,b)=>acc+b.power,0);
+      enemy.burnTurn = Math.max(...enemy.burns.map(b=>b.turn));
+      p.jiraiCount = Math.min(15, p.jiraiCount + 1);
+      _jiraiMsg += "燃焼付与！地雷カウント→"+p.jiraiCount+"！";
+      triggerKokuShoku(1);
+      trackAilment(1, "burn");
+    }
+    showSynergyText(_jiraiMsg);
   }
   if(ps.type === "heal_on_attack"){
     let healAmt = Math.floor(p.hp * ps.value);
@@ -5131,6 +7319,25 @@ function triggerTurnStartPassive(){
         }
       });
     }
+    if(ps.type === "moneyPassive"){
+      p.moneyCount = Math.min(30, (p.moneyCount||0) + 1);
+      showSynergyText("💰 "+p.name+"のパッシブ！金銭カウント→"+p.moneyCount+"！");
+    }
+    if(ps.type === "kyuushuu_passive"){
+      if(p.baseMaxHp === undefined) p.baseMaxHp = p.hp;
+      let others = players.filter(pl => pl !== p && pl.currentHp > 0);
+      others.forEach(o=>{
+        let cut = o.hp * 0.05;
+        o.hp = Math.max(1, o.hp - cut);
+        if(o.currentHp > o.hp) o.currentHp = o.hp;
+      });
+      if(others.length > 0){
+        let gain = p.baseMaxHp * 0.05 * others.length;
+        p.hp += gain;
+        p.currentHp += gain;
+        showSynergyText("🩸 "+p.name+"の強制吸収！味方全体の最大HP-5%→自身の最大HP+"+(others.length*5)+"%！");
+      }
+    }
     if(ps.type === "taketogeGarden"){
       if(!enemy.taketogeStacks) enemy.taketogeStacks = [];
       enemy.taketogeStacks.push({ turn: 3 });
@@ -5181,6 +7388,10 @@ function triggerDamagedPassive(target){
       let ti = players.indexOf(target);
       if(ti>=0) setTimeout(()=>showDamage("p"+ti,{dmg:healAmt,type:"heal"}),300);
     }
+    if(p === target && p.passive.type === "moneyPassive"){
+      p.moneyCount = Math.min(30, (p.moneyCount||0) + 1);
+      showSynergyText("💰 "+p.name+"のパッシブ！被ダメ→金銭カウント→"+p.moneyCount+"！");
+    }
     if(p === target && p.passive && p.passive.type === "happy_on_damaged"){
       players.forEach(ally=>{
         if(!ally.happyStacks) ally.happyStacks = [];
@@ -5224,6 +7435,26 @@ function triggerDamagedPassive(target){
     if(p === target && p.passive.type === "beta_yatsunami_passive"){
       p.betaHimoCount = Math.min(10, (p.betaHimoCount||0) + 1);
       showSynergyText("🔗 "+p.name+"の運命の紐！被ダメ→紐カウント→"+p.betaHimoCount+"！被ダメ-"+(Math.min(30,p.betaHimoCount*3))+"%！");
+    }
+    // ホーレン&ボムブ：世殺し(変貌前) - 自分以外の味方が被ダメ時に自身へ回避状態+1
+    if(p !== target && p.passive && p.passive.type === "hooren_bombu_soul" && !p.transformed && p.currentHp > 0){
+      p.evasionCount = (p.evasionCount||0) + 1;
+      showSynergyText("🌀 "+p.name+"の世殺し！回避状態+1！");
+    }
+    // ホーレン&ボムブ：地雷源(変貌後) - 被ダメ時に地雷カウント+1、3以上で反撃
+    if(p === target && p.passive && p.passive.type === "hooren_bombu_soul" && p.transformed){
+      p.jiraiCount = Math.min(15, (p.jiraiCount||0) + 1);
+      if(p.jiraiCount >= 3){
+        let counterDmg = Math.floor(p.atk * 0.5);
+        enemy.hp -= counterDmg;
+        p.jiraiCount = Math.min(15, p.jiraiCount + 1);
+        setTimeout(()=>{
+          showDamage("enemy", {dmg:counterDmg, type:"weak"});
+          showSynergyText("💣 "+p.name+"の地雷反撃！ATK50%の反撃ダメージ！地雷カウント→"+p.jiraiCount+"！");
+        }, 200);
+      } else {
+        showSynergyText("💣 "+p.name+"のパッシブ！被ダメ→地雷カウント→"+p.jiraiCount+"！");
+      }
     }
     // β版 桜木彰スキル：オフセット - 被ダメ時に同ダメで反撃
     if(p === target && p.counters && p.counters.some(c=>c.isOffset)){
@@ -5271,6 +7502,9 @@ function applyPassiveAtk(p){
         bonus *= (1 + (ps.atkBoost || 0.20));
       }
     }
+    if(ps.type === "hooren_bombu_soul" && p.transformed && (p.jiraiCount||0) >= 9){
+      bonus *= (1 + 1.44);
+    }
   });
   if(p.happyStacks && p.happyStacks.length > 0) bonus *= Math.pow(1.20, p.happyStacks.length);
   bonus *= applyTreePassiveAtk(p);
@@ -5298,6 +7532,11 @@ function applyPassiveDef(target){
       let michiReduction = tier * 0.08;
       reduction *= (1 - michiReduction);
     }
+    if(ps.type === "moneyPassive"){
+      let mc = target.moneyCount || 0;
+      if(mc >= 10) reduction *= (1 - 0.5);
+      else if(mc >= 5) reduction *= (1 - 0.2);
+    }
     // β版 桜木彰パッシブ：力の真価 - HP50%以下でオフセット防御付与、被ダメ40%軽減
     if(ps.type === "beta_sakuragi_passive"){
       let hpRatio = (target.hp > 0) ? target.currentHp / target.hp : 0;
@@ -5309,6 +7548,23 @@ function applyPassiveDef(target){
     if(ps.type === "beta_yatsunami_passive" && target.betaHimoCount > 0){
       let betaHimoReduction = Math.min(0.30, target.betaHimoCount * 0.03);
       reduction *= (1 - betaHimoReduction);
+    }
+    // ホーレン&ボムブ：世殺し(変貌前)の回避状態、地雷源(変貌後)の被ダメ増減
+    if(ps.type === "hooren_bombu_soul"){
+      if(!target.transformed){
+        if((target.evasionCount||0) > 0){
+          target.evasionCount -= 1;
+          if(Math.random() < 0.5){
+            reduction *= 0.25;
+            showSynergyText("🌀 "+target.name+"の回避状態発動！ダメージ75%カット！");
+          }
+        }
+      } else {
+        reduction *= 1.20;
+        if((target.jiraiCount||0) >= 12){
+          reduction *= 0.60;
+        }
+      }
     }
   });
   if(target.happyStacks && target.happyStacks.length > 0) reduction *= Math.pow(0.95, target.happyStacks.length);
@@ -5338,13 +7594,16 @@ function applySkillDmgPassives(dmg, attacker){
           mult *= (1 + (ps.atkBoost || 0.20));
         }
       }
+      if(ps.type === "hooren_bombu_soul" && ally === attacker && ally.transformed && (ally.jiraiCount||0) >= 9){
+        mult *= (1 + 1.44);
+      }
     });
   });
   let ac = box.find(b=>b.name===attacker.name);
   if(ac && ac.treeSkillPower) mult *= (1 + ac.treeSkillPower);
   if(attacker.happyStacks && attacker.happyStacks.length > 0) mult *= Math.pow(1.20, attacker.happyStacks.length);
   mult *= applyTreePassiveAtk(attacker);
-  return Math.floor(dmg * mult);
+  return applyNeroSnowscape(Math.floor(dmg * mult));
 }
 // スキルダメージにクリティカルを適用するラッパー（resオブジェクト用）
 function applySkillCrit(res, attacker){
@@ -5383,6 +7642,7 @@ if(p.weaponCool > 0) p.weaponCool--;
 if(p.taunt && p.taunt.turn > 0){ p.taunt.turn--; if(p.taunt.turn<=0) p.taunt=null; }
 if(p.sakuraDrainTurn && p.sakuraDrainTurn > 0){ p.sakuraDrainTurn--; }
 if(p.saikouchiBuff && p.saikouchiBuff > 0){ p.saikouchiBuff--; }
+if(p.snowscapeTurn && p.snowscapeTurn > 0){ p.snowscapeTurn--; }
 if(p.copySkillPowerBuff && p.copySkillPowerBuff.turn > 0){
     p.copySkillPowerBuff.turn--;
     if(p.copySkillPowerBuff.turn <= 0){ p.copySkillPowerBuff = null; }
@@ -5418,7 +7678,7 @@ if(p.berserkCount && p.berserkCount > 0){
         if(players.length === 0){
             setTimeout(()=>{
               if(isTrainingBattle){ isTrainingBattle=false; if(trainingMaxDmg>(profileData.trainingMaxDmg||0)){profileData.trainingMaxDmg=trainingMaxDmg;profileData.trainingMaxDmgChar=trainingMaxDmgChar;saveData();} let _cin=trainingMaxDmgChar?"\n("+trainingMaxDmgChar+")":""; alert("🏋️ 鍛錬終了\n\n最大ダメージ: "+trainingMaxDmg.toLocaleString()+_cin+"\n\n（敗北）"); trainingMaxDmg=0;trainingMaxDmgChar=""; go("training"); return; }
-              alert("敗北"); if(currentEventType==="ultimate"){currentEventType=undefined;currentTrial=undefined;go("ultimate");}else if(currentEvent!==undefined){currentEvent=undefined;go("event");}else go("trial"); }, 300);
+              alert("敗北"); if(currentEventType==="ultimate"){currentEventType=undefined;currentTrial=undefined;go("ultimate");}else if(currentEventType==="story"){currentEventType=undefined;currentTrial=undefined;currentStoryChapter=undefined;go("storyVolume");}else if(currentEvent!==undefined){currentEvent=undefined;go("event");}else go("trial"); }, 300);
             return;
         }
         if(turnIndex >= players.length) turnIndex = 0;
@@ -5494,7 +7754,7 @@ if(p.berserkCount && p.berserkCount > 0){
     if(players.length===0){
       setTimeout(()=>{
         if(isTrainingBattle){ isTrainingBattle=false; if(trainingMaxDmg>(profileData.trainingMaxDmg||0)){profileData.trainingMaxDmg=trainingMaxDmg;profileData.trainingMaxDmgChar=trainingMaxDmgChar;saveData();} let _cin=trainingMaxDmgChar?"\n("+trainingMaxDmgChar+")":""; alert("🏋️ 鍛錬終了\n\n最大ダメージ: "+trainingMaxDmg.toLocaleString()+_cin+"\n\n（敗北）"); trainingMaxDmg=0;trainingMaxDmgChar=""; go("training"); return; }
-        alert("敗北"); if(currentEventType==="ultimate"){currentEventType=undefined;currentTrial=undefined;go("ultimate");}else if(currentEvent!==undefined){currentEvent=undefined;go("event");}else go("trial");
+        alert("敗北"); if(currentEventType==="ultimate"){currentEventType=undefined;currentTrial=undefined;go("ultimate");}else if(currentEventType==="story"){currentEventType=undefined;currentTrial=undefined;currentStoryChapter=undefined;go("storyVolume");}else if(currentEvent!==undefined){currentEvent=undefined;go("event");}else go("trial");
       }, dotDelay + 100);
       return;
     }
@@ -5721,6 +7981,31 @@ function win(){
         Eventwin();
         return;
     }
+    // ストーリーモード用処理
+    if(currentEventType === "story"){
+        let n = currentStoryChapter;
+        if(!missionStats.storyCleared) missionStats.storyCleared = {};
+        let already = !!missionStats.storyCleared[n];
+        missionStats.storyCleared[n] = true;
+        getStoryMaxChapter();
+        let c = storyChapters.find(ch=>ch.n===n);
+        let msg;
+        sp += 5;
+        if(!already){
+            let reward = 15;
+            stone += reward;
+            msg = `📖 第${n}話「${c?.t||''}」クリア！\n\n💎 石×${reward} / SP+5`;
+        } else {
+            msg = `📖 第${n}話「${c?.t||''}」再クリア！\n\n（クリア済みのため石獲得なし） / SP+5`;
+        }
+        alert(msg);
+        currentEventType = undefined;
+        currentTrial = undefined;
+        currentStoryChapter = undefined;
+        saveData();
+        go("storyVolume");
+        return;
+    }
     // 究極試練用処理
     if(currentEventType === "ultimate"){
         if(!missionStats.ultimateCleared) missionStats.ultimateCleared = {};
@@ -5768,6 +8053,9 @@ function win(){
     }
     // 石報酬: 固定10
     let stoneGain = 10;
+    if(players.some(pl => pl.passive && pl.passive.type === "namitachi_passive")){
+        stoneGain += 5;
+    }
     stone += stoneGain;
     sp += 5;
     let id=chars.findIndex(c=>c.name===enemy.name);
@@ -5842,8 +8130,112 @@ function resetData(){
 localStorage.removeItem("gachaData");
 location.reload();
 }
+function grantStarterChar(){
+  if(box.find(b=>b.name==="室井元武")) return;
+  let c = chars.find(ch=>ch.name==="室井元武");
+  if(!c) return;
+  box.push({...c, role: c.role||"attacker", skill: c.skill?{...c.skill}:{type:"none"}, dupe:0, atk:20+5*c.rarity, hp:100+20*c.rarity, weapon:null, skillTreeData:{chosen:[],skipped:[]}});
+  if(team.length < 3 && !team.find(t=>t.name==="室井元武")){
+    team.push(box[box.length-1]);
+  }
+}
+const tutorialSteps = [
+  {
+    icon: "🎴",
+    img: null,
+    title: "ようこそ「真剣のスルーメ」へ",
+    desc: "このゲームはキャラを集めて仲間にし、パーティーを編成して強敵に挑むバトルRPGです。\n\nまずは簡単な流れを説明します。"
+  },
+  {
+    icon: "🔥",
+    img: "https://imgur.com/21T5sVB.png",
+    title: "最初の仲間：室井元武",
+    desc: "冒険のスタートとして「室井元武」が仲間になりました！\n\n属性は火、役割は攻撃型のキャラクターです。まずは彼と一緒に戦っていきましょう。"
+  },
+  {
+    icon: "🛡️",
+    img: null,
+    title: "「編成」でパーティーを組もう",
+    desc: "ホーム画面下部の「編成」ボタンから、バトルに連れて行くキャラクター（最大3体）を選べます。\n\n室井元武はすでに編成に入っています。"
+  },
+  {
+    icon: "⚔️",
+    img: null,
+    title: "「試練」でバトルに挑戦",
+    desc: "「試練」からバトルに挑戦できます。敵を倒すと💎石やアイテムが手に入ります。\n\nスキルボタンを使ってスキルを発動したり、通常攻撃で戦いましょう。"
+  },
+  {
+    icon: "💫",
+    img: null,
+    title: "「ガチャ」で仲間を増やそう",
+    desc: "バトルで貯めた💎石を使って「ガチャ」から新しい仲間を引くことができます。\n\nより強力なキャラを集めて、パーティーを強化していきましょう！"
+  },
+  {
+    icon: "🎉",
+    img: null,
+    title: "準備完了！",
+    desc: "これで基本の流れは以上です。まずは「編成」を確認してから「試練」に挑んでみましょう。\n\n冒険の始まりです、頑張ってください！"
+  }
+];
+let tutorialIndex = 0;
+function openTutorial(){
+  tutorialIndex = 0;
+  renderTutorialStep();
+  let modal = document.getElementById("tutorialModal");
+  if(modal) modal.style.display = "flex";
+}
+function renderTutorialStep(){
+  let step = tutorialSteps[tutorialIndex];
+  if(!step) return;
+  document.getElementById("tutorialIcon").textContent = step.icon || "";
+  let imgEl = document.getElementById("tutorialImg");
+  if(step.img){
+    imgEl.src = step.img;
+    imgEl.style.display = "block";
+  } else {
+    imgEl.style.display = "none";
+  }
+  document.getElementById("tutorialTitle").textContent = step.title || "";
+  document.getElementById("tutorialDesc").textContent = step.desc || "";
+  document.getElementById("tutorialPrevBtn").style.visibility = (tutorialIndex === 0) ? "hidden" : "visible";
+  document.getElementById("tutorialNextBtn").textContent = (tutorialIndex === tutorialSteps.length - 1) ? "はじめる" : "次へ";
+  let dots = document.getElementById("tutorialStepDot");
+  dots.innerHTML = tutorialSteps.map((s,i)=>`<span style="width:7px;height:7px;border-radius:50%;background:${i===tutorialIndex ? '#ffd700' : '#333'};display:inline-block;"></span>`).join('');
+}
+function tutorialNext(){
+  if(tutorialIndex < tutorialSteps.length - 1){
+    tutorialIndex++;
+    renderTutorialStep();
+  } else {
+    finishTutorial();
+  }
+}
+function tutorialPrev(){
+  if(tutorialIndex > 0){
+    tutorialIndex--;
+    renderTutorialStep();
+  }
+}
+function skipTutorial(){
+  finishTutorial();
+}
+function finishTutorial(){
+  tutorialSeen = true;
+  saveData();
+  let modal = document.getElementById("tutorialModal");
+  if(modal) modal.style.display = "none";
+  go("party");
+}
+let _isBrandNewGame = !localStorage.getItem("gachaData");
 loadData();
+if(_isBrandNewGame){
+  grantStarterChar();
+  setTimeout(saveData, 0);
+}
 update();
+if(!tutorialSeen){
+  setTimeout(openTutorial, 300);
+}
 function skill(){
 if(enemy && enemy.hp <= 0) return;
 let p = players[turnIndex];
@@ -5884,6 +8276,38 @@ if(s.type==="damage"){
     renderBattle();
     setTimeout(()=>showDamage("enemy", res),10);
   showSynergyText("超ダメージ！");
+}
+if(s.type==="kuukiGoroshi"){
+    let res = calcDamage(p.attr, enemy.attr, atk * s.power);
+    if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
+    if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+    if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
+    let _ks = p.kokuShoku||0; if(_ks>0) res.dmg=Math.floor(res.dmg*(1+0.12*_ks));
+    res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
+    res = applyErosionBoost(res);
+    enemy.hp -= res.dmg;
+    applyShockBonus(p, atk);
+    p.evasionCount = (p.evasionCount||0) + 1;
+    triggerAttackPassive(p);
+    renderBattle();
+    setTimeout(()=>showDamage("enemy", res),10);
+    showSynergyText("🌀 "+p.name+"の空気殺し！回避状態+1！");
+}
+if(s.type==="jirai"){
+    p.jiraiCount = Math.min(15, (p.jiraiCount||0) + 3);
+    let res = calcDamage(p.attr, enemy.attr, atk * 0.33 * p.jiraiCount);
+    if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0) res.dmg=Math.floor(res.dmg*0.05);
+    if(enemy.shield>0){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+    if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
+    let _ks = p.kokuShoku||0; if(_ks>0) res.dmg=Math.floor(res.dmg*(1+0.12*_ks));
+    res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
+    res = applyErosionBoost(res);
+    enemy.hp -= res.dmg;
+    applyShockBonus(p, atk);
+    triggerAttackPassive(p);
+    renderBattle();
+    setTimeout(()=>showDamage("enemy", res),10);
+    showSynergyText("💣 "+p.name+"の地雷！地雷カウント→"+p.jiraiCount+"！ATK"+(p.jiraiCount*33)+"%ダメ！");
 }
 if(s.type==="multi"){
     let hitMult = 1.0;
@@ -6426,6 +8850,101 @@ if(s.type==="hp_ratio_atk_buff"){
         p.buffs.push({power: debuffPower, turn: 3, isHpRatioBuff: true});
         showSynergyText("👑 奢れるものも久からず…敵HP比率×" + ratio.toFixed(2) + " → ATK" + Math.floor((ratio-1)*100) + "%(3T)");
     }
+    renderBattle();
+}
+if(s.type==="moneyContract"){
+    let count = p.moneyCount || 0;
+    let multiplier = count * (s.power||1.5);
+    let res = calcDamage(p.attr, enemy.attr, atk * multiplier);
+    res = forceAdvantageIfNeeded(p, atk * multiplier, res);
+    let _ignoreSA = p.passive && p.passive.type === "ignore_shield_attr";
+    if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0 && !_ignoreSA) res.dmg=Math.floor(res.dmg*0.05);
+    if(enemy.shield>0 && !_ignoreSA){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+    if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
+    res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
+    enemy.hp -= res.dmg;
+    applyShockBonus(p, atk);
+    triggerAttackPassive(p);
+    let oldCount = count;
+    p.moneyCount = 0;
+    let _msg = "💰 換算の契約！金銭カウント" + oldCount + "×150%=" + Math.floor(oldCount*150) + "%ダメ！カウント全解除！";
+    if(oldCount >= 3){
+        p.moneyCount = 1;
+        _msg += " カウント1付与！";
+    }
+    if(oldCount >= 6){
+        players.forEach((t,ti)=>{
+            let healAmt = Math.floor(t.hp * 0.12);
+            t.currentHp = Math.min(t.hp, t.currentHp + healAmt);
+            setTimeout(()=>showDamage("p"+ti,{dmg:healAmt,type:"heal"}), ti*80 + 200);
+        });
+        _msg += " 自チームHP12%回復！";
+    }
+    if(oldCount >= 9){
+        if(!p.buffs) p.buffs = [];
+        p.buffs.push({ power: 2.5, turn: 3, isMoneyBuff: true });
+        _msg += " このキャラのATK+250%(3T)！";
+    }
+    showSynergyText(_msg);
+    renderBattle();
+    setTimeout(()=>showDamage("enemy", res), 10);
+    if(enemy.hp <= 0){ setTimeout(()=>win(), 500); return; }
+}
+if(s.type==="grassAntonym"){
+    let baseMax = p.baseMaxHp || p.hp;
+    let hpRatio = baseMax > 0 ? (p.currentHp / baseMax) : 0;
+    let multiplier = hpRatio * 4; // HP10%毎に40%ダメ = HP割合×4
+    let res = calcDamage(p.attr, enemy.attr, atk * multiplier);
+    res = forceAdvantageIfNeeded(p, atk * multiplier, res);
+    let _ignoreSA2 = p.passive && p.passive.type === "ignore_shield_attr";
+    if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0 && !_ignoreSA2) res.dmg=Math.floor(res.dmg*0.05);
+    if(enemy.shield>0 && !_ignoreSA2){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+    if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
+    res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
+    enemy.hp -= res.dmg;
+    applyShockBonus(p, atk);
+    triggerAttackPassive(p);
+    showSynergyText("🌾 草の対義語！HP割合" + Math.floor(hpRatio*100) + "%→ダメージ" + Math.floor(multiplier*100) + "%！");
+    renderBattle();
+    setTimeout(()=>showDamage("enemy", res), 10);
+    if(enemy.hp <= 0){ setTimeout(()=>win(), 500); return; }
+}
+if(s.type==="snowscape"){
+    p.snowscapeTurn = 3;
+    let _neroAtk = Math.max(1, Math.round(atk));
+    showSynergyText("❄ 雪景色！3ターンの間、双方のダメージが0〜ATK(" + _neroAtk + ")のランダムな数値分増減！");
+    renderBattle();
+}
+if(s.type==="sniperBleed"){
+    let res = calcDamage(p.attr, enemy.attr, atk * s.power);
+    res = forceAdvantageIfNeeded(p, atk * s.power, res);
+    let _ignoreSA3 = p.passive && p.passive.type === "ignore_shield_attr";
+    if(enemy.gimmick?.attrOnly && !enemy.phaseRaged && p.attr!==enemy.gimmick.attrOnly && enemy.shield<=0 && !_ignoreSA3) res.dmg=Math.floor(res.dmg*0.05);
+    if(enemy.shield>0 && !_ignoreSA3){ let ab=Math.min(enemy.shield,res.dmg); enemy.shield-=ab; res.dmg-=ab; }
+    if(enemy.allDebuffMark) res.dmg = Math.floor(res.dmg * 1.5);
+    res.dmg = applySkillDmgPassives(res.dmg, p); res = applySkillCrit(res, p);
+    enemy.hp -= res.dmg;
+    applyShockBonus(p, atk);
+    triggerAttackPassive(p);
+    if(!enemy.bleeds) enemy.bleeds = [];
+    enemy.bleeds.push({ power: 0.03, turn: 3 });
+    showSynergyText("🎯 完璧な狙撃術！400%ダメ+出血付与(×" + enemy.bleeds.length + ")！");
+    renderBattle();
+    setTimeout(()=>showDamage("enemy", res), 10);
+    if(enemy.hp <= 0){ setTimeout(()=>win(), 500); return; }
+}
+if(s.type==="jintaiSekkeizu"){
+    players.forEach((t,ti)=>{
+        let heal = t.hp * (s.power||0.15);
+        players.forEach(pl=>{
+            if(pl.passive && pl.passive.type==="heal_bonus") heal *= (1 + pl.passive.value);
+        });
+        t.currentHp = Math.min(t.hp, t.currentHp + heal);
+        setTimeout(()=>showDamage("p"+ti,{dmg:heal,type:"heal"}), ti*80);
+    });
+    if(!enemy.bleeds) enemy.bleeds = [];
+    enemy.bleeds.push({ power: 0.03, turn: 3 });
+    showSynergyText("🩸 人体設計図！味方全体HP15%回復+相手に出血付与(×" + enemy.bleeds.length + ")！");
     renderBattle();
 }
 if(s.type==="tenGeki"){
@@ -9480,6 +11999,7 @@ function startUltimateBattle(floor){
 
   battleEnded = false;
   isAttackProcessing = false;
+  currentStoryChapter = undefined;
   go("battle");
   onBattleStart();
 
@@ -10000,6 +12520,18 @@ function renderDex(){
       baseChars.push(c);
     }
   });
+  // ホーレン&ボムブ：変貌後(ボムブ)の姿を「ボムブ」側のイベント限定キャラにも表示する
+  {
+    let hooBom = allChars.find(c=>c.name==="ホーレン&ボムブ");
+    if(hooBom && hooBom.passive && hooBom.passive.awaken && nameSet.has("ボムブ")){
+      if(!variantMap["ボムブ"]) variantMap["ボムブ"] = [];
+      variantMap["ボムブ"].push({
+        name: hooBom.name,
+        img: hooBom.passive.awaken.img,
+        skill: { text: hooBom.passive.awaken.skillText || hooBom.skill?.text }
+      });
+    }
+  }
   list.innerHTML = baseChars.map(c=>{
     const d = charDetails[c.name] || {};
     const variants = variantMap[c.name] || [];
@@ -10026,9 +12558,22 @@ function renderDex(){
         }).join("")}
       </details>
     `;
+    const awaken = c.passive && c.passive.awaken;
+    const imgHtml = awaken ? `
+      <div style="display:flex;gap:4px;flex-shrink:0;">
+        <div style="text-align:center;">
+          <img src="${c.img}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;display:block;">
+          <div style="font-size:9px;color:#ffd700;margin-top:2px;">変貌前</div>
+        </div>
+        <div style="text-align:center;">
+          <img src="${awaken.img}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;display:block;">
+          <div style="font-size:9px;color:#cc88ff;margin-top:2px;">変貌後</div>
+        </div>
+      </div>
+    ` : `<img src="${c.img}">`;
     return `
       <div class="dexRow">
-        <img src="${c.img}">
+        ${imgHtml}
         <div class="dexText">
           <b>【${d.title || ""}】</b>${c.name}『${c.skill?.text || "なし"}』<br>
           <div>
@@ -12266,11 +14811,22 @@ function saveMissionData(){
 }
 let ciCurrentBoxIndex = -1;
 let ciCurrentTab = 'status';
+let ciShowAwaken = false;
 function openCharInfoModal(i){
   ciCurrentBoxIndex = i;
   ciCurrentTab = 'status';
+  ciShowAwaken = false;
   const c = box[i];
   document.getElementById('ciImg').src = c.img;
+  const awakenToggle = document.getElementById('ciAwakenToggle');
+  if(c.passive && c.passive.awaken){
+    awakenToggle.style.display = '';
+    document.getElementById('ciFormBeforeImg').src = c.img;
+    document.getElementById('ciFormAfterImg').src = c.passive.awaken.img;
+    ciUpdateAwakenToggleStyle();
+  } else {
+    awakenToggle.style.display = 'none';
+  }
   // 昇星込みの☆表示：元レアリティ分は金、昇星で上げた分は青
   const baseRarity = c.rarity;
   const curStar = getCharStarLevel(c);
@@ -12284,12 +14840,41 @@ function openCharInfoModal(i){
     rarityHtml += '<span style="color:#44aaff;text-shadow:0 0 6px #44aaff;">★</span>';
   }
   document.getElementById('ciRarity').innerHTML = rarityHtml;
-  document.getElementById('ciName').textContent = c.name;
+  document.getElementById('ciName').textContent = c.name + ((c.passive && c.passive.awaken) ? '（変貌前）' : '');
   const attrLabel = c.attr || '';
   const roleLabel = getRoleLabel(c.role);
   document.getElementById('ciAttrRole').textContent = attrLabel + '  /' + '  ' + roleLabel;
   switchCiTab('status');
   document.getElementById('charInfoModal').style.display = 'flex';
+}
+function ciUpdateAwakenToggleStyle(){
+  const beforeEl = document.getElementById('ciFormBefore');
+  const afterEl = document.getElementById('ciFormAfter');
+  const afterLabel = document.getElementById('ciFormAfterLabel');
+  if(!beforeEl || !afterEl) return;
+  if(ciShowAwaken){
+    beforeEl.style.border = '2px solid #333';
+    beforeEl.style.background = 'transparent';
+    afterEl.style.border = '2px solid #cc88ff';
+    afterEl.style.background = 'rgba(180,100,255,0.12)';
+    if(afterLabel) afterLabel.style.color = '#cc88ff';
+  } else {
+    beforeEl.style.border = '2px solid #ffd700';
+    beforeEl.style.background = 'rgba(255,215,0,0.08)';
+    afterEl.style.border = '2px solid #333';
+    afterEl.style.background = 'transparent';
+    if(afterLabel) afterLabel.style.color = '#888';
+  }
+}
+function ciSetAwakenView(isAfter){
+  if(ciCurrentBoxIndex < 0) return;
+  const c = box[ciCurrentBoxIndex];
+  if(!c.passive || !c.passive.awaken) return;
+  ciShowAwaken = isAfter;
+  document.getElementById('ciImg').src = isAfter ? c.passive.awaken.img : c.img;
+  document.getElementById('ciName').textContent = c.name + (isAfter ? '（変貌後）' : '（変貌前）');
+  ciUpdateAwakenToggleStyle();
+  switchCiTab(ciCurrentTab);
 }
 function closeCharInfoModal(){
   document.getElementById('charInfoModal').style.display = 'none';
@@ -12297,7 +14882,7 @@ function closeCharInfoModal(){
 }
 function switchCiTab(tab){
   ciCurrentTab = tab;
-  ['status','skill','passive','tree'].forEach(t => {
+  ['status','skill','passive','ultimate','tree'].forEach(t => {
     let btn = document.getElementById('ciTab' + t.charAt(0).toUpperCase() + t.slice(1));
     let content = document.getElementById('ciContent' + t.charAt(0).toUpperCase() + t.slice(1));
     if(content) content.style.display = (t === tab) ? '' : 'none';
@@ -12306,6 +14891,7 @@ function switchCiTab(tab){
     status: {bg:'#ffd700', color:'#000', border:'none'},
     skill:  {bg:'#1a2a4a', color:'#aaddff', border:'1px solid #4488cc'},
     passive:{bg:'#1a3a1a', color:'#88ff88', border:'1px solid #44cc44'},
+    ultimate:{bg:'#3a1a10', color:'#ffaa77', border:'1px solid #cc6644'},
     tree:   {bg:'#0d2010', color:'#88ffaa', border:'1px solid #44cc88'},
   };
   Object.keys(tabStyles).forEach(t => {
@@ -12420,31 +15006,46 @@ function switchCiTab(tab){
       wArea.textContent = 'なし';
     }
   } else if(tab === 'skill'){
-    const skill = c.skill;
-    if(skill && skill.text && skill.text !== 'スキルなし'){
-      document.getElementById('ciSkillText').textContent = skill.text;
-      document.getElementById('ciSkillCT').textContent = skill.cool ? 'CT: ' + skill.cool + 'ターン' : '';
+    const isAwaken = ciShowAwaken && c.passive && c.passive.awaken;
+    const A = isAwaken ? c.passive.awaken : null;
+    const skillText = A ? (A.skillText || c.skill?.text) : c.skill?.text;
+    if(skillText && skillText !== 'スキルなし'){
+      document.getElementById('ciSkillText').textContent = skillText;
+      document.getElementById('ciSkillCT').textContent = c.skill?.cool ? 'CT: ' + c.skill.cool + 'ターン' : '';
     } else {
       document.getElementById('ciSkillText').textContent = 'スキルなし';
       document.getElementById('ciSkillCT').textContent = '';
     }
     const s2Area = document.getElementById('ciSkill2Area');
-    if(c.skill2 && c.skill2.text){
+    const skill2Text = A ? (A.skill2Text || c.skill2?.text) : c.skill2?.text;
+    if(c.skill2 && skill2Text){
       s2Area.style.display = '';
-      document.getElementById('ciSkill2Text').textContent = c.skill2.text;
+      document.getElementById('ciSkill2Text').textContent = skill2Text;
     } else {
       s2Area.style.display = 'none';
     }
   } else if(tab === 'passive'){
+    const isAwaken = ciShowAwaken && c.passive && c.passive.awaken;
+    const passiveText = isAwaken ? c.passive.awaken.text : c.passive?.text;
     const pNone = document.getElementById('ciPassiveNone');
     const pText = document.getElementById('ciPassiveText');
-    if(c.passive && c.passive.text){
-      pText.textContent = c.passive.text;
+    if(passiveText){
+      pText.textContent = passiveText;
       pText.style.display = '';
       pNone.style.display = 'none';
     } else {
       pText.style.display = 'none';
       pNone.style.display = '';
+    }
+  } else if(tab === 'ultimate'){
+    const ult = getUltimateData(c);
+    document.getElementById('ciUltimateName').textContent = '「' + ult.title + '」';
+    document.getElementById('ciUltimateMult').textContent = 'ATK × ' + ult.mult;
+    const effEl = document.getElementById('ciUltimateEffects');
+    if(ult.fx && ult.fx.length){
+      effEl.innerHTML = ult.fx.map(fx => '・' + ciUltFxDesc(fx)).join('<br>');
+    } else {
+      effEl.innerHTML = '追加効果なし';
     }
   } else if(tab === 'tree'){
     const chosen = c.skillTreeData?.chosen?.length || 0;
@@ -15029,6 +17630,11 @@ const CHAR_KAKUTEI_LINES = {
   "死橋凪":         "「終わったか。……さあ、次の戦場へ行こう」",
   "アステレス":     "「星の導きですよ」",
   "バルナウス":     "「さあ、船を出そう」",
+  "銭生黒蔵":     "「借金ってのはな、金だけじゃねぇ。恩も命も全部借金だ」",
+  "十金灰":     "「会社の信用を傷付ける奴は、俺が始末する。」",
+  "鈴島ネロ":     "「また給料が取られた...」",
+  "夜倉冥":     "「撃つ前から、勝負は終わっている。」",
+  "波立嶺":     "「少し切るだけだ。たぶん死なない。」",
   "室井元武(β)":   "「どっちが生き残るか、真っ向勝負だ！」",
   "栗島トウヤ(β)": "「これは俺の力だ」",
   "死橋轟(β)":     "「お前に勝つのは俺だ」",
@@ -15345,11 +17951,13 @@ function openRandomTeamModal(){
     document.body.appendChild(modal);
   }
   modal.style.display = "flex";
+  _randomLocked = new Set();
   rollRandomTeam();
 }
 
 let _randomTeamResult = [];
 let _randomWeaponOn = true;
+let _randomLocked = new Set();
 
 function toggleRandomWeapon(){
   _randomWeaponOn = !_randomWeaponOn;
@@ -15366,16 +17974,19 @@ function toggleRandomWeapon(){
 }
 
 function rollRandomTeam(){
-  // boxからランダムに最大3体選ぶ（重複なし、同じbaseName不可）
-  let available = [...box];
+  // 固定（ロック）されたキャラは今の編成のまま維持する
+  let lockedPicked = _randomTeamResult.filter(c => _randomLocked.has(c.name));
+  let lockedNames = new Set(lockedPicked.map(c => c.name));
+  let pickedBaseNames = new Set(lockedPicked.map(c => getBaseName(c.name)));
+
+  // boxからランダムに残り枠を選ぶ（重複なし、同じbaseName不可、固定キャラは除外）
+  let available = box.filter(c => !lockedNames.has(c.name));
   // シャッフル
   for(let i = available.length-1; i > 0; i--){
     let j = Math.floor(Math.random()*(i+1));
     [available[i], available[j]] = [available[j], available[i]];
   }
-  // baseName重複排除しながら3体選ぶ
-  let picked = [];
-  let pickedBaseNames = new Set();
+  let picked = [...lockedPicked];
   for(let c of available){
     if(picked.length >= 3) break;
     let bn = getBaseName(c.name);
@@ -15385,26 +17996,38 @@ function rollRandomTeam(){
     }
   }
 
-  // 武器をランダムに割り当てる
+  // 武器をランダムに割り当てる（固定キャラの武器はそのまま維持）
   if(_randomWeaponOn && weaponBox.length > 0){
     let shuffledWeapons = [...weaponBox];
     for(let i = shuffledWeapons.length-1; i > 0; i--){
       let j = Math.floor(Math.random()*(i+1));
       [shuffledWeapons[i], shuffledWeapons[j]] = [shuffledWeapons[j], shuffledWeapons[i]];
     }
-    // 重複武器なしで割り当て
-    let usedWeaponNames = new Set();
-    picked = picked.map((c, idx) => {
+    // 重複武器なしで割り当て（固定キャラの武器名は使用済み扱い）
+    let usedWeaponNames = new Set(lockedPicked.filter(c => c._randomWeapon).map(c => c._randomWeapon.name));
+    picked = picked.map(c => {
+      if(_randomLocked.has(c.name)) return c;
       let w = shuffledWeapons.find(sw => !usedWeaponNames.has(sw.name));
       if(w) usedWeaponNames.add(w.name);
       return { ...c, _randomWeapon: w || null };
     });
   } else {
-    picked = picked.map(c => ({ ...c, _randomWeapon: null }));
+    picked = picked.map(c => _randomLocked.has(c.name) ? c : ({ ...c, _randomWeapon: null }));
   }
 
   _randomTeamResult = picked;
   renderRandomTeamPreview(picked);
+}
+
+function toggleRandomLock(i){
+  let c = _randomTeamResult[i];
+  if(!c) return;
+  if(_randomLocked.has(c.name)){
+    _randomLocked.delete(c.name);
+  } else {
+    _randomLocked.add(c.name);
+  }
+  renderRandomTeamPreview(_randomTeamResult);
 }
 
 function renderRandomTeamPreview(picked){
@@ -15414,18 +18037,26 @@ function renderRandomTeamPreview(picked){
     preview.innerHTML = '<div style="color:#666;font-size:13px;padding:10px;">キャラがいません</div>';
     return;
   }
+  const _rtAttrColor = {"火":"#ff4444","水":"#4488ff","雷":"#ffd700","木":"#44cc44","光":"#ffffff","闇":"#aa00ff"};
+  const _rtAttrEmoji = {"火":"🔥","水":"💧","雷":"⚡","木":"🌿","光":"✨","闇":"🌑"};
   preview.innerHTML = picked.map((c, i) => {
-    let attrColor = {fire:"#ff4444",water:"#4488ff",thunder:"#ffd700",wood:"#44cc44",light:"#ffffff",dark:"#aa00ff"}[c.attr] || "#aaa";
+    let attrColor = _rtAttrColor[c.attr] || "#aaa";
     let weapon = c._randomWeapon;
+    let finalAtk = getEffectiveAtk(c) + (weapon?.atk || 0);
+    let finalHp = getEffectiveHp(c) + (weapon?.hp || 0);
+    let locked = _randomLocked.has(c.name);
     return `
       <div style="display:flex;align-items:center;gap:10px;background:#0f1525;border:1px solid ${attrColor}44;border-radius:10px;padding:8px 10px;margin-bottom:6px;">
         <img src="${c.img || ''}" onerror="this.style.display='none'" style="width:48px;height:48px;object-fit:cover;border-radius:8px;border:2px solid ${attrColor};flex-shrink:0;">
         <div style="text-align:left;flex:1;min-width:0;">
-          <div style="font-size:13px;font-weight:bold;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.name}</div>
-          <div style="font-size:10px;color:#888;margin-top:1px;">ATK ${c.atk} / HP ${c.hp}</div>
+          <div style="font-size:13px;font-weight:bold;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${_rtAttrEmoji[c.attr]||""} ${c.name}</div>
+          <div style="font-size:10px;color:#888;margin-top:1px;">ATK ${finalAtk} / HP ${finalHp}</div>
           ${weapon ? `<div style="font-size:10px;color:#aaddff;margin-top:2px;">⚔ ${weapon.name}</div>` : (_randomWeaponOn && weaponBox.length > 0 ? '<div style="font-size:10px;color:#555;margin-top:2px;">武器なし</div>' : '')}
         </div>
-        <div style="font-size:18px;color:${attrColor};">${{fire:"🔥",water:"💧",thunder:"⚡",wood:"🌿",light:"✨",dark:"🌑"}[c.attr]||"⬜"}</div>
+        <label style="display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0;cursor:pointer;" title="固定する（ふりなおしても変わりません）">
+          <input type="checkbox" onchange="toggleRandomLock(${i})" ${locked ? "checked" : ""} style="width:20px;height:20px;cursor:pointer;accent-color:#44ffaa;">
+          <span style="font-size:9px;color:${locked ? "#44ffaa" : "#556"};">固定</span>
+        </label>
       </div>
     `;
   }).join('');
